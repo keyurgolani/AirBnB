@@ -5,6 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+// MongoDB Config
+var mongo = require('mongodb');
+// Reference for monk usage and documentation: https://automattic.github.io/monk/
+var monk = require('monk');
+var db = monk('localhost:27017/nodetest1'); // TODO: Fetch Properties like URL from Properties File on load!
+
+// MySQL Config
+var mySQL = require('./utils/dao');
+
 var routes = require('./routes/index');
 
 var app = express();
@@ -16,7 +25,9 @@ app.set('view engine', 'ejs');
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+	extended : false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/modules', express.static(path.join(__dirname, 'node_modules')));
@@ -25,13 +36,19 @@ app.use('/js', express.static(path.join(__dirname, 'public/js')));
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use('/ngjs', express.static(path.join(__dirname, 'public/angularjs')));
 
+app.use(function(req, res, next) {
+	mySQL.initializeConnectionPool(10); // TODO: Load the pool size from properties file on load.
+	req.db = db;
+	next();
+});
+
 app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
 });
 
 // error handlers
@@ -39,23 +56,23 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
+	app.use(function(err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message : err.message,
+			error : err
+		});
+	});
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+	res.status(err.status || 500);
+	res.render('error', {
+		message : err.message,
+		error : {}
+	});
 });
 
 

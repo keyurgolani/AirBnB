@@ -193,9 +193,10 @@ var biddingLogger = new winston.Logger({
 });
 
 module.exports = {
-	genericLog: function(logString) {
+	genericLog: (logString) => {
 		commonLogger.log('info', "Common Log: " + logString);
 	},
+	//TODO: Pending
 	stream: {
 		write: function(message, encoding){
 			logger.info(message);
