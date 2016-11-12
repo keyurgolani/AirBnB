@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var responseTime = require('response-time')
 
 // MongoDB Config
 var mongo = require('mongodb');
@@ -29,6 +30,7 @@ app.use(bodyParser.urlencoded({
 	extended : false
 }));
 app.use(cookieParser());
+app.use(responseTime())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/modules', express.static(path.join(__dirname, 'node_modules')));
 app.use('/css', express.static(path.join(__dirname, 'public/stylesheets')));

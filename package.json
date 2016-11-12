@@ -25,9 +25,11 @@
     "mongodb": "^2.2.11",
     "monk": "^3.1.3",
     "morgan": "~1.7.0",
+    "mysql-cache": "^0.5.5-b",
     "ng-focus-if": "^1.0.7",
     "nodemon": "^1.11.0",
     "request": "^2.75.0",
+    "response-time": "^2.3.1",
     "serve-favicon": "~2.3.0",
     "sjcl": "^1.0.6",
     "winston": "^2.2.0"

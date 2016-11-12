@@ -63,6 +63,28 @@ module.exports = {
 		connectionPool = new Pool(poolSize);
 	},
 	
+	// Humble try to add caching to SQL queries. Seems right at the moment. But not exactly sure.
+	
+	fetchCacheData : (selectFields, tableName, queryParameters, processResult) => {
+		connectionPool.get((connectionNumber, connection) => {
+			var queryString = "SELECT " + selectFields + " FROM " + tableName;
+			if (queryParameters !== null) {
+				queryString = "SELECT " + selectFields + " FROM " + tableName + " WHERE ?";
+			}
+			memoryCache.wrap(queryString + "_" + queryParameters, (cacheCallback) => {
+				var query = connection.query(queryString, queryParameters, (error, rows) => {
+					if (error) {
+						throw error;
+					} else {
+						cacheCallback(rows);
+					}
+				});
+		    }, processResult);
+			connectionPool.release(connectionNumber, connection);
+			logger.logQuery(query.sql);
+		});
+	},
+	
 	fetchData : (selectFields, tableName, queryParameters, processResult) => {
 		connectionPool.get((connectionNumber, connection) => {
 			var queryString = "SELECT " + selectFields + " FROM " + tableName;
