@@ -5,18 +5,24 @@ var autoLogger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var responseTime = require('response-time')
-var logger = require('./utils/logger');
+var mongo = require('mongodb');
+//Reference for monk usage and documentation: https://automattic.github.io/monk/
+var monk = require('monk');
+
+var properties = require('properties-reader')('properties.properties');
+
+
+// Config Logger
+var logger = require(properties.get('paths.loggerPath'));
 
 // MongoDB Config
-var mongo = require('mongodb');
-// Reference for monk usage and documentation: https://automattic.github.io/monk/
-var monk = require('monk');
-var db = monk('localhost:27017/nodetest1'); // TODO: Fetch Properties like URL from Properties File on load!
+var db = monk(properties.get('paths.mongoDBHosting')); // TODO: Fetch Properties like URL from Properties File on load!
 
 // MySQL Config
-var mySQL = require('./utils/dao');
+var mySQL = require(properties.get('paths.daoPath'));
 
-var routes = require('./routes/index');
+// Routing
+var routes = require(properties.get('paths.routerPath'));
 
 var app = express();
 
@@ -32,7 +38,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(responseTime((req, res, time) => {
-	logger.logResponseTime(req, time);
+	logger.logResponseTime(req.url, time);
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/modules', express.static(path.join(__dirname, 'node_modules')));
@@ -42,7 +48,7 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use('/ngjs', express.static(path.join(__dirname, 'public/angularjs')));
 
 app.use(function(req, res, next) {
-	mySQL.initializeConnectionPool(10); // TODO: Load the pool size from properties file on load.
+	mySQL.initializeConnectionPool(properties.get('mysql.poolSize')); // TODO: Load the pool size from properties file on load.
 	req.db = db;
 	next();
 });

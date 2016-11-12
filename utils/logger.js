@@ -226,11 +226,11 @@ var biddingLogger = new winston.Logger({
 
 module.exports = {
 	log: (logString) => {
-		commonLogger.log('info', 'Common Log: ' + logString);
+		commonLogger.info('Common Log: ' + logString);
 	},
 	logResponseTime : (path, time, message) => {
 		responseTimeLogger.info({
-			'path' : path.url,
+			'path' : path,
 			'time' : time,
 			'message' : message
 		});
