@@ -32,6 +32,38 @@ var commonLogger = new winston.Logger({
 	exitOnError: false
 });
 
+var responseTimeLogger = new winston.Logger({
+	transports: [
+		new winston.transports.File({
+			level: 'silly',
+			colorize: true,
+			timestamp: true,
+			filename: './logs/responseTimeLogs.log',
+			maxsize: 100000,
+			maxFiles: 1000,
+			logstash: true,
+			tailable: true,
+			zippedArchive: false,
+			json: true,
+			stringify: false,
+			prettyPrint: true,
+			depth: 5,
+			humanReadableUnhandledException: true,
+			showLevel: true,
+			stderrLevels: ['error', 'debug']
+		}),
+		new winston.transports.Console({
+			level: 'debug',
+			handleExceptions: true,
+			json: true,
+			timestamp: true,
+			prettyPrint: true,
+			colorize: true
+		})
+	],
+	exitOnError: false
+});
+
 var searchHistoryLogger = new winston.Logger({
 	transports: [
 		new winston.transports.File({
@@ -193,12 +225,19 @@ var biddingLogger = new winston.Logger({
 });
 
 module.exports = {
-	genericLog: (logString) => {
-		commonLogger.log('info', "Common Log: " + logString);
+	log: (logString) => {
+		commonLogger.log('info', 'Common Log: ' + logString);
+	},
+	logResponseTime : (path, time, message) => {
+		responseTimeLogger.info({
+			'path' : path.url,
+			'time' : time,
+			'message' : message
+		});
 	},
 	//TODO: Pending
 	stream: {
-		write: function(message, encoding){
+		write: (message, encoding) => {
 			logger.info(message);
 		}
 	}, 
