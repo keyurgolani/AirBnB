@@ -18,6 +18,7 @@
     "ejs": "~2.4.1",
     "express": "~4.13.4",
     "express-session": "^1.14.1",
+    "font-awesome": "^4.7.0",
     "html5shiv": "^3.7.3",
     "jquery": "^3.1.1",
     "mocha": "^3.1.2",
@@ -32,6 +33,7 @@
     "response-time": "^2.3.1",
     "serve-favicon": "~2.3.0",
     "sjcl": "^1.0.6",
+    "uglify-js": "^2.7.4",
     "winston": "^2.2.0"
   }
 }
