@@ -9,6 +9,7 @@ router.get('/', (req, res, next) => {
 		console.log('----------------------Missed Logic!!!---------------------------');
 		callback('Keyur Golani');
 	}, (result) => {
+		console.log('----------------------Process Result!!!---------------------------');
 		res.render('index', {
 			title : result
 		});
