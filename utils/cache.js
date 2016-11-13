@@ -7,7 +7,6 @@ var redisCache = cacheManager.caching({
 	store : redisStore,
 	host : properties.get('rediscache.host'),
 	port : properties.get('rediscache.port'),
-	auth_pass : properties.get('rediscache.password'),
 	db : properties.get('rediscache.db'),
 	ttl : properties.get('rediscache.ttl')
 });
