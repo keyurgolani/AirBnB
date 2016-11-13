@@ -133,3 +133,4 @@ local.properties
 
 # Code Recommenders
 .recommenders/
+*.properties

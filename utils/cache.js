@@ -7,9 +7,9 @@ var redisCache = cacheManager.caching({
 	store : redisStore,
 	host : properties.get('rediscache.host'),
 	port : properties.get('rediscache.port'),
-	auth_pass : properties.get('rediscache.password'),
+//	auth_pass : properties.get('rediscache.password'),
 	db : properties.get('rediscache.db'),
-	ttl : properties.get('rediscache.ttl')
+	ttl : properties.get('rediscache.ttl') //Seconds
 });
 var memoryCache = cacheManager.caching({
 	store : 'memory',
@@ -20,7 +20,7 @@ var memoryCache = cacheManager.caching({
 var multiCache = cacheManager.multiCaching([ memoryCache, redisCache ]);
 
 module.exports.fetchItem = (item_cache_key, item_id, cacheMissFetchLogic, processResult) => {
-	var cacheKey = 'item_cache_key' + item_id;
+	var cacheKey = item_cache_key + "_" + item_id;
 	multiCache.wrap(cacheKey, (cacheCallback) => {
 		cacheMissFetchLogic(item_id, cacheCallback);
 	}, processResult);
