@@ -1,3 +1,36 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<% include ./head %>
+	</head>
+
+	<body class="body full-body" ng-app="airBnB" ng-cloak>
+	<div class="container-fluid">
+		<header>
+        	<% include ./header %>
+    	</header>
+    	
+		<main>
+			<div class="row">
+				<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">
+				</div>
+				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+					<div class="h1 text-jumbo hide-sm">Oops!</div>
+					<div class="h2 error-text-small error-text">We can't seem to find the page you're looking for.</div>
+					<div class="h6 error-code">Error code: 404</div>
+				</div>
+				<div class="col-lg-4 col-md-4 hidden-sm hidden-xs text-center">
+					<img src="images/404.gif" width="313" height="428" class="hide-sm" alt="Girl has dropped her ice cream.">
+				</div>
+				<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">
+				</div>
+			</div>
+		</main>
+		
+		<footer>
+        	<% include ./footer %>
+    	</footer>
+	</div>
+	</body>
+
+</html>
