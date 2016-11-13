@@ -5,9 +5,10 @@ var cache = require('../utils/cache');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-	cache.fetchItem('user', 1, (item_id, callback) => {
+	cache.fetchItem('user', 1, (userID, callback) => {
+		console.log('----------------------Missed Logic!!!---------------------------');
 		callback('Keyur Golani');
-	},(result) => {
+	}, (result) => {
 		res.render('index', {
 			title : result
 		});
