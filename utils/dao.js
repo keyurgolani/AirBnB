@@ -1,15 +1,16 @@
 var mysql = require("mysql");
 var logger = require("../utils/logger");
+var properties = require('properties-reader')('properties.properties');
 
 // Transactions will be useful for Cart Checkout Query Execution: https://github.com/mysqljs/mysql#transactions
 
 function getConnection() {
 	var connection = mysql.createConnection({
-		host : 'localhost',
-		user : 'root',
-		password : 'admin',
-		database : 'simple_market_place',
-		port : 3306
+		host : properties.get('mysql.host'),
+		user : properties.get('mysql.user'),
+		password : properties.get('mysql.password'),
+		database : properties.get('mysql.db'),
+		port : properties.get('mysql.port')
 	}); // TODO: Load the database details and other parameters from properties file on load.
 	return connection;
 }
