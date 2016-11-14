@@ -29,7 +29,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('footer', function($scope, $http, Random) {
 		$scope.randomPassword = Random.randomString(25);
-
 	})
 	.directive('ngEnter', function() {
 		return function(scope, element, attrs) {
