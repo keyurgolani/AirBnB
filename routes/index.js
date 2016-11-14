@@ -2,16 +2,26 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
+
 const winston = require('winston');
 var logger = require('../utils/logger');
 var crypto = require('crypto');
 var uuid = require('node-uuid');
 var Chance = require('chance');
 
+var cache = require('../utils/cache');
+
+
 /* GET home page. */
 router.get('/', (req, res, next) => {
-	res.render('index', {
-		title : 'Express'
+	cache.fetchItem('user', 1, (userID, callback) => {
+		console.log('----------------------Missed Logic!!!---------------------------');
+		callback('Keyur Golani');
+	}, (result) => {
+		console.log('----------------------Process Result!!!---------------------------');
+		res.render('index', {
+			title : result
+		});
 	});
 });
 
