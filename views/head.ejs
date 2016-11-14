@@ -2,20 +2,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Page not found - AirBnB</title>
+<title>Sign in or Register | eBay</title>
 
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
-<link rel='stylesheet' href='modules/font-awesome/css/font-awesome.min.css'/>
 <link rel='stylesheet' href='css/jquery-ui.min.css'/>
 <link rel="stylesheet" href="modules/bootstrap/dist/css/bootstrap.min.css"/>
-<link rel="stylesheet" href="modules/bootstrap/dist/css/bootstrap-theme.min.css"/>
-<link rel="stylesheet" href="modules/bootstrap-material-design/dist/css/bootstrap-material-design.min.css"/>
+<!-- <link rel="stylesheet" href="modules/bootstrap/dist/css/bootstrap-theme.min.css"/>
+<link rel="stylesheet" href="modules/bootstrap-material-design/dist/css/bootstrap-material-design.min.css"/> -->
 <link rel="stylesheet" href="modules/bootstrap-material-design/dist/css/ripples.min.css"/>
-<link rel='stylesheet' href='css/header.css'/>
-<link rel='stylesheet' href='css/footer.css'/>
 <link rel='stylesheet' href='css/style.css'/>
-<link rel='stylesheet' href='css/error.css'/>
+<!-- <link rel='stylesheet' href='css/homepage.css'/> -->
 
 <!--[if lt IE 9]>
 	<script src="modules/html5shiv/dist/html5shiv.min.js"></script>
@@ -29,5 +26,17 @@
 <script src="modules/angular/angular.min.js"></script>
 <script src="modules/angular-animate/angular-animate.js"></script>
 <script src="modules/ng-focus-if/focusIf.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA67uROXPqm2Nnfg5HOTHttn2C7QRn1zIo&libraries=places&sensor=false"></script>
+
+<script>
+  var map;
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: -34.397, lng: 150.644},
+      zoom: 8
+    });
+  }
+</script>
 
 <script src="ngjs/anguApp.js"></script>
+<script src="ngjs/ngAutoComplete.js"></script>

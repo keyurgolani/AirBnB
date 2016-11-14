@@ -7,3 +7,178 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
+
+/* Author: Ved Vasavada */
+/* eMail : vedvasa@gmail.com; */
+@media(min-width: 700px) {
+	.navbar{
+		min-height: 60px;
+		border    : 1px solid #dce0e0;
+		padding   : 0px 0px 0px 0px;
+		margin    : 0px 0px 0px 0px;
+	}
+
+	#verticalAlign{
+		min-height: 45px;
+	}
+
+	.navbar-header{
+		padding: 0px 20px 0px 8px;
+	}
+
+	.navbar-brand{
+		min-height: 62px;
+		width: 140px;
+		/* padding:  13px 0px 13px 0px; */
+	}
+
+	#myNavbar{
+		padding: 0px 10px 0px 10px ;
+	}
+
+	#header_logo{
+		padding: 0px 0px 0px 0px;
+		border-right: 2px solid #dce0e0;
+	}
+
+	#inLine{
+		display: inline-block;
+	}
+
+	textarea, input{
+		outline: none;
+	}
+
+	textarea: foucs, input:focus{
+		outline: none;
+		outline: none;
+	}
+
+	.form-control{
+		outline           : none;
+		border            : none !important;
+		-webkit-box-shadow: none !important;
+		-moz-box-shadow   : none !important;
+		box-shadow        : none !important;
+		color             :   #dce0e0;
+	}
+
+	.form-control:focus{
+		outline           : none;
+		border            : none !important;
+		-webkit-box-shadow: none !important;
+		-moz-box-shadow   : none !important;
+		box-shadow        : none !important;
+		color             : #000000;
+	}
+
+	#menuSearchBar{
+		
+	}
+
+	.btn .btn-default{
+		border: 2px solid #AAAAAA;
+	}
+
+	.header-icon.icon-lifesaver-alt-gray {
+	    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC%2FxhBQAAA4FJREFUSA21Vj1oVEEQntl79xPERtBoFBUOQTnw5CFo5w%2BoiGgQLERsFLQUbdKKbSrRziYWok0Ko6QIgj%2FYKISDEy4GJCAS1KjYiHjnvXvr9%2B3ehnsmF7TIwr3dnZn9Znb%2B9lRWGPV6fUuqybC1ckLElq3IJoqryCd851Rl0thoolqtzveDgezSUZutDUkrvQHgC%2BDmlkpkKB0oGpOiuR7vjD9mONgsUVCr105ZSe%2BJlbXgJ6o6rmofRyqv0zT%2FmQDGtDcmVvZZqyettWdAioD0Q8Wcj6vxI8qEkVFQq09fgc6bOARcmShGcqVS2fshCC83NxrTW1uJ3MJth3EoFatX4z3x7SC7qICWw88Pu%2BALOcnvhm%2B%2FBMGVZsRqQ0fab6Bk0CkRPR1uYniQPqdbAjgFO7b9tPautn4lYHcWMpT14LIADEMsF0cIRA4AAaXP6RZYfhnWPEXGVPRn%2BmxmZvpIK9FjqZWLYu0uysPKGQa2GNmp5s%2F0iZMVaeDs4Y6279BdTBKIXlKmYmLb77GxpbyU6XN3ZVoFJaAn%2BHlDsPhrOB783JA15lC8I%2F7KmDTbMgc5jTS%2F3TDPscnBqvEQUOf7kjkKugdQmVc15wYKMqQls5lr3IC5T8VJqSBHCI61EINYWOaIHeE6KCJe2z7mHIb9bY9hHRGoGA1UK5XK98DD%2FKDRaEy1kl91nN9CF4J2N%2FCJBfpZYiPItkxGTgqvgoCbfZFhaUb%2BAndsTzMj3Lj4OKr%2FsGb8ypahQIe4QfQXPLH77Qa0lE%2BfZ%2Bi9m6K8cNuubGCFgmRrcWkaGKsx00WufyAwgxkFqm%2B5b7bNQc7LjpYcIJ1p28tnK3F0NEW6iCklHfm9v1cIvWXM79NRBHRdhoeNp6WjpLMmevnsU36vc8ySSUT7OBsXiPeDoBZ0yjZt4rPkVx2tZCTEg7dCBo2SB%2FmEBRfOcfZYloonV7%2FQ%2BFh0rxixK%2FZWMSsUhbVNjF6EOS9h3Df34xo08iiDbKkI2grPEgMy9MyYw8bGN7tWOtvtR2hY6Io95U%2BZfiNjkLLZyaB7G4pmJx8gl6Zc8LFANqQOHII5zR8O5d8PnHS2FcrCYm8YMNzD033dFuvA9297LShBR73DxrUSOHmUoaw3DA%2BO2GvhLSAfnsiOfk8mW0modtYM0%2Fq%2Fn8ygalUf%2FaCEMwKY%2BduCC7u%2B5av%2F3%2F62%2FAFOjOyz%2BDIZMgAAAABJRU5ErkJggg%3D%3D");
+	    background-repeat: no-repeat;
+		height: 24px;
+		width : 24px;
+		margin: 20px 50px 0px -40px;
+		margin: 20px 17px 0px 57px;
+	}
+
+	#main-navbar{
+		margin:0px 0px 0px 0px; padding:0px 0px 0px 0px;
+	}
+
+	#li_One{
+	  margin:0px 0px 0px 0px;
+	}
+
+	.li_One_div_One{
+		margin:0px 0px 0px 0px !important;
+		padding: 20px 0px 0px 0px;
+		font-size:22px;
+		color:#AAAAAA;
+	}
+
+	.ul_One{
+		margin:0px 0px 0px 0px; padding:0px 0px 0px 0px;
+		color: #999;
+		font-size:24px;
+	}
+
+	.ul_Two{
+		padding: 18px 0px 0px 0px; margin:0px 0px 0px 0px !important;
+	}
+
+	.ul_Three{
+		font-size:14px; border-style:solid; color:#dce0e0; font-family:Circular,'Helvetica Neue',Helvetica,Arial,sans-serif;
+		width: 719px;
+	}
+
+	.ul_Four{
+		border-right: 1px solid #dce0e0; line-height:62px;
+	}
+
+	.ul_Five{
+		margin:0px 0px 0px 0px;
+	}
+
+	.btn-style{
+		border: 2px solid #D7D7D7; padding:3px 15px 3px 15px; font-size:13.5px;
+	}
+
+	.ul_Six{
+		border-right: 1px solid #dce0e0; line-height:62px; padding: 0px -20px 0px 0px;
+	}
+
+	.ul_Seven{
+		border-right: 1px solid #dce0e0; line-height:62px; padding: 0px -20px 0px 0px;
+	}
+
+	.ul_eight{
+		margin:0px 3px 0px 3px; padding:;
+	}
+
+	.ul_Nine{
+		font-size:13.5px;
+	}
+
+	.ul_Ten{
+		padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;
+	}
+
+	.ul_Eleven{
+		font-size:13.5px; padding: 0px 0px 0px 0px; margin: 22px 0px 0px 22px;
+	}
+	.pac-container {
+	    background: #fff;
+	    border-top: 0;
+	    font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	    margin:13px 0px 0px -40px;
+	    width: 719px;
+	}
+	.pac-item {
+	    background: #fff !important;
+	    border: 0;
+	    padding: 8px !important;
+        cursor: default;
+	    padding: 0 4px;
+	    text-overflow: ellipsis;
+	    overflow: hidden;
+	    white-space: nowrap;
+	    line-height: 30px;
+	    text-align: left;
+	    border-top: 1px solid #e6e6e6;
+	    font-size: 14px;
+	    color: #999;
+	}
+
+	.pac-item:hover{
+	    background-color: #FF5A5F !important;
+	}
+}
