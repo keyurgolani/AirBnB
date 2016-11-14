@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-    	<% include ./head %>
+		<% include ./head %>
 	</head>
 
 	<body class="body full-body" ng-app="airBnB" ng-controller="homepage" ng-cloak>
-	<div class="container-fluid">
-		<!-- <header>
-        	<% include ./header %>
-    	</header> -->
-    	
-		<main>
+	<!-- Header -->
+	<header><% include ./header %></header>
+	<!-- Main -->
+	<main>
+		<div class="container-fluid">
 			<div class="row main-body">
 				<div class="col-lg-1 col-md-1 hidden-sm hidden-xs">
 				</div>
@@ -139,12 +138,10 @@
 				</div>
 				
 			</div>
-		</main>
-		
-		<!-- <footer>
-        	<% include ./footer %>
-    	</footer> -->
-	</div>
+		</div>
+	</main>
+	<!-- Footer -->
+	<footer><% include ./footer %></footer>
 	</body>
 
 </html>
