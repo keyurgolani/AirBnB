@@ -107,6 +107,8 @@ body {
 
 	.ul_One{
 		margin:0px 0px 0px 0px; padding:0px 0px 0px 0px;
+		color: #999;
+		font-size:24px;
 	}
 
 	.ul_Two{
@@ -115,7 +117,7 @@ body {
 
 	.ul_Three{
 		font-size:14px; border-style:solid; color:#dce0e0; font-family:Circular,'Helvetica Neue',Helvetica,Arial,sans-serif;
-		width: 675px;
+		width: 719px;
 	}
 
 	.ul_Four{
@@ -153,5 +155,30 @@ body {
 	.ul_Eleven{
 		font-size:13.5px; padding: 0px 0px 0px 0px; margin: 22px 0px 0px 22px;
 	}
+	.pac-container {
+	    background: #fff;
+	    border-top: 0;
+	    font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	    margin:13px 0px 0px -40px;
+	    width: 719px;
+	}
+	.pac-item {
+	    background: #fff !important;
+	    border: 0;
+	    padding: 8px !important;
+        cursor: default;
+	    padding: 0 4px;
+	    text-overflow: ellipsis;
+	    overflow: hidden;
+	    white-space: nowrap;
+	    line-height: 30px;
+	    text-align: left;
+	    border-top: 1px solid #e6e6e6;
+	    font-size: 14px;
+	    color: #999;
+	}
 
+	.pac-item:hover{
+	    background-color: #FF5A5F !important;
+	}
 }

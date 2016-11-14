@@ -81,7 +81,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 
 
-    $scope.result2 = '';
+    $scope.result2 = 'hello';
     console.log('$scope.result2', $scope.result2);
     $scope.options2 = {
       country: 'ca',
