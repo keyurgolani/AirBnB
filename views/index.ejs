@@ -11,16 +11,19 @@
 		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel='stylesheet' href='css/jquery-ui.min.css'/>
 		<link rel="stylesheet" href="modules/bootstrap/dist/css/bootstrap.min.css"/>
-		<link rel="stylesheet" href="modules/bootstrap/dist/css/bootstrap-theme.min.css"/>
-		<link rel="stylesheet" href="modules/bootstrap-material-design/dist/css/bootstrap-material-design.min.css"/>
+		<!-- <link rel="stylesheet" href="modules/bootstrap/dist/css/bootstrap-theme.min.css"/>
+		<link rel="stylesheet" href="modules/bootstrap-material-design/dist/css/bootstrap-material-design.min.css"/> -->
 		<link rel="stylesheet" href="modules/bootstrap-material-design/dist/css/ripples.min.css"/>
 		<link rel='stylesheet' href='css/style.css'/>
-		<link rel='stylesheet' href='css/homepage.css'/>
+		<!-- <link rel='stylesheet' href='css/homepage.css'/> -->
 		
 		<!--[if lt IE 9]>
 			<script src="modules/html5shiv/dist/html5shiv.min.js"></script>
 			<script src="modules/respond.js/dest/respond.min.js"></script>
 		<![endif]-->
+
+		
+
 		
 		<script src="modules/jquery/dist/jquery.min.js"></script>
 		<script src="js/jquery-ui.min.js"></script>
@@ -29,17 +32,144 @@
 		<script src="modules/angular/angular.min.js"></script>
 		<script src="modules/angular-animate/angular-animate.js"></script>
 		<script src="modules/ng-focus-if/focusIf.min.js"></script>
-		
+
+
+		<script>
+	      var map;
+	      function initMap() {
+	        map = new google.maps.Map(document.getElementById('map'), {
+	          center: {lat: -34.397, lng: 150.644},
+	          zoom: 8
+	        });
+	      }
+	    </script>
+
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+
 		<script src="ngjs/anguApp.js"></script>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA67uROXPqm2Nnfg5HOTHttn2C7QRn1zIo&libraries=places&sensor=false"></script>
+	
+		<!-- <script src="ngAutocomplete/script.js"></script> -->
+		<script src="ngAutoComplete/ngAutoComplete.js"></script>
+		
 	</head>
 
 	<body class="body full-body" ng-app="airBnB" ng-controller="homepage" ng-cloak>
 	<!-- Header -->
-	<%- include header.ejs %>
+	<!-- <%- include header.ejs %> -->
 	<!-- Body -->
-	<div class="container-fluid"></div>
+	<!-- <div class="container-fluid"></div> -->
 	<!-- Footer -->
-	<%- include footer.ejs %>
+	<!-- <%- include footer.ejs %> -->
+
+		<div>
+			
+			<nav class="navbar" >
+			  
+				<div class="container-fluid">
+				    
+				    <div class="navbar-header">
+						
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+
+							<span class="icon-bar" style="border: 1px solid #AAAAAA;"></span>
+							<span class="icon-bar" style="border: 1px solid #AAAAAA;"></span>
+							<span class="icon-bar" style="border: 1px solid #AAAAAA;"></span>
+						</button>
+
+
+						<a class="navbar-brand" href="#" id="header_logo" >
+							<img src="images/airbnb_horizontal_lockup_web.png" height="58" width="127" alt="">
+						</a>
+
+
+				    </div>
+
+				    <div class="collapse navbar-collapse" id="myNavbar">
+
+
+			 			<ul class="nav navbar-nav" id="main-navbar">
+			 				<li id="li_One">
+								<div class="form-group">
+				                	<!-- <div id="inLine" class="col-lg-1 well" style="padding:15px 10px 0px 0px; margin: 0px 0px 0px 0px; color:#dce0e0;">
+					                	<span class="glyphicon glyphicon-search" style="color:#AAAAAA; font-size: 24px; margin: 4px 0px 0px 0px;"></span>
+					                </div> -->
+				                	<div id="inLine" class="col-lg-12 li_One_div_One">
+					                	<span class="glyphicon glyphicon-search"></span>
+					                </div>
+
+					            </div>
+			 				</li>
+			 
+			 				<li class="ul_One">
+			 					
+					                <div id="inLine" class="col-lg-12 ul_Two">
+					                    <input type="text" class="form-control ul_Three" placeholder="Where to?" ng-autocomplete="result1" details="details1" options="options1">
+					                </div>
+	
+
+			 				</li>
+			 
+			 				<li class="ul_Four" ng-controller="testController">
+			 					
+				                <div class="col-lg-12 ul_Five" >
+				                    
+				                	<div class="btn btn-default btn-style" >
+				                		Become a Host
+				                	</div>
+
+				                </div>
+
+			 				</li>
+
+			 				<li class="ul_Six" >
+			 					
+				                <div class="row" style="margin:0px 0px 0px 0px; padding:">
+				                    
+				                	<div style="font-size:13.5px;" class="col-lg-8">
+				                		Help
+				                	</div>
+				                	<div class="header-icon icon-lifesaver-alt-gray" >
+				                	
+				                	</div>
+				                </div>
+
+			 				</li>
+
+			 				<li class="ul_Seven" >
+			 					
+				                <div class="row ul_eight" >
+				                    
+				                	<div  class="col-lg-12 ul_Nine">
+				                		Sign Up
+				                	</div>
+				                </div>
+
+			 				</li>
+
+			 				<li  class="ul_Ten">
+			 					
+				                	<div  class="ul_Eleven">
+				                		Log In
+				                	</div>
+				                
+			 				</li>
+			 				
+			
+			 			</ul>
+
+				    </div>
+				  
+			  	</div>
+			
+			</nav>
+		
+		</div>
+
+
+
 	</body>
 
 </html>

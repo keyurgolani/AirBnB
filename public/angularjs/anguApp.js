@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if' ])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete' ])
 .config([ '$locationProvider', function($locationProvider) {
 	$locationProvider.html5Mode({
 		enabled : true,
@@ -50,3 +50,50 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if' ])
 		return generatedString;
 	};
 })
+.controller("searchBarController",function ($scope, $http) {
+
+    $scope.result1 = '';
+    $scope.options1 = null;
+    $scope.details1 = '';
+
+
+
+    $scope.result2 = '';
+    $scope.options2 = {
+      country: 'ca',
+      types: '(cities)'
+    };    $scope.details2 = '';
+    
+    
+    
+    $scope.result3 = '';
+    $scope.options3 = {
+      country: 'gb',
+      types: 'establishment'
+    };
+    $scope.details3 = '';
+})
+.controller("testController",function ($scope, $http) {
+
+    $scope.result1 = '';
+    $scope.options1 = null;
+    $scope.details1 = '';
+
+
+
+    $scope.result2 = '';
+    console.log('$scope.result2', $scope.result2);
+    $scope.options2 = {
+      country: 'ca',
+      types: '(cities)'
+    };    $scope.details2 = '';
+    
+    
+    
+    $scope.result3 = '';
+    $scope.options3 = {
+      country: 'gb',
+      types: 'establishment'
+    };
+    $scope.details3 = '';
+});
