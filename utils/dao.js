@@ -1,10 +1,10 @@
-var mysql = require("mysql");
+var mysql = require('mysql');
 var logger = require("../utils/logger");
 var properties = require('properties-reader')('properties.properties');
 
 // Transactions will be useful for Cart Checkout Query Execution: https://github.com/mysqljs/mysql#transactions
 
-function getConnection() {
+/*function getConnection() {
 	var connection = mysql.createConnection({
 		host : properties.get('mysql.host'),
 		user : properties.get('mysql.user'),
@@ -12,6 +12,17 @@ function getConnection() {
 		database : properties.get('mysql.db'),
 		port : properties.get('mysql.port')
 	}); // TODO: Load the database details and other parameters from properties file on load.
+	return connection;
+}*/
+
+function getConnection(){
+	var connection = mysql.createConnection({
+	    host     : 'localhost',
+	    user     : 'root',
+	    password : 'welcome123#',
+	    database : 'airbnb',
+	    port	 : 3306
+	});
 	return connection;
 }
 
@@ -148,3 +159,23 @@ module.exports = {
 		});
 	}
 };
+
+//normal mysql connection
+function fetchData1(callback, sqlQuery,JSON_args) {
+	
+	console.log("here in fecth!!");
+	var connection = getConnection();
+	connection.query(sqlQuery,JSON_args, function(err, rows, fields) {
+		if (err) {
+			console.log("ERROR: " + err.message);
+		} else { // return err or result
+			console.log("DB Results:" + rows);
+			callback(err, rows);
+		}
+	});
+//	logger.log('info',query+JSON_args);
+	console.log("\nConnection closed..");
+	connection.end();
+}
+
+module.exports.fetchData1=fetchData1;

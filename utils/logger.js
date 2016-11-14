@@ -20,14 +20,14 @@ var commonLogger = new winston.Logger({
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
 		}),
-		new winston.transports.Console({
+		/*new winston.transports.Console({
 			level: 'debug',
 			handleExceptions: true,
 			json: true,
 			timestamp: true,
 			prettyPrint: true,
 			colorize: true
-		})
+		})*/
 	],
 	exitOnError: false
 });
@@ -52,14 +52,14 @@ var responseTimeLogger = new winston.Logger({
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
 		}),
-		new winston.transports.Console({
+		/*new winston.transports.Console({
 			level: 'debug',
 			handleExceptions: true,
 			json: true,
 			timestamp: true,
 			prettyPrint: true,
 			colorize: true
-		})
+		})*/
 	],
 	exitOnError: false
 });
@@ -84,14 +84,14 @@ var searchHistoryLogger = new winston.Logger({
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
 		}),
-		new winston.transports.Console({
+		/*new winston.transports.Console({
 			level: 'debug',
 			handleExceptions: true,
 			json: true,
 			timestamp: true,
 			prettyPrint: true,
 			colorize: true
-		})
+		})*/
 	],
 	exitOnError: false
 });
@@ -116,14 +116,14 @@ var placePreferencesLogger = new winston.Logger({
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
 		}),
-		new winston.transports.Console({
+		/*new winston.transports.Console({
 			level: 'debug',
 			handleExceptions: true,
 			json: true,
 			timestamp: true,
 			prettyPrint: true,
 			colorize: true
-		})
+		})*/
 	],
 	exitOnError: false
 });
@@ -148,14 +148,14 @@ var travellingTimeLogger = new winston.Logger({
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
 		}),
-		new winston.transports.Console({
+		/*new winston.transports.Console({
 			level: 'debug',
 			handleExceptions: true,
 			json: true,
 			timestamp: true,
 			prettyPrint: true,
 			colorize: true
-		})
+		})*/
 	],
 	exitOnError: false
 });
@@ -180,14 +180,14 @@ var hostingTimeLogger = new winston.Logger({
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
 		}),
-		new winston.transports.Console({
+		/*new winston.transports.Console({
 			level: 'debug',
 			handleExceptions: true,
 			json: true,
 			timestamp: true,
 			prettyPrint: true,
 			colorize: true
-		})
+		})*/
 	],
 	exitOnError: false
 });
@@ -212,14 +212,14 @@ var biddingLogger = new winston.Logger({
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
 		}),
-		new winston.transports.Console({
+		/*new winston.transports.Console({
 			level: 'debug',
 			handleExceptions: true,
 			json: true,
 			timestamp: true,
 			prettyPrint: true,
 			colorize: true
-		})
+		})*/
 	],
 	exitOnError: false
 });

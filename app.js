@@ -22,10 +22,9 @@ var db = monk(properties.get('paths.mongoDBHosting')); // TODO: Fetch Properties
 var mySQL = require(properties.get('paths.daoPath'));
 
 // Routing
-var routes = require(properties.get('paths.routerPath'));
+var routes = require('./routes/index');
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
