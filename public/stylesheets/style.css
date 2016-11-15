@@ -13,9 +13,10 @@ body {
 @media ( min-width : 700px) {
 	.navbar {
 		min-height: 60px;
-		border: 1px solid #dce0e0;
+		border-bottom: 1px solid #dce0e0;
 		padding: 0px 0px 0px 0px;
 		margin: 0px 0px 0px 0px;
+		border-radius:0px;
 	}
 	#verticalAlign {
 		min-height: 45px;
@@ -73,8 +74,8 @@ body {
 		background-repeat: no-repeat;
 		height: 24px;
 		width: 24px;
-		margin: 20px 50px 0px -40px;
-		margin: 20px 17px 0px 57px;
+		margin: 20px 50px 0px 0px;
+		margin: 20px 17px 0px 40px;
 	}
 	#main-navbar {
 		margin: 0px 0px 0px 0px;
@@ -104,11 +105,12 @@ body {
 		border-style: solid;
 		color: #dce0e0;
 		font-family: Circular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		width: 719px;
+		width: 650px;
 	}
 	.ul_Four {
 		border-right: 1px solid #dce0e0;
 		line-height: 62px;
+		padding:  0px 20px 0px 0px;
 	}
 	.ul_Five {
 		margin: 0px 0px 0px 0px;
@@ -121,12 +123,13 @@ body {
 	.ul_Six {
 		border-right: 1px solid #dce0e0;
 		line-height: 62px;
-		padding: 0px -20px 0px 0px;
+		padding: 0px 0px 0px 20px;
+		font-size:13.5px;
 	}
 	.ul_Seven {
 		border-right: 1px solid #dce0e0;
 		line-height: 62px;
-		padding: 0px -20px 0px 0px;
+		padding: 0px 20px 0px 20px;
 	}
 	.ul_eight {
 		margin: 0px 3px 0px 3px;
