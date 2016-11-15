@@ -14,7 +14,7 @@
 				<div class="col-lg-1 col-md-1 hidden-sm hidden-xs">
 				</div>
 				<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-					<div class="row">
+					<div class="row header-space">
 						<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 header-text">
 							<span class="header-livethere-text">Live there. </span>
 							<span>Book unique homes and experience a city like a local.</span>
@@ -22,12 +22,14 @@
 						<div class="col-lg-4 col-md-4 hidden-sm hidden-xs">
 						</div>
 					</div>
-					<div class="row search-box-body">
+					<div class="row header-space" ng-controller="searchBarController">
 						<div class="col-md-4 search-box left-search-box">
 							<span class="search-box-text">Where</span>
+							<input type="text" class="form-control ul_Three search-bar-placeholder" placeholder="Destination, City, Address" ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="city" details="details" options="options">
 						</div>
 						<div class="col-md-4 search-box">
 							<span class="search-box-text">When</span>
+							<input type="text" class="form-control ul_Three search-bar-placeholder" placeholder="Check In">
 						</div>
 						<div class="col-md-4 search-box right-search-box">
 							<span class="search-box-text">Guests</span>
