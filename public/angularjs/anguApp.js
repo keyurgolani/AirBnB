@@ -12,6 +12,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 		$scope.$watch('city', function() {
 			if ($scope.city.trim() !== undefined && $scope.city.trim() !== "") {
+				console.log($scope.city);
 				//				$http({
 				//					// Search Request!
 				//				})
