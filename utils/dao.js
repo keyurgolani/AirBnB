@@ -1,4 +1,4 @@
-var mysql = require("mysql");
+var mysql = require('mysql');
 var logger = require("../utils/logger");
 var properties = require('properties-reader')('properties.properties');
 
@@ -11,7 +11,7 @@ function getConnection() {
 		password : properties.get('mysql.password'),
 		database : properties.get('mysql.db'),
 		port : properties.get('mysql.port')
-	}); // TODO: Load the database details and other parameters from properties file on load.
+	});
 	return connection;
 }
 
@@ -26,7 +26,7 @@ function Pool(connection_no) {
 	}
 }
 
-Pool.prototype.get = (useConnection) => {
+Pool.prototype.get = function(useConnection) {
 	var cli;
 	var connectionNumber;
 	for (var i = 0; i < this.pool.length; i++) {
@@ -43,106 +43,61 @@ Pool.prototype.get = (useConnection) => {
 			i = 0;
 		}
 	}
-
 	// Enable Connection Pooling
 	useConnection(connectionNumber, cli);
 // Disable Connection Pooling
 //	useConnection(connectionNumber, getConnection());
 };
 
-Pool.prototype.release = (connectionNumber, connection) => {
+Pool.prototype.release = function(connectionNumber, connection) {
 	// Enable Connection Pooling
 	this.isAvailable[connectionNumber] = true;
 // Disable Connection Pooling
 //	connection.end();
 };
 
-var connectionPool;
+function initializeConnectionPool() {
+	var p = new Pool(properties.get('mysql.poolSize'));
+	return p;
+}
+
+console.log('Initializing pool with ' + properties.get('mysql.poolSize') + ' connections');
+var connectionPool = initializeConnectionPool();
 
 module.exports = {
-	initializeConnectionPool : (poolSize) => {
-		connectionPool = new Pool(poolSize);
-	},
-	
-	// Humble try to add caching to SQL queries. Seems right at the moment. But not exactly sure.
-	
-	fetchCacheData : (selectFields, tableName, queryParameters, processResult) => {
-		connectionPool.get((connectionNumber, connection) => {
+	fetchData : function(selectFields, tableName, queryParameters, processResult) {
+		connectionPool.get(function(connectionNumber, connection) {
 			var queryString = "SELECT " + selectFields + " FROM " + tableName;
 			if (queryParameters !== null) {
 				queryString = "SELECT " + selectFields + " FROM " + tableName + " WHERE ?";
 			}
-			memoryCache.wrap(queryString + "_" + queryParameters, (cacheCallback) => {
-				var query = connection.query(queryString, queryParameters, (error, rows) => {
-					if (error) {
-						throw error;
-					} else {
-						cacheCallback(rows);
-					}
-				});
-		    }, processResult);
-			connectionPool.release(connectionNumber, connection);
-			logger.logQuery(query.sql);
-		});
-	},
-	
-	fetchData : (selectFields, tableName, queryParameters, processResult) => {
-		connectionPool.get((connectionNumber, connection) => {
-			var queryString = "SELECT " + selectFields + " FROM " + tableName;
-			if (queryParameters !== null) {
-				queryString = "SELECT " + selectFields + " FROM " + tableName + " WHERE ?";
-			}
-			var query = connection.query(queryString, queryParameters, (error, rows) => {
-				if (error) {
-					throw error;
-				} else {
-					processResult(rows);
-				}
-			});
+			var query = connection.query(queryString, queryParameters, processResult);
 			connectionPool.release(connectionNumber, connection);
 			logger.logQuery(query.sql);
 		});
 	},
 
-	executeQuery : (sqlQuery, parameters, processResult) => {
-		connectionPool.get((connectionNumber, connection) => {
-			var query = connection.query(sqlQuery, parameters, (error, rows) => {
-				if (error) {
-					throw error;
-				} else {
-					processResult(rows);
-				}
-			});
+	executeQuery : function(sqlQuery, parameters, processResult) {
+		connectionPool.get(function(connectionNumber, connection) {
+			var query = connection.query(sqlQuery, parameters, processResult);
 			connectionPool.release(connectionNumber, connection);
 			logger.logQuery(query.sql);
 		});
 	},
 
-	insertData : (tableName, insertParameters, processInsertStatus) => {
-		connectionPool.get((connectionNumber, connection) => {
+	insertData : function(tableName, insertParameters, processInsertStatus) {
+		connectionPool.get(function(connectionNumber, connection) {
 			var queryString = "INSERT INTO " + tableName + " SET ?";
-			var query = connection.query(queryString, insertParameters, (error, rows) => {
-				if (error) {
-					throw error;
-				} else {
-					processInsertStatus(rows);
-				}
-			});
+			var query = connection.query(queryString, insertParameters, processInsertStatus);
 			connectionPool.release(connectionNumber, connection);
 			logger.logQuery(query.sql);
 		});
 	},
 
-	updateData : (tableName, insertParameters, queryParameters, processUpdateStatus) => {
-		connectionPool.get((connectionNumber, connection) => {
+	updateData : function(tableName, insertParameters, queryParameters, processUpdateStatus) {
+		connectionPool.get(function(connectionNumber, connection) {
 			var queryString = "UPDATE " + tableName + " SET ? WHERE ?";
-			var query = connection.query(queryString, [ insertParameters, queryParameters ], (error, rows) => {
-				if (error) {
-					throw error;
-				} else {
-					processUpdateStatus(rows);
-				}
-			});
+			var query = connection.query(queryString, [ insertParameters, queryParameters ], processUpdateStatus);
 			connectionPool.release(connectionNumber, connection);
 			logger.logQuery(query.sql);
 		});

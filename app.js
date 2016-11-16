@@ -22,10 +22,9 @@ var db = monk(properties.get('paths.mongoDBHosting')); // TODO: Fetch Properties
 var mySQL = require(properties.get('paths.daoPath'));
 
 // Routing
-var routes = require(properties.get('paths.routerPath'));
+var routes = require('./routes/index');
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -37,9 +36,6 @@ app.use(bodyParser.urlencoded({
 	extended : false
 }));
 app.use(cookieParser());
-app.use(responseTime((req, res, time) => {
-	logger.logResponseTime(req.url, time);
-}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/modules', express.static(path.join(__dirname, 'node_modules')));
 app.use('/css', express.static(path.join(__dirname, 'public/stylesheets')));
@@ -48,7 +44,6 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use('/ngjs', express.static(path.join(__dirname, 'public/angularjs')));
 
 app.use(function(req, res, next) {
-	mySQL.initializeConnectionPool(properties.get('mysql.poolSize')); // TODO: Load the pool size from properties file on load.
 	req.db = db;
 	next();
 });
