@@ -4,24 +4,13 @@ var properties = require('properties-reader')('properties.properties');
 
 // Transactions will be useful for Cart Checkout Query Execution: https://github.com/mysqljs/mysql#transactions
 
-/*function getConnection() {
+function getConnection() {
 	var connection = mysql.createConnection({
 		host : properties.get('mysql.host'),
 		user : properties.get('mysql.user'),
 		password : properties.get('mysql.password'),
 		database : properties.get('mysql.db'),
 		port : properties.get('mysql.port')
-	}); // TODO: Load the database details and other parameters from properties file on load.
-	return connection;
-}*/
-
-function getConnection(){
-	var connection = mysql.createConnection({
-	    host     : 'localhost',
-	    user     : 'root',
-	    password : 'welcome123#',
-	    database : 'airbnb',
-	    port	 : 3306
 	});
 	return connection;
 }
@@ -37,7 +26,7 @@ function Pool(connection_no) {
 	}
 }
 
-Pool.prototype.get = (useConnection) => {
+Pool.prototype.get = function(useConnection) {
 	var cli;
 	var connectionNumber;
 	for (var i = 0; i < this.pool.length; i++) {
@@ -54,128 +43,63 @@ Pool.prototype.get = (useConnection) => {
 			i = 0;
 		}
 	}
-
 	// Enable Connection Pooling
 	useConnection(connectionNumber, cli);
 // Disable Connection Pooling
 //	useConnection(connectionNumber, getConnection());
 };
 
-Pool.prototype.release = (connectionNumber, connection) => {
+Pool.prototype.release = function(connectionNumber, connection) {
 	// Enable Connection Pooling
 	this.isAvailable[connectionNumber] = true;
 // Disable Connection Pooling
 //	connection.end();
 };
 
-var connectionPool;
+function initializeConnectionPool() {
+	var p = new Pool(properties.get('mysql.poolSize'));
+	return p;
+}
+
+console.log('Initializing pool with ' + properties.get('mysql.poolSize') + ' connections');
+var connectionPool = initializeConnectionPool();
 
 module.exports = {
-	initializeConnectionPool : (poolSize) => {
-		connectionPool = new Pool(poolSize);
-	},
-	
-	// Humble try to add caching to SQL queries. Seems right at the moment. But not exactly sure.
-	
-	fetchCacheData : (selectFields, tableName, queryParameters, processResult) => {
-		connectionPool.get((connectionNumber, connection) => {
+	fetchData : function(selectFields, tableName, queryParameters, processResult) {
+		connectionPool.get(function(connectionNumber, connection) {
 			var queryString = "SELECT " + selectFields + " FROM " + tableName;
 			if (queryParameters !== null) {
 				queryString = "SELECT " + selectFields + " FROM " + tableName + " WHERE ?";
 			}
-			memoryCache.wrap(queryString + "_" + queryParameters, (cacheCallback) => {
-				var query = connection.query(queryString, queryParameters, (error, rows) => {
-					if (error) {
-						throw error;
-					} else {
-						cacheCallback(rows);
-					}
-				});
-		    }, processResult);
-			connectionPool.release(connectionNumber, connection);
-			logger.logQuery(query.sql);
-		});
-	},
-	
-	fetchData : (selectFields, tableName, queryParameters, processResult) => {
-		connectionPool.get((connectionNumber, connection) => {
-			var queryString = "SELECT " + selectFields + " FROM " + tableName;
-			if (queryParameters !== null) {
-				queryString = "SELECT " + selectFields + " FROM " + tableName + " WHERE ?";
-			}
-			var query = connection.query(queryString, queryParameters, (error, rows) => {
-				if (error) {
-					throw error;
-				} else {
-					processResult(rows);
-				}
-			});
+			var query = connection.query(queryString, queryParameters, processResult);
 			connectionPool.release(connectionNumber, connection);
 			logger.logQuery(query.sql);
 		});
 	},
 
-	executeQuery : (sqlQuery, parameters, processResult) => {
-		connectionPool.get((connectionNumber, connection) => {
-			var query = connection.query(sqlQuery, parameters, (error, rows) => {
-				if (error) {
-					throw error;
-				} else {
-					processResult(rows);
-				}
-			});
+	executeQuery : function(sqlQuery, parameters, processResult) {
+		connectionPool.get(function(connectionNumber, connection) {
+			var query = connection.query(sqlQuery, parameters, processResult);
 			connectionPool.release(connectionNumber, connection);
 			logger.logQuery(query.sql);
 		});
 	},
 
-	insertData : (tableName, insertParameters, processInsertStatus) => {
-		connectionPool.get((connectionNumber, connection) => {
+	insertData : function(tableName, insertParameters, processInsertStatus) {
+		connectionPool.get(function(connectionNumber, connection) {
 			var queryString = "INSERT INTO " + tableName + " SET ?";
-			var query = connection.query(queryString, insertParameters, (error, rows) => {
-				if (error) {
-					throw error;
-				} else {
-					processInsertStatus(rows);
-				}
-			});
+			var query = connection.query(queryString, insertParameters, processInsertStatus);
 			connectionPool.release(connectionNumber, connection);
 			logger.logQuery(query.sql);
 		});
 	},
 
-	updateData : (tableName, insertParameters, queryParameters, processUpdateStatus) => {
-		connectionPool.get((connectionNumber, connection) => {
+	updateData : function(tableName, insertParameters, queryParameters, processUpdateStatus) {
+		connectionPool.get(function(connectionNumber, connection) {
 			var queryString = "UPDATE " + tableName + " SET ? WHERE ?";
-			var query = connection.query(queryString, [ insertParameters, queryParameters ], (error, rows) => {
-				if (error) {
-					throw error;
-				} else {
-					processUpdateStatus(rows);
-				}
-			});
+			var query = connection.query(queryString, [ insertParameters, queryParameters ], processUpdateStatus);
 			connectionPool.release(connectionNumber, connection);
 			logger.logQuery(query.sql);
 		});
 	}
 };
-
-//normal mysql connection
-function fetchData1(callback, sqlQuery,JSON_args) {
-	
-	console.log("here in fecth!!");
-	var connection = getConnection();
-	connection.query(sqlQuery,JSON_args, function(err, rows, fields) {
-		if (err) {
-			console.log("ERROR: " + err.message);
-		} else { // return err or result
-			console.log("DB Results:" + rows);
-			callback(err, rows);
-		}
-	});
-//	logger.log('info',query+JSON_args);
-	console.log("\nConnection closed..");
-	connection.end();
-}
-
-module.exports.fetchData1=fetchData1;
