@@ -8,11 +8,11 @@ var bcrypt = require('bcrypt');
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-	cache.fetchItem('user', 1, function(userID, callback) {
+router.get('/', (req, res, next) => {
+	cache.fetchItem('user', 1, (userID, callback) => {
 		console.log('----------------------Missed Logic!!!---------------------------');
 		callback('Keyur Golani');
-	}, function(result) {
+	}, (result) => {
 		console.log('----------------------Process Result!!!---------------------------');
 		res.render('index', {
 			title : result
@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-router.post('/register', function(req, res, next) {
+router.post('/register', (req, res, next) => {
 	var first_name = req.body.firstname;
 	var last_name = req.body.lastname;
 	var email = req.body.email;
@@ -38,7 +38,7 @@ router.post('/register', function(req, res, next) {
 	var salt = bcrypt.genSaltSync(10);
 	mysql.fetchData('user_id, email', 'account_details', {
 		'email' : email
-	}, function(error, results) {
+	}, (error, results) => {
 		if (error) {
 			res.send({
 				'statusCode' : 500
@@ -55,7 +55,7 @@ router.post('/register', function(req, res, next) {
 						'secret' : bcrypt.hashSync(secret, salt),
 						'salt' : salt,
 						'last_login' : require('fecha').format(Date.now(), 'YYYY-MM-DD HH:mm:ss')
-					}, function(error, result) {
+					}, (error, result) => {
 						if (error) {
 							next(500);
 							res.send({

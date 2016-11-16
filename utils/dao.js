@@ -26,7 +26,7 @@ function Pool(connection_no) {
 	}
 }
 
-Pool.prototype.get = function(useConnection) {
+Pool.prototype.get = (useConnection) => {
 	var cli;
 	var connectionNumber;
 	for (var i = 0; i < this.pool.length; i++) {
@@ -49,7 +49,7 @@ Pool.prototype.get = function(useConnection) {
 //	useConnection(connectionNumber, getConnection());
 };
 
-Pool.prototype.release = function(connectionNumber, connection) {
+Pool.prototype.release = (connectionNumber, connection) => {
 	// Enable Connection Pooling
 	this.isAvailable[connectionNumber] = true;
 // Disable Connection Pooling
@@ -65,8 +65,8 @@ console.log('Initializing pool with ' + properties.get('mysql.poolSize') + ' con
 var connectionPool = initializeConnectionPool();
 
 module.exports = {
-	fetchData : function(selectFields, tableName, queryParameters, processResult) {
-		connectionPool.get(function(connectionNumber, connection) {
+	fetchData : (selectFields, tableName, queryParameters, processResult) => {
+		connectionPool.get((connectionNumber, connection) => {
 			var queryString = "SELECT " + selectFields + " FROM " + tableName;
 			if (queryParameters !== null) {
 				queryString = "SELECT " + selectFields + " FROM " + tableName + " WHERE ?";
@@ -77,16 +77,16 @@ module.exports = {
 		});
 	},
 
-	executeQuery : function(sqlQuery, parameters, processResult) {
-		connectionPool.get(function(connectionNumber, connection) {
+	executeQuery : (sqlQuery, parameters, processResult) => {
+		connectionPool.get((connectionNumber, connection) => {
 			var query = connection.query(sqlQuery, parameters, processResult);
 			connectionPool.release(connectionNumber, connection);
 			logger.logQuery(query.sql);
 		});
 	},
 
-	insertData : function(tableName, insertParameters, processInsertStatus) {
-		connectionPool.get(function(connectionNumber, connection) {
+	insertData : (tableName, insertParameters, processInsertStatus) => {
+		connectionPool.get((connectionNumber, connection) => {
 			var queryString = "INSERT INTO " + tableName + " SET ?";
 			var query = connection.query(queryString, insertParameters, processInsertStatus);
 			connectionPool.release(connectionNumber, connection);
@@ -94,8 +94,8 @@ module.exports = {
 		});
 	},
 
-	updateData : function(tableName, insertParameters, queryParameters, processUpdateStatus) {
-		connectionPool.get(function(connectionNumber, connection) {
+	updateData : (tableName, insertParameters, queryParameters, processUpdateStatus) => {
+		connectionPool.get((connectionNumber, connection) => {
 			var queryString = "UPDATE " + tableName + " SET ? WHERE ?";
 			var query = connection.query(queryString, [ insertParameters, queryParameters ], processUpdateStatus);
 			connectionPool.release(connectionNumber, connection);
