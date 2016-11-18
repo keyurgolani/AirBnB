@@ -25,12 +25,15 @@ body {
 		padding: 0px 20px 0px 8px;
 	}
 	.navbar-brand {
-		min-height: 62px;
+		min-height: 60px;
 		width: 140px;
 		/* padding:  13px 0px 13px 0px; */
 	}
 	#myNavbar {
 		padding: 0px 10px 0px 10px;
+	}
+	.navbar-nav{
+		height: 60px;
 	}
 	#header_logo {
 		padding: 0px 0px 0px 0px;
@@ -74,8 +77,8 @@ body {
 		background-repeat: no-repeat;
 		height: 24px;
 		width: 24px;
-		margin: 20px 50px 0px 0px;
-		margin: 20px 17px 0px 40px;
+		margin: 0px 0px 0px 0px;
+		margin: 0px 20px -8px 15px;
 	}
 	#main-navbar {
 		margin: 0px 0px 0px 0px;
@@ -99,17 +102,18 @@ body {
 	.ul_Two {
 		padding: 18px 0px 0px 0px;
 		margin: 0px 0px 0px 0px !important;
+		height: 60px;
 	}
 	.ul_Three {
 		font-size: 14px;
 		border-style: solid;
 		color: #dce0e0;
 		font-family: Circular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		width: 600px;
+		width: 500px;
 	}
 	.ul_Four {
 		border-right: 1px solid #dce0e0;
-		line-height: 62px;
+		line-height: 60px;
 		padding:  0px 20px 0px 0px;
 	}
 	.ul_Five {
@@ -122,13 +126,13 @@ body {
 	}
 	.ul_Six {
 		border-right: 1px solid #dce0e0;
-		line-height: 62px;
+		line-height: 60px;
 		padding: 0px 0px 0px 20px;
 		font-size:13.5px;
 	}
 	.ul_Seven {
 		border-right: 1px solid #dce0e0;
-		line-height: 62px;
+		line-height: 60px;
 		padding: 0px 20px 0px 20px;
 	}
 	.ul_eight {
