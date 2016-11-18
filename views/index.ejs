@@ -1,47 +1,547 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		
-		<title>Sign in or Register | eBay</title>
-		
-		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
-		<link rel='stylesheet' href='css/jquery-ui.min.css'/>
-		<link rel="stylesheet" href="modules/bootstrap/dist/css/bootstrap.min.css"/>
-		<link rel="stylesheet" href="modules/bootstrap/dist/css/bootstrap-theme.min.css"/>
-		<link rel="stylesheet" href="modules/bootstrap-material-design/dist/css/bootstrap-material-design.min.css"/>
-		<link rel="stylesheet" href="modules/bootstrap-material-design/dist/css/ripples.min.css"/>
-		<link rel='stylesheet' href='css/style.css'/>
-		<link rel='stylesheet' href='css/homepage.css'/>
-		
-		<!--[if lt IE 9]>
-			<script src="modules/html5shiv/dist/html5shiv.min.js"></script>
-			<script src="modules/respond.js/dest/respond.min.js"></script>
-		<![endif]-->
-		
-		<script src="modules/jquery/dist/jquery.min.js"></script>
-		<script src="js/jquery-ui.min.js"></script>
-		<script src="modules/sjcl/sjcl.js"></script>
-		<script src="modules/bootstrap/dist/js/bootstrap.min.js"></script>
-		<script src="modules/angular/angular.min.js"></script>
-		<script src="modules/angular-animate/angular-animate.js"></script>
-		<script src="modules/ng-focus-if/focusIf.min.js"></script>
-		
-		<script src="ngjs/anguApp.js"></script>
+		<% include ./head %>
 	</head>
 
 	<body class="body full-body" ng-app="airBnB" ng-controller="homepage" ng-cloak>
 	<!-- Header -->
-	<%- include header.ejs %>
-	<!-- Body -->
-	<div class="container-fluid">
-		<div class="h1"><%=title%></div>
-	</div>
+	<header><% include ./header %></header>
+	<!-- Main -->
+	<main>
+		<div class="container-fluid">
+			<div class="row main-body">
+				<div class="col-lg-1 col-md-1 hidden-sm hidden-xs">
+				</div>
+				<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+					<div class="row header-space">
+						<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 header-text">
+							<span class="header-livethere-text">Live there. </span>
+							<span>Book unique homes and experience a city like a local.</span>
+						</div>
+						<div class="col-lg-4 col-md-4 hidden-sm hidden-xs">
+						</div>
+					</div>
+					<div class="row header-space" ng-controller="searchBarController">
+						<div class="col-md-4 search-box left-search-box">
+							<span class="search-box-text">Where</span>
+							<input type="text" class="form-control ul_Three search-bar-placeholder" placeholder="Destination, City, Address" ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="city" details="details" options="options">
+						</div>
+						<div class="col-md-4 search-box">
+							<span class="search-box-text">When</span>
+							<input type="text" class="form-control ul_Three search-bar-placeholder" placeholder="Check In">
+						</div>
+						<div class="col-md-4 search-box right-search-box">
+							<span class="search-box-text">Guests</span>
+						</div>
+					</div>
+					<div class="row explore-text">
+						<div class="col-md-12">
+							<span>Recommended listings</span>
+						</div>
+					</div>
+					<div class="row explore-the-world">
+						<div class="col-md-4">
+							<img class="images" src="images/city/paris.jpg" alt="Paris">
+							<span class="suggestion-text"><strong>$88</strong> Entire home/apt in Paris</span>
+						</div>
+						<div class="col-md-4">
+							<img class="images" src="images/city/rome.jpg" alt="Paris">
+							<span class="suggestion-text"><strong>$90</strong> Entire home/apt in Rome</span>
+						</div>
+						<div class="col-md-4">
+							<img class="images" src="images/city/tokyo.jpg" alt="Paris">
+							<span class="suggestion-text"><strong>$58</strong> Entire home/apt in Tokyo</span>
+						</div>
+					</div>
+					<div class="seperator"></div>
+					<div class="row explore-text">
+						<div class="col-md-12">
+							<span>Explore the world</span>
+						</div>
+					</div>
+					<div class="row explore-the-world">
+						<div class="row">
+							<div class="col-md-6 col-lg-6">
+								<div class="row">
+									<div class="col-md-12">
+										<img class="images" src="images/city/paris.jpg" alt="Paris">
+										<span class="image-text">Paris</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 col-lg-6">
+								<div class="row">
+									<div class="row">
+										<div class="col-md-6">
+											<img class="images" src="images/city/rome.jpg" alt="Rome">
+											<span class="image-text">Rome</span>
+										</div>
+										<div class="col-md-6">
+											<img class="images" src="images/city/LA.jpg" alt="Los Angeles">
+											<span class="image-text">Los Angeles</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<img class="images" src="images/city/lisbon.jpg" alt="Lisbon" style="padding-top: 2px;">
+											<span class="image-text">Lisbon</span>
+										</div>
+										<div class="col-md-6">
+											<img class="images" src="images/city/tokyo.jpg" alt="Tokyo" style="padding-top: 2px;">
+											<span class="image-text">Tokyo</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3 col-lg-3">
+								<div class="row">
+									<div class="col-md-12">
+										<img class="images" src="images/city/london.jpg" alt="London">
+										<span class="image-text">London</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<img class="images" src="images/city/barcelona.jpg" alt="Barcelona" style="padding-top: 2px;">
+										<span class="image-text">Barcelona</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 col-lg-6">
+								<div class="row">
+									<div class="col-md-12">
+										<img class="images" src="images/city/NY.jpg" alt="New York" >
+										<span class="image-text">New York</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="row">
+									<div class="col-md-12">
+										<img class="images" src="images/city/amsterdam.jpg" alt="Amsterdam">
+										<span class="image-text">Amsterdam</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<img class="images" src="images/city/berlin.jpg" alt="Berlin" style="padding-top: 2px;">
+										<span class="image-text">Berlin</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="seperator"></div>
+					<div class="row explore-text">
+						<div class="col-md-12">
+							<span>Homes in San Fransisco</span>
+						</div>
+					</div>
+					<div class="row explore-the-world">
+						<div class="col-md-12">
+			                <div id="Carousel" class="carousel slide">
+			                 
+			                <ol class="carousel-indicators">
+			                    <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+			                    <li data-target="#Carousel" data-slide-to="1"></li>
+			                </ol>
+			                 
+			                <!-- Carousel items -->
+			                <div class="carousel-inner">
+			                    
+			                <div class="item active">
+			                	<div class="row">
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/1.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/3.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/4.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                <div class="item">
+			                	<div class="row">
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/6.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/a.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/b.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                </div><!--.carousel-inner-->
+			                  <a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a>
+			                  <a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
+			                </div><!--.Carousel-->
+			            </div>
+					</div>
+					<div class="row explore-text">
+						<div class="col-md-12">
+							<span>Homes in New York</span>
+						</div>
+					</div>
+					<div class="row explore-the-world">
+						<div class="col-md-12">
+			                <div id="Carousel" class="carousel slide">
+			                 
+			                <ol class="carousel-indicators">
+			                    <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+			                    <li data-target="#Carousel" data-slide-to="1"></li>
+			                </ol>
+			                 
+			                <!-- Carousel items -->
+			                <div class="carousel-inner">
+			                    
+			                <div class="item active">
+			                	<div class="row">
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/1.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/3.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/4.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                <div class="item">
+			                	<div class="row">
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/6.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/a.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/b.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                </div><!--.carousel-inner-->
+			                  <a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a>
+			                  <a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
+			                </div><!--.Carousel-->
+			            </div>
+					</div>
+					<div class="row explore-text">
+						<div class="col-md-12">
+							<span>Homes in Los Angeles</span>
+						</div>
+					</div>
+					<div class="row explore-the-world">
+						<div class="col-md-12">
+			                <div id="Carousel" class="carousel slide">
+			                 
+			                <ol class="carousel-indicators">
+			                    <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+			                    <li data-target="#Carousel" data-slide-to="1"></li>
+			                </ol>
+			                 
+			                <!-- Carousel items -->
+			                <div class="carousel-inner">
+			                    
+			                <div class="item active">
+			                	<div class="row">
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/1.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/3.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/4.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                <div class="item">
+			                	<div class="row">
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/6.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/a.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/b.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                </div><!--.carousel-inner-->
+			                  <a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a>
+			                  <a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
+			                </div><!--.Carousel-->
+			            </div>
+					</div>
+					<div class="row explore-text">
+						<div class="col-md-12">
+							<span>Homes in Washington, D.C.</span>
+						</div>
+					</div>
+					<div class="row explore-the-world">
+						<div class="col-md-12">
+			                <div id="Carousel" class="carousel slide">
+			                 
+			                <ol class="carousel-indicators">
+			                    <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+			                    <li data-target="#Carousel" data-slide-to="1"></li>
+			                </ol>
+			                 
+			                <!-- Carousel items -->
+			                <div class="carousel-inner">
+			                    
+			                <div class="item active">
+			                	<div class="row">
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/1.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/3.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/4.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                <div class="item">
+			                	<div class="row">
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/6.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/a.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/b.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                </div><!--.carousel-inner-->
+			                  <a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a>
+			                  <a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
+			                </div><!--.Carousel-->
+			            </div>
+					</div>
+					<div class="row explore-text">
+						<div class="col-md-12">
+							<span>Homes in Chicago</span>
+						</div>
+					</div>
+					<div class="row explore-the-world">
+						<div class="col-md-12">
+			                <div id="Carousel" class="carousel slide">
+			                 
+			                <ol class="carousel-indicators">
+			                    <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+			                    <li data-target="#Carousel" data-slide-to="1"></li>
+			                </ol>
+			                 
+			                <!-- Carousel items -->
+			                <div class="carousel-inner">
+			                    
+			                <div class="item active">
+			                	<div class="row">
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/1.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/3.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/4.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                <div class="item">
+			                	<div class="row">
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/6.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/a.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/b.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                </div><!--.carousel-inner-->
+			                  <a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a>
+			                  <a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
+			                </div><!--.Carousel-->
+			            </div>
+					</div>
+					<div class="row explore-text">
+						<div class="col-md-12">
+							<span>Homes in Austin</span>
+						</div>
+					</div>
+					<div class="row explore-the-world">
+						<div class="col-md-12">
+			                <div id="Carousel" class="carousel slide">
+			                 
+			                <ol class="carousel-indicators">
+			                    <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+			                    <li data-target="#Carousel" data-slide-to="1"></li>
+			                </ol>
+			                 
+			                <!-- Carousel items -->
+			                <div class="carousel-inner">
+			                    
+			                <div class="item active">
+			                	<div class="row">
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/1.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/3.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/4.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                <div class="item">
+			                	<div class="row">
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/6.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/a.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/b.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                </div><!--.carousel-inner-->
+			                  <a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a>
+			                  <a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
+			                </div><!--.Carousel-->
+			            </div>
+					</div>
+					<div class="row explore-text">
+						<div class="col-md-12">
+							<span>Homes in Boston</span>
+						</div>
+					</div>
+					<div class="row explore-the-world">
+						<div class="col-md-12">
+			                <div id="Carousel" class="carousel slide">
+			                 
+			                <ol class="carousel-indicators">
+			                    <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+			                    <li data-target="#Carousel" data-slide-to="1"></li>
+			                </ol>
+			                 
+			                <!-- Carousel items -->
+			                <div class="carousel-inner">
+			                    
+			                <div class="item active">
+			                	<div class="row">
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/1.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/3.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/4.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                <div class="item">
+			                	<div class="row">
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/6.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/a.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/b.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                </div><!--.carousel-inner-->
+			                  <a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a>
+			                  <a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
+			                </div><!--.Carousel-->
+			            </div>
+					</div>
+					<div class="row explore-text">
+						<div class="col-md-12">
+							<span>Homes in Seattle</span>
+						</div>
+					</div>
+					<div class="row explore-the-world">
+						<div class="col-md-12">
+			                <div id="Carousel" class="carousel slide">
+			                 
+			                <ol class="carousel-indicators">
+			                    <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+			                    <li data-target="#Carousel" data-slide-to="1"></li>
+			                </ol>
+			                 
+			                <!-- Carousel items -->
+			                <div class="carousel-inner">
+			                    
+			                <div class="item active">
+			                	<div class="row">
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/1.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/3.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/4.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                <div class="item">
+			                	<div class="row">
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/6.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/a.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/b.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                </div><!--.carousel-inner-->
+			                  <a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a>
+			                  <a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
+			                </div><!--.Carousel-->
+			            </div>
+					</div>
+					<div class="row explore-text">
+						<div class="col-md-12">
+							<span>Homes in Raleigh</span>
+						</div>
+					</div>
+					<div class="row explore-the-world">
+						<div class="col-md-12">
+			                <div id="Carousel" class="carousel slide">
+			                 
+			                <ol class="carousel-indicators">
+			                    <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+			                    <li data-target="#Carousel" data-slide-to="1"></li>
+			                </ol>
+			                 
+			                <!-- Carousel items -->
+			                <div class="carousel-inner">
+			                    
+			                <div class="item active">
+			                	<div class="row">
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/1.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/3.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/4.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                <div class="item">
+			                	<div class="row">
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/6.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/a.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/b.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                </div><!--.carousel-inner-->
+			                  <a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a>
+			                  <a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
+			                </div><!--.Carousel-->
+			            </div>
+					</div>
+					<div class="row explore-text">
+						<div class="col-md-12">
+							<span>Homes in San Jose</span>
+						</div>
+					</div>
+					<div class="row explore-the-world">
+						<div class="col-md-12">
+			                <div id="Carousel" class="carousel slide">
+			                 
+			                <ol class="carousel-indicators">
+			                    <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+			                    <li data-target="#Carousel" data-slide-to="1"></li>
+			                </ol>
+			                 
+			                <!-- Carousel items -->
+			                <div class="carousel-inner">
+			                    
+			                <div class="item active">
+			                	<div class="row">
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/1.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/3.jpg" alt="Image" ></a></div>
+			                	  <div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/4.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                <div class="item">
+			                	<div class="row">
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/6.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/a.jpg" alt="Image" ></a></div>
+			                		<div class="col-md-4 col-sm-4"><a href="#" class="thumbnail"><img src="images/SFO/b.jpg" alt="Image" ></a></div>
+			                	</div><!--.row-->
+			                </div><!--.item-->
+			                 
+			                </div><!--.carousel-inner-->
+			                  <a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a>
+			                  <a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
+			                </div><!--.Carousel-->
+			            </div>
+					</div>
+					<div class="seperator"></div>
+				</div>
+				<div class="col-lg-1 col-md-1 hidden-sm hidden-xs">
+				</div>
+				
+			</div>
+		</div>
+		<script>
+			$(document).ready(function() {
+			    $('#Carousel').carousel({
+			        interval: 0
+			    })
+			});
+		</script>
+	</main>
 	<!-- Footer -->
-	<%- include footer.ejs %>
+	<footer><% include ./footer %></footer>
 	</body>
 
 </html>
