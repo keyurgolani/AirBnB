@@ -12,10 +12,10 @@ body {
 /* eMail : vedvasa@gmail.com; */
 @media ( min-width : 700px) {
 	.navbar {
-		min-height: 60px;
-		border-bottom: 1px solid #dce0e0;
-		padding: 0px 0px 0px 0px;
-		margin: 0px 0px 0px 0px;
+		min-height   : 60px;
+		border-bottom: 0px solid #dce0e0;
+		padding      : 0px 0px 0px 0px;
+		margin       : 0px 0px 0px 0px;
 		border-radius:0px;
 	}
 	#verticalAlign {
@@ -25,16 +25,19 @@ body {
 		padding: 0px 20px 0px 8px;
 	}
 	.navbar-brand {
-		min-height: 62px;
-		width: 140px;
+		min-height: 60px;
+		width     : 140px;
 		/* padding:  13px 0px 13px 0px; */
 	}
 	#myNavbar {
 		padding: 0px 10px 0px 10px;
 	}
+	.navbar-nav{
+		height: 60px;
+	}
 	#header_logo {
 		padding: 0px 0px 0px 0px;
-		border-right: 2px solid #dce0e0;
+		border-right: 0px solid #dce0e0;
 	}
 	#inLine {
 		display: inline-block;
@@ -74,8 +77,8 @@ body {
 		background-repeat: no-repeat;
 		height: 24px;
 		width: 24px;
-		margin: 20px 50px 0px 0px;
-		margin: 20px 17px 0px 40px;
+		margin: 0px 0px 0px 0px;
+		margin: 0px 20px -8px 15px;
 	}
 	#main-navbar {
 		margin: 0px 0px 0px 0px;
@@ -99,17 +102,18 @@ body {
 	.ul_Two {
 		padding: 18px 0px 0px 0px;
 		margin: 0px 0px 0px 0px !important;
+		height: 60px;
 	}
 	.ul_Three {
 		font-size: 14px;
 		border-style: solid;
 		color: #dce0e0;
 		font-family: Circular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		width: 600px;
+		width: 500px;
 	}
 	.ul_Four {
-		border-right: 1px solid #dce0e0;
-		line-height: 62px;
+		border-right: 0px solid #dce0e0;
+		line-height: 60px;
 		padding:  0px 20px 0px 0px;
 	}
 	.ul_Five {
@@ -121,14 +125,14 @@ body {
 		font-size: 13.5px;
 	}
 	.ul_Six {
-		border-right: 1px solid #dce0e0;
-		line-height: 62px;
-		padding: 0px 0px 0px 20px;
+		border-right: 0px solid #dce0e0;
+		line-height: 60px;
+		padding: 0px 20px 0px 20px;
 		font-size:13.5px;
 	}
 	.ul_Seven {
-		border-right: 1px solid #dce0e0;
-		line-height: 62px;
+		border-right: 0px solid #dce0e0;
+		line-height: 60px;
 		padding: 0px 20px 0px 20px;
 	}
 	.ul_eight {
@@ -144,7 +148,7 @@ body {
 	}
 	.ul_Eleven {
 		font-size: 13.5px;
-		padding: 0px 0px 0px 0px;
+		padding: 0px 10px 0px 0px;
 		margin: 22px 0px 0px 22px;
 	}
 	.header > .pac-container {
@@ -179,6 +183,9 @@ body {
 	.pac-item:hover {
 		background-color: #FF5A5F !important;
 	}
+	.navbar-fixed-top{
+		background-color: white;
+	}
 	.search-bar-placeholder {
 		margin-top: 3px;
 		padding: 0px;
@@ -190,6 +197,33 @@ body {
 	}
 	.search-bar-placeholder:active {
 		border-bottom: 1px solid #008489!important;
+	}
+	.facebookSignUpButton{
+		background-color: #3b5998;
+		border-radius: 3px;
+		padding: 20px 20px 20px 20px;
+	}
+	.googleSignUpButton{
+		border-radius: 3px;
+		padding: 20px 20px 20px 20px;
+		border:  1px solid #dce0e0;
+		margin-top:  10px;
+	}
+	.signUpWithEmailbutton{
+		background-color: #ff5a5f;
+		border-radius: 3px;
+		padding: 20px 20px 20px 20px;
+		border:  1px solid #dce0e0;
+		margin-top:  10px;
+	}
+	.signUpNotice{
+		padding: 15px 5px 15px 5px;
+	}
+	.btn-default:hover{
+		background-color: white;
+	}
+	.btn-default:active{
+		background-color: white;
 	}
 	::-webkit-input-placeholder { /* WebKit browsers */
 		font-size: 18px;
