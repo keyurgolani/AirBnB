@@ -127,7 +127,7 @@ body {
 	.ul_Six {
 		border-right: 1px solid #dce0e0;
 		line-height: 60px;
-		padding: 0px 0px 0px 20px;
+		padding: 0px 20px 0px 20px;
 		font-size:13.5px;
 	}
 	.ul_Seven {
@@ -182,6 +182,9 @@ body {
 	}
 	.pac-item:hover {
 		background-color: #FF5A5F !important;
+	}
+	.navbar-fixed-top{
+		background-color: white;
 	}
 	.search-bar-placeholder {
 		margin-top: 3px;
