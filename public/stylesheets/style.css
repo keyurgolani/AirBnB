@@ -13,7 +13,7 @@ body {
 @media ( min-width : 700px) {
 	.navbar {
 		min-height   : 60px;
-		border-bottom: 1px solid #dce0e0;
+		border-bottom: 0px solid #dce0e0;
 		padding      : 0px 0px 0px 0px;
 		margin       : 0px 0px 0px 0px;
 		border-radius:0px;
@@ -37,7 +37,7 @@ body {
 	}
 	#header_logo {
 		padding: 0px 0px 0px 0px;
-		border-right: 2px solid #dce0e0;
+		border-right: 0px solid #dce0e0;
 	}
 	#inLine {
 		display: inline-block;
@@ -112,7 +112,7 @@ body {
 		width: 500px;
 	}
 	.ul_Four {
-		border-right: 1px solid #dce0e0;
+		border-right: 0px solid #dce0e0;
 		line-height: 60px;
 		padding:  0px 20px 0px 0px;
 	}
@@ -125,13 +125,13 @@ body {
 		font-size: 13.5px;
 	}
 	.ul_Six {
-		border-right: 1px solid #dce0e0;
+		border-right: 0px solid #dce0e0;
 		line-height: 60px;
 		padding: 0px 20px 0px 20px;
 		font-size:13.5px;
 	}
 	.ul_Seven {
-		border-right: 1px solid #dce0e0;
+		border-right: 0px solid #dce0e0;
 		line-height: 60px;
 		padding: 0px 20px 0px 20px;
 	}
