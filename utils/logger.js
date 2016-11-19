@@ -232,10 +232,10 @@ var biddingLogger = new winston.Logger({
 });
 
 module.exports = {
-	log: (logString) => {
+	log: function(logString)  {
 		commonLogger.info('Common Log: ' + logString);
 	},
-	logResponseTime : (path, time, message) => {
+	logResponseTime : function(path, time, message)  {
 		responseTimeLogger.info({
 			'path' : path,
 			'time' : time,
@@ -244,7 +244,7 @@ module.exports = {
 	},
 	//TODO: Pending
 	stream: {
-		write: (message, encoding) => {
+		write: function(message, encoding)  {
 			logger.info(message);
 		}
 	}, 

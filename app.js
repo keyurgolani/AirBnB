@@ -23,7 +23,7 @@ var mySQL = require(properties.get('paths.daoPath'));
 
 // Routing
 var routes = require(properties.get('paths.routerPath'));
-
+var fileUpload = require('./routes/fileUpload')
 var app = express();
 
 // view engine setup
@@ -32,12 +32,13 @@ app.set('view engine', 'ejs');
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(autoLogger('dev'));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '25mb'}));
 app.use(bodyParser.urlencoded({
-	extended : false
+	extended : false,
+	limit: '25mb'
 }));
 app.use(cookieParser());
-app.use(responseTime((req, res, time) => {
+app.use(responseTime(function(req, res, time)  {
 	logger.logResponseTime(req.url, time);
 }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -86,5 +87,6 @@ app.use(function(err, req, res, next) {
 	});
 });
 
+//app.post('/api/addVideo', fileUpload.fileUpload);
 
 module.exports = app;

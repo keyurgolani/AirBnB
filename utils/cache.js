@@ -19,9 +19,9 @@ var memoryCache = cacheManager.caching({
 
 var multiCache = cacheManager.multiCaching([ memoryCache, redisCache ]);
 
-module.exports.fetchItem = (item_cache_key, item_id, cacheMissFetchLogic, processResult) => {
+module.exports.fetchItem = function(item_cache_key, item_id, cacheMissFetchLogic, processResult)  {
 	var cacheKey = item_cache_key + "_" + item_id;
-	multiCache.wrap(cacheKey, (cacheCallback) => {
+	multiCache.wrap(cacheKey, function(cacheCallback)  {
 		cacheMissFetchLogic(item_id, cacheCallback);
 	}, processResult);
 }

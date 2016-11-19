@@ -26,7 +26,7 @@ function Pool(connection_no) {
 	}
 }
 
-Pool.prototype.get = (useConnection) => {
+Pool.prototype.get = function(useConnection)  {
 	var cli;
 	var connectionNumber;
 	for (var i = 0; i < this.pool.length; i++) {
@@ -50,7 +50,7 @@ Pool.prototype.get = (useConnection) => {
 //	useConnection(connectionNumber, getConnection());
 };
 
-Pool.prototype.release = (connectionNumber, connection) => {
+Pool.prototype.release = function(connectionNumber, connection)  {
 	// Enable Connection Pooling
 	this.isAvailable[connectionNumber] = true;
 // Disable Connection Pooling
@@ -60,20 +60,20 @@ Pool.prototype.release = (connectionNumber, connection) => {
 var connectionPool;
 
 module.exports = {
-	initializeConnectionPool : (poolSize) => {
+	initializeConnectionPool : function(poolSize)  {
 		connectionPool = new Pool(poolSize);
 	},
 	
 	// Humble try to add caching to SQL queries. Seems right at the moment. But not exactly sure.
 	
-	fetchCacheData : (selectFields, tableName, queryParameters, processResult) => {
-		connectionPool.get((connectionNumber, connection) => {
+	fetchCacheData : function(selectFields, tableName, queryParameters, processResult)  {
+		connectionPool.get(function(connectionNumber, connection)  {
 			var queryString = "SELECT " + selectFields + " FROM " + tableName;
 			if (queryParameters !== null) {
 				queryString = "SELECT " + selectFields + " FROM " + tableName + " WHERE ?";
 			}
-			memoryCache.wrap(queryString + "_" + queryParameters, (cacheCallback) => {
-				var query = connection.query(queryString, queryParameters, (error, rows) => {
+			memoryCache.wrap(queryString + "_" + queryParameters, function(cacheCallback)  {
+				var query = connection.query(queryString, queryParameters, function(error, rows)  {
 					if (error) {
 						throw error;
 					} else {
@@ -86,13 +86,13 @@ module.exports = {
 		});
 	},
 	
-	fetchData : (selectFields, tableName, queryParameters, processResult) => {
-		connectionPool.get((connectionNumber, connection) => {
+	fetchData : function(selectFields, tableName, queryParameters, processResult)  {
+		connectionPool.get(function(connectionNumber, connection)  {
 			var queryString = "SELECT " + selectFields + " FROM " + tableName;
 			if (queryParameters !== null) {
 				queryString = "SELECT " + selectFields + " FROM " + tableName + " WHERE ?";
 			}
-			var query = connection.query(queryString, queryParameters, (error, rows) => {
+			var query = connection.query(queryString, queryParameters, function(error, rows)  {
 				if (error) {
 					throw error;
 				} else {
@@ -104,9 +104,9 @@ module.exports = {
 		});
 	},
 
-	executeQuery : (sqlQuery, parameters, processResult) => {
-		connectionPool.get((connectionNumber, connection) => {
-			var query = connection.query(sqlQuery, parameters, (error, rows) => {
+	executeQuery : function(sqlQuery, parameters, processResult)  {
+		connectionPool.get(function(connectionNumber, connection)  {
+			var query = connection.query(sqlQuery, parameters, function(error, rows)  {
 				if (error) {
 					throw error;
 				} else {
@@ -118,10 +118,10 @@ module.exports = {
 		});
 	},
 
-	insertData : (tableName, insertParameters, processInsertStatus) => {
-		connectionPool.get((connectionNumber, connection) => {
+	insertData : function(tableName, insertParameters, processInsertStatus)  {
+		connectionPool.get(function(connectionNumber, connection)  {
 			var queryString = "INSERT INTO " + tableName + " SET ?";
-			var query = connection.query(queryString, insertParameters, (error, rows) => {
+			var query = connection.query(queryString, insertParameters, function(error, rows)  {
 				if (error) {
 					throw error;
 				} else {
@@ -133,10 +133,10 @@ module.exports = {
 		});
 	},
 
-	updateData : (tableName, insertParameters, queryParameters, processUpdateStatus) => {
-		connectionPool.get((connectionNumber, connection) => {
+	updateData : function(tableName, insertParameters, queryParameters, processUpdateStatus)  {
+		connectionPool.get(function(connectionNumber, connection)  {
 			var queryString = "UPDATE " + tableName + " SET ? WHERE ?";
-			var query = connection.query(queryString, [ insertParameters, queryParameters ], (error, rows) => {
+			var query = connection.query(queryString, [ insertParameters, queryParameters ], function(error, rows)  {
 				if (error) {
 					throw error;
 				} else {

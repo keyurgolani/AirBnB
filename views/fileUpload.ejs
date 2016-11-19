@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<% include ./head %>
+	</head>
+	
+	<body class="body full-body" ng-app="airBnB" ng-cloak ng-controller = "fileUploadCtrl">
+	<div class="container-fluid">
+		<header>
+        	<% include ./header %>
+    	</header>
+    	
+		<main>
+			<div class="col-md-4">
+                <h3>Add a Video.</h3>
+                <input type="file" accept="video/*" value="Upload profilevid"
+                       class="btn btn-success" name="profilevideo"
+                       onchange="readURLVideo(this)">
+
+            </div>
+            <input type="hidden" name="hiddenvideo" id="hiddenvideo" />
+            <a type="button" class="btn btn-success" ng-click="addMedia()">upload</a>
+            <a type="button" class="btn btn-success" ng-init="getVideo()">get Video</a>
+			<video id="myvideo" style="height: 200px; width: 220px;"
+                   controls src="movie.mp4">
+            </video>
+            
+            <div class="col-md-4">
+                <h3>Add a Image.</h3>
+                <input type="file" accept="image/*" value="Upload profileimage"
+                       class="btn btn-success" name="profileimage"
+                       onchange="readURLImage(this)">
+
+            </div>
+            <input type="hidden" name="hiddenimage" id="hiddenimage" />
+            <a type="button" class="btn btn-success" ng-click="addMediaImg()">upload Image</a>
+            <a type="button" class="btn btn-success" ng-init="getImg()">get Image</a>
+			<img id="myimage" style="height: 200px; width: 220px;">
+            </img>
+		</main>
+		
+		<script>
+    function readURLVideo(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#myvideo')
+                        .attr('src', e.target.result)
+                        .width(270)
+                        .height(200);
+                document.getElementById('hiddenvideo').value = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function readURLImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#myimage')
+                        .attr('src', e.target.result)
+                        .width(270)
+                        .height(200);
+                document.getElementById('hiddenimage').value = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+		<footer>
+        	<% include ./footer %>
+    	</footer>
+	</div>
+	</body>
+
+</html>
+	
+	
