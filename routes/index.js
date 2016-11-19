@@ -23,6 +23,19 @@ router.get('/', (req, res, next) => {
 	});
 });
 
+
+router.get('/this', (req, res, next) => {
+	cache.fetchItem('user', 1, (userID, callback) => {
+		console.log('----------------------Missed Logic!!!---------------------------');
+		callback('Keyur Golani');
+	}, (result) => {
+		console.log('----------------------Process Result!!!---------------------------');
+		res.render('property', {
+			title : result
+		});
+	});
+});
+
 router.post('/register', (req, res, next) => {
 	var first_name = req.body.firstname;
 	var last_name = req.body.lastname;
@@ -86,6 +99,12 @@ router.post('/register', (req, res, next) => {
 });
 
 
+/*router.get('/this', function(req, res, next) {
+	console.log("inside this");
+	// res.render('property');
+	// logger.log('info','inside /property routing get method!');
+});
+*/
 // facebook -------------------------------
 
 		// send to facebook to do the authentication

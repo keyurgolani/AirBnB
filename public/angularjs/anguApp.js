@@ -77,4 +77,42 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 			return generatedString;
 		};
-	});
+	})
+
+	
+	.controller('sell', function($scope, $http, Random) {
+	$scope.name = ["house", "apartment", "hostel"];	
+	console.log('inside');
+
+	$scope.property = function(){
+		console.log("now in property function!");
+		console.log($scope.property_type);
+
+		$http({			
+			method: "POST",
+			url : '/property_post',
+			data : {
+				
+				"property_type" : $scope.property_type,
+				"room_type" : $scope.room_type,
+				"rules" : $scope.rules,
+				"address":$scope.address				
+			}	
+
+						
+		}).success(function(data){
+			if (data.statusCode === 401) {
+				alert("Please enter correct details");
+				// window.location.assign("/property_info");
+			}
+			else
+				//Making a get call to the '/redirectToHomepage' API
+				alert("Property listing is successful!");
+				// window.location.assign("/home");
+			
+		}).error(function(error){
+			console.log(data.msg);
+			// $scope.result = data.msg;			
+		});
+	};
+});
