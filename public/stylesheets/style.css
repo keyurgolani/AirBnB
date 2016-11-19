@@ -231,7 +231,7 @@ body {
 	.terms-text:hover {
 		cursor: pointer;
 		text-decoration: underline;
-		color: #329ca0; 
+		color: #329ca0;
 	}
 	.btn-default:hover {
 		background-color: white;
@@ -278,7 +278,6 @@ body {
 	.daterangepicker td.start-date.end-date {
 		border-radius: 0px;
 	}
-	
 	.daterangepicker td.available:hover, .daterangepicker th.available:hover
 		{
 		background-color: #66e2da;
@@ -343,15 +342,13 @@ body {
 
 	/* enable absolute positioning */
 	.inner-addon {
-	  position: relative;
+		position: relative;
 	}
-	
 	.guest-dropdown.open>.dropdown-toggle.btn-default {
 		border-bottom: 1px solid #008489 !important;
 		background-color: #fff !important;
 		box-shadow: none !important;
 	}
-	
 	.dropdown-menu>li>a {
 		border-bottom: 1px solid #e0e3e3;
 		padding-bottom: 10px;
@@ -360,99 +357,85 @@ body {
 		vertical-align: middle;
 	}
 	.dropdown-menu.open {
-		left: -2px;
-		margin-top: 6px;
+		left: -2px; margin-top : 6px;
 		padding: 0 0 0 0;
+		margin-top: 6px;
 	}
-	.dropdown-menu.open:before {
-		content: "";
-		position: absolute;
-		left: 6px;
-		top: -10px;
-		width: 0;
-		height: 0;
-		border-style: solid;
-		border-width: 0 10px 10px 10px;
-		border-color: transparent transparent #fae0bb transparent;
-		z-index: 9999;
-	}
-	.dropdown-menu.open:after {
-		content: "";
-		position: absolute;
-		left: 6px;
-		top: -22px;
-		width: 0;
-		height: 0;
-		border-style: solid;
-		border-width: 0 17px 17px 17px;
-		border-color: transparent transparent #ffffff transparent;
-		z-index: 9998;
-	}
-	
 	.daterangepicker_input {
 		display: none;
 	}
-	
 	.daterangepicker.ltr {
 		margin-top: 6px !important;
 	}
 
 	/* style glyph */
 	.inner-addon .glyphicon {
-	  position: absolute;
-	  padding: 10px;
-	  pointer-events: none;
+		position: absolute;
+		padding: 10px;
+		pointer-events: none;
 	}
 
 	/* align glyph */
-	.left-addon .glyphicon  { left:  0px;}
-	.right-addon .glyphicon { right: 0px;}
+	.left-addon .glyphicon {
+		left: 0px;
+	}
+	.right-addon .glyphicon {
+		right: 0px;
+	}
 
 	/* add padding  */
-	.left-addon input  { padding-left:  30px; }
-	.right-addon input { padding-right: 30px; }
-
-
-
+	.left-addon input {
+		padding-left: 30px;
+	}
+	.right-addon input {
+		padding-right: 30px;
+	}
 
 	/* enable absolute positioning */
 	.inner-addon {
-	  position: relative;
+		position: relative;
 	}
 
 	/* style glyph */
 	.inner-addon .fa {
-	  position: absolute;
-	  padding: 10px;
-	  pointer-events: none;
-	  color: #8D9294;
+		position: absolute;
+		padding: 10px;
+		pointer-events: none;
+		color: #8D9294;
 	}
 
 	/* align glyph */
-	.left-addon .fa  { left:  0px;}
-	.right-addon .fa { right: 0px;}
+	.left-addon .fa {
+		left: 0px;
+	}
+	.right-addon .fa {
+		right: 0px;
+	}
 
 	/* add padding  */
-	.left-addon input  { padding-left:  30px; }
-	.right-addon input { padding-right: 30px; }
-
-	#signUpInputProps{
-		border:1px solid #dce0e0; margin-top:12px;
-		border-radius:2px;
-		color:#dce0e0;
+	.left-addon input {
+		padding-left: 30px;
+	}
+	.right-addon input {
+		padding-right: 30px;
+	}
+	#signUpInputProps {
+		border: 1px solid #dce0e0;
+		margin-top: 12px;
+		border-radius: 2px;
+		color: #dce0e0;
 		height: 60px;
-		margin-top:5px;
+		margin-top: 5px;
 	}
 	.login-button {
-		margin-top:0px; 
+		margin-top: 0px;
 		border: 1px solid #ff5a5f;
 		width: 82.63px;
 		height: 36px;
-    	background: white;
-    	color: #ff5a5f;
+		background: white;
+		color: #ff5a5f;
 		border-color: #ff5a5f;
 	}
-	
 	.login-button:hover {
 		cursor: pointer;
 		color: #ff5a5f;
