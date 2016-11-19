@@ -313,6 +313,15 @@ body {
 		border:1px solid #dce0e0; margin-top:12px;
 		border-radius:2px;
 		color:#dce0e0;
+		height: 45px;
+		margin-top:5px;
+	}
+
+
+	#signInInputProps{
+		border:1px solid #dce0e0; margin-top:12px;
+		border-radius:2px;
+		color:#dce0e0;
 		height: 60px;
 		margin-top:5px;
 	}
