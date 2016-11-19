@@ -240,19 +240,19 @@ body {
 		background-color: white;
 	}
 	::-webkit-input-placeholder { /* WebKit browsers */
-		font-size: 14px;
+		font-size: 18px;
 		letter-spacing: -0.5px;
 	}
 	:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-		font-size: 14px;
+		font-size: 18px;
 		letter-spacing: -0.5px;
 	}
 	::-moz-placeholder { /* Mozilla Firefox 19+ */
-		font-size: 14px;
+		font-size: 18px;
 		letter-spacing: -0.5px;
 	}
 	:-ms-input-placeholder { /* Internet Explorer 10+ */
-		font-size: 14px;
+		font-size: 18px;
 		letter-spacing: -0.5px;
 	}
 	.date-picker {
@@ -354,12 +354,13 @@ body {
 	
 	.dropdown-menu>li>a {
 		border-bottom: 1px solid #e0e3e3;
-		padding-bottom: 20px;
-		padding-top: 20px;
-		font-weight: bold;
+		padding-bottom: 10px;
+		font-size: 19px;
+		padding-top: 10px;
 		vertical-align: middle;
 	}
 	.dropdown-menu.open {
+		left: -2px;
 		margin-top: 6px;
 		padding: 0 0 0 0;
 	}
