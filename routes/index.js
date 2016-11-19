@@ -83,4 +83,9 @@ router.get('/listing', function(req, res, next) {
 	res.render('listing');
 });
 
+
+router.get('/mapsTest', function(req, res, next) {
+	res.render('mapsTest');
+});
+
 module.exports = router;
