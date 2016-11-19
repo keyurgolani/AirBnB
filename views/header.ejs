@@ -1,7 +1,7 @@
 <div>
 	<div>
-		<!--<nav class="navbar navbar-fixed-top" style="border-radius:0px; box-shadow: 1px 3px 1px 0 rgba(0, 0, 0, 0.05);">-->
-		<nav class="navbar navbar-fixed-top" style="border-radius:0px;">
+		<nav class="navbar navbar-fixed-top" style="border-radius:0px; box-shadow: 1px 3px 1px 0 rgba(0, 0, 0, 0.05);">
+		<!--<nav class="navbar navbar-fixed-top" style="border-radius:0px;">-->
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -51,13 +51,15 @@
 		 				<li class="ul_Seven" >
 		 					<div class="row ul_eight" >
 		 						<div  class="col-lg-12 ul_Nine" data-toggle="modal" data-target=".signup-modal-md">
-		 							<a style="text-decoration:none;" href="#">Sign Up</a>
+		 							<a style="text-decoration:none;" href="#" class="ul_Nine">Sign Up</a>
 		 						</div>
 		 					</div>
 		 				</li>
 		 				<li  class="ul_Ten">
 		 					<div  class="ul_Eleven">
-		 						Log In
+		 						<div  class="col-lg-12 ul_Nine" data-toggle="modal" data-target=".signin-modal-md">
+		 							<a style="text-decoration:none;" href="#">Log In</a>
+		 						</div>
 		 					</div>
 		 				</li>
 		 			</ul>
@@ -78,60 +80,218 @@
 		    	<div class="col-lg-1 col-sm-0">
 		    		
 		    	</div>
-		    	<div class="col-lg-10 col-sm-12" style="border-radius: 0px; background-color:white; padding: 30px 30px 30px 30px;">
+		    	<div class="col-lg-10 col-sm-12" style="border-radius: 3px; background-color:white; padding: 30px 30px 20px 30px;">
 		    		
-		    		<div>
+		    		<div ng-show="beforeSignUp">
+			    		<div>
+							<div class="facebookSignUpButton">
+								<i class="fa fa-facebook" style="color:white; font-size:18px;"></i>
+								<span class="text-center" style="color:white; font-weight:normal; font-size:16px; margin: 50px 95px 50px 95px">Sign up with Facebook</span>
+							</div>
+		    			</div>
 
-						<div class="facebookSignUpButton">
-							<i class="fa fa-facebook" style="color:white; font-size:18px;"></i>
-							<span class="text-center" style="color:white; font-size:16px; margin: 50px 95px 50px 95px">Sign up with facebook</span>
-						</div>
-		    		</div>
+			    		<div>	
+							<div class="googleSignUpButton">
+								<i class="fa fa-google" style="font-size:18px;"></i>
+								<span class="text-center" style="font-size:16px; margin-left:90px;">Sign up with Google</span>
+							</div>
+			    		</div>
 
-		    		<div>	
-						<div class="googleSignUpButton">
-							<i class="fa fa-google" style="font-size:18px;"></i>
-							<span class="text-center" style="font-size:16px; margin-left:90px;">Sign up with Google</span>
-						</div>
-		    		</div>
+			    		<div class="row" style="margin-top:10px;">	
+							<div class="col-lg-5" style="border-bottom: 1px solid #dce0e0; margin-top:10px;">
+								
+							</div>
+							<div class="col-lg-2 text-center" style="font-weight:bold;">
+								or
+							</div>
+							<div class="col-lg-5" style="border-bottom: 1px solid #dce0e0; margin-top:10px;">
+								<div></div>
+							</div>
+			    		</div>
+			    		
+			    		<div>	
+							<div class="signUpWithEmailbutton" ng-click="signUpWithEmail();">
+								<i class="fa fa-envelope-o" style="font-size:18px; color: white;"></i>
+								<span class="text-center" style="font-size:16px; margin-left:90px; color: white;">Sign up with Email</span>
+							</div>
+			    		</div>
 
-		    		<div class="row" style="margin-top:10px;">	
-						<div class="col-lg-5" style="border-bottom: 1px solid #dce0e0; margin-top:10px;">
-							
-						</div>
-						<div class="col-lg-2 text-center" style="font-weight:bold;">
-							or
-						</div>
-						<div class="col-lg-5" style="border-bottom: 1px solid #dce0e0; margin-top:10px;">
-							<div></div>
-						</div>
-		    		</div>
-		    		
-		    		<div>	
-						<div class="signUpWithEmailbutton" ng-click="signUpWithEmail();">
-							<i class="fa fa-envelope-o" style="font-size:18px; color: white;"></i>
-							<span class="text-center" style="font-size:16px; margin-left:90px; color: white;">Sign up with Email</span>
-						</div>
-		    		</div>
+			    		<div class="text-justify signUpNotice" style="font-size:11px;">
+			    			By signing up, I agree to Airbnb’s Terms of Service, Nondiscrimination Policy, Payments Terms of Service, Privacy Policy, Guest Refund Policy, and Host Guarantee Terms.
+			    		</div>
 
-		    		<div class="text-justify signUpNotice" style="font-size:11px;">
-		    			By signing up, I agree to Airbnb’s Terms of Service, Nondiscrimination Policy, Payments Terms of Service, Privacy Policy, Guest Refund Policy, and Host Guarantee Terms.
-		    		</div>
+			    		<div class="row" style="">	
+							<div class="col-lg-12" style="border-bottom: 1px solid #dce0e0; margin-top:0px;">
+								
+							</div>
+			    		</div>
+			    		<div class="row" style="margin-top:40px;">	
+							<div class="col-lg-9 col-sm-12 col-xs-12 text-left" style="margin-top:0px; padding:5px; font-weight:14cm;">
+								Already have an Airbnb account?
+							</div>
+							<div class="col-lg-3 col-sm-12 col-xs-12 text-right btn btn-default" style="margin-top:0px; color:#ff5a5f; border: 1px solid #ff5a5f;">
+								Login
+							</div>
+			    		</div>
+			    	</div>
 
-		    		<div class="row" style="">	
-						<div class="col-lg-12" style="border-bottom: 1px solid #dce0e0; margin-top:0px;">
-							
+					<!-- onclickusersignup onclickusersignup onclickusersignup onclickusersignup onclickusersignup onclickusersignup -->
+					<!-- onclickusersignup onclickusersignup onclickusersignup onclickusersignup onclickusersignup onclickusersignup -->
+					<div ng-show="emailSignUp" class="col-lg-12" style="">
+						
+						<div class="text-center" style="margin-top:0px; font-size:14px;">
+							Sign up with facebook or Google
 						</div>
+
+						<div class="row">
+							<div class="row" style="margin-top:10px;">	
+								<div class="col-lg-5" style="border-bottom: 1px solid #dce0e0; margin-top:10px;">
+									
+								</div>
+								<div class="col-lg-2 text-center" style="font-weight:bold;">
+									or
+								</div>
+								<div class="col-lg-5" style="border-bottom: 1px solid #dce0e0; margin-top:10px;">
+									<div></div>
+								</div>
+				    		</div>
+				    	</div>
+				    	<div class="row">
+				    		<div class="inner-addon right-addon" id="signUpInputProps" style="">
+						      <i class="fa fa-user-o"></i>
+						      <input type="text" class="form-control" placeholder="First Name"/>
+						    </div>
+						</div>
+						<div class="row">
+				    		<div class="inner-addon right-addon" id="signUpInputProps" style="">
+						      <i class="fa fa-user-o"></i>
+						      <input type="text" class="form-control" placeholder="Last Name"/>
+						    </div>
+						</div>
+						<div class="row">
+				    		<div class="inner-addon right-addon" id="signUpInputProps" style="">
+						      <i class="fa fa-envelope-o"></i>
+						      <input type="text" class="form-control" placeholder="Email Address"/>
+						    </div>
+						</div>
+						<div class="row">
+				    		<div class="inner-addon right-addon" id="signUpInputProps" style="font-size:19px;">
+						      <i class="fa fa-lock" style="margin-top:-2px;"></i>
+						      <input type="password" class="form-control" placeholder="Create a Password"/>
+						    </div>
+						</div>
+						<div class="row" style="margin-top:20px;">
+				    		<!-- <div class="inner-addon right-addon" id="signUpInputProps" style="font-size:19px;"> -->
+						      <b>Birthday</b> <i class="fa fa-question-circle" style="margin-top:-2px;"></i>
+						    <!-- </div> -->
+						    Select your birth date to continue.
+						</div>
+						<div class="row" style="margin-top:10px;">
+				    		<!-- <div class="inner-addon right-addon" id="signUpInputProps" style="font-size:19px;"> -->
+						      
+						    <div class="form-group col-lg-5" style="border: 1px solid #dce0e0; border-radius:2px;">
+							  <select class="form-control" id="month">
+						        <option value="0">Month</option>
+						        <option value="1">January</option>
+						        <option value="2">February</option>
+						        <option value="3">March</option>
+						        <option value="4">April</option>
+						        <option value="5">May</option>
+						        <option value="6">June</option>
+						        <option value="7">July</option>
+						        <option value="8">August</option>
+						        <option value="9">September</option>
+						        <option value="10">October</option>
+						        <option value="11">November</option>
+						        <option value="12">December</option>
+						      </select>
+							</div>
+
+							<div class="form-group col-lg-1" style="">
+							  
+							</div>
+
+							<div class="form-group col-lg-2" style="border: 1px solid #dce0e0; border-radius:2px;">
+							  <select class="form-control" id="day">
+						        <option value="0">Day</option>
+						        <option value="1">1</option>
+						        <option value="2">2</option>
+						        <option value="3">3</option>
+						        <option value="4">4</option>
+						        <option value="5">5</option>
+						        <option value="6">6</option>
+						        <option value="7">7</option>
+						        <option value="8">8</option>
+						        <option value="9">9</option>
+						        <option value="10">10</option>
+						        <option value="11">11</option>
+						        <option value="12">12</option>
+						        <option value="13">13</option>
+						        <option value="14">14</option>
+						        <option value="15">15</option>
+						        <option value="16">16</option>
+						        <option value="17">17</option>
+						        <option value="18">18</option>
+						        <option value="19">19</option>
+						        <option value="20">20</option>
+						        <option value="21">21</option>
+						        <option value="22">22</option>
+						        <option value="23">23</option>
+						        <option value="24">24</option>
+						        <option value="25">25</option>
+						        <option value="26">26</option>
+						        <option value="27">27</option>
+						        <option value="28">28</option>
+						        <option value="29">29</option>
+						        <option value="30">30</option>
+						        <option value="31">31</option>
+						      </select>
+							</div>
+							<div class="form-group col-lg-1" style="">
+							  
+							</div>
+
+							<div class="form-group col-lg-3" style="border: 1px solid #dce0e0; border-radius:2px;">
+							 	<input type="number" class="form-control" placeholder="Year"/>
+							</div>
+				    		<div class="text-justify signUpNotice" style="font-size:0.85em;font-weight:400; height: auto; width: auto;">
+				    			By signing up, I agree to Airbnb <a class="terms-text">Terms of Service</a>, <a class="terms-text">Non-discrimination Policy</a>, <a class="terms-text">Payments Terms of Service</a>, <a class="terms-text">Privacy Policy</a>, <a class="terms-text">Guest Refund Policy</a>, and <a class="terms-text">Host Guarantee Terms.</a>
+				    		</div>
+						    <!-- </div> -->
+						</div>
+						<div class="text-center row" style="font-weight:bold;">
+							<div class="signUpWithEmailbutton" ng-click="signUpWithEmail();">
+								<span class="text-center" style="font-size:16px; padding:40px; color: white;">Sign up</span>
+							</div>
+						</div>
+
+						<div class="row" style="margin-top:20px;">	
+							<div class="col-lg-12" style="border-bottom: 1px solid #dce0e0; margin-top:0px;">
+								
+							</div>
+			    		</div>
+
+						<div class="row" style="margin-top:20px;">	
+							<div class="col-lg-9 col-sm-12 col-xs-12 text-left" style="margin-top:0px; padding:5px; font-weight:14cm;">
+								Already have an Airbnb account?
+							</div>
+							<div class="col-lg-3 col-sm-12 col-xs-12 text-right btn btn-default" style="margin-top:0px; color:#ff5a5f; border: 1px solid #ff5a5f;">
+								Login
+							</div>
+			    		</div>
 		    		</div>
-		    		<div class="row" style="margin-top:40px;">	
-						<div class="col-lg-9 col-sm-12 col-xs-12 text-left" style="margin-top:0px; padding:5px; font-weight:14cm;">
+		    		<!--<div class="row" style="margin-top:20px;">	
+						<div class="col-lg-9 col-sm-12 col-xs-12 text-left" style="margin-top:0px; padding:5px; font-weight:14cm;color:#484848;font-size:16px;">
 							Already have an Airbnb account?
 						</div>
-						<div class="col-lg-3 col-sm-12 col-xs-12 text-right btn btn-default" style="margin-top:0px; color:#ff5a5f; border: 1px solid #ff5a5f;">
-							Login
+						<div class="col-lg-3 col-sm-12 col-xs-12 text-right btn btn-default login-button pull-right">
+							Log in
 						</div>
-		    		</div>
-			
+
+
+					</div>-->
+					<!-- /onclickusersignup /onclickusersignup /onclickusersignup /onclickusersignup /onclickusersignup /onclickusersignup -->
+					<!-- /onclickusersignup /onclickusersignup /onclickusersignup /onclickusersignup /onclickusersignup /onclickusersignup -->
 
 		    	</div>
 		    	<div class="col-lg-1 col-sm-0">
@@ -145,5 +305,95 @@
 
 	</div>
 
-<!-- /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP  -->
+<!-- /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP /SIGNUP -->
 
+
+
+<!-- SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN SIGNIN  -->
+	<div ng-controller="signUpController">
+
+		<!-- BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP -->
+		<div class="modal container fade signin-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+		  
+		  <div class="modal-dialog container modal-md" role="document" style="border-radius:0px;">
+		  	<div class="row" style="margin-top:40px;">
+		    	<div class="col-lg-1 col-sm-0">
+		    		
+		    	</div>
+		    	<div class="col-lg-10 col-sm-12" style="border-radius: 0px; background-color:white; padding: 30px 30px 30px 30px;">
+		    		
+		    		<div ng-show="beforeSignUp">
+			    		<div>
+
+							<div class="facebookSignUpButton">
+								<i class="fa fa-facebook" style="color:white; font-size:18px;"></i>
+								<span class="text-center" style="color:white; font-size:16px; margin: 50px 95px 50px 95px">Log In with facebook</span>
+							</div>
+			    		</div>
+
+			    		<div>	
+							<div class="googleSignUpButton">
+								<i class="fa fa-google" style="font-size:18px;"></i>
+								<span class="text-center" style="font-size:16px; margin-left:90px;">Log In with Google</span>
+							</div>
+			    		</div>
+
+			    		<div class="row" style="margin-top:10px;">	
+							<div class="col-lg-5" style="border-bottom: 1px solid #dce0e0; margin-top:10px;">
+								
+							</div>
+							<div class="col-lg-2 text-center" style="font-weight:bold;">
+								or
+							</div>
+							<div class="col-lg-5" style="border-bottom: 1px solid #dce0e0; margin-top:10px;">
+								<div></div>
+							</div>
+			    		</div>
+			    		<div class="row">
+				    		<div class="inner-addon right-addon" id="signUpInputProps" style="">
+						      <i class="fa fa-envelope-o" style="margin-top:10px;"></i>
+						      <input type="text" class="form-control" placeholder="Email Address" style="margin-top:7px; height:45px; font-size:18px;"/>
+						    </div>
+						</div>
+						<div class="row" style="margin-top:2px;">
+				    		<div class="inner-addon right-addon" id="signUpInputProps" style="font-size:19px;">
+						      <i class="fa fa-lock" style="margin-top:10px;"></i>
+						      <input type="password" class="form-control" placeholder="Password" style="height:45px; margin-top:7px;"/>
+						    </div>
+						</div>
+						<div class="row text-justify" style="margin-top:10px;">
+							<input type="checkbox" value=""><span style="margin-left:10px;">Remember Password</span>
+						</div>
+			    		<div class="text-center">
+							<div class="signUpWithEmailbutton">
+								<span class="text-center" style="font-size:16px;color: white;">Log in</span>
+							</div>
+			    		</div>
+						<div class="row" style="margin-top:20px;">	
+							<div class="col-lg-12" style="border-bottom: 1px solid #dce0e0; margin-top:0px;">
+								
+							</div>
+			    		</div>
+
+						<div class="row" style="margin-top:20px;">	
+							<div class="col-lg-9 col-sm-12 col-xs-12 text-left" style="margin-top:0px; padding:5px; font-weight:14cm;">
+								Don't have an account?
+							</div>
+							<div class="col-lg-3 col-sm-12 col-xs-12 text-right btn btn-default" style="margin-top:0px; color:#ff5a5f; border: 1px solid #ff5a5f;">
+								Sign Up
+							</div>
+			    		</div>
+			    	</div>
+		    	</div>
+		    	<div class="col-lg-1 col-sm-0">
+		    	</div>
+
+		   	</div>
+		  </div>
+		</div>
+		<!-- /BEFORE SIGNUP /BEFORE SIGNUP /BEFORE SIGNUP /BEFORE SIGNUP /BEFORE SIGNUP /BEFORE SIGNUP /BEFORE SIGNUP /BEFORE SIGNUP -->	
+
+
+	</div>
+
+<!-- /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN /SIGNIN -->
