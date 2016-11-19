@@ -240,19 +240,19 @@ body {
 		background-color: white;
 	}
 	::-webkit-input-placeholder { /* WebKit browsers */
-		font-size: 14px;
+		font-size: 18px;
 		letter-spacing: -0.5px;
 	}
 	:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-		font-size: 14px;
+		font-size: 18px;
 		letter-spacing: -0.5px;
 	}
 	::-moz-placeholder { /* Mozilla Firefox 19+ */
-		font-size: 14px;
+		font-size: 18px;
 		letter-spacing: -0.5px;
 	}
 	:-ms-input-placeholder { /* Internet Explorer 10+ */
-		font-size: 14px;
+		font-size: 18px;
 		letter-spacing: -0.5px;
 	}
 	.date-picker {
@@ -574,6 +574,10 @@ body {
     font-size: 12px;
 	border-style: solid;
 	font-family: Circular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.search-bar:focus {
+	border: 1px solid #aaa!important; 
 }
 
 .continue-button {
