@@ -73,18 +73,15 @@ router.post('/register', (req, res, next) => {
 						'last_login' : require('fecha').format(Date.now(), 'YYYY-MM-DD HH:mm:ss')
 					}, (error, result) => {
 						if (error) {
-							next(500);
 							res.send({
 								'statusCode' : 500
 							});
 						} else {
 							if (result.affectedRows === 1) {
-								next(200);
 								res.send({
 									'statusCode' : 200
 								});
 							} else {
-								next(500);
 								res.send({
 									'statusCode' : 500
 								});
