@@ -240,24 +240,24 @@ body {
 		background-color: white;
 	}
 	::-webkit-input-placeholder { /* WebKit browsers */
-		font-size: 18px;
+		font-size: 14px;
 		letter-spacing: -0.5px;
 	}
 	:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-		font-size: 18px;
+		font-size: 14px;
 		letter-spacing: -0.5px;
 	}
 	::-moz-placeholder { /* Mozilla Firefox 19+ */
-		font-size: 18px;
+		font-size: 14px;
 		letter-spacing: -0.5px;
 	}
 	:-ms-input-placeholder { /* Internet Explorer 10+ */
-		font-size: 18px;
+		font-size: 14px;
 		letter-spacing: -0.5px;
 	}
 	.date-picker {
 		font-size: 18px !important;
-		color: #000000 !important;
+		color: #909090 !important;
 		font-weight: 400;
 		font-family: Circular, 'Helvetica Neue', Helvetica, Arial,
 			sans-serif !important;
@@ -278,12 +278,78 @@ body {
 	.daterangepicker td.start-date.end-date {
 		border-radius: 0px;
 	}
-	.daterangepicker td.available:hover, .daterangepicker th.available:hover
-		{
-		background-color: #66e2da;
+
+	/* enable absolute positioning */
+	.inner-addon {
+		position: relative;
 	}
-	.daterangepicker td, .daterangepicker th {
-		border-radius: 0px;
+
+	/* style glyph */
+	.inner-addon .glyphicon {
+		position: absolute;
+		padding: 10px;
+		pointer-events: none;
+	}
+
+	/* align glyph */
+	.left-addon .glyphicon {
+		left: 0px;
+	}
+	.right-addon .glyphicon {
+		right: 0px;
+	}
+
+	/* add padding  */
+	.left-addon input {
+		padding-left: 30px;
+	}
+	.right-addon input {
+		padding-right: 30px;
+	}
+
+	/* enable absolute positioning */
+	.inner-addon {
+		position: relative;
+	}
+
+	/* style glyph */
+	.inner-addon .fa {
+		position: absolute;
+		padding: 10px;
+		pointer-events: none;
+		color: #8D9294;
+	}
+
+	/* align glyph */
+	.left-addon .fa {
+		left: 0px;
+	}
+	.right-addon .fa {
+		right: 0px;
+	}
+
+	/* add padding  */
+	.left-addon input {
+		padding-left: 30px;
+	}
+	.right-addon input {
+		padding-right: 30px;
+	}
+	#signUpInputProps {
+		border: 1px solid #dce0e0;
+		margin-top: 12px;
+		border-radius: 2px;
+		color: #dce0e0;
+		height: 40px;
+		margin-top: 5px;
+	}
+	#signInInputProps {
+		border: 1px solid #dce0e0;
+		margin-top: 12px;
+		border-radius: 2px;
+		color: #dce0e0;
+		height: 60px;
+		margin-top: 5px;
 	}
 	.customDates {
 		font-size: 14px;
@@ -357,7 +423,8 @@ body {
 		vertical-align: middle;
 	}
 	.dropdown-menu.open {
-		left: -2px; margin-top : 6px;
+		left: -2px;
+		margin-top: 6px;
 		padding: 0 0 0 0;
 		margin-top: 6px;
 	}
@@ -444,12 +511,10 @@ body {
 	.modal {
 		overflow-y: hidden !important;
 	}
-
-	.modal-md{
+	.modal-md {
 		overflow-y: hidden !important;
 	}
-
-	.signup-modal-md{
-	    overflow-y: hidden !important;		
+	.signup-modal-md {
+		overflow-y: hidden !important;
 	}
 }
