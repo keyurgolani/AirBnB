@@ -441,4 +441,15 @@ body {
 		color: #ff5a5f;
 		border-color: #ff5a5f;
 	}
+	.modal {
+		overflow-y: hidden !important;
+	}
+
+	.modal-md{
+		overflow-y: hidden !important;
+	}
+
+	.signup-modal-md{
+	    overflow-y: hidden !important;		
+	}
 }
