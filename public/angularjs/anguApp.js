@@ -31,6 +31,20 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	.controller('footer', function($scope, $http, Random) {
 		$scope.randomPassword = Random.randomString(25);
 	})
+	.controller('listing', function($scope, $http, Random) {
+		$scope.randomPassword = Random.randomString(25);
+	})
+	.controller('signUpController', function($scope, $http, Random) {
+		$scope.emailSignUp = false;
+		$scope.beforeSignUp = true;
+		console.log('$scope.emailSignUp', $scope.emailSignUp);
+
+		$scope.signUpWithEmail = function(){
+			$scope.emailSignUp = true;
+			console.log('$scope.emailSignUp', $scope.emailSignUp);
+			$scope.beforeSignUp = false;
+		};
+	})
 	.directive('ngEnter', function() {
 		return function(scope, element, attrs) {
 			element.bind("keydown keypress", function(event) {

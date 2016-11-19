@@ -85,6 +85,7 @@ router.post('/register', (req, res, next) => {
 
 });
 
+
 // facebook -------------------------------
 
 		// send to facebook to do the authentication
@@ -161,6 +162,11 @@ router.post('/register', (req, res, next) => {
 
 	res.redirect('/');
 }	
+
+
+router.get('/listing', function(req, res, next) {
+	res.render('listing');
+});
 
 
 module.exports = router;
