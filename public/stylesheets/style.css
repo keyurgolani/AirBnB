@@ -8,8 +8,6 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-/* Author: Ved Vasavada */
-/* eMail : vedvasa@gmail.com; */
 @media ( min-width : 700px) {
 	.navbar {
 		min-height: 60px;
@@ -122,13 +120,15 @@ body {
 	.btn-style {
 		border: 0px solid #D7D7D7;
 		padding: 3px 15px 3px 15px;
-		font-size: 13.5px;
+		font-size: 14px;
+		color: black;
 	}
 	.ul_Six {
 		border-right: 0px solid #dce0e0;
 		line-height: 60px;
 		padding: 0px 20px 0px 20px;
-		font-size: 13.5px;
+		font-size: 14px;
+		color: black;
 	}
 	.ul_Seven {
 		border-right: 0px solid #dce0e0;
@@ -140,16 +140,21 @@ body {
 		padding:;
 	}
 	.ul_Nine {
-		font-size: 13.5px;
+		font-size: 14px;
+		color: black;
+	}
+	.ul_Nine:hover {
+		color: black;
 	}
 	.ul_Ten {
 		padding: 0px 0px 0px 0px;
 		margin: 0px 0px 0px 0px;
 	}
 	.ul_Eleven {
-		font-size: 13.5px;
 		padding: 0px 10px 0px 0px;
 		margin: 22px 0px 0px 22px;
+		font-size: 14px;
+		color: black;
 	}
 	.header>.pac-container {
 		margin-left: -40px;
@@ -200,24 +205,33 @@ body {
 	}
 	.facebookSignUpButton {
 		background-color: #3b5998;
-		border-radius: 3px;
+		border-radius: 5px;
 		padding: 20px 20px 20px 20px;
 	}
 	.googleSignUpButton {
-		border-radius: 3px;
+		border-radius: 5px;
 		padding: 20px 20px 20px 20px;
 		border: 1px solid #dce0e0;
 		margin-top: 10px;
 	}
 	.signUpWithEmailbutton {
 		background-color: #ff5a5f;
-		border-radius: 3px;
+		border-radius: 5px;
 		padding: 20px 20px 20px 20px;
 		border: 1px solid #dce0e0;
 		margin-top: 10px;
 	}
 	.signUpNotice {
 		padding: 15px 5px 15px 5px;
+	}
+	.terms-text {
+		color: #329ca0;
+		font-weight: bold;
+	}
+	.terms-text:hover {
+		cursor: pointer;
+		text-decoration: underline;
+		color: #329ca0;
 	}
 	.btn-default:hover {
 		background-color: white;
@@ -267,63 +281,240 @@ body {
 
 	/* enable absolute positioning */
 	.inner-addon {
-	  position: relative;
+		position: relative;
 	}
 
 	/* style glyph */
 	.inner-addon .glyphicon {
-	  position: absolute;
-	  padding: 10px;
-	  pointer-events: none;
+		position: absolute;
+		padding: 10px;
+		pointer-events: none;
 	}
 
 	/* align glyph */
-	.left-addon .glyphicon  { left:  0px;}
-	.right-addon .glyphicon { right: 0px;}
+	.left-addon .glyphicon {
+		left: 0px;
+	}
+	.right-addon .glyphicon {
+		right: 0px;
+	}
 
 	/* add padding  */
-	.left-addon input  { padding-left:  30px; }
-	.right-addon input { padding-right: 30px; }
-
-
-
+	.left-addon input {
+		padding-left: 30px;
+	}
+	.right-addon input {
+		padding-right: 30px;
+	}
 
 	/* enable absolute positioning */
 	.inner-addon {
-	  position: relative;
+		position: relative;
 	}
 
 	/* style glyph */
 	.inner-addon .fa {
-	  position: absolute;
-	  padding: 10px;
-	  pointer-events: none;
-	  color: #8D9294;
+		position: absolute;
+		padding: 10px;
+		pointer-events: none;
+		color: #8D9294;
 	}
 
 	/* align glyph */
-	.left-addon .fa  { left:  0px;}
-	.right-addon .fa { right: 0px;}
+	.left-addon .fa {
+		left: 0px;
+	}
+	.right-addon .fa {
+		right: 0px;
+	}
 
 	/* add padding  */
-	.left-addon input  { padding-left:  30px; }
-	.right-addon input { padding-right: 30px; }
-
-	#signUpInputProps{
-		border:1px solid #dce0e0; margin-top:12px;
-		border-radius:2px;
-		color:#dce0e0;
+	.left-addon input {
+		padding-left: 30px;
+	}
+	.right-addon input {
+		padding-right: 30px;
+	}
+	#signUpInputProps {
+		border: 1px solid #dce0e0;
+		margin-top: 12px;
+		border-radius: 2px;
+		color: #dce0e0;
 		height: 40px;
-		margin-top:5px;
+		margin-top: 5px;
 	}
-
-
-	#signInInputProps{
-		border:1px solid #dce0e0; margin-top:12px;
-		border-radius:2px;
-		color:#dce0e0;
+	#signInInputProps {
+		border: 1px solid #dce0e0;
+		margin-top: 12px;
+		border-radius: 2px;
+		color: #dce0e0;
 		height: 60px;
-		margin-top:5px;
+		margin-top: 5px;
 	}
-	
+	.customDates {
+		font-size: 14px;
+		border: 1px solid #e0e3e3 !important;
+		height: 38px !important;
+		min-width: 37px !important;
+		margin-top: 0px !important;
+	}
+	.daterangepicker th {
+		border: none !important;
+	}
+	.daterangepicker.ltr .calendar.left {
+		margin-right: 15px;
+	}
+	.guest-dropdown {
+		width: 90% !important;
+		border-color: #fff !important;
+	}
+	.search-button {
+		height: 48px;
+		width: 106px;
+		border-color: #ff5a5f;
+		background-color: #ff5a5f;
+		color: #fff;
+		font-size: 18px !important;
+		line-height: 24px !important;
+		padding-top: 11px !important;
+		padding-bottom: 11px !important;
+		font-weight: normal;
+		padding-left: 16px;
+		padding-right: 16px;
+		width: auto;
+		min-width: 106px;
+		float: right !important;
+		vertical-align: middle !important;
+		border-radius: 4px;
+	}
+	.search-button:hover {
+		border-color: #ff7e82;
+		background-color: #ff7e82;
+		color: #fff;
+	}
+	.search-button:active, .search-button:focus, .search-button:visited {
+		border-color: #ff5a5f;
+		background-color: #ff5a5f;
+		color: #fff;
+	}
+	.guest-dropdown>.btn-default {
+		border: none !important;
+		font-size: 19px !important;
+		letter-spacing: -0.5px;
+		line-height: 22px !important;
+		padding-left: 0;
+		border-radius: 0px !important;
+	}
+
+	/* enable absolute positioning */
+	.inner-addon {
+		position: relative;
+	}
+	.guest-dropdown.open>.dropdown-toggle.btn-default {
+		border-bottom: 1px solid #008489 !important;
+		background-color: #fff !important;
+		box-shadow: none !important;
+	}
+	.dropdown-menu>li>a {
+		border-bottom: 1px solid #e0e3e3;
+		padding-bottom: 10px;
+		font-size: 19px;
+		padding-top: 10px;
+		vertical-align: middle;
+	}
+	.dropdown-menu.open {
+		left: -2px;
+		margin-top: 6px;
+		padding: 0 0 0 0;
+		margin-top: 6px;
+	}
+	.daterangepicker_input {
+		display: none;
+	}
+	.daterangepicker.ltr {
+		margin-top: 6px !important;
+	}
+
+	/* style glyph */
+	.inner-addon .glyphicon {
+		position: absolute;
+		padding: 10px;
+		pointer-events: none;
+	}
+
+	/* align glyph */
+	.left-addon .glyphicon {
+		left: 0px;
+	}
+	.right-addon .glyphicon {
+		right: 0px;
+	}
+
+	/* add padding  */
+	.left-addon input {
+		padding-left: 30px;
+	}
+	.right-addon input {
+		padding-right: 30px;
+	}
+
+	/* enable absolute positioning */
+	.inner-addon {
+		position: relative;
+	}
+
+	/* style glyph */
+	.inner-addon .fa {
+		position: absolute;
+		padding: 10px;
+		pointer-events: none;
+		color: #8D9294;
+	}
+
+	/* align glyph */
+	.left-addon .fa {
+		left: 0px;
+	}
+	.right-addon .fa {
+		right: 0px;
+	}
+
+	/* add padding  */
+	.left-addon input {
+		padding-left: 30px;
+	}
+	.right-addon input {
+		padding-right: 30px;
+	}
+	#signUpInputProps {
+		border: 1px solid #dce0e0;
+		margin-top: 12px;
+		border-radius: 2px;
+		color: #dce0e0;
+		height: 60px;
+		margin-top: 5px;
+	}
+	.login-button {
+		margin-top: 0px;
+		border: 1px solid #ff5a5f;
+		width: 82.63px;
+		height: 36px;
+		background: white;
+		color: #ff5a5f;
+		border-color: #ff5a5f;
+	}
+	.login-button:hover {
+		cursor: pointer;
+		color: #ff5a5f;
+		border-color: #ff5a5f;
+	}
+	.modal {
+		overflow-y: hidden !important;
+	}
+	.modal-md {
+		overflow-y: hidden !important;
+	}
+	.signup-modal-md {
+		overflow-y: hidden !important;
+	}
 }

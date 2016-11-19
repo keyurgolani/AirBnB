@@ -51,7 +51,7 @@
 		 				<li class="ul_Seven" >
 		 					<div class="row ul_eight" >
 		 						<div  class="col-lg-12 ul_Nine" data-toggle="modal" data-target=".signup-modal-md">
-		 							<a style="text-decoration:none;" href="#">Sign Up</a>
+		 							<a style="text-decoration:none;" href="#" class="ul_Nine">Sign Up</a>
 		 						</div>
 		 					</div>
 		 				</li>
@@ -79,17 +79,15 @@
 		    	<div class="col-lg-1 col-sm-0">
 		    		
 		    	</div>
-		    	<div class="col-lg-10 col-sm-12" style="border-radius: 0px; background-color:white; padding: 30px 30px 30px 30px;">
+		    	<div class="col-lg-10 col-sm-12" style="border-radius: 3px; background-color:white; padding: 30px 30px 20px 30px;">
 		    		
 		    		<div ng-show="beforeSignUp">
 			    		<div>
-
 							<div class="facebookSignUpButton">
 								<i class="fa fa-facebook" style="color:white; font-size:18px;"></i>
-								<span class="text-center" style="color:white; font-size:16px; margin: 50px 95px 50px 95px">Sign up with facebook</span>
+								<span class="text-center" style="color:white; font-weight:normal; font-size:16px; margin: 50px 95px 50px 95px">Sign up with Facebook</span>
 							</div>
-			    		</div>
-
+		    			</div>
 			    		<div>	
 							<div class="googleSignUpButton">
 								<i class="fa fa-google" style="font-size:18px;"></i>
@@ -115,7 +113,6 @@
 								<span class="text-center" style="font-size:16px; margin-left:90px; color: white;">Sign up with Email</span>
 							</div>
 			    		</div>
-
 			    		<div class="text-justify signUpNotice" style="font-size:11px;">
 			    			By signing up, I agree to Airbnb’s Terms of Service, Nondiscrimination Policy, Payments Terms of Service, Privacy Policy, Guest Refund Policy, and Host Guarantee Terms.
 			    		</div>
@@ -134,7 +131,6 @@
 							</div>
 			    		</div>
 			    	</div>
-
 					<!-- onclickusersignup onclickusersignup onclickusersignup onclickusersignup onclickusersignup onclickusersignup -->
 					<!-- onclickusersignup onclickusersignup onclickusersignup onclickusersignup onclickusersignup onclickusersignup -->
 					<div ng-show="emailSignUp" class="col-lg-12" style="">
@@ -254,17 +250,11 @@
 							<div class="form-group col-lg-3" style="border: 1px solid #dce0e0; border-radius:2px;">
 							 	<input type="number" class="form-control" placeholder="Year"/>
 							</div>
-
-
+				    		<div class="text-justify signUpNotice" style="font-size:0.85em;font-weight:400; height: auto; width: auto;">
+				    			By signing up, I agree to Airbnb <a class="terms-text">Terms of Service</a>, <a class="terms-text">Non-discrimination Policy</a>, <a class="terms-text">Payments Terms of Service</a>, <a class="terms-text">Privacy Policy</a>, <a class="terms-text">Guest Refund Policy</a>, and <a class="terms-text">Host Guarantee Terms.</a>
+				    		</div>
 						    <!-- </div> -->
 						</div>
-						<div class="row text-justify" style="margin-top:10px;">
-							<input type="checkbox" value="">I’d like to receive coupons, promotions, surveys, and updates via email about Airbnb and its partners.
-						</div>
-						<div class="row text-justify" style="margin-top:10px; font-size:11px;">
-							By signing up, I agree to Airbnb’s Terms of Service, Nondiscrimination Policy, Payments Terms of Service, Privacy Policy, Guest Refund Policy, and Host Guarantee Terms.
-						</div>
-
 						<div class="text-center row" style="font-weight:bold;">
 							<div class="signUpWithEmailbutton" ng-click="signUpWithEmail();">
 								<span class="text-center" style="font-size:16px; padding:40px; color: white;">Sign up</span>
@@ -285,8 +275,17 @@
 								Login
 							</div>
 			    		</div>
+		    		</div>
+		    		<!--<div class="row" style="margin-top:20px;">	
+						<div class="col-lg-9 col-sm-12 col-xs-12 text-left" style="margin-top:0px; padding:5px; font-weight:14cm;color:#484848;font-size:16px;">
+							Already have an Airbnb account?
+						</div>
+						<div class="col-lg-3 col-sm-12 col-xs-12 text-right btn btn-default login-button pull-right">
+							Log in
+						</div>
 
-					</div>
+
+					</div>-->
 					<!-- /onclickusersignup /onclickusersignup /onclickusersignup /onclickusersignup /onclickusersignup /onclickusersignup -->
 					<!-- /onclickusersignup /onclickusersignup /onclickusersignup /onclickusersignup /onclickusersignup /onclickusersignup -->
 
@@ -347,13 +346,13 @@
 							</div>
 			    		</div>
 			    		<div class="row">
-				    		<div class="inner-addon right-addon" id="signInInputProps" style="">
+				    		<div class="inner-addon right-addon" id="signUpInputProps" style="">
 						      <i class="fa fa-envelope-o" style="margin-top:10px;"></i>
 						      <input type="text" class="form-control" placeholder="Email Address" style="margin-top:7px; height:45px; font-size:18px;"/>
 						    </div>
 						</div>
 						<div class="row" style="margin-top:2px;">
-				    		<div class="inner-addon right-addon" id="signInInputProps" style="font-size:19px;">
+				    		<div class="inner-addon right-addon" id="signUpInputProps" style="font-size:19px;">
 						      <i class="fa fa-lock" style="margin-top:10px;"></i>
 						      <input type="password" class="form-control" placeholder="Password" style="height:45px; margin-top:7px;"/>
 						    </div>
