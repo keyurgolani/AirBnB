@@ -4,7 +4,7 @@ var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
 var logger = require('../utils/logger');
 var cache = require('../utils/cache');
-var bcrypt = require('bcrypt');
+// var bcrypt = require('bcrypt');
 
 var passport = require('passport');
 // require('./config/passport')(passport); // pass passport for configuration
