@@ -14,13 +14,15 @@ CREATE TABLE `account_details` (
 );
 
 DROP TABLE IF EXISTS `external_users`;
-CREATE TABLE `airbnb`.`external_users` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
-  `website` VARCHAR(45) NOT NULL,
-  `name` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
-  `external_id` INT NOT NULL,
-  PRIMARY KEY (`user_id`));
+CREATE TABLE `external_users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `website` varchar(45) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `external_id` varchar(45) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `email_UNIQUE` (`email`)
+) 
 
 DROP TABLE IF EXISTS `profile_details`;
 CREATE TABLE `profile_details` (
