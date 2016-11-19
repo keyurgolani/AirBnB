@@ -94,8 +94,8 @@ router.post('/register', (req, res, next) => {
 		// handle the callback after facebook has authenticated the user
 		router.get('/auth/facebook/callback',
 			passport.authenticate('facebook', {
-				successRedirect : '/profile',
-				failureRedirect : '/'
+				successRedirect : '/index',
+				failureRedirect : '/index'
 			}));
 
 // facebook -------------------------------
@@ -106,7 +106,7 @@ router.post('/register', (req, res, next) => {
 		// handle the callback after facebook has authorized the user
 		router.get('/connect/facebook/callback',
 			passport.authorize('facebook', {
-				successRedirect : '/profile',
+				successRedirect : '/inex',
 				failureRedirect : '/'
 			}));
 

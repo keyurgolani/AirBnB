@@ -7,6 +7,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 // load up the user model
 // var User       = require('../app/models/user');
 
+var mysql = require('../utils/dao');
+
 // load the auth variables
 var configAuth = require('./auth'); // use this one for testing
 
@@ -129,18 +131,34 @@ module.exports = function(passport) {
         clientID        : configAuth.facebookAuth.clientID,
         clientSecret    : configAuth.facebookAuth.clientSecret,
         callbackURL     : configAuth.facebookAuth.callbackURL,
-        profileFields: ['id', 'displayName','emails',],
+        profileFields: ['id', 'displayName','emails'],
         passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
     function(req, token, refreshToken, profile, done) {
 
         // asynchronous
         process.nextTick(function() {
-            console.log(profile);
             // check if the user is already logged in
-          /*  if (!req.user) {
+            if (!req.user) {
 
-                User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+                var JSON_args = {
+                        'email' : profile.emails[0].value,
+                        'name' : profile.displayName,
+                        'website' : "facebook",
+                        'external_id' : profile.id
+                        };
+
+            console.log(profile);
+                mysql.db_operation('external_users',JSON_args,(error, user) => {
+                           console.log(user);
+                            return done(null, user);
+                        }
+                    );
+
+            }
+
+
+              /*  User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
                     if (err)
                         return done(err);
 

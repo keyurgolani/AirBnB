@@ -2,6 +2,8 @@ var mysql = require('mysql');
 var logger = require("../utils/logger");
 var properties = require('properties-reader')('properties.properties');
 
+
+
 // Transactions will be useful for Cart Checkout Query Execution: https://github.com/mysqljs/mysql#transactions
 
 function getConnection() {
@@ -16,6 +18,7 @@ function getConnection() {
 }
 
 function Pool(connection_no) {
+	
 	this.pool = [];
 	this.isAvailable = [];
 	for (var i = 0; i < connection_no; i++) {
@@ -27,6 +30,7 @@ function Pool(connection_no) {
 }
 
 Pool.prototype.get = (useConnection) => {
+	console.log(this);
 	var cli;
 	var connectionNumber;
 	for (var i = 0; i < this.pool.length; i++) {
@@ -58,14 +62,15 @@ Pool.prototype.release = (connectionNumber, connection) => {
 
 function initializeConnectionPool() {
 	var p = new Pool(properties.get('mysql.poolSize'));
-	return p;
+	GLOBAL.connectionPool = p;
+	// return p;
 }
 
-console.log('Initializing pool with ' + properties.get('mysql.poolSize') + ' connections');
-var connectionPool = initializeConnectionPool();
+// console.log('Initializing pool with ' + properties.get('mysql.poolSize') + ' connections');
+// var connectionPool = initializeConnectionPool();
 
 module.exports = {
-	fetchData : (selectFields, tableName, queryParameters, processResult) => {
+		fetchData : (selectFields, tableName, queryParameters, processResult) => {
 		connectionPool.get((connectionNumber, connection) => {
 			var queryString = "SELECT " + selectFields + " FROM " + tableName;
 			if (queryParameters !== null) {
@@ -86,14 +91,14 @@ module.exports = {
 	},
 
 	insertData : (tableName, insertParameters, processInsertStatus) => {
-		connectionPool.get((connectionNumber, connection) => {
-			var queryString = "INSERT INTO " + tableName + " SET ?";
-			var query = connection.query(queryString, insertParameters, processInsertStatus);
-			connectionPool.release(connectionNumber, connection);
-			logger.logQuery(query.sql);
-		});
+		
+		var connection = getConnection();
+		var queryString = "INSERT INTO " + tableName + " SET ?";
+		connection.query(queryString,insertParameters, processUpdateStatus);
 	},
 
+
+	
 	updateData : (tableName, insertParameters, queryParameters, processUpdateStatus) => {
 		connectionPool.get((connectionNumber, connection) => {
 			var queryString = "UPDATE " + tableName + " SET ? WHERE ?";
@@ -103,3 +108,27 @@ module.exports = {
 		});
 	}
 };
+
+function db_operation(tableName,JSON_args,callback) {
+	console.log("here reached!!!");
+	var connection = getConnection();
+	var sqlQuery = "INSERT INTO " + tableName + " SET ?";
+	console.log(sqlQuery);
+	console.log(JSON_args);
+	connection.query(sqlQuery,JSON_args, function(err, rows, fields) {
+		if (err) {
+			console.log("ERROR: " + err.message);
+		} else { // return err or result
+			console.log("DB Results:" + rows);
+			callback(err, rows);
+		}
+	});
+//	logger.log('info',query+JSON_args);
+	console.log("\nConnection closed..");
+	connection.end();
+}
+
+
+
+module.exports.db_operation=db_operation;
+module.exports.initializeConnectionPool = initializeConnectionPool;
