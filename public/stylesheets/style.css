@@ -243,7 +243,7 @@ body {
 	}
 	.date-picker {
 		font-size: 18px !important;
-		color: #909090 !important;
+		color: #000000 !important;
 		font-weight: 400;
 		font-family: Circular, 'Helvetica Neue', Helvetica, Arial,
 			sans-serif !important;
@@ -263,5 +263,80 @@ body {
 	}
 	.daterangepicker td.start-date.end-date {
 		border-radius: 0px;
+	}
+	.daterangepicker td.available:hover, .daterangepicker th.available:hover
+		{
+		background-color: #66e2da;
+	}
+	.daterangepicker td, .daterangepicker th {
+		border-radius: 0px;
+	}
+	.customDates {
+		font-size: 14px;
+		border: 1px solid #e0e3e3 !important;
+		padding: 10px 10px 10px 10px !important;
+		height: 38px !important;
+		min-width: 37px !important;
+	}
+	.daterangepicker.ltr .calendar.left {
+		margin-right: 15px;
+	}
+	.guest-dropdown {
+		width: 90% !important;
+		border-color: #fff !important;
+	}
+	.search-button {
+		height: 48px;
+		width: 106px;
+		border-color: #ff5a5f;
+		background-color: #ff5a5f;
+		color: #fff;
+		font-size: 18px !important;
+		line-height: 24px !important;
+		padding-top: 11px !important;
+		padding-bottom: 11px !important;
+		font-weight: normal;
+		padding-left: 16px;
+		padding-right: 16px;
+		width: auto;
+		min-width: 106px;
+		float: right !important;
+		vertical-align: middle !important;
+		border-radius: 4px;
+	}
+	.search-button:hover {
+		border-color: #ff7e82;
+		background-color: #ff7e82;
+		color: #fff;
+	}
+	.search-button:active, .search-button:focus, .search-button:visited {
+		border-color: #ff5a5f;
+		background-color: #ff5a5f;
+		color: #fff;
+	}
+	.guest-dropdown>.btn-default {
+		border: none !important;
+		font-size: 19px !important;
+		letter-spacing: -0.5px;
+		line-height: 22px !important;
+		padding-left: 0;
+		border-radius: 0px!important;
+	}
+	.guest-dropdown.open>.dropdown-toggle.btn-default {
+		border-bottom: 1px solid #008489 !important;
+		background-color: #fff!important;
+		box-shadow: none!important;
+	}
+	.dropdown-menu>li>a {
+		border-bottom: 1px solid #e0e3e3;
+		padding-bottom: 20px;
+		padding-top: 20px;
+		font-weight: bold;
+		vertical-align: middle;
+	}
+	
+	.dropdown-menu.open {
+		margin-top: 6px;
+		padding: 0 0 0 0;
 	}
 }
