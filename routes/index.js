@@ -82,4 +82,8 @@ router.post('/register', function(req, res, next) {
 
 });
 
+router.get('/listing', function(req, res, next) {
+	res.render('listing');
+});
+
 module.exports = router;
