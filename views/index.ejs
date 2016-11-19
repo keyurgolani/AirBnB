@@ -29,10 +29,36 @@
 						</div>
 						<div class="col-md-4 search-box">
 							<span class="search-box-text">When</span>
-							<input type="text" class="form-control ul_Three search-bar-placeholder" placeholder="Check In">
+							<input type="text" class="form-control date-picker search-bar-placeholder" placeholder="Check In		⟶ Check Out" name="daterange" value="">
 						</div>
 						<div class="col-md-4 search-box right-search-box">
-							<span class="search-box-text">Guests</span>
+							<div class="col-md-7">
+								<span class="search-box-text">Guests</span>
+								<select class="selectpicker guest-dropdown">
+								  <option>1 guest</option>
+								  <hr class="seperator" />
+								  <option>2 guests</option>
+								  <hr class="seperator" />
+								  <option>3 guests</option>
+								  <hr class="seperator" />
+								  <option>4 guests</option>
+								  <hr class="seperator" />
+								  <option>5 guests</option>
+								  <hr class="seperator" />
+								  <option>6 guests</option>
+								  <hr class="seperator" />
+								  <option>7 guests</option>
+								  <hr class="seperator" />
+								  <option>8 guests</option>
+								  <hr class="seperator" />
+								  <option>9 guests</option>
+								  <hr class="seperator" />
+								  <option>10 guests</option>
+								</select>
+							</div>
+							<div class="col-md-5" style="height:56px; padding:5px;">
+								<button class="form-control btn btn-primary search-button">Search</button>
+							</div>
 						</div>
 					</div>
 					<div class="row explore-text">
@@ -564,6 +590,15 @@
 			    $('#SJC').carousel({
 			        interval: 0
 			    })
+			});
+			$(function() {
+    			$('input[name="daterange"]').daterangepicker({
+    				autoApply: true,
+    				linkedCalendars: true,
+    				isCustomDate: function() {
+    					return 'customDates';
+    				}
+    			}).val('');
 			});
 		</script>
 	</main>

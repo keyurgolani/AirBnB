@@ -12,11 +12,11 @@ body {
 /* eMail : vedvasa@gmail.com; */
 @media ( min-width : 700px) {
 	.navbar {
-		min-height   : 60px;
+		min-height: 60px;
 		border-bottom: 0px solid #dce0e0;
-		padding      : 0px 0px 0px 0px;
-		margin       : 0px 0px 0px 0px;
-		border-radius:0px;
+		padding: 0px 0px 0px 0px;
+		margin: 0px 0px 0px 0px;
+		border-radius: 0px;
 	}
 	#verticalAlign {
 		min-height: 45px;
@@ -26,13 +26,13 @@ body {
 	}
 	.navbar-brand {
 		min-height: 60px;
-		width     : 140px;
+		width: 140px;
 		/* padding:  13px 0px 13px 0px; */
 	}
 	#myNavbar {
 		padding: 0px 10px 0px 10px;
 	}
-	.navbar-nav{
+	.navbar-nav {
 		height: 60px;
 	}
 	#header_logo {
@@ -114,7 +114,7 @@ body {
 	.ul_Four {
 		border-right: 0px solid #dce0e0;
 		line-height: 60px;
-		padding:  0px 20px 0px 0px;
+		padding: 0px 20px 0px 0px;
 	}
 	.ul_Five {
 		margin: 0px 0px 0px 0px;
@@ -128,7 +128,7 @@ body {
 		border-right: 0px solid #dce0e0;
 		line-height: 60px;
 		padding: 0px 20px 0px 20px;
-		font-size:13.5px;
+		font-size: 13.5px;
 	}
 	.ul_Seven {
 		border-right: 0px solid #dce0e0;
@@ -151,7 +151,7 @@ body {
 		padding: 0px 10px 0px 0px;
 		margin: 22px 0px 0px 22px;
 	}
-	.header > .pac-container {
+	.header>.pac-container {
 		margin-left: -40px;
 	}
 	.pac-container {
@@ -159,11 +159,11 @@ body {
 		border-top: 0;
 		font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
 		margin: 13px 0px 0px -42px;
-		width: 65%!important;
+		width: 65% !important;
 	}
 	#search-bar-placeholder .pac-container {
-		margin-left: -22px!important;
-		width: 75%!important;
+		margin-left: -22px !important;
+		width: 75% !important;
 	}
 	.pac-item {
 		background: #fff !important;
@@ -183,7 +183,7 @@ body {
 	.pac-item:hover {
 		background-color: #FF5A5F !important;
 	}
-	.navbar-fixed-top{
+	.navbar-fixed-top {
 		background-color: white;
 	}
 	.search-bar-placeholder {
@@ -193,52 +193,137 @@ body {
 		border-radius: 0px;
 	}
 	.search-bar-placeholder:focus {
-		border-bottom: 1px solid #008489!important;
+		border-bottom: 1px solid #008489 !important;
 	}
 	.search-bar-placeholder:active {
-		border-bottom: 1px solid #008489!important;
+		border-bottom: 1px solid #008489 !important;
 	}
-	.facebookSignUpButton{
+	.facebookSignUpButton {
 		background-color: #3b5998;
 		border-radius: 3px;
 		padding: 20px 20px 20px 20px;
 	}
-	.googleSignUpButton{
+	.googleSignUpButton {
 		border-radius: 3px;
 		padding: 20px 20px 20px 20px;
-		border:  1px solid #dce0e0;
-		margin-top:  10px;
+		border: 1px solid #dce0e0;
+		margin-top: 10px;
 	}
-	.signUpWithEmailbutton{
+	.signUpWithEmailbutton {
 		background-color: #ff5a5f;
 		border-radius: 3px;
 		padding: 20px 20px 20px 20px;
-		border:  1px solid #dce0e0;
-		margin-top:  10px;
+		border: 1px solid #dce0e0;
+		margin-top: 10px;
 	}
-	.signUpNotice{
+	.signUpNotice {
 		padding: 15px 5px 15px 5px;
 	}
-	.btn-default:hover{
+	.btn-default:hover {
 		background-color: white;
 	}
-	.btn-default:active{
+	.btn-default:active {
 		background-color: white;
 	}
 	::-webkit-input-placeholder { /* WebKit browsers */
-		font-size: 18px;
+		font-size: 14px;
 		letter-spacing: -0.5px;
 	}
 	:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-		font-size: 18px;
+		font-size: 14px;
 		letter-spacing: -0.5px;
 	}
 	::-moz-placeholder { /* Mozilla Firefox 19+ */
-		font-size: 18px;
+		font-size: 14px;
 		letter-spacing: -0.5px;
 	}
 	:-ms-input-placeholder { /* Internet Explorer 10+ */
-		font-size: 18px;
+		font-size: 14px;
 		letter-spacing: -0.5px;
 	}
+	.date-picker {
+		font-size: 18px !important;
+		color: #909090 !important;
+		font-weight: 400;
+		font-family: Circular, 'Helvetica Neue', Helvetica, Arial,
+			sans-serif !important;
+	}
+	.daterangepicker td.in-range {
+		background-color: #66e2da;
+		border-radius: 0;
+	}
+	.daterangepicker td.active, .daterangepicker td.active:hover {
+		background-color: #00a699;
+	}
+	.daterangepicker td.start-date {
+		border-radius: 0px 0 0 0px;
+	}
+	.daterangepicker td.end-date {
+		border-radius: 0 0px 0px 0;
+	}
+	.daterangepicker td.start-date.end-date {
+		border-radius: 0px;
+	}
+
+	/* enable absolute positioning */
+	.inner-addon {
+	  position: relative;
+	}
+
+	/* style glyph */
+	.inner-addon .glyphicon {
+	  position: absolute;
+	  padding: 10px;
+	  pointer-events: none;
+	}
+
+	/* align glyph */
+	.left-addon .glyphicon  { left:  0px;}
+	.right-addon .glyphicon { right: 0px;}
+
+	/* add padding  */
+	.left-addon input  { padding-left:  30px; }
+	.right-addon input { padding-right: 30px; }
+
+
+
+
+	/* enable absolute positioning */
+	.inner-addon {
+	  position: relative;
+	}
+
+	/* style glyph */
+	.inner-addon .fa {
+	  position: absolute;
+	  padding: 10px;
+	  pointer-events: none;
+	  color: #8D9294;
+	}
+
+	/* align glyph */
+	.left-addon .fa  { left:  0px;}
+	.right-addon .fa { right: 0px;}
+
+	/* add padding  */
+	.left-addon input  { padding-left:  30px; }
+	.right-addon input { padding-right: 30px; }
+
+	#signUpInputProps{
+		border:1px solid #dce0e0; margin-top:12px;
+		border-radius:2px;
+		color:#dce0e0;
+		height: 40px;
+		margin-top:5px;
+	}
+
+
+	#signInInputProps{
+		border:1px solid #dce0e0; margin-top:12px;
+		border-radius:2px;
+		color:#dce0e0;
+		height: 60px;
+		margin-top:5px;
+	}
+	
 }
