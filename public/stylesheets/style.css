@@ -8,8 +8,6 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-/* Author: Ved Vasavada */
-/* eMail : vedvasa@gmail.com; */
 @media ( min-width : 700px) {
 	.navbar {
 		min-height: 60px;
@@ -122,13 +120,15 @@ body {
 	.btn-style {
 		border: 0px solid #D7D7D7;
 		padding: 3px 15px 3px 15px;
-		font-size: 13.5px;
+		font-size: 14px;
+		color: black;
 	}
 	.ul_Six {
 		border-right: 0px solid #dce0e0;
 		line-height: 60px;
 		padding: 0px 20px 0px 20px;
-		font-size: 13.5px;
+		font-size: 14px;
+		color: black;
 	}
 	.ul_Seven {
 		border-right: 0px solid #dce0e0;
@@ -140,16 +140,21 @@ body {
 		padding:;
 	}
 	.ul_Nine {
-		font-size: 13.5px;
+		font-size: 14px;
+		color: black;
+	}
+	.ul_Nine:hover {
+		color: black;
 	}
 	.ul_Ten {
 		padding: 0px 0px 0px 0px;
 		margin: 0px 0px 0px 0px;
 	}
 	.ul_Eleven {
-		font-size: 13.5px;
 		padding: 0px 10px 0px 0px;
 		margin: 22px 0px 0px 22px;
+		font-size: 14px;
+		color: black;
 	}
 	.header>.pac-container {
 		margin-left: -40px;
@@ -200,24 +205,33 @@ body {
 	}
 	.facebookSignUpButton {
 		background-color: #3b5998;
-		border-radius: 3px;
+		border-radius: 5px;
 		padding: 20px 20px 20px 20px;
 	}
 	.googleSignUpButton {
-		border-radius: 3px;
+		border-radius: 5px;
 		padding: 20px 20px 20px 20px;
 		border: 1px solid #dce0e0;
 		margin-top: 10px;
 	}
 	.signUpWithEmailbutton {
 		background-color: #ff5a5f;
-		border-radius: 3px;
+		border-radius: 5px;
 		padding: 20px 20px 20px 20px;
 		border: 1px solid #dce0e0;
 		margin-top: 10px;
 	}
 	.signUpNotice {
 		padding: 15px 5px 15px 5px;
+	}
+	.terms-text {
+		color: #329ca0;
+		font-weight: bold;
+	}
+	.terms-text:hover {
+		cursor: pointer;
+		text-decoration: underline;
+		color: #329ca0; 
 	}
 	.btn-default:hover {
 		background-color: white;
@@ -370,5 +384,21 @@ body {
 	}
 	.daterangepicker.ltr {
 		margin-top: 6px !important;
+	}
+	
+	.login-button {
+		margin-top:0px; 
+		border: 1px solid #ff5a5f;
+		width: 82.63px;
+		height: 36px;
+    	background: white;
+    	color: #ff5a5f;
+		border-color: #ff5a5f;
+	}
+	
+	.login-button:hover {
+		cursor: pointer;
+		color: #ff5a5f;
+		border-color: #ff5a5f;
 	}
 }
