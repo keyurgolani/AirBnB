@@ -30,11 +30,11 @@ CREATE TABLE `profile_details` (
   PRIMARY KEY (`profile_id`)
 );
 
-DROP TABLE IF EXISTS `categories`;
-CREATE TABLE `categories` (
-  `category_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
-  `category` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`category_id`)
+DROP TABLE IF EXISTS `property_types`;
+CREATE TABLE `property_types` (
+  `property_type_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
+  `property_type` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`property_type_id`)
 );
 
 DROP TABLE IF EXISTS `room_types`;
@@ -48,9 +48,11 @@ DROP TABLE IF EXISTS `property_details`;
 CREATE TABLE `property_details` (
   `property_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `owner_id` INT(10) ZEROFILL NOT NULL,
-  `category_id` INT(10) ZEROFILL NOT NULL,
+  `property_type_id` INT(10) ZEROFILL NOT NULL,
   `room_type_id` INT(10) ZEROFILL NOT NULL,
   `house_rules` VARCHAR(10000) NULL,
+  `longitude` FLOAT(10,6) NOT NULL,
+  `latitude` FLOAT(10,6) NOT NULL,
   `st_address` VARCHAR(255) NOT NULL,
   `apt` VARCHAR(20) NOT NULL,
   `city` VARCHAR(100) NOT NULL,
@@ -152,3 +154,75 @@ CREATE TABLE `card_details` (
   `cvv` NUMERIC(4) NOT NULL,
   PRIMARY KEY (`card_id`)
 );
+
+INSERT INTO `property_types` SET `property_type` = 'House';
+INSERT INTO `property_types` SET `property_type` = 'Apartment';
+INSERT INTO `property_types` SET `property_type` = 'Bed & Breakfast';
+INSERT INTO `property_types` SET `property_type` = 'Boutique hotel';
+INSERT INTO `property_types` SET `property_type` = 'Nature lodge';
+INSERT INTO `property_types` SET `property_type` = 'Hostel';
+INSERT INTO `property_types` SET `property_type` = 'Timeshare';
+INSERT INTO `property_types` SET `property_type` = 'Serviced apartment';
+INSERT INTO `property_types` SET `property_type` = 'Minsu (Taiwan)';
+INSERT INTO `property_types` SET `property_type` = 'Ryokan (Japan)';
+INSERT INTO `property_types` SET `property_type` = 'Pension (Korea)';
+INSERT INTO `property_types` SET `property_type` = 'Heritage hotel (India)';
+INSERT INTO `property_types` SET `property_type` = 'Boat';
+INSERT INTO `property_types` SET `property_type` = 'Bungalow';
+INSERT INTO `property_types` SET `property_type` = 'Cabin';
+INSERT INTO `property_types` SET `property_type` = 'Castle';
+INSERT INTO `property_types` SET `property_type` = 'Cave';
+INSERT INTO `property_types` SET `property_type` = 'Chalet';
+INSERT INTO `property_types` SET `property_type` = 'Condominium';
+INSERT INTO `property_types` SET `property_type` = 'Dorm';
+INSERT INTO `property_types` SET `property_type` = 'Earth House';
+INSERT INTO `property_types` SET `property_type` = 'Guesthouse';
+INSERT INTO `property_types` SET `property_type` = 'Hut';
+INSERT INTO `property_types` SET `property_type` = 'Igloo';
+INSERT INTO `property_types` SET `property_type` = 'Island';
+INSERT INTO `property_types` SET `property_type` = 'Lighthouse';
+INSERT INTO `property_types` SET `property_type` = 'Loft';
+INSERT INTO `property_types` SET `property_type` = 'Plane';
+INSERT INTO `property_types` SET `property_type` = 'Camper/RV';
+INSERT INTO `property_types` SET `property_type` = 'Tent';
+INSERT INTO `property_types` SET `property_type` = 'Tipi';
+INSERT INTO `property_types` SET `property_type` = 'Townhouse';
+INSERT INTO `property_types` SET `property_type` = 'Train';
+INSERT INTO `property_types` SET `property_type` = 'Treehouse';
+INSERT INTO `property_types` SET `property_type` = 'Villa';
+INSERT INTO `property_types` SET `property_type` = 'Yurt';
+INSERT INTO `property_types` SET `property_type` = 'Other';
+
+INSERT INTO `room_types` SET `room_type` = 'Entire home/apt';
+INSERT INTO `room_types` SET `room_type` = 'Private room';
+INSERT INTO `room_types` SET `room_type` = 'Shared room';
+
+INSERT INTO `amenities` SET `amenity` = 'Pool';
+INSERT INTO `amenities` SET `amenity` = 'Gym';
+INSERT INTO `amenities` SET `amenity` = 'Smoking allowed';
+INSERT INTO `amenities` SET `amenity` = 'Doorman';
+INSERT INTO `amenities` SET `amenity` = 'Breakfast';
+INSERT INTO `amenities` SET `amenity` = 'Free parking on premises';
+INSERT INTO `amenities` SET `amenity` = 'Cable TV';
+INSERT INTO `amenities` SET `amenity` = 'Pets allowed';
+INSERT INTO `amenities` SET `amenity` = 'Suitable for events';
+INSERT INTO `amenities` SET `amenity` = 'Indoor fireplace';
+INSERT INTO `amenities` SET `amenity` = 'Wheelchair accessible';
+INSERT INTO `amenities` SET `amenity` = 'Dryer';
+INSERT INTO `amenities` SET `amenity` = 'TV';
+INSERT INTO `amenities` SET `amenity` = 'Buzzer/wireless intercom';
+INSERT INTO `amenities` SET `amenity` = 'Hangers';
+INSERT INTO `amenities` SET `amenity` = 'Hair dryer';
+INSERT INTO `amenities` SET `amenity` = 'Iron';
+INSERT INTO `amenities` SET `amenity` = 'Shampoo';
+INSERT INTO `amenities` SET `amenity` = 'Elevator in building';
+INSERT INTO `amenities` SET `amenity` = 'Internet';
+INSERT INTO `amenities` SET `amenity` = 'Heating';
+INSERT INTO `amenities` SET `amenity` = 'Laptop friendly workspace';
+INSERT INTO `amenities` SET `amenity` = 'Washer';
+INSERT INTO `amenities` SET `amenity` = 'Family/kid friendly';
+INSERT INTO `amenities` SET `amenity` = 'Essentials';
+INSERT INTO `amenities` SET `amenity` = 'Wireless Internet';
+INSERT INTO `amenities` SET `amenity` = 'Kitchen';
+INSERT INTO `amenities` SET `amenity` = 'Air conditioning';
+INSERT INTO `amenities` SET `amenity` = 'Hot tub';
