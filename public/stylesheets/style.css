@@ -580,6 +580,10 @@ body {
 	font-family: Circular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.search-bar:focus {
+	border: 1px solid #aaa!important; 
+}
+
 .continue-button {
 	height: 38px;
 	width: 112.53px;
