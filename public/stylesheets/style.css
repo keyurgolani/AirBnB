@@ -240,24 +240,24 @@ body {
 		background-color: white;
 	}
 	::-webkit-input-placeholder { /* WebKit browsers */
-		font-size: 18px;
+		font-size: 14px;
 		letter-spacing: -0.5px;
 	}
 	:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-		font-size: 18px;
+		font-size: 14px;
 		letter-spacing: -0.5px;
 	}
 	::-moz-placeholder { /* Mozilla Firefox 19+ */
-		font-size: 18px;
+		font-size: 14px;
 		letter-spacing: -0.5px;
 	}
 	:-ms-input-placeholder { /* Internet Explorer 10+ */
-		font-size: 18px;
+		font-size: 14px;
 		letter-spacing: -0.5px;
 	}
 	.date-picker {
 		font-size: 18px !important;
-		color: #000000 !important;
+		color: #909090 !important;
 		font-weight: 400;
 		font-family: Circular, 'Helvetica Neue', Helvetica, Arial,
 			sans-serif !important;
@@ -278,114 +278,58 @@ body {
 	.daterangepicker td.start-date.end-date {
 		border-radius: 0px;
 	}
-	.daterangepicker td.available:hover, .daterangepicker th.available:hover
-		{
-		background-color: #66e2da;
+
+	/* enable absolute positioning */
+	.inner-addon {
+	  position: relative;
 	}
-	.daterangepicker td, .daterangepicker th {
-		border-radius: 0px;
+
+	/* style glyph */
+	.inner-addon .glyphicon {
+	  position: absolute;
+	  padding: 10px;
+	  pointer-events: none;
 	}
-	.customDates {
-		font-size: 14px;
-		border: 1px solid #e0e3e3 !important;
-		height: 38px !important;
-		min-width: 37px !important;
-		margin-top: 0px !important;
+
+	/* align glyph */
+	.left-addon .glyphicon  { left:  0px;}
+	.right-addon .glyphicon { right: 0px;}
+
+	/* add padding  */
+	.left-addon input  { padding-left:  30px; }
+	.right-addon input { padding-right: 30px; }
+
+
+
+
+	/* enable absolute positioning */
+	.inner-addon {
+	  position: relative;
 	}
-	.daterangepicker th {
-		border: none !important;
+
+	/* style glyph */
+	.inner-addon .fa {
+	  position: absolute;
+	  padding: 10px;
+	  pointer-events: none;
+	  color: #8D9294;
 	}
-	.daterangepicker.ltr .calendar.left {
-		margin-right: 15px;
+
+	/* align glyph */
+	.left-addon .fa  { left:  0px;}
+	.right-addon .fa { right: 0px;}
+
+	/* add padding  */
+	.left-addon input  { padding-left:  30px; }
+	.right-addon input { padding-right: 30px; }
+
+	#signUpInputProps{
+		border:1px solid #dce0e0; margin-top:12px;
+		border-radius:2px;
+		color:#dce0e0;
+		height: 60px;
+		margin-top:5px;
 	}
-	.guest-dropdown {
-		width: 90% !important;
-		border-color: #fff !important;
-	}
-	.search-button {
-		height: 48px;
-		width: 106px;
-		border-color: #ff5a5f;
-		background-color: #ff5a5f;
-		color: #fff;
-		font-size: 18px !important;
-		line-height: 24px !important;
-		padding-top: 11px !important;
-		padding-bottom: 11px !important;
-		font-weight: normal;
-		padding-left: 16px;
-		padding-right: 16px;
-		width: auto;
-		min-width: 106px;
-		float: right !important;
-		vertical-align: middle !important;
-		border-radius: 4px;
-	}
-	.search-button:hover {
-		border-color: #ff7e82;
-		background-color: #ff7e82;
-		color: #fff;
-	}
-	.search-button:active, .search-button:focus, .search-button:visited {
-		border-color: #ff5a5f;
-		background-color: #ff5a5f;
-		color: #fff;
-	}
-	.guest-dropdown>.btn-default {
-		border: none !important;
-		font-size: 19px !important;
-		letter-spacing: -0.5px;
-		line-height: 22px !important;
-		padding-left: 0;
-		border-radius: 0px !important;
-	}
-	.guest-dropdown.open>.dropdown-toggle.btn-default {
-		border-bottom: 1px solid #008489 !important;
-		background-color: #fff !important;
-		box-shadow: none !important;
-	}
-	.dropdown-menu>li>a {
-		border-bottom: 1px solid #e0e3e3;
-		padding-bottom: 20px;
-		padding-top: 20px;
-		font-weight: bold;
-		vertical-align: middle;
-	}
-	.dropdown-menu.open {
-		margin-top: 6px;
-		padding: 0 0 0 0;
-	}
-	.dropdown-menu.open:before {
-		content: "";
-		position: absolute;
-		left: 6px;
-		top: -10px;
-		width: 0;
-		height: 0;
-		border-style: solid;
-		border-width: 0 10px 10px 10px;
-		border-color: transparent transparent #fae0bb transparent;
-		z-index: 9999;
-	}
-	.dropdown-menu.open:after {
-		content: "";
-		position: absolute;
-		left: 6px;
-		top: -22px;
-		width: 0;
-		height: 0;
-		border-style: solid;
-		border-width: 0 17px 17px 17px;
-		border-color: transparent transparent #ffffff transparent;
-		z-index: 9998;
-	}
-	.daterangepicker_input {
-		display: none;
-	}
-	.daterangepicker.ltr {
-		margin-top: 6px !important;
-	}
-	
 	.login-button {
 		margin-top:0px; 
 		border: 1px solid #ff5a5f;
