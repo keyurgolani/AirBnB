@@ -4,10 +4,16 @@ var favicon = require('serve-favicon');
 var autoLogger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var responseTime = require('response-time')
+var responseTime = require('response-time');
 var mongo = require('mongodb');
 //Reference for monk usage and documentation: https://automattic.github.io/monk/
 var monk = require('monk');
+
+var passport = require('passport');
+require('./config/passport')(passport); // pass passport for configuration
+
+
+// app.use(passport.session()); // persistent login sessions
 
 var properties = require('properties-reader')('properties.properties');
 
@@ -28,6 +34,8 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use(passport.initialize());
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(autoLogger('dev'));

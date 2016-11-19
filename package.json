@@ -32,6 +32,8 @@
     "ng-focus-if": "^1.0.7",
     "node-uuid": "^1.4.7",
     "nodemon": "^1.11.0",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
     "properties-reader": "0.0.15",
     "request": "^2.75.0",
     "response-time": "^2.3.1",
