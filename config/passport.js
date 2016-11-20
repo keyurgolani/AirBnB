@@ -16,18 +16,18 @@ module.exports = function(passport) {
 	 */
 
 	// Serializing the user for session
-	passport.serializeUser(function(userObject, done) {
-		done(null, userObject.user_id);
-	});
+//	passport.serializeUser(function(userObject, done) {
+//		done(null, userObject.user_id);
+//	});
 
 	// Deserializing the user for session
-	passport.deserializeUser(function(user_id, done) {
-		//        User.findById(user_id, function(err, userObject) {
-		//            done(err, userObject);
-		//        });
-		// TODO: Need to refine this logic to fetch the userObject from database based on the user_id providedand return to done function.
-		done(null, null);
-	});
+//	passport.deserializeUser(function(user_id, done) {
+//		//        User.findById(user_id, function(err, userObject) {
+//		//            done(err, userObject);
+//		//        });
+//		// TODO: Need to refine this logic to fetch the userObject from database based on the user_id provided and return to done function.
+//		done(null, null);
+//	});
 
 	// =========================================================================
 	// LOCAL LOGIN =============================================================
