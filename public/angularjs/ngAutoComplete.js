@@ -65,10 +65,13 @@ angular.module("ngAutocomplete", [])
 				}
 				initOpts()
 
+
+				// A function that computes degrees to radians
 				function deg2rad(deg) {
 				  return deg * (Math.PI/180)
 				}
 
+				// A function to calculate the km radius within which properties will be shown
 				function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
 				  var R = 6371; // Radius of the earth in km
 				  var dLat = deg2rad(lat2-lat1);  // deg2rad below
@@ -92,6 +95,7 @@ angular.module("ngAutocomplete", [])
 				// 1 mile = 0.621371 km
 
 				console.log('getDistanceFromLatLonInKm', getDistanceFromLatLonInKm(37.35410789999999, -121.95523559999998, 37.5482697, -121.98857190000001));
+				//converting km to miles
 				console.log('getDistanceFromLatLonInMiles', (getDistanceFromLatLonInKm(37.35410789999999, -121.95523559999998, 37.5482697, -121.98857190000001)) * 0.621371);
 
 
@@ -103,17 +107,7 @@ angular.module("ngAutocomplete", [])
 						$scope.$apply(function() {
 							//              if ($scope.details) {
 							$scope.details = $scope.gPlace.getPlace();
-							//console.log($scope.details.geometry.location);
-							console.log($scope.details.geometry.location.lat());
-
-							// $scope.place1_lat = $scope.details.geometry.location.lat();
-							// console.log('$scope.place1_lat', $scope.place1_lat);
-
-							// $scope.placeOne
-							// console.log('$scope.placeOne', $scope.placeOne);
-							// console.log('$scope.placeTwo', $scope.placeTwo);
-							
-
+							console.log($scope.details.geometry.location.lat());							
 							console.log($scope.details.geometry.location.lng());
 							//              }
 							$scope.ngAutocomplete = element.val();

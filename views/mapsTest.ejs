@@ -21,35 +21,46 @@
         lat: 37.279518,
         lng: -121.867905
       });
-      map.addMarker({
-        lat: 37.279518,
-        lng: -121.867905,
-        title: 'Lima',
-        details: {
-          database_id: 42,
-          author: 'HPNeo'
-        },
-        click: function(e){
-          if(console.log)
-            console.log(e);
-          alert('You clicked in this marker');
-        }
-      });
-      map.addMarker({
-        lat: -12.043333,
-    lng: -77.028333,
-        title: 'Marker with InfoWindow',
-        infoWindow: {
-          content: '<p>HTML Content</p>'
-        }
-      });
+      // map.addMarker({
+      //   lat: 37.279518,
+      //   lng: -121.867905,
+      //   title: 'Lima',
+      //   details: {
+      //     database_id: 42,
+      //     author: 'HPNeo'
+      //   },
+      //   click: function(e){
+      //     if(console.log)
+      //       console.log(e);
+      //     alert('You clicked in this marker');
+      //   }
+      // });
+      // map.addMarker({
+      //   lat: -12.043333,
+      //   lng: -77.028333,
+      //   title: 'Marker with InfoWindow',
+      //   infoWindow: {
+      //     content: '<p>HTML Content</p>'
+      //   }
+      // });
       map.drawOverlay({
         lat: 37.279518,
         lng: -121.867905,
-    content: '<div class="overlay">Lima</div>'
+    content: '<div class="overlay">$<b>45</b><div class="overlay_arrow above"></div></div>'
+      });
+      map.drawOverlay({
+        lat: 37.277354,
+        lng: -121.861289,
+    content: '<div class="overlay">$<b>75</b><div class="overlay_arrow above"></div></div>'
+      });
+      map.drawOverlay({
+        lat: 37.277886,
+        lng: -121.86595999999997,
+    content: '<div class="overlay">$<b>200</b><span class="glyphicon glyphicon-flash" style="color:#FFD980;"></span><div class="overlay_arrow above"></div></div>'
       });
     });
   </script>
+  <!--  content: '<div class="dialogbox"><div class="body"><div class="tip tip-down"><div class="message">$45<div></div></div></div>' -->
 </head>
 <body ng-app="airBnB">
   <header><% include ./header %></header>
