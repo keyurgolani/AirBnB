@@ -77,4 +77,4 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 			return generatedString;
 		};
-	});
+	})

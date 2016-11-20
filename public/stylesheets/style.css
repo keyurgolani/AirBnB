@@ -372,6 +372,11 @@ body {
 		width: 90% !important;
 		border-color: #fff !important;
 	}
+
+	.guest-dropdown-searchListing {
+		border:1px solid #AAAAAA !important; border-radius:2px; width:80% !important; height:32px;
+	}
+
 	.search-button {
 		height: 48px;
 		width: 106px;

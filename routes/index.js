@@ -144,4 +144,9 @@ router.get('/mapsTest', function(req, res, next) {
 	res.render('mapsTest');
 });
 
+
+router.get('/searchListing', function(req, res, next) {
+	res.render('searchListing');
+});
+
 module.exports = router;
