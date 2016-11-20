@@ -108,11 +108,12 @@
 				</div>
 				<div class="row" style="margin-top: 15px;">
 					<div class="col-md-12">
-					    <div style="width:320px;height:67px;"><select class="selectpicker dropdown-box listing property-box">
-							<option>1 bed</option>
-						</select>
+					    <div class="address-box form-control increment-box">
+					    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of beds" ng-model="item.item_count"/></div>
+							<span ng-click="item.item_count = item.item_count - 1" class="count-button">-</span>
+							<span ng-click="item.item_count = item.item_count + 1" class="count-button" style="border-right:none;">+</span>
 						</div>
-					    <div style="width:320px;height:67px;"><select class="selectpicker dropdown-box listing property-box">
+					    <div style="width:320px;height:67px;"><select class="selectpicker listing property-box">
 							<option>Real Bed</option>
 							<option>Pull-out Sofa</option>
 							<option>Airbed</option>
@@ -122,29 +123,13 @@
 						</div>
 					</div>
 				</div>
-				<div class="row" style="margin-top: 70px;">
+				<div class="row" style="margin-top: 70px; margin-bottom: 20px;">
 					<span class="h3 que_2">How many guests can stay?</span>
 				</div>
-				<div class="row">
-					<select class="selectpicker dropdown-box listing property-box curve-border">
-						<option>Select one</option>
-						<option>for 1 guest</option>
-						<option>for 2 guests</option>
-						<option>for 3 guests</option>
-						<option>for 4 guests</option>
-						<option>for 5 guests</option>
-						<option>for 6 guests</option>
-						<option>for 7 guests</option>
-						<option>for 8 guests</option>
-						<option>for 9 guests</option>
-						<option>for 10 guests</option>
-						<option>for 11 guests</option>
-						<option>for 12 guests</option>
-						<option>for 13 guests</option>
-						<option>for 14 guests</option>
-						<option>for 15 guests</option>
-						<option>for 16 guests</option>
-					</select>
+				<div class="address-box form-control increment-box">
+			    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of guests" ng-model="item.item_count"/></div>
+					<div ng-click="item.item_count = item.item_count - 1" class="count-button">-</div>
+					<div ng-click="item.item_count = item.item_count + 1" class="count-button" style="border-right:none;">+</div>
 				</div>
 				<div class="row que_1" style="margin-top: 30px;>
 					<span class="h3 que_1">How many bathrooms?</span>
@@ -474,7 +459,7 @@
 					<span class="h3 que_1">Your local laws and taxes</span>
 				</div>
 				<div class="row law-second-line">
-					<span class="h3 law-second-line">Take a moment to review your local laws. We want to make sure you’ve got everything you need to get off to a great start.</span>
+					<span class="h3 law-second-line">Take a moment to review your local laws. We want to make sure you've got everything you need to get off to a great start.</span>
 				</div>
 				<div class="row law-third-line">
 					<span class="h3 law-third-line">Please educate yourself about the laws in your jurisdiction before listing your space.</span>
@@ -491,16 +476,6 @@
 			</div>
 			<div class="col-md-6"></div>
 		</div>
-		<script>
-			$('#radioBtn a').on('click', function() {
-    			var sel = $(this).data('title');
-    			var tog = $(this).data('toggle');
-    			$('#'+tog).prop('value',sel);
-    			
-    			$('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
-    			$('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('active').addClass('notActive');
-			});
-		</script>
 	</main>
 	</body>
 </html>
