@@ -24,7 +24,6 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/addProperty', (req, res, next) => {
-	console.log(req.body);
 	//	if(req.session.loggedInUser) {
 	//		var owner_id = req.session.loggedInUser.user_id;
 	var owner_id = 1;
@@ -54,7 +53,6 @@ router.post('/addProperty', (req, res, next) => {
 		'zip' : zip,
 		'active' : active
 	}, (error, result) => {
-		console.log(error, result);
 		if (error) {
 			res.send({
 				'statusCode' : 500
@@ -148,20 +146,12 @@ router.get('/auth/facebook', passport.authenticate('facebook', {
 }));
 
 // Post Authentication Logic
-router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-	successRedirect : '/',
-	failureRedirect : '/'
-}));
-
-// Signup Request to Facebook
-router.get('/connect/facebook', passport.authorize('facebook', {
-	scope : 'email'
-}));
-
-// Post Authorization Logic
-router.get('/connect/facebook/callback', passport.authorize('facebook', {
-	successRedirect : '/index',
-	failureRedirect : '/'
+router.get('/auth/facebook/callback', passport.authenticate('facebook', (error, userObject, res) => {
+	if (error) {
+		res.redirect('/');
+	} else {
+		res.redirect('/');
+	}
 }));
 
 // google ---------------------------------

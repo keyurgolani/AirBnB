@@ -7,6 +7,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
 
+var session = require('express-session');
 module.exports = function(passport) {
 
 	/*
@@ -139,8 +140,10 @@ module.exports = function(passport) {
 				if(error) {
 					throw error;
 				} else {
+					//check if the user is aready oreset in system?
 					if(external_details && external_details.length > 0) {
 						if (req.session.loggedInUser) {
+							//user is already loggedin
 							// Destroy the existing session first and then log someone else in.
 							req.session.destroy((error) => {
 								mysql.fetchData('user_id, email, f_name, l_name, last_login, active', 'account_details', {
@@ -162,13 +165,14 @@ module.exports = function(passport) {
 											}, {
 												'user_id' : account_details[0].user_id
 											}, (error, results) => {
-												return done(null, account_details[0]);
+												return done(null, account_details[0], req.res);
 											});
 										}
 									}
 								})
 							});
 						} else {
+							//not loggedin :
 							mysql.fetchData('user_id, email, f_name, l_name, last_login, active', 'account_details', {
 								'user_id' : external_details[0].user_id
 							}, (error, account_details) => {
@@ -188,16 +192,17 @@ module.exports = function(passport) {
 										}, {
 											'user_id' : account_details[0].user_id
 										}, (error, results) => {
-											return done(null, account_details[0]);
+											return done(null, account_details[0], req.res);
 										});
 									}
 								}
 							})
 						}
 					} else {
+						//new user
 						var f_name = profile.displayName.split(' ')[0];
 						var l_name = profile.displayName.split(' ')[1];
-						mysql.insertData('account_details' {
+						mysql.insertData('account_details', {
 							'email' : profile.emails[0].value,
 							'f_name' : f_name,
 							'l_name' : l_name,
@@ -207,8 +212,14 @@ module.exports = function(passport) {
 								throw error;
 							} else {
 								if(insert_results.affectedRows === 1) {
-									// TODO: Send back the inserted userObject from insert_results into callback
-									return done(null, insert_results);
+									mysql.insertData('external_authentication', {
+										'external_id' : profile.id,
+										'user_id' : insert_results.insertId,
+										'website' : 'facebook'
+									}, (error, results) => {
+										// TODO: Send back the inserted userObject from insert_results into callback
+										return done(null, insert_results, req.res);
+									});
 								} else {
 									throw new Error('Internal Error');
 								}

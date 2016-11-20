@@ -20,7 +20,7 @@
     "debug": "~2.2.0",
     "ejs": "~2.4.1",
     "express": "~4.13.4",
-    "express-session": "^1.14.1",
+    "express-session": "^1.14.2",
     "fecha": "^2.3.0",
     "font-awesome": "^4.7.0",
     "html5shiv": "^3.7.3",
