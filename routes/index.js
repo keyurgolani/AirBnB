@@ -23,20 +23,63 @@ router.get('/', (req, res, next) => {
 	});
 });
 
+router.post('/addProperty', (req, res, next) => {
+	console.log(req.body);
+	//	if(req.session.loggedInUser) {
+	//		var owner_id = req.session.loggedInUser.user_id;
+	var owner_id = 1;
+	var property_type_id = req.body.property_type.property_type_id;
+	var room_type_id = req.body.room_type.room_type_id;
+	var house_rules = req.body.house_rules;
+	var longitude = req.body.location.longitude;
+	var latitude = req.body.location.latitude;
+	var st_address = req.body.location.st_address;
+	var apt = req.body.location.apt;
+	var city = req.body.location.city;
+	var state = req.body.location.state;
+	var zip = req.body.location.zip;
+	var active = true; //Default value at the time of adding new property.
 
-router.get('/this', (req, res, next) => {
-	cache.fetchItem('user', 1, (userID, callback) => {
-		console.log('----------------------Missed Logic!!!---------------------------');
-		callback('Keyur Golani');
-	}, (result) => {
-		console.log('----------------------Process Result!!!---------------------------');
-		res.render('property', {
-			title : result
-		});
+	mysql.insertData('property_details', {
+		'owner_id' : owner_id,
+		'property_type_id' : property_type_id,
+		'room_type_id' : room_type_id,
+		'house_rules' : house_rules,
+		'longitude' : longitude,
+		'latitude' : latitude,
+		'st_address' : st_address,
+		'apt' : apt,
+		'city' : city,
+		'state' : state,
+		'zip' : zip,
+		'active' : active
+	}, (error, result) => {
+		console.log(error, result);
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (result.affectedRows === 1) {
+				res.send({
+					'statusCode' : 200
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
 	});
+
+//	} else {
+//		res.send({
+//			'status_code'	:	401
+//		})
+//	}
 });
 
-router.post('/register', (req, res, next) => {
+router.post('/register', function(req, res, next) {
 	var first_name = req.body.firstname;
 	var last_name = req.body.lastname;
 	var email = req.body.email;
@@ -60,7 +103,7 @@ router.post('/register', (req, res, next) => {
 				'statusCode' : 500
 			});
 		} else {
-			if(results && results.length > 0) {
+			if (results && results.length > 0) {
 				res.send({
 					'statusCode' : 409
 				});
