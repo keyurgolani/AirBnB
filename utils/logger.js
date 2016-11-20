@@ -19,6 +19,7 @@ var commonLogger = new winston.Logger({
 			humanReadableUnhandledException: true,
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
+
 		})
 //		,
 //		new winston.transports.Console({
@@ -28,7 +29,7 @@ var commonLogger = new winston.Logger({
 //			timestamp: true,
 //			prettyPrint: true,
 //			colorize: true
-//		})
+//		})		
 	],
 	exitOnError: false
 });
@@ -52,6 +53,7 @@ var responseTimeLogger = new winston.Logger({
 			humanReadableUnhandledException: true,
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
+
 		})
 //		,
 //		new winston.transports.Console({
@@ -85,6 +87,7 @@ var searchHistoryLogger = new winston.Logger({
 			humanReadableUnhandledException: true,
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
+
 		})
 //		,
 //		new winston.transports.Console({
@@ -118,6 +121,7 @@ var placePreferencesLogger = new winston.Logger({
 			humanReadableUnhandledException: true,
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
+
 		})
 //		,
 //		new winston.transports.Console({
@@ -151,6 +155,7 @@ var travellingTimeLogger = new winston.Logger({
 			humanReadableUnhandledException: true,
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
+
 		})
 //		,
 //		new winston.transports.Console({
@@ -184,6 +189,7 @@ var hostingTimeLogger = new winston.Logger({
 			humanReadableUnhandledException: true,
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
+
 		})
 //		,
 //		new winston.transports.Console({
@@ -194,6 +200,7 @@ var hostingTimeLogger = new winston.Logger({
 //			prettyPrint: true,
 //			colorize: true
 //		})
+//	
 	],
 	exitOnError: false
 });
@@ -217,6 +224,41 @@ var biddingLogger = new winston.Logger({
 			humanReadableUnhandledException: true,
 			showLevel: true,
 			stderrLevels: ['error', 'debug']
+
+		})
+//		,
+//		new winston.transports.Console({
+//			level: 'debug',
+//			handleExceptions: true,
+//			json: true,
+//			timestamp: true,
+//			prettyPrint: true,
+//			colorize: true
+//		})
+	],
+	exitOnError: false
+});
+
+var dataAccessLogger = new winston.Logger({
+	transports: [
+		new winston.transports.File({
+			level: 'silly',
+			colorize: true,
+			timestamp: true,
+			filename: './logs/dataAccessLogs.log',
+			maxsize: 100000,
+			maxFiles: 1000,
+			logstash: true,
+			tailable: true,
+			zippedArchive: false,
+			json: true,
+			stringify: false,
+			prettyPrint: true,
+			depth: 5,
+			humanReadableUnhandledException: true,
+			showLevel: true,
+			stderrLevels: ['error', 'debug']
+
 		})
 //		,
 //		new winston.transports.Console({
@@ -241,6 +283,9 @@ module.exports = {
 			'time' : time,
 			'message' : message
 		});
+	},
+	logQuery : (querySQL) => {
+		dataAccessLogger.info('SQL: ' + querySQL);
 	},
 	//TODO: Pending
 	stream: {

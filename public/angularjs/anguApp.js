@@ -1,20 +1,31 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if' ])
-.config([ '$locationProvider', function($locationProvider) {
-	$locationProvider.html5Mode({
-		enabled : true,
-		requireBase : false
-	});
-}])
-.controller('homepage', function($scope, $http, Random) {
-	$scope.randomPassword = Random.randomString(25);
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete' ])
+	.config([ '$locationProvider', function($locationProvider) {
+		$locationProvider.html5Mode({
+			enabled : true,
+			requireBase : false
+		});
+	} ])
+	.controller("searchBarController", function($scope, $http) {
+		$scope.city = '';
+		$scope.options = {};
+		$scope.options.watchEnter = true;
 
-})
-.controller('header', function($scope, $http, Random) {
-	$scope.randomPassword = Random.randomString(25);
+		$scope.$watch('city', function() {
+			if ($scope.city.trim() !== undefined && $scope.city.trim() !== "") {
+				console.log($scope.city);
+				//				$http({
+				//					// Search Request!
+				//				})
+			}
+		});
 
-})
-.controller('footer', function($scope, $http, Random) {
-	$scope.randomPassword = Random.randomString(25);
+	})
+	.controller('homepage', function($scope, $http, Random) {
+		$scope.randomPassword = Random.randomString(25);
+
+	})
+	.controller('header', function($scope, $http, Random) {
+		$scope.randomPassword = Random.randomString(25);
 
 })
 .controller('fileUploadCtrl', function($scope, $http, Random) {
@@ -162,27 +173,39 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if' ])
 				});
 				event.preventDefault();
 			}
-		});
+	});
 	};
 })
-.directive('ngEncrypt', function(){
-    return {
-    	restrict: 'A',
-        require: 'ngModel',
-        link: function(scope, elem, attrs, ngModel) {
-            ngModel.$parsers.push(function(value){
-                return sjcl.encrypt(scope.randomPassword, value); 
-            });
-        }
-    };
-})
-.service('Random', function() {
-	this.randomString = function(length) {
-		var generatedString = "";
-		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-		for( var i=0; i < length; i++ ) {
-			generatedString += possible.charAt(Math.floor(Math.random() * possible.length));
-		}
-		return generatedString;
-	};
-})
+	.controller('footer', function($scope, $http, Random) {
+		$scope.randomPassword = Random.randomString(25);
+	})
+	.controller('signUpController', function($scope, $http, Random) {
+		$scope.emailSignUp = false;
+		console.log('$scope.emailSignUp', $scope.emailSignUp);
+
+		$scope.signUpWithEmail = function(){
+			$scope.emailSignUp = true;
+			console.log('$scope.emailSignUp', $scope.emailSignUp);
+		};
+	})
+	.directive('ngEncrypt', function() {
+		return {
+			restrict : 'A',
+			require : 'ngModel',
+			link : function(scope, elem, attrs, ngModel) {
+				ngModel.$parsers.push(function(value) {
+					return sjcl.encrypt(scope.randomPassword, value);
+				});
+			}
+		};
+	})
+	.service('Random', function() {
+		this.randomString = function(length) {
+			var generatedString = "";
+			var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			for (var i = 0; i < length; i++) {
+				generatedString += possible.charAt(Math.floor(Math.random() * possible.length));
+			}
+			return generatedString;
+		};
+	});
