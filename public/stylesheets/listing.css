@@ -1,0 +1,30 @@
+.listing::-webkit-input-placeholder { /* WebKit browsers */
+	font-size: 16px;
+	letter-spacing: -0.5px;
+	color: #6e6e6e!important;
+}
+.listing:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	font-size: 16px;
+	letter-spacing: -0.5px;
+	color: #6e6e6e!important;
+}
+.listing::-moz-placeholder { /* Mozilla Firefox 19+ */
+	font-size: 16px;
+	letter-spacing: -0.5px;
+	color: #6e6e6e!important;
+}
+.listing:-ms-input-placeholder { /* Internet Explorer 10+ */
+	font-size: 16px;
+	letter-spacing: -0.5px;
+	color: #6e6e6e!important;
+}
+
+.dropdown-box.listing>.dropdown-menu>ul>li>a {
+	border-bottom: none!important;
+	font-size: 16px;
+	padding: 0 0 0 20px!important;
+	vertical-align: middle;
+}
+.dropdown-box.listing.open>.dropdown-toggle.btn-default {
+	background-color: #fff!important;
+}

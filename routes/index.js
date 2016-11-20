@@ -22,6 +22,7 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+<<<<<<< HEAD
 router.get('/fileUpload', function(req, res, next) {
 	res.render('fileUpload', {
 		title : 'fileUpload'
@@ -168,6 +169,64 @@ router.post('/api/getImage', function(req, res, next) {
        });
    });
 
+=======
+router.post('/addProperty', (req, res, next) => {
+	console.log(req.body);
+	//	if(req.session.loggedInUser) {
+	//		var owner_id = req.session.loggedInUser.user_id;
+	var owner_id = 1;
+	var property_type_id = req.body.property_type.property_type_id;
+	var room_type_id = req.body.room_type.room_type_id;
+	var house_rules = req.body.house_rules;
+	var longitude = req.body.location.longitude;
+	var latitude = req.body.location.latitude;
+	var st_address = req.body.location.st_address;
+	var apt = req.body.location.apt;
+	var city = req.body.location.city;
+	var state = req.body.location.state;
+	var zip = req.body.location.zip;
+	var active = true; //Default value at the time of adding new property.
+
+	mysql.insertData('property_details', {
+		'owner_id' : owner_id,
+		'property_type_id' : property_type_id,
+		'room_type_id' : room_type_id,
+		'house_rules' : house_rules,
+		'longitude' : longitude,
+		'latitude' : latitude,
+		'st_address' : st_address,
+		'apt' : apt,
+		'city' : city,
+		'state' : state,
+		'zip' : zip,
+		'active' : active
+	}, (error, result) => {
+		console.log(error, result);
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (result.affectedRows === 1) {
+				res.send({
+					'statusCode' : 200
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	});
+
+//	} else {
+//		res.send({
+//			'status_code'	:	401
+//		})
+//	}
+});
+
+>>>>>>> c332cfc401be5a86c09cdcef446c12716f549b1e
 router.post('/register', function(req, res, next) {
 	var first_name = req.body.firstname;
 	var last_name = req.body.lastname;
@@ -192,7 +251,7 @@ router.post('/register', function(req, res, next) {
 				'statusCode' : 500
 			});
 		} else {
-			if(results && results.length > 0) {
+			if (results && results.length > 0) {
 				res.send({
 					'statusCode' : 409
 				});
@@ -205,18 +264,15 @@ router.post('/register', function(req, res, next) {
 						'last_login' : require('fecha').format(Date.now(), 'YYYY-MM-DD HH:mm:ss')
 					}, function(error, result) {
 						if (error) {
-							next(500);
 							res.send({
 								'statusCode' : 500
 							});
 						} else {
 							if (result.affectedRows === 1) {
-								next(200);
 								res.send({
 									'statusCode' : 200
 								});
 							} else {
-								next(500);
 								res.send({
 									'statusCode' : 500
 								});
@@ -228,6 +284,10 @@ router.post('/register', function(req, res, next) {
 		}
 	});
 });
+});
+
+router.get('/listing', function(req, res, next) {
+	res.render('listing');
 });
 
 module.exports = router;

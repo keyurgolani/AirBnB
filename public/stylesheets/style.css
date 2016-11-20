@@ -8,8 +8,6 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-/* Author: Ved Vasavada */
-/* eMail : vedvasa@gmail.com; */
 @media ( min-width : 700px) {
 	.navbar {
 		min-height: 60px;
@@ -105,7 +103,7 @@ body {
 		height: 60px;
 	}
 	.ul_Three {
-		font-size: 14px;
+		font-size: 18px;
 		border-style: solid;
 		color: #dce0e0;
 		font-family: Circular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -122,13 +120,15 @@ body {
 	.btn-style {
 		border: 0px solid #D7D7D7;
 		padding: 3px 15px 3px 15px;
-		font-size: 13.5px;
+		font-size: 14px;
+		color: black;
 	}
 	.ul_Six {
 		border-right: 0px solid #dce0e0;
 		line-height: 60px;
 		padding: 0px 20px 0px 20px;
-		font-size: 13.5px;
+		font-size: 14px;
+		color: black;
 	}
 	.ul_Seven {
 		border-right: 0px solid #dce0e0;
@@ -140,16 +140,21 @@ body {
 		padding:;
 	}
 	.ul_Nine {
-		font-size: 13.5px;
+		font-size: 14px;
+		color: black;
+	}
+	.ul_Nine:hover {
+		color: black;
 	}
 	.ul_Ten {
 		padding: 0px 0px 0px 0px;
 		margin: 0px 0px 0px 0px;
 	}
 	.ul_Eleven {
-		font-size: 13.5px;
 		padding: 0px 10px 0px 0px;
 		margin: 22px 0px 0px 22px;
+		font-size: 14px;
+		color: black;
 	}
 	.header>.pac-container {
 		margin-left: -40px;
@@ -200,24 +205,33 @@ body {
 	}
 	.facebookSignUpButton {
 		background-color: #3b5998;
-		border-radius: 3px;
+		border-radius: 5px;
 		padding: 20px 20px 20px 20px;
 	}
 	.googleSignUpButton {
-		border-radius: 3px;
+		border-radius: 5px;
 		padding: 20px 20px 20px 20px;
 		border: 1px solid #dce0e0;
 		margin-top: 10px;
 	}
 	.signUpWithEmailbutton {
 		background-color: #ff5a5f;
-		border-radius: 3px;
+		border-radius: 5px;
 		padding: 20px 20px 20px 20px;
 		border: 1px solid #dce0e0;
 		margin-top: 10px;
 	}
 	.signUpNotice {
 		padding: 15px 5px 15px 5px;
+	}
+	.terms-text {
+		color: #329ca0;
+		font-weight: bold;
+	}
+	.terms-text:hover {
+		cursor: pointer;
+		text-decoration: underline;
+		color: #329ca0;
 	}
 	.btn-default:hover {
 		background-color: white;
@@ -252,6 +266,10 @@ body {
 		background-color: #66e2da;
 		border-radius: 0;
 	}
+	.daterangepicker td.available:hover, .daterangepicker th.available:hover {
+		background-color: #66e2da;
+		border-radius: 0;
+	}
 	.daterangepicker td.active, .daterangepicker td.active:hover {
 		background-color: #00a699;
 	}
@@ -264,19 +282,88 @@ body {
 	.daterangepicker td.start-date.end-date {
 		border-radius: 0px;
 	}
-	.daterangepicker td.available:hover, .daterangepicker th.available:hover
-		{
-		background-color: #66e2da;
+
+	/* enable absolute positioning */
+	.inner-addon {
+		position: relative;
 	}
-	.daterangepicker td, .daterangepicker th {
-		border-radius: 0px;
+
+	/* style glyph */
+	.inner-addon .glyphicon {
+		position: absolute;
+		padding: 10px;
+		pointer-events: none;
+	}
+
+	/* align glyph */
+	.left-addon .glyphicon {
+		left: 0px;
+	}
+	.right-addon .glyphicon {
+		right: 0px;
+	}
+
+	/* add padding  */
+	.left-addon input {
+		padding-left: 30px;
+	}
+	.right-addon input {
+		padding-right: 30px;
+	}
+
+	/* enable absolute positioning */
+	.inner-addon {
+		position: relative;
+	}
+
+	/* style glyph */
+	.inner-addon .fa {
+		position: absolute;
+		padding: 10px;
+		pointer-events: none;
+		color: #8D9294;
+	}
+
+	/* align glyph */
+	.left-addon .fa {
+		left: 0px;
+	}
+	.right-addon .fa {
+		right: 0px;
+	}
+
+	/* add padding  */
+	.left-addon input {
+		padding-left: 30px;
+	}
+	.right-addon input {
+		padding-right: 30px;
+	}
+	#signUpInputProps {
+		border: 1px solid #dce0e0;
+		margin-top: 12px;
+		border-radius: 2px;
+		color: #dce0e0;
+		height: 40px;
+		margin-top: 5px;
+	}
+	#signInInputProps {
+		border: 1px solid #dce0e0;
+		margin-top: 12px;
+		border-radius: 2px;
+		color: #dce0e0;
+		height: 60px;
+		margin-top: 5px;
 	}
 	.customDates {
 		font-size: 14px;
 		border: 1px solid #e0e3e3 !important;
-		padding: 10px 10px 10px 10px !important;
 		height: 38px !important;
 		min-width: 37px !important;
+		margin-top: 0px !important;
+	}
+	.daterangepicker th {
+		border: none !important;
 	}
 	.daterangepicker.ltr .calendar.left {
 		margin-right: 15px;
@@ -320,23 +407,198 @@ body {
 		letter-spacing: -0.5px;
 		line-height: 22px !important;
 		padding-left: 0;
-		border-radius: 0px!important;
+		border-radius: 0px !important;
+	}
+
+	/* enable absolute positioning */
+	.inner-addon {
+		position: relative;
 	}
 	.guest-dropdown.open>.dropdown-toggle.btn-default {
 		border-bottom: 1px solid #008489 !important;
-		background-color: #fff!important;
-		box-shadow: none!important;
+		background-color: #fff !important;
+		box-shadow: none !important;
 	}
 	.dropdown-menu>li>a {
 		border-bottom: 1px solid #e0e3e3;
-		padding-bottom: 20px;
-		padding-top: 20px;
-		font-weight: bold;
+		padding-bottom: 10px;
+		font-size: 19px;
+		padding-top: 10px;
 		vertical-align: middle;
 	}
-	
 	.dropdown-menu.open {
+		left: -2px;
 		margin-top: 6px;
 		padding: 0 0 0 0;
+		margin-top: 6px;
 	}
+	.daterangepicker_input {
+		display: none;
+	}
+	.daterangepicker.ltr {
+		margin-top: 6px !important;
+	}
+
+	/* style glyph */
+	.inner-addon .glyphicon {
+		position: absolute;
+		padding: 10px;
+		pointer-events: none;
+	}
+
+	/* align glyph */
+	.left-addon .glyphicon {
+		left: 0px;
+	}
+	.right-addon .glyphicon {
+		right: 0px;
+	}
+
+	/* add padding  */
+	.left-addon input {
+		padding-left: 30px;
+	}
+	.right-addon input {
+		padding-right: 30px;
+	}
+
+	/* enable absolute positioning */
+	.inner-addon {
+		position: relative;
+	}
+
+	/* style glyph */
+	.inner-addon .fa {
+		position: absolute;
+		padding: 10px;
+		pointer-events: none;
+		color: #8D9294;
+	}
+
+	/* align glyph */
+	.left-addon .fa {
+		left: 0px;
+	}
+	.right-addon .fa {
+		right: 0px;
+	}
+
+	/* add padding  */
+	.left-addon input {
+		padding-left: 30px;
+	}
+	.right-addon input {
+		padding-right: 30px;
+	}
+	#signUpInputProps {
+		border: 1px solid #dce0e0;
+		margin-top: 12px;
+		border-radius: 2px;
+		color: #dce0e0;
+		height: 60px;
+		margin-top: 5px;
+	}
+	.login-button {
+		margin-top: 0px;
+		border: 1px solid #ff5a5f;
+		width: 82.63px;
+		height: 36px;
+		background: white;
+		color: #ff5a5f;
+		border-color: #ff5a5f;
+	}
+	.login-button:hover {
+		cursor: pointer;
+		color: #ff5a5f;
+		border-color: #ff5a5f;
+	}
+	.modal {
+		overflow-y: hidden !important;
+	}
+	.modal-md {
+		overflow-y: hidden !important;
+	}
+	.signup-modal-md {
+		overflow-y: hidden !important;
+	}
+}
+
+.main {
+	margin-top: 120px !important;
+}
+
+.left-column {
+	padding-left: 170px !important;
+}
+
+.heading {
+	font-size: 32px;
+	font-weight: normal;
+}
+
+.step-text {
+	font-size: 14px;
+	color: #bbb;
+	font-weight: bold;
+	text-transform: uppercase;
+	margin-top: 30px !important;
+}
+
+.que_1 {
+	font-size: 24px;
+	font-weight: normal;
+	margin-top: 10px;
+}
+
+.dropdown-box {
+	height: 38px !important;
+	width: 186.5px !important;
+	margin-right: 5px;
+	margin-top: 15px;
+}
+
+.dropdown-box>.dropdown-toggle {
+	border-radius: 2px;
+	font-size: 16px;
+	border: 1px solid #aaa;
+	background-color: #fff;
+	color: #484848;
+}
+
+.search-bar {
+	padding-top: 10px;
+	margin-top: 3px;
+	height: 38px !important;
+	width: 380px !important;
+	border-radius: 2px;
+	font-size: 16px;
+	border: 1px solid #aaa !important;
+	background-color: #fff;
+	color: #484848;
+	font-size: 12px;
+	border-style: solid;
+	font-family: Circular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.search-bar:focus {
+	border: 1px solid #aaa!important; 
+}
+
+.continue-button {
+	height: 38px;
+	width: 112.53px;
+	border-color: #00a699;
+	background-color: #00a699;
+	color: #fff;
+	font-size: 16px;
+	margin-top: 10px;
+	font-weight: bold;
+	border-radius: 4px;
+}
+
+.continue-button:hover {
+	background: #4ddfd4;
+	border-top-color: #4ddfd4;
+	border-left-color: #4ddfd4;
+	border-right-color: #4ddfd4;
 }
