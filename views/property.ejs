@@ -23,9 +23,9 @@
 				</div>
 				<div class="row">
 					<select class="selectpicker dropdown-box listing box-size">
-					  	<option>Private room</option>
-						<option>Entire place</option>
-						<option>Shared room</option>
+					  	<div ng-repeat="room_type in room_types">
+					  		<option>Private room</option>
+					  	</div>
 					</select>
 					<select class="selectpicker dropdown-box listing box-size">
 						<option>for 1 guest</option>

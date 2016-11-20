@@ -135,6 +135,48 @@ router.post('/register', function(req, res, next) {
 
 });
 
+router.post('/fetchRoomTypes', (req, res, next) => {
+	mysql.fetchData('room_type_id, room_type', 'room_types', (error, results) => {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(results && results.length > 0) {
+				res.send({
+					'statusCode' : 200,
+					'room_types' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
+router.post('/fetchPropertyTypes', (req, res, next) => {
+	mysql.fetchData('property_type_id, property_type', 'property_types', (error, results) => {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(results && results.length > 0) {
+				res.send({
+					'statusCode' : 200,
+					'property_types' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
 router.get('/property', function(req, res, next) {
 	res.render('property');
 });

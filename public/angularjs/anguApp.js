@@ -36,6 +36,29 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('addProperty', ($scope, $http) => {
 		$scope.page = 1;
+		$scope.fetchRoomTypes = () => {
+			$http({
+				method	:	"POST",
+				url		:	"/fetchRoomTypes",
+			}).then((result) => {
+				$scope.room_types = result.room_types;
+			}, (error) => {
+				$scope.room_types = [];
+			})
+		}
+		
+		$scope.fetchPropertyTypes = () => {
+			$http({
+				method	:	"POST",
+				url		:	"/fetchPropertyTypes",
+			}).then((result) => {
+				$scope.room_types = result.room_types;
+			}, (error) => {
+				$scope.room_types = [];
+			})
+		}
+		$scope.fetchPropertyTypes();
+		$scope.fetchRoomTypes();
 	})
 	.controller('signUpController', function($scope, $http, Random) {
 		$scope.emailSignUp = false;
