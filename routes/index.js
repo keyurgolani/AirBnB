@@ -135,7 +135,7 @@ router.post('/register', function(req, res, next) {
 
 });
 
-router.get('/listing', function(req, res, next) {
+router.get('/property', function(req, res, next) {
 	res.render('property');
 });
 
