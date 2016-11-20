@@ -31,6 +31,9 @@ var mySQL = require(properties.get('paths.daoPath'));
 var routes = require('./routes/index');
 
 var app = express();
+
+var session = require('express-session');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -50,6 +53,12 @@ app.use('/css', express.static(path.join(__dirname, 'public/stylesheets')));
 app.use('/js', express.static(path.join(__dirname, 'public/js')));
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use('/ngjs', express.static(path.join(__dirname, 'public/angularjs')));
+
+app.use(session({
+	secret: 'r5XiEloJ0Vfb5R26285fQm5z6FeOrHuYYHk5nUcfuFa6aCvZKU',
+	resave: false,
+	saveUninitialized: true
+}));
 
 app.use(function(req, res, next) {
 	req.db = db;
