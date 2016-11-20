@@ -304,12 +304,141 @@
 		<div class="row">
 			<div class="col-md-2"></div>
 			<div class="col-md-4">
-				<div class="row que_1">
+				<div class="row que_1" style="padding: 30px 0;">
 					<span class="h3 que_1">Set house rules for your guests</span>
+				</div>
+				<div class="row que_1">
+					<div class="col-md-10">
+						<span class="h3 que_2" style="color:#484848;">Suitable for children (2-12 years)</span>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<div id="radioBtn" class="btn-group">
+								<a class="btn btn-primary btn-sm active" data-toggle="house-rules" data-title="N">No</a> 
+								<a class="btn btn-primary btn-sm notActive" data-toggle="house-rules" data-title="Y">Yes</a>
+							</div>
+							<input type="hidden" name="house-rules" id="house-rules">
+						</div>
+					</div>
+				</div>
+				<div class="row que_1" style="margin-top: 20px;">
+					<div class="col-md-10">
+						<span class="h3 que_2" style="color:#484848;">Suitable for infants (Under 2 years)</span>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<div id="radioBtn" class="btn-group">
+								<a class="btn btn-primary btn-sm active" data-toggle="house-rules" data-title="N">No</a> 
+								<a class="btn btn-primary btn-sm notActive" data-toggle="house-rules" data-title="Y">Yes</a>
+							</div>
+							<input type="hidden" name="house-rules" id="house-rules">
+						</div>
+					</div>
+				</div>
+				<div class="row que_1" style="margin-top: 20px;">
+					<div class="col-md-10">
+						<span class="h3 que_2" style="color:#484848;">Suitable for pets</span>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<div id="radioBtn" class="btn-group">
+								<a class="btn btn-primary btn-sm active" data-toggle="house-rules" data-title="N">No</a> 
+								<a class="btn btn-primary btn-sm notActive" data-toggle="house-rules" data-title="Y">Yes</a>
+							</div>
+							<input type="hidden" name="house-rules" id="house-rules">
+						</div>
+					</div>
+				</div>
+				<div class="row que_1" style="margin-top: 20px;">
+					<div class="col-md-10">
+						<span class="h3 que_2" style="color:#484848;">Smoking allowed</span>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<div id="radioBtn" class="btn-group">
+								<a class="btn btn-primary btn-sm active" data-toggle="house-rules" data-title="N">No</a> 
+								<a class="btn btn-primary btn-sm notActive" data-toggle="house-rules" data-title="Y">Yes</a>
+							</div>
+							<input type="hidden" name="house-rules" id="house-rules">
+						</div>
+					</div>
+				</div>
+				<div class="row que_1" style="margin-top: 20px;">
+					<div class="col-md-10">
+						<span class="h3 que_2" style="color:#484848;">Events or parties allowed </span>
+					</div>
+					<div class="col-md-2">
+						<div class="input-group">
+							<div id="radioBtn" class="btn-group">
+								<a class="btn btn-primary btn-sm active" data-toggle="house-rules" data-title="N">No</a> 
+								<a class="btn btn-primary btn-sm notActive" data-toggle="house-rules" data-title="Y">Yes</a>
+							</div>
+							<input type="hidden" name="house-rules" id="house-rules">
+						</div>
+					</div>
+				</div>
+				<div class="row que_1" style="margin-top: 20px;">
+					<div class="col-md-10">
+						<span class="h3 que_2" style="color:#767676;font-weight:bold;">Additional rules</span>
+					</div>
+				</div>
+				<div class="row que_1" style="margin-top: 20px;">
+					<div class="col-md-10" style="width:78.2%;">
+						<input type="text" class="form-control additional-rule-box curve-border" placeholder="Quiet hours? No shoes in the house?">
+					</div>
+					<div class="col-md-2">
+						<button type="submit" class="btn submit-button" value="Add">Add</button>
+					</div>
+				</div>
+				
+			</div>
+			<div class="col-md-6"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-4">
+				<div class="row que_1">
+					<span class="h3 que_1">How do you want to set your price?</span>
+				</div>
+				<div class="seperator"></div>
+				<div class="row que_1">
+					<div class="col-md-2 choose-price-icon"></div>
+					<div class="col-md-8">
+						<div class="row price-text h3">
+							<span>Price adapts to demand</span>
+						</div>
+						<div class="row price-subtitle-text h3">
+							<span>You tell Smart Pricing to automatically adjust your price to match demand, but only within a price range that you set.</span>
+						</div>
+					</div>
+					<div class="col-md-2"></div>
+				</div>
+				<div class="seperator"></div>
+				<div class="row que_1">
+					<div class="col-md-2 fixed-price-icon"></div>
+					<div class="col-md-8">
+						<div class="row price-text h3">
+							<span>Price is fixed</span>
+						</div>
+						<div class="row price-subtitle-text h3">
+							<span>Set a base price. Airbnb gives you price tips that you can accept or ignore.</span>
+						</div>
+					</div>
+					<div class="col-md-2"></div>
 				</div>
 			</div>
 			<div class="col-md-6"></div>
 		</div>
+		<script>
+			$('#radioBtn a').on('click', function() {
+    			var sel = $(this).data('title');
+    			var tog = $(this).data('toggle');
+    			$('#'+tog).prop('value',sel);
+    			
+    			$('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+    			$('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+			});
+		</script>
 	</main>
 	</body>
 </html>

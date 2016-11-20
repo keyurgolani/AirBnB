@@ -730,3 +730,69 @@ input[type='checkbox'] {
 	background-color: #ff7e82;
 	color: #fff;
 }
+
+#radioBtn.notActive {
+	color: #008489;
+	background-color: #fff;
+}
+
+.additional-rule-box {
+	border: 1px solid #c4c4c4 !important;
+	font-size: 18px;
+	font-weight: normal;
+	color: #484848;
+	height: 60px;
+	width: 376px;
+	letter-spacing: 1px;
+	margin: 0 0 0 0;
+	border-top-right-radius: 0;
+	-webkit-border-bottom-right-radius: 0;
+	-moz-border-radius-bottomright: 0;
+	border-bottom-right-radius: 0;
+}
+
+.submit-button {
+	width: 108.89px;
+	height: 60px;
+	border-top-left-radius: 0;
+	-webkit-border-bottom-left-radius: 0;
+	-moz-border-radius-bottomleft: 0;
+	border-bottom-left-radius: 0;
+	border-color: #c4c4c4;
+	background: white;
+	color: #484848;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.choose-price-icon {
+	background-image: url('../images/choose-price.png');
+	background-repeat: no-repeat;
+	width: 40px;
+	height: 41px;
+	display: block;
+}
+
+.fixed-price-icon {
+	background-image: url('../images/fixed-price.png');
+	background-repeat: no-repeat;
+	width: 40px;
+	height: 41px;
+	display: block;
+}
+
+.price-text {
+	color:#484848;
+	font-size: 18px;
+	font-weight: normal;
+	padding-left:20px;
+}
+
+.price-subtitle-text {
+	font-size: 16px;
+    line-height: 26px;
+    color: #a5a5a5;
+    padding-left:20px;
+    padding-top: 15px;
+    text-align: justify;
+}
