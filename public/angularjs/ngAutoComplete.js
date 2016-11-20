@@ -89,7 +89,10 @@ angular.module("ngAutocomplete", [])
 				// 37.5482697
 				// -121.98857190000001
 
+				// 1 mile = 0.621371 km
+
 				console.log('getDistanceFromLatLonInKm', getDistanceFromLatLonInKm(37.35410789999999, -121.95523559999998, 37.5482697, -121.98857190000001));
+				console.log('getDistanceFromLatLonInMiles', (getDistanceFromLatLonInKm(37.35410789999999, -121.95523559999998, 37.5482697, -121.98857190000001)) * 0.621371);
 
 
 				//create new autocomplete
