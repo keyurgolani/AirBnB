@@ -520,25 +520,10 @@ body {
 	.signup-modal-md {
 		overflow-y: hidden !important;
 	}
-	.main-page-left-column {
-		padding-left: 40px !important;
-	}
-
-	.left-column {
-		padding-left: 40px !important;
-	}
 }
 
 .main {
 	margin-top: 120px !important;
-}
-
-.main-page-left-column {
-	padding-left: 170px;
-}
-
-.left-column {
-	padding-left: 295px;;
 }
 
 .heading {
