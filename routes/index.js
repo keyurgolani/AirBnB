@@ -202,4 +202,8 @@ router.get('/property', function(req, res, next) {
 	res.render('property');
 });
 
+router.get('/viewListing', function(req, res, next) {
+	res.render('viewListing');
+});
+
 module.exports = router;
