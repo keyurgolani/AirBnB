@@ -868,17 +868,16 @@ input[type='checkbox'] {
 	background-color: #f2f2f2;
 }
 
-
 .increment-main-box {
 	display: flex;
 	width: 186.5px;
 	height: 36px;
-	border-radius: 2px!important;
-    font-size: 16px;
-    border: 1px solid #aaa!important;
-    background-color: #fff;
-    color: #484848;
-    margin-top: 15px;
+	border-radius: 2px !important;
+	font-size: 16px;
+	border: 1px solid #aaa !important;
+	background-color: #fff;
+	color: #484848;
+	margin-top: 15px;
 }
 
 .count-main-text {
@@ -910,4 +909,27 @@ input[type='checkbox'] {
 .count-main-button:focus {
 	cursor: pointer;
 	background-color: #f2f2f2;
+}
+
+.back-next-button {
+	height: 38px;
+	width: 112.53px;
+	border-color: #ff5a5f; 
+	background-color : #ff5a5f;
+	color : #fff;
+	font-size: 16px;
+	margin-top: 10px;
+	font-weight: bold;
+	border-radius: 4px;
+	background-color: #ff5a5f;
+	color: #fff;
+}
+
+.back-next-button:hover {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+    background-color: #ff7e82;
+    color: #fff;
 }
