@@ -526,7 +526,40 @@ body {
 	.signup-modal-md {
 		overflow-y: hidden !important;
 	}
-<<<<<<< HEAD
+
+	#checkInPlaceholder::-webkit-input-placeholder { /* Chrome */
+	  color: grey;
+	  font-size:14px;
+	  padding-left: 7px;
+	}
+
+	input[type=checkbox]{
+	    display: inline-block;
+	    width: 15px;
+	    height: 15px;
+	    padding-left: 40px;
+	    margin-left: 10px;
+	    padding-top: 5px;
+	   /* background-position: 0 0;
+	    background-repeat: no-repeat;*/
+	    line-height: 32px;
+	    cursor: pointer;
+	    background: white;
+	}
+
+
+
+	input[type=checkbox]:checked{
+	  background-position: left -15px;
+	}
+
+	label{
+	 background-image:url(http://csscheckbox.com/checkboxes/u/csscheckbox_d2a60beb8fb6bbb280642579049ebf65.png);
+	 height: 15px;
+	 width: 15px;
+	 
+	}
+
 }
 
 .main {
@@ -607,10 +640,8 @@ body {
 	border-top-color: #4ddfd4;
 	border-left-color: #4ddfd4;
 	border-right-color: #4ddfd4;
-=======
 
-
-
+}
 
 
 
@@ -745,5 +776,3 @@ body {
 	}
 	/*********************************************************
 	*********************************************************/
->>>>>>> 527ad501d71671c041a0dc9be8fce737bd14e26a
-}
