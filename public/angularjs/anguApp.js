@@ -12,10 +12,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 		$scope.$watch('city', function() {
 			if ($scope.city.trim() !== undefined && $scope.city.trim() !== "") {
-				console.log($scope.city);
-				//				$http({
-				//					// Search Request!
-				//				})
+				
 			}
 		});
 
@@ -35,6 +32,47 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.randomPassword = Random.randomString(25);
 	})
 	.controller('addProperty', ($scope, $http) => {
+		$scope.page = 1;
+		$scope.fetchRoomTypes = () => {
+			$http({
+				method	:	"POST",
+				url		:	"/fetchRoomTypes",
+			}).then((result) => {
+				$scope.room_types = result.room_types;
+			}, (error) => {
+				$scope.room_types = [];
+			})
+		}
+		
+		$scope.fetchPropertyTypes = () => {
+			$http({
+				method	:	"POST",
+				url		:	"/fetchPropertyTypes",
+			}).then((result) => {
+				$scope.room_types = result.room_types;
+			}, (error) => {
+				$scope.room_types = [];
+			})
+		}
+		$scope.fetchAmenities = () => {
+			$http({
+				method	:	"POST",
+				url		:	"/fetchAmenities",
+			}).then((result) => {
+				$scope.amenities = result.amenities;
+			}, (error) => {
+				$scope.amenities = [];
+			})
+		}
+		$scope.addProperty = () => {
+			
+		}
+		$scope.fetchAmenities();
+		$scope.fetchPropertyTypes();
+		$scope.fetchRoomTypes();
+		
+	})
+	.controller('addListing', ($scope, $http) => {
 		$scope.page = 1;
 		$scope.fetchRoomTypes = () => {
 			$http({

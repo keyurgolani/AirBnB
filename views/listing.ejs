@@ -21,24 +21,37 @@
 				<div class="row que_1">
 					<span class="h3 que_1">What kind of place do you have?</span>
 				</div>
-				<div class="row" style="display:flex;">
-					<div><select class="selectpicker dropdown-box listing box-size">
+				<div class="row">
+					<select class="selectpicker dropdown-box listing box-size">
 					  	<div ng-repeat="room_type in room_types">
 					  		<option>Private room</option>
 					  	</div>
-					</select></div>
-					<div class="address-box increment-main-box">
-				    	<div class="count-main-text"><input type="text" class="form-control count-main-text" placeholder="Guests" ng-model="item.item_count"/></div>
-						<span ng-click="item.item_count = item.item_count - 1" class="count-main-button">-</span>
-						<span ng-click="item.item_count = item.item_count + 1" class="count-main-button" style="border-right:none;">+</span>
-					</div>
+					</select>
+					<select class="selectpicker dropdown-box listing box-size">
+						<option>for 1 guest</option>
+						<option>for 2 guests</option>
+						<option>for 3 guests</option>
+						<option>for 4 guests</option>
+						<option>for 5 guests</option>
+						<option>for 6 guests</option>
+						<option>for 7 guests</option>
+						<option>for 8 guests</option>
+						<option>for 9 guests</option>
+						<option>for 10 guests</option>
+						<option>for 11 guests</option>
+						<option>for 12 guests</option>
+						<option>for 13 guests</option>
+						<option>for 14 guests</option>
+						<option>for 15 guests</option>
+						<option>for 16 guests</option>
+					</select>
 				</div>
 				<div class="row que_1">
 					<input type="text" class="form-control search-bar listing" placeholder="e.g. San Fransisco" ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="city" details="details" options="options">
 				</div>
 				<div class="row">
 					<div class="col-md-5 pull-right">
-						<button class="pull-right btn btn-primary continue-button" ng-click="page = page + 1">Continue</button>
+						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Continue</button>
 					</div>
 				</div>
 			</div>
@@ -78,10 +91,10 @@
 				</div>
 				<div class="row">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -122,18 +135,18 @@
 					<span class="h3 que_1">How many bathrooms?</span>
 				</div>
 				<div class="row" style="margin-top: 15px;">
-					<div class="address-box form-control increment-box">
-				    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of bathrooms" ng-model="item.item_count"/></div>
-						<span ng-click="item.item_count = item.item_count - 1" class="count-button">-</span>
-						<span ng-click="item.item_count = item.item_count + 1" class="count-button" style="border-right:none;">+</span>
+					<div class="col-md-12">
+					    <select class="selectpicker dropdown-box listing property-box curve-border">
+							<option>1 bed</option>
+						</select>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -171,10 +184,10 @@
 				</div>
 				<div class="row">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -218,10 +231,10 @@
 				</div>
 				<div class="row">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -486,7 +499,7 @@
 					<span class="h3 law-third-line">Most cities have rules covering homesharing, and the specific codes and ordinances can appear in many places (such as zoning, building, licensing or tax codes). In most places, you must register, get a permit, or obtain a license before you list your property or accept guests. You may also be responsible for collecting and remitting certain taxes. In some places, short-term rentals could be prohibited altogether.</span>
 				</div>
 				<div class="row law-third-line">
-					<span class="h3 law-third-line">Since you are responsible for your own decision to list or book, you should get comfortable with the applicable rules before listing on Airbnb. To get you started, we offer some helpful resources under ‚ÄúYour City Laws.‚Äù</span>
+					<span class="h3 law-third-line">Since you are responsible for your own decision to list or book, you should get comfortable with the applicable rules before listing on Airbnb. To get you started, we offer some helpful resources under ìYour City Laws.î</span>
 				</div>
 				<div class="row law-third-line">
 					<span class="h3 law-third-line">By accepting our Terms of Service and listing your space, you certify that you will follow applicable laws and regulations.</span>
