@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages' ])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider' ])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
@@ -77,4 +77,18 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 			return generatedString;
 		};
-	});
+	}).controller('IndexController', function IndexController($scope) {
+
+        /**
+         * @property range
+         * @type {{from: number, to: number}}
+         */
+        $scope.range = { from: 0, to: 100 };
+
+        /**
+         * @property max
+         * @type {Number}
+         */
+        $scope.max = 100;
+
+    });

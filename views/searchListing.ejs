@@ -2,6 +2,11 @@
 <html lang="en">
   <head>
     <% include ./head %>
+    <script src="js/underscore.js"></script>
+    <script src="js/ngRangeSlider.js"></script>
+    <script src="js/Default.js"></script>
+    <link rel='stylesheet' href='css/Default.css'/>
+
   </head>
 
   <body class="body full-body" ng-app="airBnB" ng-cloak>
@@ -77,11 +82,11 @@
                 </div>
             </div>
             <div class="row " style="padding-left:0px; margin-top:20px;">
-                <div class="col-lg-3" style="padding-left:0px; padding-top:7px;" ng-controller="IndexController">
+                <div class="col-lg-3" style="padding-left:0px; padding-top:7px;">
                     Price Range
 
                 </div>
-                <div class="col-lg-9" style="">
+                <div class="col-lg-9" style="" ng-controller="IndexController">
                     <section data-ticks="true" data-range-slider class="range-slider" step="0.5" ng-model="range" min="0" max="max"></section>
 
                     <code>Current model: {{range}}</code>
