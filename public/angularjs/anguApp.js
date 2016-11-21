@@ -20,6 +20,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		});
 
 	})
+
+
 	.controller('homepage', function($scope, $http, Random) {
 		$scope.randomPassword = Random.randomString(25);
 
@@ -108,6 +110,36 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			else
 				//Making a get call to the '/redirectToHomepage' API
 				alert("Property listing is successful!");
+				// window.location.assign("/home");
+			
+		}).error(function(error){
+			console.log(data.msg);
+			// $scope.result = data.msg;			
+		});
+	};
+})
+
+	.controller('login', function($scope, $http, Random) {
+	
+	$scope.login = function(){
+		console.log("now in login function!");
+		console.log( $scope.username);
+	
+		$http({			
+			method: "POST",
+			url : '/login',
+			data : {				
+				"username" : $scope.username,
+				"password" : $scope.password								
+			}							
+		}).success(function(data){
+			if (data.statusCode === 401) {
+				alert("signin unsuccessfull");
+				// window.location.assign("/property_info");
+			}
+			else
+				//Making a get call to the '/redirectToHomepage' API
+				alert("signin successfull");
 				// window.location.assign("/home");
 			
 		}).error(function(error){

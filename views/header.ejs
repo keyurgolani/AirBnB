@@ -1,4 +1,4 @@
-<div>
+<div >
 	<div>
 		<nav class="navbar navbar-fixed-top" style="border-radius:0px; box-shadow: 1px 3px 1px 0 rgba(0, 0, 0, 0.05);">
 		<!--<nav class="navbar navbar-fixed-top" style="border-radius:0px;">-->
@@ -348,25 +348,28 @@
 								<div></div>
 							</div>
 			    		</div>
+			    		<div ng-controller="login">
 			    		<div class="row">
 				    		<div class="inner-addon right-addon" id="signUpInputProps" style="">
 						      <i class="fa fa-envelope-o" style="margin-top:10px;"></i>
-						      <input type="text" class="form-control" placeholder="Email Address" style="margin-top:7px; height:45px; font-size:18px;"/>
+						      <input type="text" ng-model="username" class="form-control" placeholder="Email Address" style="margin-top:7px; height:45px; font-size:18px;"/>
 						    </div>
 						</div>
 						<div class="row" style="margin-top:2px;">
 				    		<div class="inner-addon right-addon" id="signUpInputProps" style="font-size:19px;">
 						      <i class="fa fa-lock" style="margin-top:10px;"></i>
-						      <input type="password" class="form-control" placeholder="Password" style="height:45px; margin-top:7px;"/>
+						      <input type="password" ng-model="password" class="form-control" placeholder="Password" style="height:45px; margin-top:7px;"/>
 						    </div>
 						</div>
 						<div class="row text-justify" style="margin-top:10px;">
-							<input type="checkbox" value=""><span style="margin-left:10px;">Remember Password</span>
-						</div>
+							<input type="checkbox" value=""><pan style="margin-left:10px;">Remember Password</span>
+						</div>s
 			    		<div class="text-center">
-							<div class="signUpWithEmailbutton">
-								<span class="text-center" style="font-size:16px;color: white;">Log in</span>
+							<div class="signUpWithEmailbutton" ng-controller="login">
+								<span class="text-center" style="font-size:16px;color: white;">
+								<input type="submit" ng-click="login()" value="Log in"></span>
 							</div>
+			    		</div>
 			    		</div>
 						<div class="row" style="margin-top:20px;">	
 							<div class="col-lg-12" style="border-bottom: 1px solid #dce0e0; margin-top:0px;">

@@ -1,6 +1,7 @@
 // Loading all the variables necessary for authentication module
 // var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var LocalStrategy = require("passport-local").Strategy;
 // var TwitterStrategy  = require('passport-twitter').Strategy;
 // var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 
@@ -9,6 +10,20 @@ var properties = require('properties-reader')('properties.properties');
 
 var session = require('express-session');
 module.exports = function(passport) {
+
+	//local stretegy for sign-in
+	console.log("entered into local-sign-in!");
+    passport.use('login', new LocalStrategy(function(username, password, done) {
+         // console.log("second here!");
+      
+        process.nextTick(function(){
+         /*var msg_payload = { "username": username, "password": password };
+                mq_client.make_request('login_queue',msg_payload, function(err,user){
+                    done(null, user);                                         
+                             
+                });  */  
+            });      
+    }));
 
 	/*
 	 * Passport Session Setup
@@ -228,6 +243,12 @@ module.exports = function(passport) {
 					}
 				}
 			});
+
+
+
+			//local-stretegy log-in
+
+
 
 
 			/*  User.findOne({ 'facebook.id' : profile.id }, function(err, user) {

@@ -6,7 +6,8 @@ var logger = require('../utils/logger');
 var cache = require('../utils/cache');
 // var bcrypt = require('bcrypt');
 
-var passport = require('passport');
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
 // require('./config/passport')(passport); // pass passport for configuration
 
 
@@ -153,6 +154,47 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', (error, 
 		res.redirect('/');
 	}
 }));
+
+
+//local-stretegy for log-in
+router.post('/login', function(req, res, next) {
+	logger.log('info','inside /afterSignIn post');
+	var username = req.body.username;
+	var password = req.body.password;
+
+	console.log(username,password);
+
+	passport.authenticate('login', function(err, user, info) {
+    console.log("here");
+      return next(err);
+    // console.log(user);
+    if(err) {
+    }
+
+    if(!user) {
+    	console.log("inside this one!");
+      return res.send({"statusCode" : 401});
+    }
+
+    if(user.code == 401){
+    	console.log("inside 401");
+    	res.send({"statusCode" : 401});
+    }
+
+    req.logIn(user, {session:false}, function(err) {
+      if(err) {
+        return next(err);
+      }
+
+      req.session.user = {
+                              "user_id" : user.user_id,
+                              "username" : username
+       				 }; 
+      console.log("session initilized");
+      res.send({"statusCode" : 200}); 
+    })
+	})(req, res, next);		
+});
 
 // google ---------------------------------
 
