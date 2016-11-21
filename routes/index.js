@@ -156,6 +156,27 @@ router.post('/fetchRoomTypes', (req, res, next) => {
 	})
 });
 
+router.post('/fetchAmenities', (req, res, next) => {
+	mysql.fetchData('amenity_id, amenity', 'amenities', (error, results) => {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(results && results.length > 0) {
+				res.send({
+					'statusCode' : 200,
+					'amenities' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
 router.post('/fetchPropertyTypes', (req, res, next) => {
 	mysql.fetchData('property_type_id, property_type', 'property_types', (error, results) => {
 		if(error) {

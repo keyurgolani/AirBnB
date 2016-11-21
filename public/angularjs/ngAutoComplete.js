@@ -74,7 +74,7 @@ angular.module("ngAutocomplete", [])
 							//              if (scope.details) {
 							scope.details = scope.gPlace.getPlace();
 							//              }
-							scope.ngAutocomplete = element.val();
+							scope.ngAutocomplete = scope.details;
 						});
 					})
 				}
