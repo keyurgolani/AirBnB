@@ -33,12 +33,14 @@
 					<input type="text" class="form-control search-bar listing" placeholder="e.g. San Fransisco" ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="city" details="details" options="options">
 				</div>
 				<div class="row">
-					<div class="col-md-5 pull-right">
-						<button class="pull-right btn btn-primary continue-button" ng-click="page = page + 1">Continue</button>
+					<div class="col-md-5">
+						<button class="btn btn-primary continue-button" ng-click="page = page + 1">Continue</button>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6"></div>
+			<div class="col-md-6">
+				
+			</div>
 		</div>
 		<div class="row" ng-show="page === 2">
 			<div class="col-md-2"></div>
@@ -60,12 +62,12 @@
 				<div class="row">
 					<select class="selectpicker dropdown-box listing property-box curve-border" ng-model="property_type" ng-options="property.property_type for property in property_types"></select>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
-					<div class="col-md-5 pull-right">
-						<button class="pull-right btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+					<div class="col-md-5">
+						<button class="btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -104,12 +106,12 @@
 						<span ng-click="item.item_count = item.item_count + 1" class="count-button" style="border-right:none;">+</span>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
-					<div class="col-md-5 pull-right">
-						<button class="pull-right btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+					<div class="col-md-5">
+						<button class="btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -145,12 +147,12 @@
 				    	<input type="text" class="form-control small-address-box curve-border" id="zipcode" placeholder="e.g. 94103">
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -178,10 +180,10 @@
 				</div>
 				<div class="row">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
-					<div class="col-md-5 pull-right">
-						<button class="pull-right btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+					<div class="col-md-5">
+						<button class="btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -208,12 +210,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -230,7 +232,7 @@
 						<input type="text" class="form-control address-box curve-border" placeholder="Listing title" ng-model="title">
 					</div>
 				</div>
-				<div class="row que_1"style="margin-top: 40px" >
+				<div class="row que_1"style="margin-top: 20px" >
 					<span class="h3 que_1">Start building your description</span>
 				</div>
 				<div class="row" style="margin-top: 15px">
@@ -238,12 +240,19 @@
 						<textarea rows="4" cols="50" class="form-control address-box curve-border" placeholder="Describe your place..." ng-model="description"></textarea>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row que_1"style="margin-top: 20px" >
+					<span class="h3 que_1">Update your listing dates</span>
+				</div>
+				<div class="row search-box" style="margin-top: 15px">
+					<span class="search-box-text">When</span>
+					<input type="text" class="form-control date-picker search-bar-placeholder" placeholder="Check In		⟶ Check Out" name="daterange" value="">
+				</div>
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -325,12 +334,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -406,12 +415,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -438,7 +447,7 @@
 				<div class="row law-third-line">
 					<span class="h3 law-third-line">By accepting our Terms of Service and listing your space, you certify that you will follow applicable laws and regulations.</span>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-right">
 						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1" ng-click="addProperty">Finish</button>
 					</div>
@@ -446,6 +455,17 @@
 			</div>
 			<div class="col-md-6"></div>
 		</div>
+		<script>
+			$(function() {
+    			$('input[name="daterange"]').daterangepicker({
+    				autoApply: true,
+    				linkedCalendars: true,
+    				isCustomDate: function() {
+    					return 'customDates';
+    				}
+    			}).val('');
+			});
+		</script>
 	</main>
 	</body>
 </html>
