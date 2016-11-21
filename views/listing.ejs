@@ -21,41 +21,26 @@
 				<div class="row que_1">
 					<span class="h3 que_1">What kind of place do you have?</span>
 				</div>
-				<div class="row">
-					<select class="selectpicker dropdown-box listing box-size">
-					  	<div ng-repeat="room_type in room_types">
-					  		<option>Private room</option>
-					  	</div>
-					</select>
-					<select class="selectpicker dropdown-box listing box-size">
-						<option>for 1 guest</option>
-						<option>for 2 guests</option>
-						<option>for 3 guests</option>
-						<option>for 4 guests</option>
-						<option>for 5 guests</option>
-						<option>for 6 guests</option>
-						<option>for 7 guests</option>
-						<option>for 8 guests</option>
-						<option>for 9 guests</option>
-						<option>for 10 guests</option>
-						<option>for 11 guests</option>
-						<option>for 12 guests</option>
-						<option>for 13 guests</option>
-						<option>for 14 guests</option>
-						<option>for 15 guests</option>
-						<option>for 16 guests</option>
-					</select>
+				<div class="row" style="display:flex;">
+					<div><select class="selectpicker dropdown-box listing box-size" ng-model="room_type" ng-options="room.room_type for room in room_types"></select></div>
+					<div class="address-box increment-main-box">
+				    	<div class="count-main-text"><input type="text" class="form-control count-main-text" placeholder="Guests" ng-model="item.item_count"/></div>
+						<span ng-click="item.item_count = item.item_count - 1" class="count-main-button">-</span>
+						<span ng-click="item.item_count = item.item_count + 1" class="count-main-button" style="border-right:none;">+</span>
+					</div>
 				</div>
 				<div class="row que_1">
 					<input type="text" class="form-control search-bar listing" placeholder="e.g. San Fransisco" ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="city" details="details" options="options">
 				</div>
 				<div class="row">
-					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Continue</button>
+					<div class="col-md-5">
+						<button class="btn btn-primary continue-button" ng-click="page = page + 1">Continue</button>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6"></div>
+			<div class="col-md-6">
+				
+			</div>
 		</div>
 		<div class="row" ng-show="page === 2">
 			<div class="col-md-2"></div>
@@ -65,36 +50,24 @@
 				</div>
 				<div class="row">
 					<div class="col-md-4 room-radio">
-					    <form>
-						    <div class="radio radio-box form-control" style="border-top-left-radius:4px;border-top-right-radius:4px;">
-						      <div class="col-md-11 middle-text"><label for="optradio">Entire place</label></div>
-						      <div class="col-md-1 middle-text"><input type="radio" class="pull-right" name="optradio"></div>
+							<div class="radio radio-box form-control" style="border-top-left-radius:4px;border-top-right-radius:4px;" ng-repeat="room in room_types">
+						      <div class="col-md-11 middle-text"><label for="optradio">{{room.room_type}}</label></div>
+						      <div class="col-md-1 middle-text"><input type="radio" class="pull-right" ng-model="$parent.room_type" ng-value="room" name="optradio"></div>
 						    </div>
-						    <div class="radio radio-box form-control">
-						      <div class="col-md-11 middle-text"><label for="optradio">Private room</label></div>
-						      <div class="col-md-1 middle-text"><input type="radio" class="pull-right" name="optradio"></div>
-						    </div>
-						    <div class="radio radio-box form-control" style="border-bottom-left-radius:4px;border-bottom-right-radius:4px;">
-						      <div class="col-md-11 middle-text"><label for="optradio">Shared room</label></div>
-						      <div class="col-md-1 middle-text"><input type="radio" class="pull-right" name="optradio"></div>
-						    </div>
-						</form>
 					</div>
 				</div>
 				<div class="row" style="margin-top: 30px;">
 					<span class="h3 que_2">What type of property is this?</span>
 				</div>
 				<div class="row">
-					<select class="selectpicker dropdown-box listing property-box curve-border">
-						<option>Select one</option>
-					</select>
+					<select class="selectpicker dropdown-box listing property-box curve-border" ng-model="property_type" ng-options="property.property_type for property in property_types"></select>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
-					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+					<div class="col-md-5">
+						<button class="btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -109,25 +82,17 @@
 				<div class="row" style="margin-top: 15px;">
 					<div class="col-md-12">
 					    <div class="address-box form-control increment-box">
-					    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of beds" ng-model="item.item_count"/></div>
+					    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of beds" ng-model="number_of_beds"/></div>
 							<span ng-click="item.item_count = item.item_count - 1" class="count-button">-</span>
 							<span ng-click="item.item_count = item.item_count + 1" class="count-button" style="border-right:none;">+</span>
 						</div>
-					    <div style="width:320px;height:67px;"><select class="selectpicker listing property-box">
-							<option>Real Bed</option>
-							<option>Pull-out Sofa</option>
-							<option>Airbed</option>
-							<option>Futon</option>
-							<option>Couch</option>
-						</select>
-						</div>
 					</div>
 				</div>
-				<div class="row" style="margin-top: 70px; margin-bottom: 20px;">
+				<div class="row" style="margin-top: 30px; margin-bottom: 20px;">
 					<span class="h3 que_2">How many guests can stay?</span>
 				</div>
 				<div class="address-box form-control increment-box">
-			    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of guests" ng-model="item.item_count"/></div>
+			    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of guests" ng-model="number_of_guests"/></div>
 					<div ng-click="item.item_count = item.item_count - 1" class="count-button">-</div>
 					<div ng-click="item.item_count = item.item_count + 1" class="count-button" style="border-right:none;">+</div>
 				</div>
@@ -135,18 +100,18 @@
 					<span class="h3 que_1">How many bathrooms?</span>
 				</div>
 				<div class="row" style="margin-top: 15px;">
-					<div class="col-md-12">
-					    <select class="selectpicker dropdown-box listing property-box curve-border">
-							<option>1 bed</option>
-						</select>
+					<div class="address-box form-control increment-box">
+				    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of bathrooms" ng-model="number_of_bathrooms"/></div>
+						<span ng-click="item.item_count = item.item_count - 1" class="count-button">-</span>
+						<span ng-click="item.item_count = item.item_count + 1" class="count-button" style="border-right:none;">+</span>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
-					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+					<div class="col-md-5">
+						<button class="btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -160,12 +125,12 @@
 				</div>
 				<div class="row">
 					<div class="form-group">
-				    	<label for="St.address" class="labels">Street Address</label>
-				    	<input type="text" class="form-control address-box curve-border" id="St.address" placeholder="e.g. 123 Main St." ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="addressDetails" details="details" options="options">
+				    	<label for="st.address" class="labels">Street Address</label>
+				    	<input type="text" class="form-control address-box curve-border" id="st.address" placeholder="e.g. 123 Main St." ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="addressDetails" details="details" options="options">
 				  	</div>
 				  	<div class="form-group">
 				    	<label for="apt" class="labels">Apt, Suite, Bldg. (optional)</label>
-				    	<input type="text" class="form-control address-box curve-border" id="apt" placeholder="e.g. Apt #7">
+				    	<input type="text" class="form-control address-box curve-border" id="apt" ng-model="apt_no" placeholder="e.g. Apt #7">
 				  	</div>
 				  	<div class="form-inline form-group" style="display:flex;">
 				  		<div class="form-group">
@@ -182,12 +147,12 @@
 				    	<input type="text" class="form-control small-address-box curve-border" id="zipcode" placeholder="e.g. 94103">
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -201,40 +166,24 @@
 				</div>
 				<div class="row" style="margin-top: 15px">
 					<div class="col-md-12">
-						<form>
+						<div ng-repeat="amenity in amenities">
 							<div class="checkbox check-buttons">
 								<div class="row">
 						      		<div class="col-sm-1">
-						      			<label><input type="checkbox" value=""></label>
+						      			<label><input type="checkbox" ng-model="amenity.selected" ng-value="amenity"></label>
 						      		</div>
-						      		<div class="col-sm-11">Essentials</div>
+						      		<div class="col-sm-11">{{amenity.amenity}}</div>
 						      	</div>
 						    </div>
-						    <div class="checkbox check-buttons">
-								<div class="row">
-						      		<div class="col-sm-1">
-						      			<label><input type="checkbox" value=""></label>
-						      		</div>
-						      		<div class="col-sm-11">Wifi</div>
-						      	</div>
-						    </div>
-						    <div class="checkbox check-buttons">
-								<div class="row">
-						      		<div class="col-sm-1">
-						      			<label><input type="checkbox" value=""></label>
-						      		</div>
-						      		<div class="col-sm-11">Shampoo</div>
-						      	</div>
-						    </div>
-						</form>
+						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
-					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+					<div class="col-md-5">
+						<button class="btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -261,12 +210,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -280,23 +229,30 @@
 				</div>
 				<div class="row" style="margin-top: 15px">
 					<div class="col-md-12">
-						<input type="text" class="form-control address-box curve-border" placeholder="Listing title">
+						<input type="text" class="form-control address-box curve-border" placeholder="Listing title" ng-model="title">
 					</div>
 				</div>
-				<div class="row que_1"style="margin-top: 40px" >
+				<div class="row que_1"style="margin-top: 20px" >
 					<span class="h3 que_1">Start building your description</span>
 				</div>
 				<div class="row" style="margin-top: 15px">
 					<div class="col-md-12">
-						<textarea rows="4" cols="50" class="form-control address-box curve-border" placeholder="Describe your place..."></textarea>
+						<textarea rows="4" cols="50" class="form-control address-box curve-border" placeholder="Describe your place..." ng-model="description"></textarea>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row que_1"style="margin-top: 20px" >
+					<span class="h3 que_1">Update your listing dates</span>
+				</div>
+				<div class="row search-box" style="margin-top: 15px">
+					<span class="search-box-text">When</span>
+					<input type="text" class="form-control date-picker search-bar-placeholder" placeholder="Check In		‚ü∂ Check Out" name="daterange" value="">
+				</div>
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -315,10 +271,10 @@
 					<div class="col-md-2">
 						<div class="input-group">
 							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="house-rules" data-title="N">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="house-rules" data-title="Y">Yes</a>
+								<a class="btn btn-primary btn-sm active" data-toggle="children_suitable" data-title="false">No</a> 
+								<a class="btn btn-primary btn-sm notActive" data-toggle="children_suitable" data-title="true">Yes</a>
 							</div>
-							<input type="hidden" name="house-rules" id="house-rules">
+							<input type="hidden" name="children_suitable" id="children_suitable" ng-model="children_suitable">
 						</div>
 					</div>
 				</div>
@@ -329,10 +285,10 @@
 					<div class="col-md-2">
 						<div class="input-group">
 							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="house-rules" data-title="N">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="house-rules" data-title="Y">Yes</a>
+								<a class="btn btn-primary btn-sm active" data-toggle="infent_suitable" data-title="false">No</a> 
+								<a class="btn btn-primary btn-sm notActive" data-toggle="infent_suitable" data-title="true">Yes</a>
 							</div>
-							<input type="hidden" name="house-rules" id="house-rules">
+							<input type="hidden" name="infent_suitable" id="infent_suitable" ng-model="infent_suitable">
 						</div>
 					</div>
 				</div>
@@ -343,10 +299,10 @@
 					<div class="col-md-2">
 						<div class="input-group">
 							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="house-rules" data-title="N">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="house-rules" data-title="Y">Yes</a>
+								<a class="btn btn-primary btn-sm active" data-toggle="pets_suitable" data-title="false">No</a> 
+								<a class="btn btn-primary btn-sm notActive" data-toggle="pets_suitable" data-title="true">Yes</a>
 							</div>
-							<input type="hidden" name="house-rules" id="house-rules">
+							<input type="hidden" name="pets_suitable" id="pets_suitable" ng-model="pets_suitable">
 						</div>
 					</div>
 				</div>
@@ -357,10 +313,10 @@
 					<div class="col-md-2">
 						<div class="input-group">
 							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="house-rules" data-title="N">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="house-rules" data-title="Y">Yes</a>
+								<a class="btn btn-primary btn-sm active" data-toggle="smoking_allowed" data-title="false">No</a> 
+								<a class="btn btn-primary btn-sm notActive" data-toggle="smoking_allowed" data-title="true">Yes</a>
 							</div>
-							<input type="hidden" name="house-rules" id="house-rules">
+							<input type="hidden" name="smoking_allowed" id="smoking_allowed" ng-model="smoking_allowed">
 						</div>
 					</div>
 				</div>
@@ -371,32 +327,19 @@
 					<div class="col-md-2">
 						<div class="input-group">
 							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="house-rules" data-title="N">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="house-rules" data-title="Y">Yes</a>
+								<a class="btn btn-primary btn-sm active" data-toggle="parties_allowed" data-title="false">No</a> 
+								<a class="btn btn-primary btn-sm notActive" data-toggle="parties_allowed" data-title="true">Yes</a>
 							</div>
-							<input type="hidden" name="house-rules" id="house-rules">
+							<input type="hidden" name="parties_allowed" id="parties_allowed" ng-model="parties_allowed">
 						</div>
 					</div>
 				</div>
-				<div class="row que_1" style="margin-top: 20px;">
-					<div class="col-md-10">
-						<span class="h3 que_2" style="color:#767676;font-weight:bold;">Additional rules</span>
-					</div>
-				</div>
-				<div class="row que_1" style="margin-top: 20px;">
-					<div class="col-md-10" style="width:78.2%;">
-						<input type="text" class="form-control additional-rule-box curve-border" placeholder="Quiet hours? No shoes in the house?">
-					</div>
-					<div class="col-md-2">
-						<button type="submit" class="btn submit-button" value="Add">Add</button>
-					</div>
-				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -424,7 +367,7 @@
 					</div>
 					<div class="col-md-2">
 					    <div class="radio pull-right">
-					     	<input type="radio" name="optradio">
+					     	<input type="radio" ng-model="is_bid" value="true" name="optradio">
 					    </div>
 					</div>
 				</div>
@@ -441,12 +384,12 @@
 					</div>
 					<div class="col-md-2">
 					    <div class="radio pull-right">
-					     	<input type="radio" name="optradio">
+					     	<input type="radio" ng-model="is_bid" value="false" name="optradio">
 					    </div>
 					</div>
 				</div>
 				<div class="seperator"></div>
-				<div class="row">
+				<div class="row" ng-show="is_bid == 'true'">
 					<div class="col-md-4">
 						<div class="row que_1" style="margin-bottom:20px;">
 							<span class="h3 que_1">Smart pricing</span>
@@ -454,12 +397,12 @@
 						<div class="row">
 							<div class="form-group">
 					    		<label for="apt" class="labels">Minimum price</label>
-					    		<input type="text" class="form-control address-box curve-border" id="apt" placeholder="Minimum bid">
+					    		<input type="text" class="form-control address-box curve-border" ng-model="price" id="apt" placeholder="Minimum bid">
 					  		</div>
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" ng-hide="is_bid == 'true'">
 					<div class="col-md-4">
 						<div class="row que_1" style="margin-bottom:20px;">
 							<span class="h3 que_1">Base price</span>
@@ -467,17 +410,17 @@
 						<div class="row">
 							<div class="form-group">
 					    		<label for="apt" class="labels">Fixed price</label>
-					    		<input type="text" class="form-control address-box curve-border" id="apt" placeholder="e.g. $45">
+					    		<input type="text" class="form-control address-box curve-border" ng-model="price" id="apt" placeholder="e.g. $45">
 					  		</div>
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
-						<button class="pull-left form-control btn btn-primary continue-button" ng-click="page = page - 1">Back</button>
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Next</button>
+						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
@@ -499,19 +442,33 @@
 					<span class="h3 law-third-line">Most cities have rules covering homesharing, and the specific codes and ordinances can appear in many places (such as zoning, building, licensing or tax codes). In most places, you must register, get a permit, or obtain a license before you list your property or accept guests. You may also be responsible for collecting and remitting certain taxes. In some places, short-term rentals could be prohibited altogether.</span>
 				</div>
 				<div class="row law-third-line">
-					<span class="h3 law-third-line">Since you are responsible for your own decision to list or book, you should get comfortable with the applicable rules before listing on Airbnb. To get you started, we offer some helpful resources under ìYour City Laws.î</span>
+					<span class="h3 law-third-line">Since you are responsible for your own decision to list or book, you should get comfortable with the applicable rules before listing on Airbnb. To get you started, we offer some helpful resources under ‚ÄúYour City Laws.‚Äù</span>
 				</div>
 				<div class="row law-third-line">
 					<span class="h3 law-third-line">By accepting our Terms of Service and listing your space, you certify that you will follow applicable laws and regulations.</span>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-top: 30px;">
+					<div class="col-md-5 pull-left">
+						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
+					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="page = page + 1">Finish</button>
+						<button class="pull-right form-control btn btn-primary continue-button" ng-click="addProperty">Finish</button>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-6"></div>
 		</div>
+		<script>
+			$(function() {
+    			$('input[name="daterange"]').daterangepicker({
+    				autoApply: true,
+    				linkedCalendars: true,
+    				isCustomDate: function() {
+    					return 'customDates';
+    				}
+    			}).val('');
+			});
+		</script>
 	</main>
 	</body>
 </html>

@@ -36,12 +36,13 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('addProperty', ($scope, $http) => {
 		$scope.page = 1;
+		$scope.amenities_provided = [];
 		$scope.fetchRoomTypes = () => {
 			$http({
 				method	:	"POST",
 				url		:	"/fetchRoomTypes",
 			}).then((result) => {
-				$scope.room_types = result.room_types;
+				$scope.room_types = result.data.room_types;
 			}, (error) => {
 				$scope.room_types = [];
 			})
@@ -52,9 +53,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				method	:	"POST",
 				url		:	"/fetchPropertyTypes",
 			}).then((result) => {
-				$scope.room_types = result.room_types;
+				$scope.property_types = result.data.property_types;
 			}, (error) => {
-				$scope.room_types = [];
+				$scope.property_types = [];
 			})
 		}
 		$scope.fetchAmenities = () => {
@@ -62,7 +63,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				method	:	"POST",
 				url		:	"/fetchAmenities",
 			}).then((result) => {
-				$scope.amenities = result.amenities;
+				$scope.amenities = result.data.amenities;
 			}, (error) => {
 				$scope.amenities = [];
 			})
@@ -70,6 +71,11 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.addProperty = () => {
 			
 		}
+		
+		$scope.$watch('room_type', function() {
+			console.log($scope.room_type);
+		});
+		
 		$scope.fetchAmenities();
 		$scope.fetchPropertyTypes();
 		$scope.fetchRoomTypes();

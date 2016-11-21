@@ -592,6 +592,7 @@ main {
 	margin-top: 10px;
 	font-weight: bold;
 	border-radius: 4px;
+	margin: 50px 0px 100px 0px;
 }
 
 .continue-button:hover {

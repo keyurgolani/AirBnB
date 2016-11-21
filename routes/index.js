@@ -136,7 +136,7 @@ router.post('/register', function(req, res, next) {
 });
 
 router.post('/fetchRoomTypes', (req, res, next) => {
-	mysql.fetchData('room_type_id, room_type', 'room_types', (error, results) => {
+	mysql.fetchData('room_type_id, room_type', 'room_types', null, (error, results) => {
 		if(error) {
 			res.send({
 				'statusCode' : 500
@@ -157,7 +157,7 @@ router.post('/fetchRoomTypes', (req, res, next) => {
 });
 
 router.post('/fetchAmenities', (req, res, next) => {
-	mysql.fetchData('amenity_id, amenity', 'amenities', (error, results) => {
+	mysql.fetchData('amenity_id, amenity', 'amenities', null, (error, results) => {
 		if(error) {
 			res.send({
 				'statusCode' : 500
@@ -178,7 +178,7 @@ router.post('/fetchAmenities', (req, res, next) => {
 });
 
 router.post('/fetchPropertyTypes', (req, res, next) => {
-	mysql.fetchData('property_type_id, property_type', 'property_types', (error, results) => {
+	mysql.fetchData('property_type_id, property_type', 'property_types', null, (error, results) => {
 		if(error) {
 			res.send({
 				'statusCode' : 500
