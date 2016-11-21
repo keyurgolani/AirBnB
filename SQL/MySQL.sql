@@ -70,7 +70,7 @@ CREATE TABLE `listings` (
   `is_bid` BOOLEAN DEFAULT FALSE NOT NULL,
   `start_date` DATE NOT NULL,
   `end_date` DATE NOT NULL,
-  `daily_price` DECIMAL(2,2) NOT NULL,
+  `daily_price` DECIMAL(4,2) NOT NULL,
   `bedrooms` INT(2) NOT NULL,
   `accommodations` INT(2) NOT NULL,
   `active` BOOLEAN DEFAULT TRUE NOT NULL,

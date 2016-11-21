@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-router.post('/addProperty', (req, res, next) => {
+router.post('/addProperty', function(req, res, next) {
 	console.log(req.body);
 	//	if(req.session.loggedInUser) {
 	//		var owner_id = req.session.loggedInUser.user_id;
@@ -50,7 +50,7 @@ router.post('/addProperty', (req, res, next) => {
 		'state' : state,
 		'zip' : zip,
 		'active' : active
-	}, (error, result) => {
+	}, function(error, result) {
 		console.log(error, result);
 		if (error) {
 			res.send({
@@ -133,6 +133,66 @@ router.post('/register', function(req, res, next) {
 		}
 	});
 
+});
+
+router.post('/fetchPropertyListings', function(req, res, next) {
+	var city = req.body.cityname;
+	var state = req.body.statename;
+	var query = "select * from property_details inner join listings on property_details.property_id = listings.property_id";
+	mysql.fetchData('*', 'property_details', {
+		'city' : city, 'state' : state
+	}, function(error, results) {
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (results && results.length > 0) {
+				mysql.executeQuery(query,  function(error, results2) {
+					if (error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						res.send({
+							'statusCode' : 200,
+							'property_listings' : results,
+							'listings' : results2
+						});
+					}
+				});
+			} else {
+				res.send({
+					'statusCode' : 409
+				});
+			}
+		}
+	});
+});
+
+router.post('/fetchListingDetails', function(req, res, next) {
+	var listing_id = req.body.listing_id;
+
+	mysql.fetchData('*', 'listing_details', {
+		'listing_id' : listing_id
+	}, function(error, results) {
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (results && results.length > 0) {
+				res.send({
+					'statusCode' : 200,
+					'listing_details' : results[0]
+				});
+			} else {
+				res.send({
+					'statusCode' : 409
+				});
+			}
+		}
+	});
 });
 
 router.get('/listing', function(req, res, next) {
