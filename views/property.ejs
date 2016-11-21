@@ -261,77 +261,12 @@
 		<div class="row" ng-show="page === 8">
 			<div class="col-md-2"></div>
 			<div class="col-md-4">
-				<div class="row que_1" style="padding: 30px 0;">
+				<div class="row que_1"style="margin-top: 20px" >
 					<span class="h3 que_1">Set house rules for your guests</span>
 				</div>
-				<div class="row que_1">
-					<div class="col-md-10">
-						<span class="h3 que_2" style="color:#484848;">Suitable for children (2-12 years)</span>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group">
-							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="children_suitable" data-title="false">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="children_suitable" data-title="true">Yes</a>
-							</div>
-							<input type="hidden" name="children_suitable" id="children_suitable" ng-model="children_suitable">
-						</div>
-					</div>
-				</div>
-				<div class="row que_1" style="margin-top: 20px;">
-					<div class="col-md-10">
-						<span class="h3 que_2" style="color:#484848;">Suitable for infants (Under 2 years)</span>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group">
-							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="infent_suitable" data-title="false">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="infent_suitable" data-title="true">Yes</a>
-							</div>
-							<input type="hidden" name="infent_suitable" id="infent_suitable" ng-model="infent_suitable">
-						</div>
-					</div>
-				</div>
-				<div class="row que_1" style="margin-top: 20px;">
-					<div class="col-md-10">
-						<span class="h3 que_2" style="color:#484848;">Suitable for pets</span>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group">
-							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="pets_suitable" data-title="false">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="pets_suitable" data-title="true">Yes</a>
-							</div>
-							<input type="hidden" name="pets_suitable" id="pets_suitable" ng-model="pets_suitable">
-						</div>
-					</div>
-				</div>
-				<div class="row que_1" style="margin-top: 20px;">
-					<div class="col-md-10">
-						<span class="h3 que_2" style="color:#484848;">Smoking allowed</span>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group">
-							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="smoking_allowed" data-title="false">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="smoking_allowed" data-title="true">Yes</a>
-							</div>
-							<input type="hidden" name="smoking_allowed" id="smoking_allowed" ng-model="smoking_allowed">
-						</div>
-					</div>
-				</div>
-				<div class="row que_1" style="margin-top: 20px;">
-					<div class="col-md-10">
-						<span class="h3 que_2" style="color:#484848;">Events or parties allowed </span>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group">
-							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="parties_allowed" data-title="false">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="parties_allowed" data-title="true">Yes</a>
-							</div>
-							<input type="hidden" name="parties_allowed" id="parties_allowed" ng-model="parties_allowed">
-						</div>
+				<div class="row" style="margin-top: 15px">
+					<div class="col-md-12">
+						<textarea rows="4" cols="50" class="form-control address-box curve-border" placeholder="House Rules..." ng-model="description"></textarea>
 					</div>
 				</div>
 				<div class="row" style="margin-top: 30px;">
