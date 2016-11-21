@@ -5,6 +5,8 @@ var LocalStrategy = require("passport-local").Strategy;
 // var TwitterStrategy  = require('passport-twitter').Strategy;
 // var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 
+var bcrypt = require('bcrypt');
+
 var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
 
@@ -13,17 +15,38 @@ module.exports = function(passport) {
 
 	//local stretegy for sign-in
 	console.log("entered into local-sign-in!");
-    passport.use('login', new LocalStrategy(function(username, password, done) {
-         // console.log("second here!");
-      
-        process.nextTick(function(){
-         /*var msg_payload = { "username": username, "password": password };
-                mq_client.make_request('login_queue',msg_payload, function(err,user){
-                    done(null, user);                                         
-                             
-                });  */  
-            });      
-    }));
+    passport.use('login', new LocalStrategy((username, password, done) => {
+			process.nextTick(() => {
+				mysql.fetchData('user_id, email, secret, salt, f_name, l_name, last_login, active', 'account_details', {
+					'email' : username
+				}, (error, account_details) => {
+					if(error) {
+						throw error;
+					} else {
+						if(account_details && account_details.length > 0) {
+							if(account_details[0].active) {
+								var salt = account_details[0].salt;
+								var fetchedPassword = account_details[0].secret;
+								if(bcrypt.hashSync(password, salt) === fetchedPassword){
+									done(null, {
+										'user_id' : account_details[0].user_id,
+										'email' : account_details[0].email,
+										'f_name' : account_details[0].f_name,
+										'l_name' : account_details[0].l_name,
+										'last_login' : account_details[0].last_login
+									});
+								}
+							} else {
+								done(new Error('User is inactive'), null);
+							}
+						} else {
+							done(new Error('User does not exist'), null);
+						}
+					}
+				});
+			});
+		})
+    );
 
 	/*
 	 * Passport Session Setup

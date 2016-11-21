@@ -4,7 +4,7 @@ var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
 var logger = require('../utils/logger');
 var cache = require('../utils/cache');
-// var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt');
 
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -92,7 +92,7 @@ router.post('/register', function(req, res, next) {
 			'statusCode' : 400
 		});
 	}
-
+	
 	var salt = bcrypt.genSaltSync(10);
 	mysql.fetchData('user_id, email', 'account_details', {
 		'email' : email
@@ -165,8 +165,7 @@ router.post('/login', function(req, res, next) {
 	console.log(username,password);
 
 	passport.authenticate('login', function(err, user, info) {
-    console.log("here");
-      return next(err);
+//      return next(err);
     // console.log(user);
     if(err) {
     }
@@ -176,23 +175,11 @@ router.post('/login', function(req, res, next) {
       return res.send({"statusCode" : 401});
     }
 
-    if(user.code == 401){
-    	console.log("inside 401");
-    	res.send({"statusCode" : 401});
+    if(user){
+    	console.log("inside 200");
+    	req.session.loggedInUser = user;
+    	res.send({"statusCode" : 200});
     }
-
-    req.logIn(user, {session:false}, function(err) {
-      if(err) {
-        return next(err);
-      }
-
-      req.session.user = {
-                              "user_id" : user.user_id,
-                              "username" : username
-       				 }; 
-      console.log("session initilized");
-      res.send({"statusCode" : 200}); 
-    })
 	})(req, res, next);		
 });
 

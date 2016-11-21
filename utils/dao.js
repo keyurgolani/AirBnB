@@ -86,7 +86,7 @@ module.exports = {
 	},
 
 	insertData : function(tableName, insertParameters, processInsertStatus) {
-		connectionPool.get(function(connectionNumber, connection) {
+		connectionPool.get(function(connectionNumber, connection, connectionPool) {
 			var queryString = "INSERT INTO " + tableName + " SET ?";
 			var query = connection.query(queryString, insertParameters, processInsertStatus);
 			connectionPool.release(connectionNumber, connection);
