@@ -36,11 +36,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('addProperty', ($scope, $http) => {
 		$scope.page = 1;
-		$scope.amenities_provided = [];
 		$scope.fetchRoomTypes = () => {
 			$http({
 				method	:	"POST",
-				url		:	"/fetchRoomTypes",
+				url		:	"/fetchRoomTypes"
 			}).then((result) => {
 				$scope.room_types = result.data.room_types;
 			}, (error) => {
@@ -51,61 +50,64 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.fetchPropertyTypes = () => {
 			$http({
 				method	:	"POST",
-				url		:	"/fetchPropertyTypes",
+				url		:	"/fetchPropertyTypes"
 			}).then((result) => {
 				$scope.property_types = result.data.property_types;
 			}, (error) => {
 				$scope.property_types = [];
 			})
 		}
-		$scope.fetchAmenities = () => {
+		$scope.addProperty = () => {
 			$http({
 				method	:	"POST",
-				url		:	"/fetchAmenities",
+				url		:	"/addProperty",
+				data	:	{
+					'property_type' : $scope.property_type,
+					'house_rules' : $scope.house_rules,
+					'location' : {
+						'longitude' : $scope.addressDetails.geometry.location.lng(),
+						'latitude' : $scope.addressDetails.geometry.location.lat(),
+						'st_address' : $scope.addressDetails.address_components[0].long_name + ' ' + $scope.addressDetails.address_components[1].long_name,
+						'apt' : $scope.apt,
+						'city' : $scope.addressDetails.address_components[3].long_name,
+						'state' : $scope.addressDetails.address_components[5].long_name,
+						'zip' : $scope.addressDetails.address_components[7].long_name
+					}
+				}
 			}).then((result) => {
-				$scope.amenities = result.data.amenities;
+				if(result.data.statusCode === 200) {
+					
+				}
 			}, (error) => {
 				$scope.amenities = [];
 			})
 		}
-		$scope.addProperty = () => {
-			
-		}
 		
-		$scope.$watch('room_type', function() {
-			console.log($scope.room_type);
+		$scope.$watch('addressDetails', function() {
+			if($scope.addressDetails !== undefined && typeof $scope.addressDetails != 'string') {
+				$scope.city = $scope.addressDetails.address_components[3].long_name;
+				$scope.state = $scope.addressDetails.address_components[5].long_name;
+				$scope.zip = $scope.addressDetails.address_components[7].long_name;
+			}
 		});
 		
-		$scope.fetchAmenities();
 		$scope.fetchPropertyTypes();
 		$scope.fetchRoomTypes();
 		
 	})
 	.controller('addListing', ($scope, $http) => {
 		$scope.page = 1;
-		$scope.fetchRoomTypes = () => {
+		$scope.fetchAmenities = () => {
 			$http({
 				method	:	"POST",
-				url		:	"/fetchRoomTypes",
+				url		:	"/fetchAmenities"
 			}).then((result) => {
-				$scope.room_types = result.room_types;
+				$scope.amenities = result.data.amenities;
 			}, (error) => {
-				$scope.room_types = [];
+				$scope.amenities = [];
 			})
 		}
-		
-		$scope.fetchPropertyTypes = () => {
-			$http({
-				method	:	"POST",
-				url		:	"/fetchPropertyTypes",
-			}).then((result) => {
-				$scope.room_types = result.room_types;
-			}, (error) => {
-				$scope.room_types = [];
-			})
-		}
-		$scope.fetchPropertyTypes();
-		$scope.fetchRoomTypes();
+		$scope.fetchAmenities();
 	})
 	.controller('signUpController', function($scope, $http, Random) {
 		$scope.emailSignUp = false;

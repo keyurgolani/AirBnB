@@ -26,7 +26,6 @@ router.post('/addProperty', (req, res, next) => {
 	//		var owner_id = req.session.loggedInUser.user_id;
 	var owner_id = 1;
 	var property_type_id = req.body.property_type.property_type_id;
-	var room_type_id = req.body.room_type.room_type_id;
 	var house_rules = req.body.house_rules;
 	var longitude = req.body.location.longitude;
 	var latitude = req.body.location.latitude;
@@ -40,7 +39,6 @@ router.post('/addProperty', (req, res, next) => {
 	mysql.insertData('property_details', {
 		'owner_id' : owner_id,
 		'property_type_id' : property_type_id,
-		'room_type_id' : room_type_id,
 		'house_rules' : house_rules,
 		'longitude' : longitude,
 		'latitude' : latitude,
@@ -200,6 +198,10 @@ router.post('/fetchPropertyTypes', (req, res, next) => {
 
 router.get('/property', function(req, res, next) {
 	res.render('property');
+});
+
+router.get('/listing', function(req, res, next) {
+	res.render('listing');
 });
 
 router.get('/viewListing', function(req, res, next) {
