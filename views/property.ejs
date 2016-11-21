@@ -22,11 +22,7 @@
 					<span class="h3 que_1">What kind of place do you have?</span>
 				</div>
 				<div class="row" style="display:flex;">
-					<div><select class="selectpicker dropdown-box listing box-size">
-					  	<div ng-repeat="room_type in room_types">
-					  		<option>Private room</option>
-					  	</div>
-					</select></div>
+					<div><select class="selectpicker dropdown-box listing box-size" ng-model="room_type" ng-options="room.room_type for room in room_types"></select></div>
 					<div class="address-box increment-main-box">
 				    	<div class="count-main-text"><input type="text" class="form-control count-main-text" placeholder="Guests" ng-model="item.item_count"/></div>
 						<span ng-click="item.item_count = item.item_count - 1" class="count-main-button">-</span>
