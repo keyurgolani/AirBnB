@@ -3,7 +3,7 @@
     "use strict";
 
     // No, no! The adventures first; explanations take such a dreadful time.
-    $angular.module('ngRangeSlider', []).directive('rangeSlider', ['$window', function ngRangeSlider($window) {
+    angular.module('ngRangeSlider', []).directive('rangeSlider', ['$window', function ngRangeSlider($window) {
 
         return {
 

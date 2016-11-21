@@ -2,6 +2,8 @@
 <html lang="en">
 	<head>
 		<% include ./head %>
+		<script src="js/underscore.js"></script>
+	    <script src="js/ngRangeSlider.js"></script>
 	</head>
 
 	<body class="body full-body" ng-app="airBnB" ng-controller="homepage" ng-cloak>
@@ -553,7 +555,7 @@
 					</div>
 					<div class="seperator"></div>
 				</div>
-				<div class="col-lg-1 col-md-1 hidden-sm hidden-xs">
+				<div class="col-lg-1 col-md-1 hidden-sm hidden-xs" ng-controller="IndexController">
 				</div>
 				
 			</div>
