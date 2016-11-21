@@ -869,7 +869,45 @@ input[type='checkbox'] {
 }
 
 
-	
-	
-	
+.increment-main-box {
+	display: flex;
+	width: 186.5px;
+	height: 36px;
+	border-radius: 2px!important;
+    font-size: 16px;
+    border: 1px solid #aaa!important;
+    background-color: #fff;
+    color: #484848;
+    margin-top: 15px;
+}
+
+.count-main-text {
+	border-right: 1px solid #dce0e0;
+	white-space: nowrap;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	height: 34px;
+	width: 119.5px;
+	font-size: 22px;
+}
+
+.count-main-button {
+	width: 33.5px;
+	border-right: 1px solid #dce0e0;
+	font-size: 30px;
+	line-height: 30px;
+	color: #82888a;
+	padding: 0px 10px 0px;
+	cursor: pointer;
+}
+
+.count-main-button:active {
+	cursor: pointer;
+	background-color: #f2f2f2;
+}
+
+.count-main-button:focus {
+	cursor: pointer;
+	background-color: #f2f2f2;
 }
