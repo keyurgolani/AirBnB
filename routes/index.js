@@ -24,12 +24,92 @@ router.get('/', (req, res, next) => {
 	});
 });
 
+router.post('/addListing', (req, res, next) => {
+	//	if(req.session.loggedInUser) {
+	//		var owner_id = req.session.loggedInUser.user_id;
+	
+	// Listings Table Fields
+	var property_id = req.body.property_id;
+	var room_type_id = req.body.room_type.room_type_id;
+	var title = req.body.title;
+	var is_bid = req.body.is_bid;
+	var start_date = req.body.start_date;
+	var end_date = req.body.end_date;
+	var daily_price = req.body.daily_price;
+	var bedrooms = req.body.bedrooms;
+	var accommodations = req.body.accommodations;
+	var active = true;	//A listing is active by default at the time of adding new listing
+	
+	// Listing Details Table Fields
+	var description = req.body.description;
+	var bathrooms = req.body.bathrooms;
+	var beds = req.body.beds;
+	var checkin = req.body.checkin;
+	var checkout = req.body.checkout;
+
+	mysql.insertData('listings', {
+		'property_id' : property_id,
+		'room_type_id' : room_type_id,
+		'title' : title,
+		'is_bid' : is_bid,
+		'start_date' : start_date,
+		'end_date' : end_date,
+		'daily_price' : daily_price,
+		'bedrooms' : bedrooms,
+		'accommodations' : accommodations,
+		'active' : active
+	}, (error, listing_insert_result) => {
+		console.log(error, listing_insert_result);
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (listing_insert_result.affectedRows === 1) {
+				mysql.insertData('listing_details', {
+					'listing_id' : listing_insert_result.insertId,
+					'description' : description,
+					'bathrooms' : bathrooms,
+					'beds' : beds,
+					'checkin' : checkin,
+					'checkout' : checkout
+				}, (error, listing_details_insert_result) => {
+					if(error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if(listing_details_insert_result.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							});
+						} else {
+							res.send({
+								'statusCode' : 500
+							});
+						}
+					}
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	});
+
+//	} else {
+//		res.send({
+//			'status_code'	:	401
+//		})
+//	}
+});
+
 router.post('/addProperty', (req, res, next) => {
 	//	if(req.session.loggedInUser) {
 	//		var owner_id = req.session.loggedInUser.user_id;
 	var owner_id = 1;
 	var property_type_id = req.body.property_type.property_type_id;
-	var room_type_id = req.body.room_type.room_type_id;
 	var house_rules = req.body.house_rules;
 	var longitude = req.body.location.longitude;
 	var latitude = req.body.location.latitude;
@@ -43,7 +123,6 @@ router.post('/addProperty', (req, res, next) => {
 	mysql.insertData('property_details', {
 		'owner_id' : owner_id,
 		'property_type_id' : property_type_id,
-		'room_type_id' : room_type_id,
 		'house_rules' : house_rules,
 		'longitude' : longitude,
 		'latitude' : latitude,
@@ -155,6 +234,69 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', (error, 
 	}
 }));
 
+router.post('/fetchRoomTypes', (req, res, next) => {
+	mysql.fetchData('room_type_id, room_type', 'room_types', null, (error, results) => {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(results && results.length > 0) {
+				res.send({
+					'statusCode' : 200,
+					'room_types' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
+router.post('/fetchAmenities', (req, res, next) => {
+	mysql.fetchData('amenity_id, amenity', 'amenities', null, (error, results) => {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(results && results.length > 0) {
+				res.send({
+					'statusCode' : 200,
+					'amenities' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
+router.post('/fetchPropertyTypes', (req, res, next) => {
+	mysql.fetchData('property_type_id, property_type', 'property_types', null, (error, results) => {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(results && results.length > 0) {
+				res.send({
+					'statusCode' : 200,
+					'property_types' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
 // Local Authentication
 
 router.post('/login', function(req, res, next) {
@@ -188,9 +330,16 @@ router.post('/login', function(req, res, next) {
 	})(req, res, next);
 });
 
+router.get('/property', function(req, res, next) {
+	res.render('property');
+});
+
 router.get('/listing', function(req, res, next) {
 	res.render('listing');
 });
 
+router.get('/viewListing', function(req, res, next) {
+	res.render('viewListing');
+});
 
 module.exports = router;
