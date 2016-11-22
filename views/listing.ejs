@@ -8,7 +8,7 @@
 	<!-- Header -->
 	<header><% include ./header %></header>
 	<!-- Main -->
-	<main ng-app="airBnB" ng-controller="addProperty">
+	<main ng-app="airBnB" ng-controller="addListing">
 		<div class="row" ng-show="page === 1">
 			<div class="col-md-1"></div>
 			<div class="col-md-4">
@@ -57,16 +57,10 @@
 					</div>
 				</div>
 				<div class="row" style="margin-top: 30px;">
-					<span class="h3 que_2">What type of property is this?</span>
-				</div>
-				<div class="row">
-					<select class="selectpicker dropdown-box listing property-box curve-border" ng-model="property_type" ng-options="property.property_type for property in property_types"></select>
-				</div>
-				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
 						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
-					<div class="col-md-5">
+					<div class="col-md-5" style="margin-left: 5px;">
 						<button class="btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
@@ -77,15 +71,25 @@
 			<div class="col-md-2"></div>
 			<div class="col-md-4">
 				<div class="row que_1">
-					<span class="h3 que_1">How many guest can your place accommodate?</span>
+					<span class="h3 que_1">How many bedrooms will you provide?</span>
 				</div>
 				<div class="row" style="margin-top: 15px;">
 					<div class="col-md-12">
 					    <div class="address-box form-control increment-box">
-					    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of beds" ng-model="number_of_beds"/></div>
-							<span ng-click="item.item_count = item.item_count - 1" class="count-button">-</span>
-							<span ng-click="item.item_count = item.item_count + 1" class="count-button" style="border-right:none;">+</span>
+					    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of bedrooms" ng-model="number_of_bedrooms"/></div>
+							<span ng-click="number_of_bedrooms = number_of_bedrooms - 1" class="count-button">-</span>
+							<span ng-click="number_of_bedrooms = number_of_bedrooms + 1" class="count-button" style="border-right:none;">+</span>
 						</div>
+					</div>
+				</div>
+				<div class="row que_1" style="margin-top: 30px;>
+					<span class="h3 que_1">How many beds will you provide?</span>
+				</div>
+				<div class="row" style="margin-top: 15px;">
+					<div class="address-box form-control increment-box">
+				    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of beds" ng-model="number_of_beds"/></div>
+						<span ng-click="number_of_beds = number_of_beds - 1" class="count-button">-</span>
+						<span ng-click="number_of_beds = number_of_beds + 1" class="count-button" style="border-right:none;">+</span>
 					</div>
 				</div>
 				<div class="row" style="margin-top: 30px; margin-bottom: 20px;">
@@ -93,72 +97,33 @@
 				</div>
 				<div class="address-box form-control increment-box">
 			    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of guests" ng-model="number_of_guests"/></div>
-					<div ng-click="item.item_count = item.item_count - 1" class="count-button">-</div>
-					<div ng-click="item.item_count = item.item_count + 1" class="count-button" style="border-right:none;">+</div>
+					<div ng-click="number_of_guests = number_of_guests - 1" class="count-button">-</div>
+					<div ng-click="number_of_guests = number_of_guests + 1" class="count-button" style="border-right:none;">+</div>
 				</div>
-				<div class="row que_1" style="margin-top: 30px;>
-					<span class="h3 que_1">How many bathrooms?</span>
+				<div class="row que_1">
+					<span class="h3 que_1">How many bathrooms will you provide?</span>
 				</div>
 				<div class="row" style="margin-top: 15px;">
-					<div class="address-box form-control increment-box">
-				    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of bathrooms" ng-model="number_of_bathrooms"/></div>
-						<span ng-click="item.item_count = item.item_count - 1" class="count-button">-</span>
-						<span ng-click="item.item_count = item.item_count + 1" class="count-button" style="border-right:none;">+</span>
+					<div class="col-md-12">
+					    <div class="address-box form-control increment-box">
+					    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of bathrooms" ng-model="number_of_bathrooms"/></div>
+							<span ng-click="number_of_bathrooms = number_of_bathrooms - 1" class="count-button">-</span>
+							<span ng-click="number_of_bathrooms = number_of_bathrooms + 1" class="count-button" style="border-right:none;">+</span>
+						</div>
 					</div>
 				</div>
 				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
 						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
-					<div class="col-md-5">
+					<div class="col-md-5" style="margin-left: 5px;">
 						<button class="btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-6"></div>
 		</div>
-		<div class="row" ng-show="page === 4">
-			<div class="col-md-2"></div>
-			<div class="col-md-4">
-				<div class="row que_1" style="margin-bottom:20px;">
-					<span class="h3 que_1">Where's your place located?</span>
-				</div>
-				<div class="row">
-					<div class="form-group">
-				    	<label for="st.address" class="labels">Street Address</label>
-				    	<input type="text" class="form-control address-box curve-border" id="st.address" placeholder="e.g. 123 Main St." ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="addressDetails" details="details" options="options">
-				  	</div>
-				  	<div class="form-group">
-				    	<label for="apt" class="labels">Apt, Suite, Bldg. (optional)</label>
-				    	<input type="text" class="form-control address-box curve-border" id="apt" ng-model="apt_no" placeholder="e.g. Apt #7">
-				  	</div>
-				  	<div class="form-inline form-group" style="display:flex;">
-				  		<div class="form-group">
-					    	<label for="city" class="labels">City</label>
-					    	<input type="text" class="form-control small-address-box curve-border" id="city" placeholder="e.g. San Fransisco">
-						</div>
-						<div class="form-group">
-					  		<label for="state" class="labels">State</label>
-					  		<input type="text" class="form-control small-address-box curve-border" id="state" placeholder="e.g. CA">
-						</div>
-				  	</div>
-				  	<div class="form-group">
-				    	<label for="zipcode" class="labels">ZIP Code</label>
-				    	<input type="text" class="form-control small-address-box curve-border" id="zipcode" placeholder="e.g. 94103">
-					</div>
-				</div>
-				<div class="row" style="margin-top: 30px;">
-					<div class="col-md-5 pull-left">
-						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
-					</div>
-					<div class="col-md-5 pull-right">
-						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6"></div>
-		</div>
-		<div class="row"  ng-show="page === 5">
+		<div class="row"  ng-show="page === 4">
 			<div class="col-md-2"></div>
 			<div class="col-md-4">
 				<div class="row que_1">
@@ -189,39 +154,7 @@
 			</div>
 			<div class="col-md-6"></div>
 		</div>
-		<div class="row"  ng-show="page === 6">
-			<div class="col-md-2"></div>
-			<div class="col-md-8">
-				<div class="row que_1">
-					<span class="h3 que_1">Show travelers what your space looks like</span>
-				</div>
-				<div class="row que_1">
-					<div class="col-md-12 upload-panel" style="padding: 20px;">
-						<div class="upload-image-icon">
-							<div class="row">
-								<div class="btn btn-primary upload-button">
-									<i class="fa fa-cloud-upload" style="margin-right:10px;" aria-hidden="true"></i>
-									<span style="font-weight:bold;">Upload Photos</span>
-								</div>
-							</div>
-							<div class="row">
-								<span class="h4">or drag them in</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row" style="margin-top: 30px;">
-					<div class="col-md-5 pull-left">
-						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
-					</div>
-					<div class="col-md-5 pull-right">
-						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-2"></div>
-		</div>
-		<div class="row" ng-show="page === 7">
+		<div class="row" ng-show="page === 5">
 			<div class="col-md-2"></div>
 			<div class="col-md-4">
 				<div class="row que_1">
@@ -245,7 +178,7 @@
 				</div>
 				<div class="row search-box" style="margin-top: 15px">
 					<span class="search-box-text">When</span>
-					<input type="text" class="form-control date-picker search-bar-placeholder" placeholder="Check In		⟶ Check Out" name="daterange" value="">
+					<input type="text" class="form-control date-picker search-bar-placeholder" ng-model="dates" placeholder="Check In	→ Check Out" name="daterange" value="">
 				</div>
 				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
@@ -258,94 +191,7 @@
 			</div>
 			<div class="col-md-6"></div>
 		</div>
-		<div class="row" ng-show="page === 8">
-			<div class="col-md-2"></div>
-			<div class="col-md-4">
-				<div class="row que_1" style="padding: 30px 0;">
-					<span class="h3 que_1">Set house rules for your guests</span>
-				</div>
-				<div class="row que_1">
-					<div class="col-md-10">
-						<span class="h3 que_2" style="color:#484848;">Suitable for children (2-12 years)</span>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group">
-							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="children_suitable" data-title="false">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="children_suitable" data-title="true">Yes</a>
-							</div>
-							<input type="hidden" name="children_suitable" id="children_suitable" ng-model="children_suitable">
-						</div>
-					</div>
-				</div>
-				<div class="row que_1" style="margin-top: 20px;">
-					<div class="col-md-10">
-						<span class="h3 que_2" style="color:#484848;">Suitable for infants (Under 2 years)</span>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group">
-							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="infent_suitable" data-title="false">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="infent_suitable" data-title="true">Yes</a>
-							</div>
-							<input type="hidden" name="infent_suitable" id="infent_suitable" ng-model="infent_suitable">
-						</div>
-					</div>
-				</div>
-				<div class="row que_1" style="margin-top: 20px;">
-					<div class="col-md-10">
-						<span class="h3 que_2" style="color:#484848;">Suitable for pets</span>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group">
-							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="pets_suitable" data-title="false">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="pets_suitable" data-title="true">Yes</a>
-							</div>
-							<input type="hidden" name="pets_suitable" id="pets_suitable" ng-model="pets_suitable">
-						</div>
-					</div>
-				</div>
-				<div class="row que_1" style="margin-top: 20px;">
-					<div class="col-md-10">
-						<span class="h3 que_2" style="color:#484848;">Smoking allowed</span>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group">
-							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="smoking_allowed" data-title="false">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="smoking_allowed" data-title="true">Yes</a>
-							</div>
-							<input type="hidden" name="smoking_allowed" id="smoking_allowed" ng-model="smoking_allowed">
-						</div>
-					</div>
-				</div>
-				<div class="row que_1" style="margin-top: 20px;">
-					<div class="col-md-10">
-						<span class="h3 que_2" style="color:#484848;">Events or parties allowed </span>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group">
-							<div id="radioBtn" class="btn-group">
-								<a class="btn btn-primary btn-sm active" data-toggle="parties_allowed" data-title="false">No</a> 
-								<a class="btn btn-primary btn-sm notActive" data-toggle="parties_allowed" data-title="true">Yes</a>
-							</div>
-							<input type="hidden" name="parties_allowed" id="parties_allowed" ng-model="parties_allowed">
-						</div>
-					</div>
-				</div>
-				<div class="row" style="margin-top: 30px;">
-					<div class="col-md-5 pull-left">
-						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
-					</div>
-					<div class="col-md-5 pull-right">
-						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6"></div>
-		</div>
-		<div class="row" ng-show="page === 9">
+		<div class="row" ng-show="page === 6">
 			<div class="col-md-2"></div>
 			<div class="col-md-4">
 				<div class="row que_1">
@@ -419,14 +265,14 @@
 					<div class="col-md-5 pull-left">
 						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
-					<div class="col-md-5 pull-right">
+					<div class="col-md-5 pull-right" style="margin-left: 5px;">
 						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-6"></div>
 		</div>
-		<div class="row" ng-show="page === 10">
+		<div class="row" ng-show="page === 7">
 			<div class="col-md-2"></div>
 			<div class="col-md-4">
 				<div class="row que_1">
@@ -442,7 +288,7 @@
 					<span class="h3 law-third-line">Most cities have rules covering homesharing, and the specific codes and ordinances can appear in many places (such as zoning, building, licensing or tax codes). In most places, you must register, get a permit, or obtain a license before you list your property or accept guests. You may also be responsible for collecting and remitting certain taxes. In some places, short-term rentals could be prohibited altogether.</span>
 				</div>
 				<div class="row law-third-line">
-					<span class="h3 law-third-line">Since you are responsible for your own decision to list or book, you should get comfortable with the applicable rules before listing on Airbnb. To get you started, we offer some helpful resources under “Your City Laws.”</span>
+					<span class="h3 law-third-line">Since you are responsible for your own decision to list or book, you should get comfortable with the applicable rules before listing on Airbnb. To get you started, we offer some helpful resources under â€œYour City Laws.â€�</span>
 				</div>
 				<div class="row law-third-line">
 					<span class="h3 law-third-line">By accepting our Terms of Service and listing your space, you certify that you will follow applicable laws and regulations.</span>
@@ -452,7 +298,7 @@
 						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="addProperty">Finish</button>
+						<button class="pull-right form-control btn btn-primary continue-button" ng-click="addListing()">Finish</button>
 					</div>
 				</div>
 			</div>
