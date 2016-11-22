@@ -935,6 +935,38 @@ input[type='checkbox'] {
 	color: #fff;
 }
 
+.back-next-button:active {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.back-next-button:focus {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.back-next-button:active:focus {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+-----------------------------------------------------------/*View Listing */-----------------------------------------------------
+
 .cover-image-container {
 	height: 402px;
 	position: relative;
@@ -1027,22 +1059,10 @@ input[type='checkbox'] {
 }
 
 .review-seperator {
-	height: 30px;
-	border-style: solid;
-	border-color: #8c8b8b;
-	border-width: 1px 0 0 0;
-	border-radius: 20px;
-}
-
-.review-seperator:before {
-	display: block;
-	content: "";
-	height: 30px;
-	margin-top: -31px;
-	border-style: solid;
-	border-color: #8c8b8b;
-	border-width: 0 0 1px 0;
-	border-radius: 20px;
+	height: 10px;
+	border: 0;
+	box-shadow: 0 10px 10px -10px #8c8b8b inset;
+	margin-bottom: 30px;
 }
 
 .review-subtitle-text {
@@ -1061,4 +1081,171 @@ input[type='checkbox'] {
 .big-star {
 	color: #008489;
 	font-size: 20px;
+}
+
+.book_it_container {
+	height: 418px;
+	width: 315px;
+	margin-left: 25px !important;
+	margin-top: -65px !important;
+}
+
+.price-heading {
+	background-color: rgba(60, 63, 64, 0.9);
+	border: 0 !important;
+	color: #fff;
+	height: 40px;
+	padding: 6px 20px;
+	text-transform: capitalize;
+	width: 314px;
+	z-index: 1001;
+	overflow-y: hidden;
+}
+
+.price-bottom {
+	border: 1px solid #dce0e0;
+	height: 376px;
+	width: 315px;
+}
+
+.price-date-box {
+	border: 1px solid #ccc;
+	box-shadow: 0 1px 3px 0 #eee;
+	height: 40px;
+	padding: 0px 10px 10px 20px !important;
+	width: 90%;
+	margin-left: 15px !important;
+	margin-bottom: 5px !important;
+}
+
+.price-date-label {
+	font-size: 14px;
+	color: #484848;
+	padding-bottom: 8px;
+	line-height: normal;
+	margin-left: 15px !important;
+	margin-top: 15px !important;
+}
+
+.price-guest-box {
+	display: flex;
+	width: 90%;
+	height: 40px;
+	border-radius: 2px !important;
+	font-size: 16px;
+	background-color: #fff;
+	color: #484848;
+	margin-left: 15px !important;
+	border: 1px solid #ccc;
+	box-shadow: 0 1px 3px 0 #eee;
+	margin-bottom: 5px !important;
+}
+
+.price-guest-text {
+	border-right: 1px solid #dce0e0;
+	white-space: nowrap;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	height: 38px;
+	width: 65%;
+	font-size: 20px;
+}
+
+.price-guest-button {
+	width: 17.5%;
+	border-right: 1px solid #dce0e0;
+	font-size: 30px;
+	line-height: 34px;
+	color: #82888a;
+	padding: 0px 18px 0px;
+	cursor: pointer;
+}
+
+.price-guest-button:active {
+	cursor: pointer;
+	background-color: #f2f2f2;
+}
+
+.price-guest-button:focus {
+	cursor: pointer;
+	background-color: #f2f2f2;
+}
+
+.price-guest-button:visited {
+	cursor: pointer;
+	background-color: #f2f2f2;
+}
+
+.book-button {
+	height: 45px;
+	width: 90%;
+	border-color: #ff5a5f;
+	background-color: #ff5a5f;
+	color: #fff;
+	font-size: 16px;
+	margin-top: 15px;
+	margin-bottom: 10px;
+	font-weight: bold;
+	border-radius: 4px;
+	background-color: #ff5a5f;
+	color: #fff;
+	margin-left: 15px !important;
+}
+
+.book-button:hover {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.book-button:active {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.book-button:focus {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.book-button:active:focus {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.charged-text {
+	font-size: 0.85em;
+	color: #767676;
+}
+
+.price-head-text {
+	font-size: 28px;
+	color: #fff;
+	line-height: 30px;
+}
+
+.per-night-text {
+	font-size: 14px;
+	color: #fff;
+	line-height: 30px;
 }
