@@ -1019,9 +1019,46 @@ input[type='checkbox'] {
 }
 
 .text-margin-bottom {
-	margin-bottom: 20px!important;
+	margin-bottom: 20px !important;
 }
 
 .icon-margin-right {
 	font-size: 1.4em;
+}
+
+.review-seperator {
+	height: 30px;
+	border-style: solid;
+	border-color: #8c8b8b;
+	border-width: 1px 0 0 0;
+	border-radius: 20px;
+}
+
+.review-seperator:before {
+	display: block;
+	content: "";
+	height: 30px;
+	margin-top: -31px;
+	border-style: solid;
+	border-color: #8c8b8b;
+	border-width: 0 0 1px 0;
+	border-radius: 20px;
+}
+
+.review-subtitle-text {
+	color: #787878;
+	word-wrap: break-word;
+	font-size: 15px;
+	line-height: 18px;
+	letter-spacing: 0.5px;
+}
+
+.small-star {
+	color: #008489;
+	font-size: 16px;
+}
+
+.big-star {
+	color: #008489;
+	font-size: 20px;
 }
