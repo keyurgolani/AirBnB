@@ -8,7 +8,7 @@
 	<!-- Header -->
 	<header><% include ./header %></header>
 	<!-- Main -->
-	<main ng-app="airBnB" ng-controller="addProperty">
+	<main ng-app="airBnB" ng-controller="addListing">
 		<div class="row" ng-show="page === 1">
 			<div class="col-md-1"></div>
 			<div class="col-md-4">
@@ -71,27 +71,25 @@
 			<div class="col-md-2"></div>
 			<div class="col-md-4">
 				<div class="row que_1">
-					<span class="h3 que_1">How many guest can your place accommodate?</span>
+					<span class="h3 que_1">How many bedrooms will you provide?</span>
 				</div>
 				<div class="row" style="margin-top: 15px;">
 					<div class="col-md-12">
 					    <div class="address-box form-control increment-box">
-					    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of beds" ng-model="number_of_beds"/></div>
-							<span ng-click="number_of_beds = number_of_beds - 1" class="count-button">-</span>
-							<span ng-click="number_of_beds = number_of_beds + 1" class="count-button" style="border-right:none;">+</span>
+					    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of bedrooms" ng-model="number_of_bedrooms"/></div>
+							<span ng-click="number_of_bedrooms = number_of_bedrooms - 1" class="count-button">-</span>
+							<span ng-click="number_of_bedrooms = number_of_bedrooms + 1" class="count-button" style="border-right:none;">+</span>
 						</div>
 					</div>
 				</div>
-				<div class="row que_1">
-					<span class="h3 que_1">How many bathrooms will you provide?</span>
+				<div class="row que_1" style="margin-top: 30px;>
+					<span class="h3 que_1">How many beds will you provide?</span>
 				</div>
 				<div class="row" style="margin-top: 15px;">
-					<div class="col-md-12">
-					    <div class="address-box form-control increment-box">
-					    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of bathrooms" ng-model="number_of_bathrooms"/></div>
-							<span ng-click="number_of_bathrooms = number_of_bathrooms - 1" class="count-button">-</span>
-							<span ng-click="number_of_bathrooms = inumber_of_bathrooms + 1" class="count-button" style="border-right:none;">+</span>
-						</div>
+					<div class="address-box form-control increment-box">
+				    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of beds" ng-model="number_of_beds"/></div>
+						<span ng-click="number_of_beds = number_of_beds - 1" class="count-button">-</span>
+						<span ng-click="number_of_beds = number_of_beds + 1" class="count-button" style="border-right:none;">+</span>
 					</div>
 				</div>
 				<div class="row" style="margin-top: 30px; margin-bottom: 20px;">
@@ -102,14 +100,16 @@
 					<div ng-click="number_of_guests = number_of_guests - 1" class="count-button">-</div>
 					<div ng-click="number_of_guests = number_of_guests + 1" class="count-button" style="border-right:none;">+</div>
 				</div>
-				<div class="row que_1" style="margin-top: 30px;>
-					<span class="h3 que_1">How many bathrooms?</span>
+				<div class="row que_1">
+					<span class="h3 que_1">How many bathrooms will you provide?</span>
 				</div>
 				<div class="row" style="margin-top: 15px;">
-					<div class="address-box form-control increment-box">
-				    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of bathrooms" ng-model="number_of_bathrooms"/></div>
-						<span ng-click="number_of_bathrooms = number_of_bathrooms - 1" class="count-button">-</span>
-						<span ng-click="number_of_bathrooms = number_of_bathrooms + 1" class="count-button" style="border-right:none;">+</span>
+					<div class="col-md-12">
+					    <div class="address-box form-control increment-box">
+					    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of bathrooms" ng-model="number_of_bathrooms"/></div>
+							<span ng-click="number_of_bathrooms = number_of_bathrooms - 1" class="count-button">-</span>
+							<span ng-click="number_of_bathrooms = number_of_bathrooms + 1" class="count-button" style="border-right:none;">+</span>
+						</div>
 					</div>
 				</div>
 				<div class="row" style="margin-top: 30px;">
@@ -178,7 +178,7 @@
 				</div>
 				<div class="row search-box" style="margin-top: 15px">
 					<span class="search-box-text">When</span>
-					<input type="text" class="form-control date-picker search-bar-placeholder" placeholder="Check In	→ Check Out" name="daterange" value="">
+					<input type="text" class="form-control date-picker search-bar-placeholder" ng-model="dates" placeholder="Check In	→ Check Out" name="daterange" value="">
 				</div>
 				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
@@ -298,7 +298,7 @@
 						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="addProperty">Finish</button>
+						<button class="pull-right form-control btn btn-primary continue-button" ng-click="addListing()">Finish</button>
 					</div>
 				</div>
 			</div>

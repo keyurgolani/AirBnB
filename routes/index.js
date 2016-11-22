@@ -20,8 +20,88 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+router.post('/addListing', (req, res, next) => {
+	//	if(req.session.loggedInUser) {
+	//		var owner_id = req.session.loggedInUser.user_id;
+	
+	// Listings Table Fields
+	var property_id = req.body.property_id;
+	var room_type_id = req.body.room_type.room_type_id;
+	var title = req.body.title;
+	var is_bid = req.body.is_bid;
+	var start_date = req.body.start_date;
+	var end_date = req.body.end_date;
+	var daily_price = req.body.daily_price;
+	var bedrooms = req.body.bedrooms;
+	var accommodations = req.body.accommodations;
+	var active = true;	//A listing is active by default at the time of adding new listing
+	
+	// Listing Details Table Fields
+	var description = req.body.description;
+	var bathrooms = req.body.bathrooms;
+	var beds = req.body.beds;
+	var checkin = req.body.checkin;
+	var checkout = req.body.checkout;
+
+	mysql.insertData('listings', {
+		'property_id' : property_id,
+		'room_type_id' : room_type_id,
+		'title' : title,
+		'is_bid' : is_bid,
+		'start_date' : start_date,
+		'end_date' : end_date,
+		'daily_price' : daily_price,
+		'bedrooms' : bedrooms,
+		'accommodations' : accommodations,
+		'active' : active
+	}, (error, listing_insert_result) => {
+		console.log(error, listing_insert_result);
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (listing_insert_result.affectedRows === 1) {
+				mysql.insertData('listing_details', {
+					'listing_id' : listing_insert_result.insertId,
+					'description' : description,
+					'bathrooms' : bathrooms,
+					'beds' : beds,
+					'checkin' : checkin,
+					'checkout' : checkout
+				}, (error, listing_details_insert_result) => {
+					if(error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if(listing_details_insert_result.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							});
+						} else {
+							res.send({
+								'statusCode' : 500
+							});
+						}
+					}
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	});
+
+//	} else {
+//		res.send({
+//			'status_code'	:	401
+//		})
+//	}
+});
+
 router.post('/addProperty', (req, res, next) => {
-	console.log(req.body);
 	//	if(req.session.loggedInUser) {
 	//		var owner_id = req.session.loggedInUser.user_id;
 	var owner_id = 1;

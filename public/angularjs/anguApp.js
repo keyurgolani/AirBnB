@@ -79,7 +79,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					
 				}
 			}, (error) => {
-				$scope.amenities = [];
+				
 			})
 		}
 		
@@ -95,7 +95,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.fetchRoomTypes();
 		
 	})
-	.controller('addListing', ($scope, $http) => {
+	.controller('addListing', ($scope, $http, $location, Date) => {
 		$scope.page = 1;
 		$scope.fetchAmenities = () => {
 			$http({
@@ -107,6 +107,48 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.amenities = [];
 			})
 		}
+		
+		$scope.fetchRoomTypes = () => {
+			$http({
+				method	:	"POST",
+				url		:	"/fetchRoomTypes"
+			}).then((result) => {
+				$scope.room_types = result.data.room_types;
+			}, (error) => {
+				$scope.room_types = [];
+			})
+		}
+		
+		$scope.addListing = () => {
+			$http({
+				method	:	"POST",
+				url		:	"/addListing",
+				data	:	{
+					'property_id' : $location.search().property,
+					'room_type' : $scope.room_type,
+					'title' : $scope.title,
+					'is_bid' : Boolean($scope.is_bid),
+					'start_date' : Date.formatToSQLWorthy($scope.dates.split("-")[0].trim()),
+					'end_date' : Date.formatToSQLWorthy($scope.dates.split("-")[1].trim()),
+					'daily_price' : $scope.price,
+					'bedrooms' : $scope.number_of_bedrooms,
+					'accommodations' : $scope.number_of_guests,
+					'description' : $scope.description,
+					'bathrooms' : $scope.number_of_bathrooms,
+					'beds' : $scope.number_of_beds,
+					'checkin' : '2:00',
+					'checkout' : '11:00'
+				}
+			}).then((result) => {
+				if(result.data.statusCode === 200) {
+					
+				}
+			}, (error) => {
+				
+			})
+		}
+		
+		$scope.fetchRoomTypes();
 		$scope.fetchAmenities();
 	})
 	.controller('signUpController', function($scope, $http, Random) {
@@ -152,4 +194,13 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 			return generatedString;
 		};
+	})
+	.service('Date', function() {
+		this.formatToSQLWorthy = function(dateString) {
+			var date = new Date(dateString);
+			var day = date.getDate();
+			var month = date.getMonth();
+			var year = date.getFullYear();
+			return year + '-' + (month + 1) + '-' + day;
+		}
 	});
