@@ -88,7 +88,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	}).controller('IndexController', function($scope, $http, Random) {
 
         $scope.range = { from: 0, to: 100 };
-       	$scope.max = 100; 
+       	$scope.max = 100;
+
 
        	var min,max;
 
@@ -98,29 +99,12 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
        	$scope.to = function(){
        		max = ($scope.max);       		
        	}
-       	$scope.click = function(){
-       		
-       		$http({			
-				method: "POST",
-				url : '/cart',
-				data : {
-					"obj" : x,
-					"qty" : $scope.qty,
-					"check" : "cart"
-				}
-							
-			}).success(function(data){
-				if (data.success == 200) {
-					console.log("done");
-					window.location.assign('cart');
-								
-				}else{
-					alert("Please sign-in first!");
-					window.location.assign('signin');
-					
-				}
-			});       		
-       	}       	
+
+       	$scope.$watch('range', function(){
+       		console.log();
+        	console.log('$scope.range', $scope.range);
+       	});
+
     });
 
  
