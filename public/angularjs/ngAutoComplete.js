@@ -107,10 +107,12 @@ angular.module("ngAutocomplete", [])
 						$scope.$apply(function() {
 							//              if ($scope.details) {
 							$scope.details = $scope.gPlace.getPlace();
+							console.log('$scope.details', $scope.details);
 							console.log($scope.details.geometry.location.lat());							
 							console.log($scope.details.geometry.location.lng());
 							//              }
 							$scope.ngAutocomplete = element.val();
+														
 						});
 					})
 				}

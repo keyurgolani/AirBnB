@@ -25,9 +25,11 @@
 						</div>
 					</div>
 					<div class="row header-space" ng-controller="searchBarController">
+					<form action="/searchListing" method="GET">
 						<div class="col-md-4 search-box left-search-box">
 							<span class="search-box-text">Where</span>
-							<input type="text" class="form-control ul_Three search-bar-placeholder" placeholder="Destination, City, Address" ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="city" details="details" options="options">
+							<input type="text" name = "where" class="form-control ul_Three search-bar-placeholder" placeholder="Destination, City, Address" ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="city" details="details" options="options">
+							
 						</div>
 						<div class="col-md-4 search-box">
 							<span class="search-box-text">When</span>
@@ -36,32 +38,33 @@
 						<div class="col-md-4 search-box right-search-box">
 							<div class="col-md-7">
 								<span class="search-box-text">Guests</span>
-								<select class="selectpicker guest-dropdown">
-								  <option>1 guest</option>
+								<select class="selectpicker guest-dropdown" name="guest">
+								  <option value="1">1 guest</option>
 								  <hr class="seperator" />
-								  <option>2 guests</option>
+								  <option value="2">2 guests</option>
 								  <hr class="seperator" />
-								  <option>3 guests</option>
+								  <option value="3">3 guests</option>
 								  <hr class="seperator" />
-								  <option>4 guests</option>
+								  <option value="4">4 guests</option>
 								  <hr class="seperator" />
-								  <option>5 guests</option>
+								  <option value="5">5 guests</option>
 								  <hr class="seperator" />
-								  <option>6 guests</option>
+								  <option value="6">6 guests</option>
 								  <hr class="seperator" />
-								  <option>7 guests</option>
+								  <option value="7">7 guests</option>
 								  <hr class="seperator" />
-								  <option>8 guests</option>
+								  <option value="8">8 guests</option>
 								  <hr class="seperator" />
-								  <option>9 guests</option>
+								  <option value="9">9 guests</option>
 								  <hr class="seperator" />
-								  <option>10 guests</option>
+								  <option value="10">10 guests</option>
 								</select>
 							</div>
 							<div class="col-md-5" style="height:56px; padding:5px;">
-								<button class="form-control btn btn-primary search-button">Search</button>
+								<input type="submit" class="form-control btn btn-primary search-button" value="search">
 							</div>
 						</div>
+					</form>
 					</div>
 					<div class="row explore-text">
 						<div class="col-md-12">

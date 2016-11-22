@@ -8,12 +8,18 @@
 
   </head>
 
-  <body class="body full-body" ng-app="airBnB" ng-cloak>
+
+
+  <body class="body full-body" ng-app="airBnB" ng-cloak ng-controller="searchListingController" ng-init="init('<%= data %>')">
+
+
     <div class="container-fluid well">
       <header>
             <% include ./header %>
       </header>
     </div>
+
+
       
       <div class="container-fluid" style="border-radius:0px; padding:0px;">
         
@@ -79,6 +85,8 @@
                     <i class="fa fa-share" style="margin-top:-2px; margin-right:15px; margin-left: 10px; display:inline-block;"></i>Shared Room<input type="checkbox" id="home" style="margin-left:15px; margin-top:;"/>
                   </div>                  
                 </div>
+
+                 <%= data %>
             </div>
             <div class="row " style="padding-left:0px; margin-top:20px;">
                 <div class="col-lg-3" style="padding-left:0px; padding-top:7px;">
@@ -88,18 +96,20 @@
                 <div class="col-lg-9" style="" ng-controller="IndexController">
                     <section data-ticks="true" data-range-slider class="range-slider" step="0.5" ng-model="range" min="0" max="max"></section>
 
-                    <code>Current model: {{range}}</code>
+                    <div>Current model: {{range}}</div>
 
-                    <ul class="from-to">
-                        <li><label>From:</label><input type="number" ng-model="range.from" /></li>
-                        <li><label>To:</label><input type="number" ng-model="range.to" /></li>
+                     <ul class="from-to">
+                        <li><label>From:</label><input type="number" ng-model="min" ng-change="from()"/></li>
+                        <li><label>To:</label><input type="number" ng-model="max" ng-change="to()"/></li>
+                        <li><label></label><input type="submit" ng-click="click()"/></li>
+
                     </ul>
                 </div>
             </div>
 
 
-            <div class="row well">
                 <div class="col-lg-3">
+            <div class="row well">
                   
                 </div>
                 <div class="col-lg-3">

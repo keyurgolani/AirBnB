@@ -45,6 +45,14 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.beforeSignUp = false;
 		};
 	})
+	.controller('searchListingController', function($scope, $http, Random) {
+		
+		$scope.init = function(stringifiedArray) {
+  		  var data = JSON.parse(stringifiedArray);
+  		  console.log(data);
+		}	
+		
+	})
 	.directive('ngEnter', function() {
 		return function(scope, element, attrs) {
 			element.bind("keydown keypress", function(event) {
@@ -77,18 +85,42 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 			return generatedString;
 		};
-	}).controller('IndexController', function IndexController($scope) {
+	}).controller('IndexController', function($scope, $http, Random) {
 
-        /**
-         * @property range
-         * @type {{from: number, to: number}}
-         */
         $scope.range = { from: 0, to: 100 };
+       	$scope.max = 100; 
 
-        /**
-         * @property max
-         * @type {Number}
-         */
-        $scope.max = 100;
+       	var min,max;
 
+       	$scope.from = function(){
+       		min = ($scope.min);       		
+       	}
+       	$scope.to = function(){
+       		max = ($scope.max);       		
+       	}
+       	$scope.click = function(){
+       		
+       		$http({			
+				method: "POST",
+				url : '/cart',
+				data : {
+					"obj" : x,
+					"qty" : $scope.qty,
+					"check" : "cart"
+				}
+							
+			}).success(function(data){
+				if (data.success == 200) {
+					console.log("done");
+					window.location.assign('cart');
+								
+				}else{
+					alert("Please sign-in first!");
+					window.location.assign('signin');
+					
+				}
+			});       		
+       	}       	
     });
+
+ 
