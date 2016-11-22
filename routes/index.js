@@ -6,13 +6,17 @@ var logger = require('../utils/logger');
 var cache = require('../utils/cache');
 var bcrypt = require('bcrypt');
 
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
+// require('./config/passport')(passport); // pass passport for configuration
+
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-	cache.fetchItem('user', 1, function(userID, callback) {
+router.get('/', (req, res, next) => {
+	cache.fetchItem('user', 1, (userID, callback) => {
 		console.log('----------------------Missed Logic!!!---------------------------');
 		callback('Keyur Golani');
-	}, function(result) {
+	}, (result) => {
 		console.log('----------------------Process Result!!!---------------------------');
 		res.render('index', {
 			title : result
@@ -129,7 +133,6 @@ router.post('/addProperty', (req, res, next) => {
 		'zip' : zip,
 		'active' : active
 	}, (error, result) => {
-		console.log(error, result);
 		if (error) {
 			res.send({
 				'statusCode' : 500
@@ -172,7 +175,7 @@ router.post('/register', function(req, res, next) {
 	var salt = bcrypt.genSaltSync(10);
 	mysql.fetchData('user_id, email', 'account_details', {
 		'email' : email
-	}, function(error, results) {
+	}, (error, results) => {
 		if (error) {
 			res.send({
 				'statusCode' : 500
@@ -186,10 +189,12 @@ router.post('/register', function(req, res, next) {
 				if (!results || results.length === 0) {
 					mysql.insertData('account_details', {
 						'email' : email,
+						'f_name' : first_name,
+						'l_name' : last_name,
 						'secret' : bcrypt.hashSync(secret, salt),
 						'salt' : salt,
 						'last_login' : require('fecha').format(Date.now(), 'YYYY-MM-DD HH:mm:ss')
-					}, function(error, result) {
+					}, (error, result) => {
 						if (error) {
 							res.send({
 								'statusCode' : 500
@@ -212,6 +217,22 @@ router.post('/register', function(req, res, next) {
 	});
 
 });
+
+// Facebook Authentication
+
+// Authentication Request to Facebook
+router.get('/auth/facebook', passport.authenticate('facebook', {
+	scope : [ 'email' ]
+}));
+
+// Post Authentication Logic
+router.get('/auth/facebook/callback', passport.authenticate('facebook', (error, userObject, res) => {
+	if (error) {
+		res.redirect('/');
+	} else {
+		res.redirect('/');
+	}
+}));
 
 router.post('/fetchRoomTypes', (req, res, next) => {
 	mysql.fetchData('room_type_id, room_type', 'room_types', null, (error, results) => {
@@ -274,6 +295,39 @@ router.post('/fetchPropertyTypes', (req, res, next) => {
 			}
 		}
 	})
+});
+
+// Local Authentication
+
+router.post('/login', function(req, res, next) {
+	passport.authenticate('local_login', function(error, userObject) {
+		if (error) {
+			if (error === 401) {
+				res.send({
+					'statusCode' : 401
+				});
+			} else if (error === 451) {
+				res.send({
+					'statusCode' : 451
+				});
+			} else if (error === 404) {
+				res.send({
+					'statusCode' : 404
+				});
+			}
+		} else {
+			if (userObject) {
+				req.session.loggedInUser = userObject;
+				res.send({
+					'statusCode' : 200
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})(req, res, next);
 });
 
 router.get('/property', function(req, res, next) {

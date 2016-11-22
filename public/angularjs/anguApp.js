@@ -4,7 +4,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			enabled : true,
 			requireBase : false
 		});
-	} ])
+	}])
 	.controller("searchBarController", function($scope, $http) {
 		$scope.city = '';
 		$scope.options = {};
@@ -156,7 +156,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.beforeSignUp = true;
 		console.log('$scope.emailSignUp', $scope.emailSignUp);
 
-		$scope.signUpWithEmail = function(){
+		$scope.signUpWithEmail = function() {
 			$scope.emailSignUp = true;
 			console.log('$scope.emailSignUp', $scope.emailSignUp);
 			$scope.beforeSignUp = false;
@@ -193,6 +193,58 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				generatedString += possible.charAt(Math.floor(Math.random() * possible.length));
 			}
 			return generatedString;
+		};
+	})
+	.controller('sell', function($scope, $http, Random) {
+		$scope.name = [ "house", "apartment", "hostel" ];
+		console.log('inside');
+
+		$scope.property = function() {
+			console.log("now in property function!");
+			console.log($scope.property_type);
+
+			$http({
+				method : "POST",
+				url : '/property_post',
+				data : {
+					"property_type" : $scope.property_type,
+					"room_type" : $scope.room_type,
+					"rules" : $scope.rules,
+					"address" : $scope.address
+				}
+			}).success(function(data) {
+				if (data.statusCode === 401) {
+					alert("Please enter correct details");
+				// window.location.assign("/property_info");
+				}
+				else
+					//Making a get call to the '/redirectToHomepage' API
+					alert("Property listing is successful!");
+					// window.location.assign("/home");
+
+			}).error(function(error) {
+				console.log(data.msg);
+			// $scope.result = data.msg;			
+			});
+		};
+	})
+	.controller('login', function($scope, $http, Random) {
+
+		$scope.login = function() {
+			console.log($scope.email);
+
+			$http({
+				method : "POST",
+				url : '/login',
+				data : {
+					"email" : $scope.email,
+					"password" : $scope.password
+				}
+			}).then((results) => {
+				console.log("Results", results);
+			}, (error) => {
+				console.log("Error", error);
+			})
 		};
 	})
 	.service('Date', function() {
