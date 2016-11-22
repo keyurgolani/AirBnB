@@ -10,7 +10,7 @@ var mongo = require('mongodb');
 var monk = require('monk');
 
 var passport = require('passport');
-require('./config/passport')(passport); // pass passport for configuration
+require('./utils/passport')(passport); // pass passport for configuration
 
 
 // app.use(passport.session()); // persistent login sessions

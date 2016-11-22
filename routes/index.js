@@ -92,7 +92,7 @@ router.post('/register', function(req, res, next) {
 			'statusCode' : 400
 		});
 	}
-	
+
 	var salt = bcrypt.genSaltSync(10);
 	mysql.fetchData('user_id, email', 'account_details', {
 		'email' : email
@@ -143,7 +143,7 @@ router.post('/register', function(req, res, next) {
 
 // Authentication Request to Facebook
 router.get('/auth/facebook', passport.authenticate('facebook', {
-	scope: ['email'] 
+	scope : [ 'email' ]
 }));
 
 // Post Authentication Logic
@@ -155,86 +155,38 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', (error, 
 	}
 }));
 
+// Local Authentication
 
-//local-stretegy for log-in
 router.post('/login', function(req, res, next) {
-	logger.log('info','inside /afterSignIn post');
-	var username = req.body.username;
-	var password = req.body.password;
-
-	console.log(username,password);
-
-	passport.authenticate('login', function(err, user, info) {
-//      return next(err);
-    // console.log(user);
-    if(err) {
-    }
-
-    if(!user) {
-    	console.log("inside this one!");
-      return res.send({"statusCode" : 401});
-    }
-
-    if(user){
-    	console.log("inside 200");
-    	req.session.loggedInUser = user;
-    	res.send({"statusCode" : 200});
-    }
-	})(req, res, next);		
+	passport.authenticate('local_login', function(error, userObject) {
+		if (error) {
+			if (error === 401) {
+				res.send({
+					'statusCode' : 401
+				});
+			} else if (error === 451) {
+				res.send({
+					'statusCode' : 451
+				});
+			} else if (error === 404) {
+				res.send({
+					'statusCode' : 404
+				});
+			}
+		} else {
+			if (userObject) {
+				req.session.loggedInUser = userObject;
+				res.send({
+					'statusCode' : 200
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})(req, res, next);
 });
-
-// google ---------------------------------
-
-	/*// send to google to do the authentication
-	router.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
-
-	// the callback after google has authenticated the user
-	router.get('/auth/google/callback',
-		passport.authenticate('google', {
-			successRedirect : '/profile',
-			failureRedirect : '/'
-		}));*/
-
-// locally --------------------------------
-	/*router.get('/connect/local', function(req, res) {
-		res.render('connect-local.ejs', { message: req.flash('loginMessage') });
-	});d
-	router.post('/connect/local', passport.authenticate('local-signup', {
-		successRedirect : '/profile', // redirect to the secure profile section
-		failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
-		failureFlash : true // allow flash messages
-	}));*/
-
-
-		
-// google ---------------------------------
-
-	// send to google to do the authentication
-	/*router.get('/connect/google', passport.authorize('google', { scope : ['profile', 'email'] }));
-
-	// the callback after google has authorized the user
-	router.get('/connect/google/callback',
-		passport.authorize('google', {
-			successRedirect : '/profile',
-			failureRedirect : '/'
-		}));*/
-
-// locally --------------------------------
-	/*router.get('/connect/local', function(req, res) {
-		res.render('connect-local.ejs', { message: req.flash('loginMessage') });
-	});
-	router.post('/connect/local', passport.authenticate('local-signup', {
-		successRedirect : '/profile', // redirect to the secure profile section
-		failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
-		failureFlash : true // allow flash messages
-	}));*/	
-
-function isLoggedIn(req, res, next) {
-	if (req.isAuthenticated())
-		return next();
-		res.redirect('/');
-}	
-
 
 router.get('/listing', function(req, res, next) {
 	res.render('listing');
