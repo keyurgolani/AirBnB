@@ -11,7 +11,7 @@ body {
 section.range-slider {
     overflow: hidden;
     position: relative;
-    width: 550px;
+    width: 200px;
     height: 35px;
 }
 
@@ -21,7 +21,7 @@ section.range-slider input {
     overflow: hidden;
     left: 0;
     top: 0;
-    width: 550px;
+    width: 200px;
     outline: none;
     height: 18px;
 }
