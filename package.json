@@ -24,6 +24,7 @@
     "express-session": "^1.14.1",
     "fecha": "^2.3.0",
     "font-awesome": "^4.7.0",
+    "geocoder": "^0.2.2",
     "geopoint": "^1.0.1",
     "gmaps": "^0.4.24",
     "html5shiv": "^3.7.3",
