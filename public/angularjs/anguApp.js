@@ -15,7 +15,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$window.location.href = '/searchListing?where='+$scope.city.formatted_address;
 			}
 		});
-
 	})
 	.controller('homepage', function($scope, $http, Random) {
 		$scope.randomPassword = Random.randomString(25);
