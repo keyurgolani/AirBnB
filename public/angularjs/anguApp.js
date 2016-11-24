@@ -5,14 +5,14 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			requireBase : false
 		});
 	}])
-	.controller("searchBarController", function($scope, $http) {
+	.controller("searchBarController", function($scope, $http, $window) {
 		$scope.city = '';
 		$scope.options = {};
 		$scope.options.watchEnter = true;
 
 		$scope.$watch('city', function() {
-			if ($scope.city.trim() !== undefined && $scope.city.trim() !== "") {
-				
+			if ($scope.city !== undefined && typeof $scope.city !== 'string') {
+				$window.location.href = '/searchListing?where='+$scope.city.formatted_address;
 			}
 		});
 
