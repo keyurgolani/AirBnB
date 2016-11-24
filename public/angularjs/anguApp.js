@@ -49,7 +49,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		
 		$scope.init = function(stringifiedArray) {
   		  var data = JSON.parse(stringifiedArray);
-  		  console.log(data);
+  		  console.log("Data: ", data);
 		}	
 		
 	})

@@ -234,7 +234,7 @@ router.get('/searchListing', function(req, res, next) {
 		// Using callback 
 		geocoder.geocode(address, function(err, georesult) {
 
-			console.log(georesult[0].longitude);
+//			console.log(georesult[0].longitude);
 
 
 			var longitude = Number ((georesult[0].longitude)*Math.PI /180);
@@ -245,7 +245,7 @@ router.get('/searchListing', function(req, res, next) {
 
 			var bouningcoordinates = statueOfLiberty.boundingCoordinates(10);
 
-			console.log(bouningcoordinates);
+//			console.log(bouningcoordinates);
 
 			var longitude_lower = bouningcoordinates[0]._degLon;
 			var longitude_upper = bouningcoordinates[1]._degLon;
@@ -261,7 +261,7 @@ var parameters = [longitude_upper,longitude_lower,latitude_upper,latitude_lower]
 
 
 			mysql.executeQuery(query, parameters,function(error, results) {
-				// console.log(error,results);
+				 console.log(error,results);
 					if (error) {
 						res.send({
 							'statusCode' : 500
@@ -272,7 +272,7 @@ var parameters = [longitude_upper,longitude_lower,latitude_upper,latitude_lower]
 							res.render('searchListing', {data: JSON.stringify(results)});// 							
 						} else {
 							res.send({
-								'statusCode' : 409
+								'statusCode' : 204
 							});
 						}
 					}
