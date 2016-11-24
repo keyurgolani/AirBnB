@@ -52,6 +52,7 @@
           //These lat and long values centers the map on the page wherever called.
           map = new GMaps({
             div: '#map',
+            zoom: 12,
             lat: retrievedData.centerLatLng.center_lat,
             lng: retrievedData.centerLatLng.center_lng
           });
