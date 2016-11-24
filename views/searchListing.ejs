@@ -2,6 +2,13 @@
 <html lang="en">
   <head>
     <% include ./head %>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/gmaps.js"></script>
+    <script type="text/javascript" src="js/prettify.js"></script>
+    <link href='//fonts.googleapis.com/css?family=Convergence|Bitter|Droid+Sans|Ubuntu+Mono' rel='stylesheet' type='text/css' />
+    <link href='css/style.css' rel='stylesheet' type='text/css' />
+    <link href='css/prettify.css' rel='stylesheet' type='text/css' />
+    <link href='css/example.css' rel='stylesheet' type='text/css' />
     <script src="js/underscore.js"></script>
     <script src="js/ngRangeSlider.js"></script>
     <link rel='stylesheet' href='css/Default.css'/>
@@ -12,7 +19,14 @@
 
   <body class="body full-body" ng-app="airBnB" ng-cloak ng-controller="searchListingController" ng-init="init('<%= data %>')">
   <!-- <body class="body full-body" ng-app="airBnB" ng-cloak> -->
+  <!-- <input type="hidden" value="<%= JSON.parse(data).centerLatLng.center_lat%>" id="centerLat">
+  <input type="hidden" value="<%= JSON.parse(data).centerLatLng.center_lng%>" id="centerLng">
 
+  <input type="hidden" value="<%= JSON.parse(data).results%>" id="retData"> -->
+
+
+
+ 
 
     <div class="container-fluid well">
       <header>
@@ -21,7 +35,97 @@
     </div>
 
 
-      
+     {{data}}
+
+     <h4><%= JSON.parse(data).results[0].latitude%></h4>
+
+
+
+     <h3>{{data.centerLatLng.center_lat}}</h3>
+      <script type="text/javascript">
+        var map;
+        $(document).ready(function(){
+          prettyPrint();
+
+          var retrievedData = <%- (data)%>;
+          console.log("retrievedData", retrievedData);
+          //These lat and long values centers the map on the page wherever called.
+          map = new GMaps({
+            div: '#map',
+            lat: retrievedData.centerLatLng.center_lat,
+            lng: retrievedData.centerLatLng.center_lng
+          });
+
+          // var lat_val = document.getElementById('centerLat').value;
+          // var lng_val = document.getElementById('centerLng').value;
+
+          // console.log("{}{}{}{}{}{}{}{}{}{}");
+          // console.log(document.getElementById('centerLat').value);
+          // console.log(document.getElementById('centerLng').value);
+
+          // console.log(map.lng);
+          // map.addMarker({
+          //   lat: 37.279518,
+          //   lng: -121.867905,
+          //   title: 'Lima',
+          //   details: {
+          //     database_id: 42,
+          //     author: 'HPNeo'
+          //   },
+          //   click: function(e){
+          //     if(console.log)
+          //       console.log(e);
+          //     alert('You clicked in this marker');
+          //   }
+          // });
+          // map.addMarker({
+          //   lat: -12.043333,
+          //   lng: -77.028333,
+          //   title: 'Marker with InfoWindow',
+          //   infoWindow: {
+          //     content: '<p>HTML Content</p>'
+          //   }
+          // });
+
+          //currently for test purposes, multiple values are added. But when these values will be retrieved fro mthe database,
+          //the map.drawOverlay function will be put within a for loop to show all the properties within 10 miles radius
+
+          // console.log(document.getElementById('retData').value);
+
+          // var retData = document.getElementById('retData').value;
+          // console.log('retData', JSON.stringify(retData));
+
+
+
+          // console.log(retData.length);
+          // console.log(retData[0].latitude);
+          for(var i = 0 ; i < retrievedData.results.length ; i++){
+            map.drawOverlay({
+              lat: retrievedData.results[i].latitude,
+              lng: retrievedData.results[i].longitude,
+              content: '<div class="overlay">$<b>$'+retrievedData.results[i].daily_price+'</b><div class="overlay_arrow above"></div></div>'
+            });
+          }
+
+        //   map.drawOverlay({
+        //     lat: lat_val,
+        //     lng: lng_val,
+        // content: '<div class="overlay">$<b>45</b><div class="overlay_arrow above"></div></div>'
+        //   });
+        //   map.drawOverlay({
+        //     lat: 37.277354,
+        //     lng: -121.861289,
+        // content: '<div class="overlay">$<b>75</b><div class="overlay_arrow above"></div></div>'
+        //   });
+        //   map.drawOverlay({
+        //     lat: 37.277886,
+        //     lng: -121.86595999999997,
+        // content: '<div class="overlay">$<b>200</b><span class="glyphicon glyphicon-flash" style="color:#FFD980;"></span><div class="overlay_arrow above"></div></div>'
+        //   });
+        });
+      </script>
+
+
       <div class="container-fluid" style="border-radius:0px; padding:0px;">
         
         <div class="row"  style="border-radius:0px; padding:0px;">
@@ -87,7 +191,7 @@
                   </div>                  
                 </div>
 
-                 <%= data %>
+                 <!-- <%= data %> -->
             </div>
             <div class="row " style="padding-left:0px; margin-top:20px;">
                 <div class="col-lg-3" style="padding-left:0px; padding-top:7px;">
@@ -155,7 +259,7 @@
           </div>
 
           <div class="col-lg-5 well" style="border-radius:0px;">
-            
+            <div id="map" style="height:100% !important; width:100% !important;"></div>
           </div>
 
         </div>

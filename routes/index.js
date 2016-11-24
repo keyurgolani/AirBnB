@@ -238,12 +238,20 @@ router.get('/searchListing', function(req, res, next) {
 
 
 			var longitude = Number ((georesult[0].longitude)*Math.PI /180);
+			// console.log("<><><><><><><><><><><><><><><><><><><>");
+			// console.log('georesult[0].longitude', georesult[0].longitude);
+			// console.log('longitude', longitude);
 			var latitude = Number((georesult[0].latitude)*Math.PI /180);
+			// console.log('georesult[0].latitude', georesult[0].latitude);
+			// console.log('latitude', latitude);
+
+			center_lat = georesult[0].latitude;
+			center_lng = georesult[0].longitude;
 
 
-			var statueOfLiberty = new GeoPoint(georesult[0].latitude, georesult[0].longitude);
+			var locat = new GeoPoint(georesult[0].latitude, georesult[0].longitude);
 
-			var bouningcoordinates = statueOfLiberty.boundingCoordinates(10);
+			var bouningcoordinates = locat.boundingCoordinates(10);
 
 //			console.log(bouningcoordinates);
 
@@ -255,12 +263,24 @@ router.get('/searchListing', function(req, res, next) {
 			// var query = "select * from property_details,listings WHERE property_details.property_id = listings.property_id AND property_details.longitude<="+longitude_upper+" AND longitude >= "+longitude_lower+" AND latitude<="+latitude_upper+" AND latitude>="+latitude_lower+"";
 			// console.log(query);
 
-var query = "select * from property_details,listings WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=?";
+			var query = "select * from property_details,listings WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=?";
 			
-var parameters = [longitude_upper,longitude_lower,latitude_upper,latitude_lower];
+			var parameters = [longitude_upper,longitude_lower,latitude_upper,latitude_lower];
 
+
+			var centerLatLng = {
+				center_lat : center_lat,
+				center_lng : center_lng
+			};
 
 			mysql.executeQuery(query, parameters,function(error, results) {
+
+				var data = {
+
+					results : results,
+					centerLatLng : centerLatLng
+
+				};
 				 console.log(error,results);
 					if (error) {
 						res.send({
@@ -268,8 +288,10 @@ var parameters = [longitude_upper,longitude_lower,latitude_upper,latitude_lower]
 						});
 					} else {
 						if (results && results.length > 0) {
-							console.log(results);
-							res.render('searchListing', {data: JSON.stringify(results)});// 							
+							// console.log(results);
+							// res.render('searchListing', {data: JSON.stringify(data)});// 							
+							res.render('searchListing', {data: JSON.stringify(data)});// 							
+							console.log(data);
 						} else {
 							res.send({
 								'statusCode' : 204

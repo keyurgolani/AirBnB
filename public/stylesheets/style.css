@@ -765,7 +765,8 @@ body {
 
 	#map,
 	#panorama {
-	  height:300px;
+	  height:600px !important;
+	  width: 540px !important;
 	  background:#6699cc;
 	}
 

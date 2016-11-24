@@ -10,64 +10,68 @@
   <link href='css/prettify.css' rel='stylesheet' type='text/css' />
   <link href='css/example.css' rel='stylesheet' type='text/css' />
   <% include ./head %>
-  <script type="text/javascript">
-    var map;
-    $(document).ready(function(){
-      prettyPrint();
-
-      //These lat and long values centers the map on the page wherever called.
-      map = new GMaps({
-        div: '#map',
-        lat: 37.279518,
-        lng: -121.867905
-      });
-
-      // map.addMarker({
-      //   lat: 37.279518,
-      //   lng: -121.867905,
-      //   title: 'Lima',
-      //   details: {
-      //     database_id: 42,
-      //     author: 'HPNeo'
-      //   },
-      //   click: function(e){
-      //     if(console.log)
-      //       console.log(e);
-      //     alert('You clicked in this marker');
-      //   }
-      // });
-      // map.addMarker({
-      //   lat: -12.043333,
-      //   lng: -77.028333,
-      //   title: 'Marker with InfoWindow',
-      //   infoWindow: {
-      //     content: '<p>HTML Content</p>'
-      //   }
-      // });
-
-      //currently for test purposes, multiple values are added. But when these values will be retrieved fro mthe database,
-      //the map.drawOverlay function will be put within a for loop to show all the properties within 10 miles radius
-      map.drawOverlay({
-        lat: 37.279518,
-        lng: -121.867905,
-    content: '<div class="overlay">$<b>45</b><div class="overlay_arrow above"></div></div>'
-      });
-      map.drawOverlay({
-        lat: 37.277354,
-        lng: -121.861289,
-    content: '<div class="overlay">$<b>75</b><div class="overlay_arrow above"></div></div>'
-      });
-      map.drawOverlay({
-        lat: 37.277886,
-        lng: -121.86595999999997,
-    content: '<div class="overlay">$<b>200</b><span class="glyphicon glyphicon-flash" style="color:#FFD980;"></span><div class="overlay_arrow above"></div></div>'
-      });
-    });
-  </script>
+  
   <!--  content: '<div class="dialogbox"><div class="body"><div class="tip tip-down"><div class="message">$45<div></div></div></div>' -->
 </head>
 <body ng-app="airBnB">
   <header><% include ./header %></header>
+
+
+  <script type="text/javascript">
+      var map;
+      $(document).ready(function(){
+        prettyPrint();
+
+        //These lat and long values centers the map on the page wherever called.
+        map = new GMaps({
+          div: '#map',
+          lat: 37.279518,
+          lng: -121.867905
+        });
+
+        // map.addMarker({
+        //   lat: 37.279518,
+        //   lng: -121.867905,
+        //   title: 'Lima',
+        //   details: {
+        //     database_id: 42,
+        //     author: 'HPNeo'
+        //   },
+        //   click: function(e){
+        //     if(console.log)
+        //       console.log(e);
+        //     alert('You clicked in this marker');
+        //   }
+        // });
+        // map.addMarker({
+        //   lat: -12.043333,
+        //   lng: -77.028333,
+        //   title: 'Marker with InfoWindow',
+        //   infoWindow: {
+        //     content: '<p>HTML Content</p>'
+        //   }
+        // });
+
+        //currently for test purposes, multiple values are added. But when these values will be retrieved fro mthe database,
+        //the map.drawOverlay function will be put within a for loop to show all the properties within 10 miles radius
+        map.drawOverlay({
+          lat: 37.279518,
+          lng: -121.867905,
+      content: '<div class="overlay">$<b>45</b><div class="overlay_arrow above"></div></div>'
+        });
+        map.drawOverlay({
+          lat: 37.277354,
+          lng: -121.861289,
+      content: '<div class="overlay">$<b>75</b><div class="overlay_arrow above"></div></div>'
+        });
+        map.drawOverlay({
+          lat: 37.277886,
+          lng: -121.86595999999997,
+      content: '<div class="overlay">$<b>200</b><span class="glyphicon glyphicon-flash" style="color:#FFD980;"></span><div class="overlay_arrow above"></div></div>'
+        });
+      });
+    </script>
+
   <div id="header">
     <h1>
       <a href="../">gmaps.js</a>
@@ -103,14 +107,16 @@
       <div class="col-lg-6 well">
         <div class="span6">
           <p>With GMaps.js you can add markers this way:</p>
-          <pre class="prettyprint">map.addMarker({
-    lat: -12.043333,
-    lng: -77.028333,
-    title: 'Lima',
-    click: function(e) {
-      alert('You clicked in this marker');
-    }
-  });</pre>
+          <pre class="prettyprint">
+            map.addMarker({
+              lat: -12.043333,
+              lng: -77.028333,
+              title: 'Lima',
+              click: function(e) {
+                alert('You clicked in this marker');
+              }
+            });
+          </pre>
           <p><strong>latitude</strong> and <strong>longitude</strong> are required. You can also attach additional information with <code>details</code>, which will be passed to Event object (<code>e</code>) in the events previously defined.</p>
           <p><span class="label notice">Note</span>If you want to show an Info Window, you must add:</p>
           <pre class="prettyprint">infoWindow: {
