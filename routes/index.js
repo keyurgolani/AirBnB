@@ -213,10 +213,7 @@ router.get('/searchListing', function(req, res, next) {
 	var guest = req.query.guest;
 	var daterange = req.query.daterange;
 
-
-	// console.log(location,guest,daterange);
-
-	var options = {
+		var options = {
 		  provider: 'google',
 		 
 		  // Optional depending on the providers 
@@ -234,16 +231,9 @@ router.get('/searchListing', function(req, res, next) {
 		// Using callback 
 		geocoder.geocode(address, function(err, georesult) {
 
-//			console.log(georesult[0].longitude);
-
 
 			var longitude = Number ((georesult[0].longitude)*Math.PI /180);
-			// console.log("<><><><><><><><><><><><><><><><><><><>");
-			// console.log('georesult[0].longitude', georesult[0].longitude);
-			// console.log('longitude', longitude);
 			var latitude = Number((georesult[0].latitude)*Math.PI /180);
-			// console.log('georesult[0].latitude', georesult[0].latitude);
-			// console.log('latitude', latitude);
 
 			center_lat = georesult[0].latitude;
 			center_lng = georesult[0].longitude;
@@ -253,20 +243,19 @@ router.get('/searchListing', function(req, res, next) {
 
 			var bouningcoordinates = locat.boundingCoordinates(10);
 
-//			console.log(bouningcoordinates);
-
 			var longitude_lower = bouningcoordinates[0]._degLon;
 			var longitude_upper = bouningcoordinates[1]._degLon;
 			var latitude_lower = bouningcoordinates[0]._degLat;
 			var latitude_upper = bouningcoordinates[1]._degLat;
 
-			// var query = "select * from property_details,listings WHERE property_details.property_id = listings.property_id AND property_details.longitude<="+longitude_upper+" AND longitude >= "+longitude_lower+" AND latitude<="+latitude_upper+" AND latitude>="+latitude_lower+"";
-			// console.log(query);
-
 			var query = "select * from property_details,listings WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=?";
+
 			
 			var parameters = [longitude_upper,longitude_lower,latitude_upper,latitude_lower];
 
+			console.log("<><><><><><><><><><><>");
+			console.log('query', query);
+			console.log('parameters', parameters);
 
 			var centerLatLng = {
 				center_lat : center_lat,
@@ -303,5 +292,7 @@ router.get('/searchListing', function(req, res, next) {
 
 	
 });
+
+
 
 module.exports = router;

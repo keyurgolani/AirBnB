@@ -47,12 +47,46 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('searchListingController', function($scope, $http, Random) {
 		
-		$scope.init = function(stringifiedArray) {
-  		  var data = JSON.parse(stringifiedArray);
+		$scope.init = function(retrievedData) {
+  		  
+  		  var data = JSON.parse(retrievedData);
   		  console.log("Data: ", data);
 
-  		  $scope.data = JSON.parse(stringifiedArray);
-		}	
+  		  $scope.data = JSON.parse(retrievedData);
+
+			$scope.range = { from: 0, to: 100 };
+	       	$scope.max = 100;
+
+
+	       	var min,max;
+
+	       	$scope.from = function(){
+	       		min = ($scope.min);       		
+	       	}
+	       	$scope.to = function(){
+	       		max = ($scope.max);       		
+	       	}
+
+	       	$scope.$watch('range', function(){
+	       		
+	       		console.log();
+	        	console.log('$scope.range', $scope.range);
+
+	        	$scope.data
+	        	console.log('$scope.data', $scope.data);
+
+	        	$scope.propertyArray = $scope.data.results;
+	        	// console.log('$scope.propertyArray', $scope.propertyArray);
+
+	        	$scope.filteredResults  = $scope.propertyArray.filter(function(elem, index, array){
+
+	        		return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
+	        		
+	        	});
+
+	       	});
+		
+		}
 		
 	})
 	.directive('ngEnter', function() {
@@ -87,26 +121,4 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 			return generatedString;
 		};
-	}).controller('IndexController', function($scope, $http, Random) {
-
-        $scope.range = { from: 0, to: 100 };
-       	$scope.max = 100;
-
-
-       	var min,max;
-
-       	$scope.from = function(){
-       		min = ($scope.min);       		
-       	}
-       	$scope.to = function(){
-       		max = ($scope.max);       		
-       	}
-
-       	$scope.$watch('range', function(){
-       		console.log();
-        	console.log('$scope.range', $scope.range);
-       	});
-
-    });
-
- 
+	})
