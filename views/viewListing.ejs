@@ -16,9 +16,9 @@
 		</div>
 		<div class="row">
 			<div class="col-md-2"></div>
-			<div class="col-md-8" style="margin-top:24px;">
+			<div class="col-md-10" style="margin-top:24px;">
 				<div class="row">
-					<div class="col-md-9">
+					<div class="col-md-7">
 						<div class="row">
 							<div class="col-md-8">
 								<div class="row">
@@ -432,15 +432,64 @@
 							<span class="description-text">Kalgi's place is perfectly located for exploring San Francisco. Brenda and Matt made be feel most welcome.</span>
 						</div>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-5">
 						<div class="row book_it_container">
-							<div class="col-md-12"></div>
+							<div class="col-md-12">
+								<div class="row price-heading">
+									<div class="col-md-8">
+										<span class="price-head-text">$79</span>
+									</div>
+									<div class="col-md-4">
+										<span class="per-night-text pull-right">Per Night</span>
+									</div>
+								</div>
+								<div class="row price-bottom">
+									<div class="row">
+										<div class="row">
+											<label class="price-date-label">Check In ⟶ Check Out</label>
+										</div>
+										<div class="row price-date-box">
+											<input type="text" class="form-control date-picker search-bar-placeholder" placeholder="mm/dd/yyyy - mm/dd/yyyy" name="daterange" value="">
+										</div>
+										<div class="row">
+											<label class="price-date-label">Guests</label>
+										</div>
+										<div class="row address-box price-guest-box">
+									    	<div class="price-guest-text"><input type="text" class="form-control price-guest-text" placeholder="Guests" ng-model="item.item_count"/></div>
+											<span ng-click="item.item_count = item.item_count - 1" class="price-guest-button">-</span>
+											<span ng-click="item.item_count = item.item_count + 1" class="price-guest-button" style="border-right:none;">+</span>
+										</div>
+										<div class="row">
+											<label class="price-date-label">Your Bid</label>
+										</div>
+										<div class="row address-box price-guest-box">
+											<input type="text" class="form-control price-guest-text" style="width:100%;" placeholder="Minimum Bid"/>
+										</div>
+										<div class="row">
+											<button class="btn btn-primary book-button">Request to Book</button>
+										</div>
+										<div class="row text-center">
+											<span class="charged-text ">You won't be charged yet</span>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-2"></div>
 		</div>
+	<script>
+		$(function() {
+			$('input[name="daterange"]').daterangepicker({
+				autoApply: true,
+				linkedCalendars: true,
+				isCustomDate: function() {
+					return 'customDates';
+				}
+			}).val('');
+		});
+	</script>
 	</main>
 	</body>
 </html>
