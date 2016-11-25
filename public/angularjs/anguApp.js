@@ -84,7 +84,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
   		  // console.log("Data: ", data);
 
 			$scope.data = JSON.parse(retrievedData);
-			console.log('$scope.data', $scope.data);
+			// console.log('$scope.data', $scope.data);
 
 			$scope.range = { from: 0, to: 100 };
 	       	$scope.max = 100;
@@ -115,7 +115,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	        		return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
 	        		
 	        	});
-	        		console.log('$scope.filteredResults', $scope.filteredResults);
+	        		// console.log('$scope.filteredResults', $scope.filteredResults);
 
 	       	});
 		

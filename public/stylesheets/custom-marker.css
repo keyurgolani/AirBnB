@@ -1,14 +1,17 @@
 .custom-marker {
   font-size: 1em;
   padding: 0px;
-  background: #fff;
-  height: 15px;
-  width: 15px;
+  background: #ff5a5f;
+  /* height: auto;
+  width: auto; */
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  border: #7F7F7F solid 1px;
+  border: #767676 solid 1px;
   text-align: center;
+  padding: 5px;
+  font-size: 12px;
+  
 }
 
 .custom-marker:after {
@@ -16,7 +19,7 @@
   position: absolute;
   border-style: solid;
   border-width: 7px 6px 0;
-  border-color: #fff transparent;
+  border-color: #ff5a5f transparent;
   display: block;
   width: 0;
   z-index: 1;
