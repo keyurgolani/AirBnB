@@ -12,7 +12,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 		$scope.$watch('city', function() {
 			if ($scope.city.trim() !== undefined && $scope.city.trim() !== "") {
-				
+
 			}
 		});
 
@@ -34,23 +34,26 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	.controller('viewListing', function($scope, $http, Random) {
 		$scope.randomPassword = Random.randomString(25);
 	})
+	.controller('profile', function($scope, $http, Random) {
+		$scope.randomPassword = Random.randomString(25);
+	})
 	.controller('addProperty', ($scope, $http) => {
 		$scope.page = 1;
 		$scope.fetchRoomTypes = () => {
 			$http({
-				method	:	"POST",
-				url		:	"/fetchRoomTypes"
+				method : "POST",
+				url : "/fetchRoomTypes"
 			}).then((result) => {
 				$scope.room_types = result.data.room_types;
 			}, (error) => {
 				$scope.room_types = [];
 			})
 		}
-		
+
 		$scope.fetchPropertyTypes = () => {
 			$http({
-				method	:	"POST",
-				url		:	"/fetchPropertyTypes"
+				method : "POST",
+				url : "/fetchPropertyTypes"
 			}).then((result) => {
 				$scope.property_types = result.data.property_types;
 			}, (error) => {
@@ -59,9 +62,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		}
 		$scope.addProperty = () => {
 			$http({
-				method	:	"POST",
-				url		:	"/addProperty",
-				data	:	{
+				method : "POST",
+				url : "/addProperty",
+				data : {
 					'property_type' : $scope.property_type,
 					'house_rules' : $scope.house_rules,
 					'location' : {
@@ -75,55 +78,55 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					}
 				}
 			}).then((result) => {
-				if(result.data.statusCode === 200) {
-					
+				if (result.data.statusCode === 200) {
+
 				}
 			}, (error) => {
-				
+
 			})
 		}
-		
+
 		$scope.$watch('addressDetails', function() {
-			if($scope.addressDetails !== undefined && typeof $scope.addressDetails != 'string') {
+			if ($scope.addressDetails !== undefined && typeof $scope.addressDetails != 'string') {
 				$scope.city = $scope.addressDetails.address_components[3].long_name;
 				$scope.state = $scope.addressDetails.address_components[5].long_name;
 				$scope.zip = $scope.addressDetails.address_components[7].long_name;
 			}
 		});
-		
+
 		$scope.fetchPropertyTypes();
 		$scope.fetchRoomTypes();
-		
+
 	})
 	.controller('addListing', ($scope, $http, $location, Date) => {
 		$scope.page = 1;
 		$scope.fetchAmenities = () => {
 			$http({
-				method	:	"POST",
-				url		:	"/fetchAmenities"
+				method : "POST",
+				url : "/fetchAmenities"
 			}).then((result) => {
 				$scope.amenities = result.data.amenities;
 			}, (error) => {
 				$scope.amenities = [];
 			})
 		}
-		
+
 		$scope.fetchRoomTypes = () => {
 			$http({
-				method	:	"POST",
-				url		:	"/fetchRoomTypes"
+				method : "POST",
+				url : "/fetchRoomTypes"
 			}).then((result) => {
 				$scope.room_types = result.data.room_types;
 			}, (error) => {
 				$scope.room_types = [];
 			})
 		}
-		
+
 		$scope.addListing = () => {
 			$http({
-				method	:	"POST",
-				url		:	"/addListing",
-				data	:	{
+				method : "POST",
+				url : "/addListing",
+				data : {
 					'property_id' : $location.search().property,
 					'room_type' : $scope.room_type,
 					'title' : $scope.title,
@@ -140,14 +143,14 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					'checkout' : '11:00'
 				}
 			}).then((result) => {
-				if(result.data.statusCode === 200) {
-					
+				if (result.data.statusCode === 200) {
+
 				}
 			}, (error) => {
-				
+
 			})
 		}
-		
+
 		$scope.fetchRoomTypes();
 		$scope.fetchAmenities();
 	})
@@ -156,7 +159,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.beforeSignUp = true;
 		console.log('$scope.emailSignUp', $scope.emailSignUp);
 
-		$scope.signUpWithEmail = function(){
+		$scope.signUpWithEmail = function() {
 			$scope.emailSignUp = true;
 			console.log('$scope.emailSignUp', $scope.emailSignUp);
 			$scope.beforeSignUp = false;

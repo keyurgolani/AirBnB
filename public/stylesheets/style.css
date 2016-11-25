@@ -965,7 +965,7 @@ input[type='checkbox'] {
 	outline: none;
 }
 
------------------------------------------------------------/*View Listing */-----------------------------------------------------
+/*-----------------------------------------------------------View Listing-----------------------------------------------------*/
 
 .cover-image-container {
 	height: 402px;
@@ -1248,4 +1248,108 @@ input[type='checkbox'] {
 	font-size: 14px;
 	color: #fff;
 	line-height: 30px;
+}
+
+/*----------------------------------------------------------- User Profile page -----------------------------------------------------*/
+
+.nav-body {
+	height: 40px;
+    background-color: #484848;
+    margin-top: -60px!important;
+}
+
+.subnav {
+	padding-left: 30px!important;
+	padding-right: 30px!important;
+}
+
+.subnav-list {
+	list-style: none;
+}
+
+.subnav-item {
+	color: #bbb;
+}
+.subnav-item {
+    position: relative;
+    float: left;
+    padding: 8px 14px;
+    color: #bbb;
+}
+
+.subnav-item:hover,.subnav-item:focus {
+    text-decoration: none;
+    color: #fff;
+}
+
+.subnav-item-border {
+	border-bottom: 4px solid #bbb;
+}
+
+.profile-body {
+	padding-left: 70px!important;
+	margin-top:24px;
+}
+
+.item-body {
+	width: 900px;
+	height: auto;
+	border: 1px solid #dce0e0;
+	margin-bottom: 40px!important;
+}
+
+.item-head {
+	background-color: #edefed;
+	color: #484848;
+    font-size: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #dce0e0;
+    padding-left: 20px;
+    min-height: 47px;
+}
+
+.item-content {
+	height: auto;
+}
+
+.second-box {
+	border: 1px solid #ddd;
+    border-radius: 3px;
+    box-shadow: 4px 4px 1px #eee;
+    padding: 15px 15px 15px 15px;
+    margin: 20px 20px 20px 20px!important;
+	height: auto;
+}
+
+.listing-activated-body {
+	border: 4px solid lightgreen;
+	border-radius: 4px;
+	margin-bottom: 20px!important;
+}
+
+.listing-deactivated-body {
+	border: 4px solid #ff6666;
+	border-radius: 4px;
+	margin-bottom: 20px!important;
+}
+
+.listing-image {
+	height:200px;
+	width: 100%;
+	background-size: cover;
+}
+
+.listing-title {
+	font-size: 28px;
+	margin-bottom: 20px!important;
+}
+
+.details-text {
+	color: #787878;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.5px;
+	text-align: justify;
+	margin-bottom: 40px!important;
 }

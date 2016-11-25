@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<% include ./head %>
+	</head>
+
+	<body class="body full-body" ng-app="airBnB" ng-controller="profile" ng-cloak>
+	<!-- Header -->
+	<header><% include ./header %></header>
+	<!-- Main -->
+	<main ng-app="airBnB">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row nav-body">
+					<div class="col-md-1"></div>
+					<div class="col-md-10 subnav">
+						<ul class="subnav-list">
+							<li><a href="" aria-selected"true" class="subnav-item subnav-item-border" id="host">Host</a></li>
+							<li><a href="" aria-selected"true" class="subnav-item" id="account">Account</a></li>
+							<li><a href="" aria-selected"true" class="subnav-item" id="profile">Profile</a></li>
+							<li><a href="" aria-selected"true" class="subnav-item" id="trips">Your Trips</a></li>
+						</ul>
+					</div>
+					<div class="col-md-1"></div>
+				</div>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10 profile-body">
+						<div class="row item-body">
+							<div class="row item-head">Dashboard</div>
+							<div class="row item-content">
+							</div>
+						</div>
+						<div class="row item-body">
+							<div class="row item-head">Your listings</div>
+							<div class="row item-content">
+								<div class="row second-box">
+									<div class="row listing-activated-body well">
+										<div class="col-md-3">
+											<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+										</div>
+										<div class="col-md-1"></div>
+										<div class="col-md-8 listing-details">
+											<div class="row listing-title">Perfectly located Castro</div>
+											<div class="row details-text">Instant Booking</div>
+												<div class="col-md-9"></div>
+											<div class="row left-column-text">From - To</div>
+											<div class="row details-text">10/10/2017-10/23/2017</div>
+										</div>
+									</div>
+									<div class="row listing-deactivated-body well">
+										<div class="col-md-3">
+											<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+										</div>
+										<div class="col-md-1"></div>
+										<div class="col-md-8 listing-details">
+											<div class="listing-title">Perfectly located Castro</div>
+										</div>
+									</div>
+									<div class="row listing-deactivated-body well">
+										<div class="col-md-3">
+											<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+										</div>
+										<div class="col-md-1"></div>
+										<div class="col-md-8 listing-details">
+											<div class="listing-title">Perfectly located Castro</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-1"></div>
+				</div>
+			</div>
+		</div>
+	</main>
+	</body>
+</html>

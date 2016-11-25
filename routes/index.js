@@ -288,4 +288,8 @@ router.get('/viewListing', function(req, res, next) {
 	res.render('viewListing');
 });
 
+router.get('/profile', function(req, res, next) {
+	res.render('profile');
+});
+
 module.exports = router;
