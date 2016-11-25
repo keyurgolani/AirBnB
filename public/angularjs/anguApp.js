@@ -4,35 +4,35 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			enabled : true,
 			requireBase : false
 		});
-	} ])
-	.controller("searchBarController", function($scope, $http) {
+	}])
+	.controller("searchBarController", function($scope, $http, $window) {
 		$scope.city = '';
 		$scope.options = {};
 		$scope.options.watchEnter = true;
 
 		$scope.$watch('city', function() {
-			if ($scope.city.trim() !== undefined && $scope.city.trim() !== "") {
-
+			if ($scope.city !== undefined && typeof $scope.city !== 'string') {
+				$window.location.href = '/searchListing?where='+$scope.city.formatted_address;
 			}
 		});
+	})
+	.controller('login', function($scope, $http, Random) {
+		$scope.login = function() {
+			console.log($scope.email);
 
-	})
-	.controller('homepage', function($scope, $http, Random) {
-		$scope.randomPassword = Random.randomString(25);
-
-	})
-	.controller('header', function($scope, $http, Random) {
-		$scope.randomPassword = Random.randomString(25);
-
-	})
-	.controller('footer', function($scope, $http, Random) {
-		$scope.randomPassword = Random.randomString(25);
-	})
-	.controller('listing', function($scope, $http, Random) {
-		$scope.randomPassword = Random.randomString(25);
-	})
-	.controller('viewListing', function($scope, $http, Random) {
-		$scope.randomPassword = Random.randomString(25);
+			$http({
+				method : "POST",
+				url : '/login',
+				data : {
+					"email" : $scope.email,
+					"password" : $scope.password
+				}
+			}).then((results) => {
+				console.log("Results", results);
+			}, (error) => {
+				console.log("Error", error);
+			})
+		};
 	})
 	.controller('profile', function($scope, $http, Random) {
 		$scope.randomPassword = Random.randomString(25);
@@ -157,11 +157,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	.controller('signUpController', function($scope, $http, Random) {
 		$scope.emailSignUp = false;
 		$scope.beforeSignUp = true;
-		console.log('$scope.emailSignUp', $scope.emailSignUp);
 
 		$scope.signUpWithEmail = function() {
 			$scope.emailSignUp = true;
-			console.log('$scope.emailSignUp', $scope.emailSignUp);
 			$scope.beforeSignUp = false;
 		};
 	})
@@ -197,6 +195,98 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 			return generatedString;
 		};
+	})
+	.service('Validation', function() {
+		this.validateTextArea = function(value) {
+			if(value.length > 10000) {
+				return false;
+			} else {
+				return true;
+			}
+		};
+		this.validateTextBox = function(value) {
+			if(value.length > 100) {
+				return false;
+			} else {
+				return true;
+			}
+		};
+		this.validateCount = function(value) {
+			var count_validator = new RegExp(/^\d$/);
+			if(value.match(count_validator) !== null) {
+				return true;
+			} else {
+				return false;
+			}
+		};
+		this.validatePrice = function(value) {
+			var price_validator = new RegExp(/^\d+(,\d{1,2})?$/);
+			if(value.match(price_validator) !== null) {
+				return true;
+			} else {
+				return false;
+			}
+		};
+		this.validateDateRange = function(value) {
+			var date_range_validator = new RegExp(/^(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.](19|20)\d\d\s-\s(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.](19|20)\d\d$/);
+			if(value.match(date_range_validator) !== null) {
+				return true;
+			} else {
+				return false;
+			}
+		};
+		this.validateCity = function(value) {
+			var city_validator = new RegExp(/^[a-zA-Z]+(?:(?:\\s+|-)[a-zA-Z]+)*$/);
+			if(value.match(city_validator) !== null) {
+				return true;
+			} else {
+				return false;
+			}
+		};
+		this.validateZip = function(value) {
+			var zip_validator = new RegExp(/^\d{5}([\-]?\d{4})?$/);
+			if(value.match(zip_validator) !== null) {
+				return true;
+			} else {
+				return false;
+			}
+		};
+		this.validateState = function(value) {
+			var state_validator = new RegExp(/^(Alabama|Alaska|Arizona|Arkansas|California|Colorado|Connecticut|Delaware|Florida|Georgia|Hawaii|Idaho|Illinois|Indiana|Iowa|Kansas|Kentucky|Louisiana|Maine|Maryland|Massachusetts|Michigan|Minnesota|Mississippi|Missouri|Montana|Nebraska|Nevada|New\sHampshire|New\sJersey|New\sMexico|New\sYork|North\sCarolina|North\sDakota|Ohio|Oklahoma|Oregon|Pennsylvania|Rhode\sIsland|South\sCarolina|South\sDakota|Tennessee|Texas|Utah|Vermont|Virginia|Washington|West\sVirginia|Wisconsin|Wyoming)$/);
+			if(value.match(state_validator) !== null) {
+				return true;
+			} else {
+				return false;
+			}
+		};
+		this.validateEmail = function(value) {
+			var email_validator = new RegExp(/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i);
+			if(value.match(email_validator) !== null) {
+				return true;
+			} else {
+				return false;
+			}
+		};
+		this.validateYear = function(value) {
+			var year_validator = new RegExp(/^\d{4}$/);
+			if(value.match(email_validator) !== null) {
+				if(Number(value) > new Date().getFullYear()) {
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				return false;
+			}
+		};
+		this.validatePassword = function(value) {
+			var password_validator = new RegExp(/^[A-Za-z0-9_-]{6,18}$/);
+			if(value.match(password_validator) !== null) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	})
 	.service('Date', function() {
 		this.formatToSQLWorthy = function(dateString) {

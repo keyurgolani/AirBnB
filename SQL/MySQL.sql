@@ -6,8 +6,10 @@ DROP TABLE IF EXISTS `account_details`;
 CREATE TABLE `account_details` (
   `user_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `email` varchar(45) NOT NULL,
-  `secret` varchar(255) NOT NULL,
-  `salt` varchar(255) NOT NULL,
+  `f_name` varchar(45) NOT NULL,
+  `l_name` varchar(45) NOT NULL,
+  `secret` varchar(255) NULL,
+  `salt` varchar(255) NULL,
   `last_login` DATETIME DEFAULT NULL,
   `active` BOOLEAN DEFAULT TRUE NOT NULL,
   PRIMARY KEY (`user_id`)
@@ -17,8 +19,6 @@ DROP TABLE IF EXISTS `profile_details`;
 CREATE TABLE `profile_details` (
   `profile_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `user_id` INT(10) ZEROFILL NOT NULL,
-  `f_name` varchar(45) NOT NULL,
-  `l_name` varchar(45) NOT NULL,
   `phone` NUMERIC(12) NULL,
   `dob` DATE NOT NULL,
   `st_address` VARCHAR(255) NOT NULL,
@@ -49,7 +49,6 @@ CREATE TABLE `property_details` (
   `property_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `owner_id` INT(10) ZEROFILL NOT NULL,
   `property_type_id` INT(10) ZEROFILL NOT NULL,
-  `room_type_id` INT(10) ZEROFILL NOT NULL,
   `house_rules` VARCHAR(10000) NULL,
   `longitude` FLOAT(10,6) NOT NULL,
   `latitude` FLOAT(10,6) NOT NULL,
@@ -66,11 +65,12 @@ DROP TABLE IF EXISTS `listings`;
 CREATE TABLE `listings` (
   `listing_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `property_id` INT(10) ZEROFILL NOT NULL,
+  `room_type_id` INT(10) ZEROFILL NOT NULL,
   `title` VARCHAR(255) NOT NULL,
   `is_bid` BOOLEAN DEFAULT FALSE NOT NULL,
   `start_date` DATE NOT NULL,
   `end_date` DATE NOT NULL,
-  `daily_price` DECIMAL(2,2) NOT NULL,
+  `daily_price` DECIMAL(5,2) NOT NULL,
   `bedrooms` INT(2) NOT NULL,
   `accommodations` INT(2) NOT NULL,
   `active` BOOLEAN DEFAULT TRUE NOT NULL,
@@ -84,8 +84,8 @@ CREATE TABLE `listing_details` (
   `description` VARCHAR(10000) NOT NULL,
   `bathrooms` INT(2) NOT NULL,
   `beds` INT(2) NOT NULL,
-  `checkin` TIMESTAMP NULL,
-  `checkout` TIMESTAMP NULL,
+  `checkin` TIME NULL,
+  `checkout` TIME NULL,
   PRIMARY KEY (`listing_details_id`)
 );
 
@@ -153,6 +153,14 @@ CREATE TABLE `card_details` (
   `exp` VARCHAR(4) NOT NULL,
   `cvv` NUMERIC(4) NOT NULL,
   PRIMARY KEY (`card_id`)
+);
+
+DROP TABLE IF EXISTS `external_authentication`;
+CREATE TABLE `external_authentication` (
+  `external_id` VARCHAR(50),
+  `user_id` INT(10) ZEROFILL NOT NULL,
+  `website` ENUM('facebook', 'google', 'twitter') NOT NULL,
+  PRIMARY KEY (`external_id`)
 );
 
 INSERT INTO `property_types` SET `property_type` = 'House';
@@ -226,3 +234,9 @@ INSERT INTO `amenities` SET `amenity` = 'Wireless Internet';
 INSERT INTO `amenities` SET `amenity` = 'Kitchen';
 INSERT INTO `amenities` SET `amenity` = 'Air conditioning';
 INSERT INTO `amenities` SET `amenity` = 'Hot tub';
+INSERT INTO `amenities` SET `amenity` = 'Smoke detector';
+INSERT INTO `amenities` SET `amenity` = 'Carbon monoxide detector';
+INSERT INTO `amenities` SET `amenity` = 'First aid kit';
+INSERT INTO `amenities` SET `amenity` = 'Safety card';
+INSERT INTO `amenities` SET `amenity` = 'Fire extinguisher';
+INSERT INTO `amenities` SET `amenity` = 'Lock on bedroom door';
