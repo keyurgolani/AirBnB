@@ -4,7 +4,7 @@ var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
 var logger = require('../utils/logger');
 var cache = require('../utils/cache');
-var bcrypt = require('bcrypt');
+// var bcrypt = require('bcrypt');
 
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -297,6 +297,36 @@ router.post('/fetchPropertyTypes', (req, res, next) => {
 	})
 });
 
+router.get('/viewListing', function(req, res, next) {
+
+	console.log("here");
+    // var listing_id = req.body.listing_id;
+    var listing_id = '0000000001';
+
+    var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
+    var parameters = [listing_id,listing_id];
+    mysql.executeQuery(query, parameters, function(error, results) {
+        if (error) {
+            /*res.send({
+                'statusCode' : 500
+            });*/
+        } else {
+            if (results && results.length > 0) {
+            	console.log(results);
+            	// res.render('viewListing');
+                
+                res.render('viewListing', {data: JSON.stringify(results[0])});
+
+            } else {
+                /*res.send({
+                    'statusCode' : 409
+                });*/
+            }
+        }
+    });
+});
+
+
 // Local Authentication
 
 router.post('/login', function(req, res, next) {
@@ -338,8 +368,8 @@ router.get('/listing', function(req, res, next) {
 	res.render('listing');
 });
 
-router.get('/viewListing', function(req, res, next) {
-	res.render('viewListing');
-});
+/*router.get('/viewListing', function(req, res, next) {
+	
+});*/
 
 module.exports = router;

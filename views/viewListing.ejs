@@ -4,7 +4,7 @@
 		<% include ./head %>
 	</head>
 
-	<body class="body full-body" ng-app="airBnB" ng-controller="viewListing" ng-cloak>
+	<body class="body full-body" ng-app="airBnB" ng-controller="viewListing" ng-cloak ng-init="init('<%= data %>')">
 	<!-- Header -->
 	<header><% include ./header %></header>
 	<!-- Main -->
@@ -45,7 +45,7 @@
 						<div class="row">
 							<div class="col-md-3 text-center icons">
 								<div><i class="fa fa-home" aria-hidden="true"></i></div>
-								<div class="title-location-text"><span>Private room</span></div>
+								<div class="title-location-text"><span>{{data.room_type}}</span></div>
 							</div>
 							<div class="col-md-3 text-center icons">
 								<div><i class="fa fa-users" aria-hidden="true"></i></div>
@@ -53,11 +53,11 @@
 							</div>
 							<div class="col-md-3 text-center icons">
 								<div><span class="glyphicon glyphicon-bed"></span></div>
-								<div class="title-location-text"><span>1 Bedroom</span></div>
+								<div class="title-location-text"><span>{{data.bedrooms}} Bedroom</span></div>
 							</div>
 							<div class="col-md-3 text-center icons">
 								<div><i class="fa fa-bed" aria-hidden="true"></i></div>
-								<div class="title-location-text"><span>1 Bed</span></div>
+								<div class="title-location-text"><span>{{data.beds}} Bed</span></div>
 							</div>
 						</div>
 						<div class="seperator"></div>
@@ -65,7 +65,7 @@
 							<span class="about-text">About this listing</span>
 						</div>
 						<div class="row">
-							<span class="description-text">1895 Victorian flat w/ 12 ft ceilings. (No Long Term Rentals or couples) Close to Mission, & 2.5 blocks from Castro theater. MUNI is 3 blocks away. Room is small and cosy, but a great $ for one of the most expensive neighborhoods in the US!</span>
+							<span class="description-text">{{data.description}}</span>
 						</div>
 						<div class="seperator"></div>
 						<div class="row">
@@ -74,30 +74,30 @@
 							</div>
 							<div class="col-md-4">
 								<div class="row text-margin-bottom">
-									<span class="description-text">Accommodates: <span class="left-column-text">1</span></span>
+									<span class="description-text">Accommodates: <span class="left-column-text">{{data.accommodations}}</span></span>
 								</div>
 								<div class="row text-margin-bottom">
-									<span class="description-text">Bedrooms: <span class="left-column-text">1</span></span>
+									<span class="description-text">Bedrooms: <span class="left-column-text">{{data.bedrooms}}</span></span>
 								</div>
 								<div class="row text-margin-bottom">
-									<span class="description-text">Beds: <span class="left-column-text">1</span></span>
+									<span class="description-text">Beds: <span class="left-column-text">{{data.beds}}</span></span>
 								</div>
 								<div class="row text-margin-bottom">
-									<span class="description-text">Bathrooms: <span class="left-column-text">1</span></span>
+									<span class="description-text">Bathrooms: <span class="left-column-text">{{data.bathrooms}}</span></span>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="row text-margin-bottom">
-									<span class="description-text">Check In: <span class="left-column-text">5PM</span></span>
+									<span class="description-text">Check In: <span class="left-column-text">{{data.checkin}}</span></span>
 								</div>
 								<div class="row text-margin-bottom">
-									<span class="description-text">Check Out: <span class="left-column-text">11AM</span></span>
+									<span class="description-text">Check Out: <span class="left-column-text">{{data.checkout}}</span></span>
 								</div>
 								<div class="row text-margin-bottom">
-									<span class="description-text">Property type: <span class="left-column-text">1</span></span>
+									<span class="description-text">Property type: <span class="left-column-text">{{data.property_type}}</span></span>
 								</div>
 								<div class="row text-margin-bottom">
-									<span class="description-text">Room type: <span class="left-column-text">1</span></span>
+									<span class="description-text">Room type: <span class="left-column-text">{{data.room_type}}</span></span>
 								</div>
 							</div>
 						</div>
@@ -382,8 +382,7 @@
 							</div>
 							<div class="col-md-8">
 								<div class="row text-margin-bottom">
-									<span class="description-text">Be respectful, quiet when coming in late, no smoking in the flat, on the steps, or near the house, and the backyard is off limits due to neighbors. Please do not open the back door for any reason short of an emergency. We do not have bike storage so please return at the end of the day or lock on the street, not our stair railings, at your own risk.
-Please do not bring in guests without clearing them beforehand with Kalgi directly. And have a great time in our beautiful city!</span>
+									<span class="description-text">{{data.house_rules}}</span>
 								</div>
 							</div>
 						</div>

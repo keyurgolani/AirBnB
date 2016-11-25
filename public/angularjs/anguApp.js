@@ -31,7 +31,13 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.randomPassword = Random.randomString(25);
 	})
 	.controller('viewListing', function($scope, $http, Random) {
-		$scope.randomPassword = Random.randomString(25);
+		$scope.init = function(retrievedData) {
+           console.log("here")
+           var data = JSON.parse(retrievedData);
+           console.log("Data: ", data);
+
+           $scope.data = JSON.parse(retrievedData);
+		}
 	})
 	.controller('addProperty', ($scope, $http) => {
 		$scope.page = 1;
