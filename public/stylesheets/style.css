@@ -1594,3 +1594,33 @@ label.star:before {
   content: '\f006';
   font-family: FontAwesome;
 }
+
+input.hostStar { display: none; }
+
+label.hostStar {
+  float: right;
+  padding: 10px;
+  font-size: 24px;
+  color: #444;
+  transition: all .2s;
+}
+
+input.hostStar:checked ~ label.hostStar:before {
+  content: '\f005';
+  color: #008489;
+  transition: all .25s;
+}
+
+input.hostStar-5:checked ~ label.hostStar:before {
+  color: #FE7;
+  text-shadow: 0 0 20px #952;
+}
+
+input.hostStar-1:checked ~ label.hostStar:before { color: #F62; }
+
+label.hostStar:hover { transform: rotate(-2deg) scale(1.3); }
+
+label.hostStar:before {
+  content: '\f006';
+  font-family: FontAwesome;
+}
