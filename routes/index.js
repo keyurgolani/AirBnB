@@ -353,7 +353,7 @@ router.post('/tripDetails', (req, res, next) => {
 	})
 });
 
-router.post('/tripDetails', (req, res, next) => {
+/*router.post('/tripDetails', (req, res, next) => {
 	var user_id = req.body.owner;
 
 	var query = "select * from trip_details,property_details,listings WHERE trip_details.user_id = ? AND trip_details.listing_id= listings.listing_id AND listings.property_id=property_details.property_id";
@@ -378,7 +378,7 @@ router.post('/tripDetails', (req, res, next) => {
 			}
 		}
 	})
-});
+});*/
 
 router.post('/tripped_user', (req, res, next) => {
 	var user_id = req.body.owner;
