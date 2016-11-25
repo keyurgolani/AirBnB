@@ -115,7 +115,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	        		return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
 	        		
 	        	});
-        		console.log('$scope.filteredResults', $scope.filteredResults);
+	        		console.log('$scope.filteredResults', $scope.filteredResults);
 
 	       	});
 		
