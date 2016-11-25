@@ -39,6 +39,12 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
            $scope.data = JSON.parse(retrievedData);
 		}
 	})
+
+.controller('profile', ($scope, $http) => {
+			
+		
+	})
+
 	.controller('addProperty', ($scope, $http) => {
 		$scope.page = 1;
 		$scope.fetchRoomTypes = () => {

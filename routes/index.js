@@ -276,17 +276,127 @@ router.post('/fetchAmenities', (req, res, next) => {
 	})
 });
 
-router.post('/fetchPropertyTypes', (req, res, next) => {
-	mysql.fetchData('property_type_id, property_type', 'property_types', null, (error, results) => {
+router.post('/fetchProperty', (req, res, next) => {
+	var owner = req.body.owner;
+	mysql.fetchData('*', 'property_details', {'owner_id':owner}, (error, results) => {
 		if(error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
 			if(results && results.length > 0) {
+				console.log(results);
 				res.send({
 					'statusCode' : 200,
-					'property_types' : results
+					'property_details' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
+router.post('/fetchListing', (req, res, next) => {
+	var owner = req.body.owner;
+
+	var query = "select * from property_details,listings WHERE  property_details.owner_id = ? AND property_details.property_id=listings.property_id";
+    var parameters = [owner];
+
+	 mysql.executeQuery(query, parameters, function(error, results) {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(results && results.length > 0) {
+				console.log(results);
+				res.send({
+					'statusCode' : 200,
+					'property_details' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
+router.post('/tripDetails', (req, res, next) => {
+	var user_id = req.body.owner;
+
+	var query = "select * from trip_details,property_details,listings WHERE trip_details.user_id = ? AND trip_details.listing_id= listings.listing_id AND listings.property_id=property_details.property_id";
+    var parameters = [user_id];
+
+	 mysql.executeQuery(query, parameters, function(error, results) {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(results && results.length > 0) {
+				console.log(results);
+				res.send({
+					'statusCode' : 200,
+					'property_details' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
+router.post('/tripDetails', (req, res, next) => {
+	var user_id = req.body.owner;
+
+	var query = "select * from trip_details,property_details,listings WHERE trip_details.user_id = ? AND trip_details.listing_id= listings.listing_id AND listings.property_id=property_details.property_id";
+    var parameters = [user_id];
+
+	 mysql.executeQuery(query, parameters, function(error, results) {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(results && results.length > 0) {
+				console.log(results);
+				res.send({
+					'statusCode' : 200,
+					'property_details' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
+router.post('/tripped_user', (req, res, next) => {
+	var user_id = req.body.owner;
+
+	var query = "select * from trip_details,property_details,listings WHERE property_details.owner_id = ? AND listings.property_id=property_details.property_id AND trip_details.listing_id = listings.listing_id";
+    var parameters = [user_id];
+
+	 mysql.executeQuery(query, parameters, function(error, results) {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(results && results.length > 0) {
+				console.log(results);
+				res.send({
+					'statusCode' : 200,
+					'property_details' : results
 				});
 			} else {
 				res.send({
