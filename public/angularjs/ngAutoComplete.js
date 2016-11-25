@@ -94,9 +94,9 @@ angular.module("ngAutocomplete", [])
 
 				// 1 mile = 0.621371 km
 
-				console.log('getDistanceFromLatLonInKm', getDistanceFromLatLonInKm(37.35410789999999, -121.95523559999998, 37.5482697, -121.98857190000001));
+				// console.log('getDistanceFromLatLonInKm', getDistanceFromLatLonInKm(37.35410789999999, -121.95523559999998, 37.5482697, -121.98857190000001));
 				//converting km to miles
-				console.log('getDistanceFromLatLonInMiles', (getDistanceFromLatLonInKm(37.35410789999999, -121.95523559999998, 37.5482697, -121.98857190000001)) * 0.621371);
+				// console.log('getDistanceFromLatLonInMiles', (getDistanceFromLatLonInKm(37.35410789999999, -121.95523559999998, 37.5482697, -121.98857190000001)) * 0.621371);
 
 
 				//create new autocomplete
@@ -107,9 +107,9 @@ angular.module("ngAutocomplete", [])
 						$scope.$apply(function() {
 							//              if ($scope.details) {
 							$scope.details = $scope.gPlace.getPlace();
-							console.log('$scope.details', $scope.details);
-							console.log($scope.details.geometry.location.lat());							
-							console.log($scope.details.geometry.location.lng());
+							// console.log('$scope.details', $scope.details);
+							// console.log($scope.details.geometry.location.lat());							
+							// console.log($scope.details.geometry.location.lng());
 							//              }
 							$scope.ngAutocomplete = element.val();
 														

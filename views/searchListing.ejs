@@ -13,11 +13,16 @@
     <script src="js/ngRangeSlider.js"></script>
     <link rel='stylesheet' href='css/Default.css'/>
 
+    <!-- <script src="https://rawgit.com/allenhwkim/angularjs-google-maps/master/build/scripts/ng-map.js"></script> -->
+    <script src="js/ng-map.js"></script>
+    <!-- <script src="js/markerclusterer.js"></script> -->
+    <link href='css/custom-marker.css' rel='stylesheet' type='text/css' />
+
   </head>
 
 
 
-  <body class="body full-body" ng-app="airBnB" ng-cloak ng-controller="searchListingController" ng-init="init('<%= data %>')">
+  <body class="body full-body" ng-app="airBnB" ng-cloak ng-controller="searchListingController as vm" ng-init="init('<%= data %>')" id="div1">
 
     <div class="container-fluid well">
       <header>
@@ -25,24 +30,37 @@
       </header>
     </div>
 
+      <input type="hidden" id="wow" >
+      
+
+        <div value="filteredResults" on-change="myFunc()"></div>
+    
 
      {{filteredResults}}
-
-     <input type="hidden" id="filteredRes" ng-model="filteredResults" />
-     <div ng-init="name=filteredResults" id="filteredRes"></div>
 
      <h4><%= JSON.parse(data).results[0].latitude%></h4>
 
      <h3>{{data.centerLatLng.center_lat}}</h3>
       
-      <script type="text/javascript">
+      <!-- <script type="text/javascript">
+
+        // var x = document.getElementById('wow').value;
+        // console.log(x);
 
         var map;
+
+
+
         $(document).ready(function(){
+
+          // var scope = angular.element("#div1").scope();
+
+          // console.log(scope.filteredResults);
+
           prettyPrint();
 
           var retrievedData = <%- (data)%>;
-          console.log("retrievedData", retrievedData);
+          // console.log("retrievedData", retrievedData);
 
           //These lat and long values centers the map on the page wherever called.
           map = new GMaps({
@@ -62,7 +80,7 @@
           }
 
         });
-      </script>
+      </script> -->
 
 
       <div class="container-fluid" style="border-radius:0px; padding:0px;">
@@ -198,7 +216,36 @@
           </div>
 
           <div class="col-lg-5 well" style="border-radius:0px;">
-            <div id="map" style="height:100% !important; width:100% !important;"></div>
+            <!-- <div id="map" style="height:100% !important; width:100% !important;"></div> -->
+            <!-- <ng-map zoom="12" center="[40.74, -74.18]">
+              <marker position="[40.71, -74.21]" title="hello"></marker>
+              <marker position="[40.72, -74.20]" title="marker" animation="Animation.DROP"></marker>
+              <marker position="[40.73, -74.19]" title="drag me" draggable="true"></marker>
+              <marker position="[40.74, -74.18]" title="how" animation="Animation.BOUNCE"></marker>
+              <marker position="[40.75, -74.17]" title="are"></marker>
+              <marker position="[40.76, -74.16]" title="you"
+                icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"></marker>
+              <marker position="[40.77, -74.15]" title="from"></marker>
+              <marker position="[40.78, -74.14]" title="allen"></marker>
+            </ng-map> -->
+
+            {{data.centerLatLng.center_lat}}
+            {{data.centerLatLng.center_lng}}
+
+            <ng-map zoom="11" center="[{{data.centerLatLng.center_lat}}, {{data.centerLatLng.center_lng}}]" style="height:550px;">
+              <!-- <custom-marker position="[{{p[0]}}, {{p[1]}}]"> -->
+              <!-- <custom-marker position="[{{p[2]}}, {{p[3]}}]" ng-repeat="p in vm.positions"> -->
+              <!-- <custom-marker position="[37.333324 , -121.88459]"> -->
+              <div ng-repeat="l in filteredResults">
+                <marker position="[{{l.latitude}}, {{l.longitude}}]" animation="Animation.BOUNCE">
+                  <!-- <div class="cm">
+                    
+                    {{l.latitude}}<br>
+                    {{l.longitude}}
+                  </div> -->
+                </marker>
+              </div>
+            </ng-map>
           </div>
 
         </div>
