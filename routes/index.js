@@ -10,7 +10,6 @@ var uuid = require('node-uuid');
 
 var NodeGeocoder = require('node-geocoder');
 var GeoPoint = require('geopoint');
-var bcrypt = require('bcrypt');
 
 
 var passport = require("passport");
@@ -119,7 +118,7 @@ router.post('/addListing', (req, res, next) => {
 											}
 										});
 
-								},12000);							
+								},30000);							
 
 							res.send({
 								'statusCode' : 200
@@ -664,7 +663,7 @@ router.get('/searchListing', function(req, res, next) {
 		var latitude_lower = bouningcoordinates[0]._degLat;
 		var latitude_upper = bouningcoordinates[1]._degLat;
 
-		var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=?";
+		var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=? AND listings.active != 0";
 		var parameters = [ longitude_upper, longitude_lower, latitude_upper, latitude_lower ];
 
 		var centerLatLng = {
