@@ -117,7 +117,7 @@ CREATE TABLE `trip_details` (
   `trip_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `listing_id` INT(10) ZEROFILL NOT NULL,
   `user_id` INT(10) ZEROFILL NOT NULL,
-  `deposit` DECIMAL(2,2) NULL,
+  `deposit` DECIMAL(5,2) NULL,
   `checkin` DATETIME NULL,
   `checkout` DATETIME NULL,
   `no_of_guests` INT(2) NOT NULL,
