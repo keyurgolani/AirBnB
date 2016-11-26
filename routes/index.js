@@ -27,7 +27,7 @@ router.get('/', (req, res, next) => {
 router.post('/addListing', (req, res, next) => {
 	//	if(req.session.loggedInUser) {
 	//		var owner_id = req.session.loggedInUser.user_id;
-
+	
 	// Listings Table Fields
 	var property_id = req.body.property_id;
 	var room_type_id = req.body.room_type.room_type_id;
@@ -38,8 +38,8 @@ router.post('/addListing', (req, res, next) => {
 	var daily_price = req.body.daily_price;
 	var bedrooms = req.body.bedrooms;
 	var accommodations = req.body.accommodations;
-	var active = true; //A listing is active by default at the time of adding new listing
-
+	var active = true;	//A listing is active by default at the time of adding new listing
+	
 	// Listing Details Table Fields
 	var description = req.body.description;
 	var bathrooms = req.body.bathrooms;
@@ -74,12 +74,12 @@ router.post('/addListing', (req, res, next) => {
 					'checkin' : checkin,
 					'checkout' : checkout
 				}, (error, listing_details_insert_result) => {
-					if (error) {
+					if(error) {
 						res.send({
 							'statusCode' : 500
 						});
 					} else {
-						if (listing_details_insert_result.affectedRows === 1) {
+						if(listing_details_insert_result.affectedRows === 1) {
 							res.send({
 								'statusCode' : 200
 							});
@@ -236,12 +236,12 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', (error, 
 
 router.post('/fetchRoomTypes', (req, res, next) => {
 	mysql.fetchData('room_type_id, room_type', 'room_types', null, (error, results) => {
-		if (error) {
+		if(error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
-			if (results && results.length > 0) {
+			if(results && results.length > 0) {
 				res.send({
 					'statusCode' : 200,
 					'room_types' : results
@@ -255,35 +255,14 @@ router.post('/fetchRoomTypes', (req, res, next) => {
 	})
 });
 
-router.post('/fetchPropertyTypes', (req, res, next) => {
-	mysql.fetchData('property_type_id, property_type', 'property_types', null, (error, results) => {
-		if (error) {
-			res.send({
-				'statusCode' : 500
-			});
-		} else {
-			if (results && results.length > 0) {
-				res.send({
-					'statusCode' : 200,
-					'property_types' : results
-				});
-			} else {
-				res.send({
-					'statusCode' : 500
-				});
-			}
-		}
-	})
-});
-
 router.post('/fetchAmenities', (req, res, next) => {
 	mysql.fetchData('amenity_id, amenity', 'amenities', null, (error, results) => {
-		if (error) {
+		if(error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
-			if (results && results.length > 0) {
+			if(results && results.length > 0) {
 				res.send({
 					'statusCode' : 200,
 					'amenities' : results
@@ -297,17 +276,15 @@ router.post('/fetchAmenities', (req, res, next) => {
 	})
 });
 
-router.post('/fetchUserProperties', (req, res, next) => {
+router.post('/fetchProperty', (req, res, next) => {
 	var owner = req.body.owner;
-	mysql.fetchData('*', 'property_details', {
-		'owner_id' : owner
-	}, (error, results) => {
-		if (error) {
+	mysql.fetchData('*', 'property_details', {'owner_id':owner}, (error, results) => {
+		if(error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
-			if (results && results.length > 0) {
+			if(results && results.length > 0) {
 				console.log(results);
 				res.send({
 					'statusCode' : 200,
@@ -322,19 +299,19 @@ router.post('/fetchUserProperties', (req, res, next) => {
 	})
 });
 
-router.post('/fetchUserListings', (req, res, next) => {
+router.post('/fetchListing', (req, res, next) => {
 	var owner = req.body.owner;
 
 	var query = "select * from property_details,listings WHERE  property_details.owner_id = ? AND property_details.property_id=listings.property_id";
-	var parameters = [ owner ];
+    var parameters = [owner];
 
-	mysql.executeQuery(query, parameters, function(error, results) {
-		if (error) {
+	 mysql.executeQuery(query, parameters, function(error, results) {
+		if(error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
-			if (results && results.length > 0) {
+			if(results && results.length > 0) {
 				console.log(results);
 				res.send({
 					'statusCode' : 200,
@@ -349,19 +326,19 @@ router.post('/fetchUserListings', (req, res, next) => {
 	})
 });
 
-router.post('/fetchUserTrips', (req, res, next) => {
+router.post('/tripDetails', (req, res, next) => {
 	var user_id = req.body.owner;
 
 	var query = "select * from trip_details,property_details,listings WHERE trip_details.user_id = ? AND trip_details.listing_id= listings.listing_id AND listings.property_id=property_details.property_id";
-	var parameters = [ user_id ];
+    var parameters = [user_id];
 
-	mysql.executeQuery(query, parameters, function(error, results) {
-		if (error) {
+	 mysql.executeQuery(query, parameters, function(error, results) {
+		if(error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
-			if (results && results.length > 0) {
+			if(results && results.length > 0) {
 				console.log(results);
 				res.send({
 					'statusCode' : 200,
@@ -376,19 +353,46 @@ router.post('/fetchUserTrips', (req, res, next) => {
 	})
 });
 
-router.post('/fetchUserHostings', (req, res, next) => {
+/*router.post('/tripDetails', (req, res, next) => {
 	var user_id = req.body.owner;
 
-	var query = "select * from trip_details,property_details,listings WHERE property_details.owner_id = ? AND listings.property_id=property_details.property_id AND trip_details.listing_id = listings.listing_id";
-	var parameters = [ user_id ];
+	var query = "select * from trip_details,property_details,listings WHERE trip_details.user_id = ? AND trip_details.listing_id= listings.listing_id AND listings.property_id=property_details.property_id";
+    var parameters = [user_id];
 
-	mysql.executeQuery(query, parameters, function(error, results) {
-		if (error) {
+	 mysql.executeQuery(query, parameters, function(error, results) {
+		if(error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
-			if (results && results.length > 0) {
+			if(results && results.length > 0) {
+				console.log(results);
+				res.send({
+					'statusCode' : 200,
+					'property_details' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});*/
+
+router.post('/tripped_user', (req, res, next) => {
+	var user_id = req.body.owner;
+
+	var query = "select * from trip_details,property_details,listings WHERE property_details.owner_id = ? AND listings.property_id=property_details.property_id AND trip_details.listing_id = listings.listing_id";
+    var parameters = [user_id];
+
+	 mysql.executeQuery(query, parameters, function(error, results) {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(results && results.length > 0) {
 				console.log(results);
 				res.send({
 					'statusCode' : 200,
@@ -404,30 +408,32 @@ router.post('/fetchUserHostings', (req, res, next) => {
 });
 
 router.get('/viewListing', function(req, res, next) {
-	// var listing_id = req.body.listing_id;
-	var listing_id = '0000000001';
-	var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
-	var parameters = [ listing_id, listing_id ];
-	mysql.executeQuery(query, parameters, function(error, results) {
-		console.log(error, results);
-		if (error) {
-			res.render('error', {
-				'statusCode' : 500,
-				'message' : 'Internal Error'
-			});
-		} else {
-			if (results && results.length > 0) {
-				res.render('viewListing', {
-					data : JSON.stringify(results[0])
-				});
-			} else {
-				res.render('error', {
-					'statusCode' : 204,
-					'message' : 'Listing expired or unlisted!'
-				});
-			}
-		}
-	});
+
+	console.log("here");
+    // var listing_id = req.body.listing_id;
+    var listing_id = '0000000001';
+
+    var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
+    var parameters = [listing_id,listing_id];
+    mysql.executeQuery(query, parameters, function(error, results) {
+        if (error) {
+            /*res.send({
+                'statusCode' : 500
+            });*/
+        } else {
+            if (results && results.length > 0) {
+            	console.log(results);
+            	// res.render('viewListing');
+                
+                res.render('viewListing', {data: JSON.stringify(results[0])});
+
+            } else {
+                /*res.send({
+                    'statusCode' : 409
+                });*/
+            }
+        }
+    });
 });
 
 
@@ -472,8 +478,114 @@ router.get('/listing', function(req, res, next) {
 	res.render('listing');
 });
 
+router.get('/listing', function(req, res, next) {
+	res.render('listing');
+});
+
+
+
+
+
+
 router.get('/profile', function(req, res, next) {
-	res.render('profile');
+	
+
+	console.log("here");
+    // var listing_id = req.body.listing_id;
+   var owner = req.query.owner;
+
+   //get property details of that user..
+	mysql.fetchData('*', 'property_details', {'owner_id':owner}, (error, property) => {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(property) {
+				console.log(property);
+
+				//get listing details as well..
+				 var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
+				    var parameters = [owner,owner];
+				    mysql.executeQuery(query, parameters, function(error, listing) {
+				        if (error) {
+				            /*res.send({
+				                'statusCode' : 500
+				            });*/
+				        } else {
+				            if (listing) {
+				            	console.log(listing);
+				            	// res.render('viewListing');
+
+
+				            	//get trip informations. 
+				            	var query = "select * from trip_details,property_details,listings WHERE trip_details.user_id = ? AND trip_details.listing_id= listings.listing_id AND listings.property_id=property_details.property_id";
+							    var parameters = owner;
+
+								 mysql.executeQuery(query, parameters, function(error, trip) {
+									if(error) {
+										res.send({
+											'statusCode' : 500
+										});
+									} else {
+										if(trip) {
+											console.log(trip);
+
+											//get users info who made trip on that owner's property.
+											var query = "select * from trip_details,property_details,listings WHERE property_details.owner_id = ? AND listings.property_id=property_details.property_id AND trip_details.listing_id = listings.listing_id";
+										    var parameters = owner;
+
+											 mysql.executeQuery(query, parameters, function(error, tripped_user) {
+												if(error) {
+													res.send({
+														'statusCode' : 500
+													});
+												} else {
+													if(tripped_user) {
+														console.log(tripped_user);
+
+														var result = {
+															property_data: (property),
+										                	listing_data : (listing),
+										                	trip_data : (trip),
+										                	tripped_user_data : (tripped_user)
+														}
+
+														//transection is comleted here!
+														console.log("user profile retirveal is successfull");
+														res.render('profile', {data : JSON.stringify(result)});
+														
+													} else {
+														res.send({
+															'statusCode' : 500
+														});
+													}
+												}
+											})					
+										
+										} else {
+											res.send({
+												'statusCode' : 500
+											});
+										}
+									}
+								})         
+				             } else {
+				                /*res.send({
+				                    'statusCode' : 409
+				                });*/
+				            }
+				        }
+				    });				
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+
+	// res.render('profile');
 });
 
 module.exports = router;

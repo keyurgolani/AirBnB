@@ -43,8 +43,16 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.data = JSON.parse(retrievedData);
 		}
 	})
+
 	.controller('profile', ($scope, $http) => {
-			
+
+		$scope.init = function(retrievedData) {
+           console.log("here")
+           var data = JSON.parse(retrievedData);
+           console.log(data.listing_data[0]);
+
+           // $scope.data = JSON.parse(retrievedData);
+		}	
 		
 	})
 	.controller('addProperty', ($scope, $http) => {
@@ -215,6 +223,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				return true;
 			}
 		};
+
 		this.validateTextBox = function(value) {
 			if(value.length > 100) {
 				return false;
@@ -285,6 +294,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					return false;
 				} else {
 					return true;
+
 				}
 			} else {
 				return false;
