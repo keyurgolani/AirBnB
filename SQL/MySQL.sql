@@ -118,6 +118,7 @@ CREATE TABLE `bid_details` (
 DROP TABLE IF EXISTS `trip_details`;
 CREATE TABLE `trip_details` (
   `trip_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
+  `trip_amount` DECIMAL(5,2) NOT NULL,
   `listing_id` INT(10) ZEROFILL NOT NULL,
   `user_id` INT(10) ZEROFILL NOT NULL,
   `deposit` DECIMAL(5,2) NULL,
