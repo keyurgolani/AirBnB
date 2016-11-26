@@ -34,13 +34,54 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		};
 	})
-	.controller('viewListing', function($scope, $http, Random) {
+	.controller('viewListing', function($scope, $http, Random, Date) {
 		$scope.init = function(retrievedData) {
            console.log("here")
            var data = JSON.parse(retrievedData);
            console.log("Data: ", data);
 
            $scope.data = JSON.parse(retrievedData);
+		}
+		
+		$scope.requestBooking = function() {
+			$http({
+				method : "POST",
+				url : '/placeBidOnListing',
+				data : {
+					"checkin" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[0].trim()),
+					"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()), 
+					"bid_amount" : $scope.bid_amount,
+					"listing_id" : $scope.data.listing_id,
+					"userId" : 1,
+					"guests" : $scope.noOfGuests
+				}
+			}).then((results) => {
+				if(results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
+		
+		$scope.instantBooking = function() {
+			$http({
+				method : "POST",
+				url : '/instantBook',
+				data : {
+					"checkin" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[0].trim()),
+					"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()), 
+					"listing_id" : $scope.data.listing_id,
+					"userId" : 1,
+					"guests" : $scope.noOfGuests
+				}
+			}).then((results) => {
+				if(results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
 		}
 	})
 	.controller('profile', ($scope, $http) => {
