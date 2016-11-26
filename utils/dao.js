@@ -11,7 +11,7 @@ function getConnection() {
 		password : properties.get('mysql.password'),
 		database : properties.get('mysql.db'),
 		port : properties.get('mysql.port'),
-		timeout: properties.get('mysql.timeout')
+		timeout : Number(properties.get('mysql.timeout'))*1000
 	});
 	return connection;
 }

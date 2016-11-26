@@ -111,8 +111,7 @@ angular.module("ngAutocomplete", [])
 							// console.log($scope.details.geometry.location.lat());							
 							// console.log($scope.details.geometry.location.lng());
 							//              }
-							$scope.ngAutocomplete = element.val();
-														
+							scope.ngAutocomplete = scope.details;
 						});
 					})
 				}

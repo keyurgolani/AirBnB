@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<% include ./head %>
+	</head>
+
+	<body class="body full-body" ng-app="airBnB" ng-controller="viewListing" ng-cloak ng-init="init('<%= data %>')">
+	<!-- Header -->
+	<header><% include ./header %></header>
+	<!-- Main -->
+	<main ng-app="airBnB">
+		<div class="row cover-image-container cover-image-margin-top">
+			<div class="col-md-12">
+				<div style="background-image: url('../images/SFO/b.jpg');" class="cover-image">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-10" style="margin-top:24px;">
+				<div class="row">
+					<div class="col-md-7">
+						<div class="row">
+							<div class="col-md-8">
+								<div class="row">
+									<span class="title-text">Perfectly located Castro</span>
+								</div>
+								<div class="row">
+									<span class="title-location-text">San Francisco, CA, United States</span>
+									<span>&nbsp</span>
+									<i class="fa fa-star small-star"></i>
+									<i class="fa fa-star small-star"></i>
+									<i class="fa fa-star small-star"></i>
+									<i class="fa fa-star-half-full small-star"></i>
+									<i class="fa fa-star-o small-star"></i>
+									<span>&nbsp</span>
+									<span class="title-location-text">309 reviews</span>
+								</div>
+							</div>
+							<div class="col-md-4 text-center">
+								<div class="photo-round"><a href=""><img src="../images/SFO/b.jpg"></a></div>
+								<div class="title-location-text" style="margin-top: 10px;">Kalgi</div>
+							</div>
+						</div>
+						<div class="seperator"></div>
+						<div class="row">
+							<div class="col-md-3 text-center icons">
+								<div><i class="fa fa-home" aria-hidden="true"></i></div>
+								<div class="title-location-text"><span>{{data.room_type}}</span></div>
+							</div>
+							<div class="col-md-3 text-center icons">
+								<div><i class="fa fa-users" aria-hidden="true"></i></div>
+								<div class="title-location-text"><span>1 Guest</span></div>
+							</div>
+							<div class="col-md-3 text-center icons">
+								<div><span class="glyphicon glyphicon-bed"></span></div>
+								<div class="title-location-text"><span>{{data.bedrooms}} Bedroom</span></div>
+							</div>
+							<div class="col-md-3 text-center icons">
+								<div><i class="fa fa-bed" aria-hidden="true"></i></div>
+								<div class="title-location-text"><span>{{data.beds}} Bed</span></div>
+							</div>
+						</div>
+						<div class="seperator"></div>
+						<div class="row text-margin-bottom">
+							<span class="about-text">About this listing</span>
+						</div>
+						<div class="row">
+							<span class="description-text">{{data.description}}</span>
+						</div>
+						<div class="seperator"></div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="left-column-text"><span>The space</span></div>
+							</div>
+							<div class="col-md-4">
+								<div class="row text-margin-bottom">
+									<span class="description-text">Accommodates: <span class="left-column-text">{{data.accommodations}}</span></span>
+								</div>
+								<div class="row text-margin-bottom">
+									<span class="description-text">Bedrooms: <span class="left-column-text">{{data.bedrooms}}</span></span>
+								</div>
+								<div class="row text-margin-bottom">
+									<span class="description-text">Beds: <span class="left-column-text">{{data.beds}}</span></span>
+								</div>
+								<div class="row text-margin-bottom">
+									<span class="description-text">Bathrooms: <span class="left-column-text">{{data.bathrooms}}</span></span>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="row text-margin-bottom">
+									<span class="description-text">Check In: <span class="left-column-text">{{data.checkin}}</span></span>
+								</div>
+								<div class="row text-margin-bottom">
+									<span class="description-text">Check Out: <span class="left-column-text">{{data.checkout}}</span></span>
+								</div>
+								<div class="row text-margin-bottom">
+									<span class="description-text">Property type: <span class="left-column-text">{{data.property_type}}</span></span>
+								</div>
+								<div class="row text-margin-bottom">
+									<span class="description-text">Room type: <span class="left-column-text">{{data.room_type}}</span></span>
+								</div>
+							</div>
+						</div>
+						<div class="seperator"></div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="left-column-text"><span>Amenities</span></div>
+							</div>
+							<div class="col-md-4">
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-cutlery icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Kitchen</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-globe icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Internet</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-tv icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">TV</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-shower icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Essentials</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-thermometer-0 icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Heating</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-snowflake-o icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Air conditioning</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="material-icons">local_laundry_service</i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Washer</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="material-icons">local_laundry_service</i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Dryer</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-product-hunt icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Free parking on premises</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-wifi icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Wireless Internet</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-tv icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Cable TV</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-cutlery icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Breakfast</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-paw icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Pets allowed</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-users icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Family/kid friendly</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-calendar-check-o icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Suitable for events</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="material-icons">smoking_rooms</i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Smoking allowed</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-wheelchair icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Wheelchair accessible</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Elevator in building</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-fire icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Indoor fireplace</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="material-icons">snooze</i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Buzzer/Wireless Intercom</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="material-icons">room_service</i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Doorman</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="material-icons">pool</i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Pool</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-bathtub icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Hot tub</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="material-icons">dumbbell</i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Gym</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="icon icon-hair-dryer" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Hangers</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Iron</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Hair dryer</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-2">
+										<i class="fa fa-laptop icon-margin-right" aria-hidden="true"></i>
+									</div>
+									<div class="col-md-10">
+										<span class="description-text">Laptop friendly</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="seperator"></div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="left-column-text"><span>Safety features</span></div>
+							</div>
+							<div class="col-md-4">
+								<div class="row text-margin-bottom">
+									<div class="col-md-12">
+										<span class="description-text">Smoke detector</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-12">
+										<span class="description-text">Carbon monoxide detector</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-12">
+										<span class="description-text">First aid kit</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="row text-margin-bottom">
+									<div class="col-md-12">
+										<span class="description-text">Safety card</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-12">
+										<span class="description-text">Fire extinguisher</span>
+									</div>
+								</div>
+								<div class="row text-margin-bottom">
+									<div class="col-md-12">
+										<span class="description-text">Lock on bedroom door</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="seperator"></div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="left-column-text"><span>House rules</span></div>
+							</div>
+							<div class="col-md-8">
+								<div class="row text-margin-bottom">
+									<span class="description-text">{{data.house_rules}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="seperator"></div>
+						<div class="row" style="margin-bottom:40px;">
+							<span class="about-text">309 Reviews</span>
+							<span>&nbsp</span>
+							<i class="fa fa-star big-star"></i>
+							<i class="fa fa-star big-star"></i>
+							<i class="fa fa-star big-star"></i>
+							<i class="fa fa-star-half-full big-star"></i>
+							<i class="fa fa-star-o big-star"></i>
+							<span>&nbsp</span>
+						</div>
+						<div class="review-seperator"></div>
+						<div class="row text-margin-bottom">
+							<div class="col-md-2">
+								<div class="photo-round"><a href=""><img src="../images/SFO/b.jpg"></a></div>
+							</div>
+							<div class="col-md-10">
+								<div class="row">
+									<div class="left-column-text" style="margin-top:10px;">Keyur</div>
+								</div>
+								<div class="row">
+									<div class="review-subtitle-text">November 2016</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<span class="description-text">Kalgi's place is perfectly located for exploring San Francisco. Brenda and Matt made be feel most welcome.</span>
+						</div>
+						<div class="seperator"></div>
+						<div class="row text-margin-bottom">
+							<div class="col-md-2">
+								<div class="photo-round"><a href=""><img src="../images/SFO/b.jpg"></a></div>
+							</div>
+							<div class="col-md-10">
+								<div class="row">
+									<div class="left-column-text" style="margin-top:10px;">Keyur</div>
+								</div>
+								<div class="row">
+									<div class="review-subtitle-text">November 2016</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<span class="description-text">Kalgi's place is perfectly located for exploring San Francisco. Brenda and Matt made be feel most welcome.</span>
+						</div>
+					</div>
+					<div class="col-md-5">
+						<div class="row book_it_container">
+							<div class="col-md-12">
+								<div class="row price-heading">
+									<div class="col-md-8">
+										<span class="price-head-text">$79</span>
+									</div>
+									<div class="col-md-4">
+										<span class="per-night-text pull-right">Per Night</span>
+									</div>
+								</div>
+								<div class="row price-bottom">
+									<div class="row">
+										<div class="row">
+											<label class="price-date-label">Check In ⟶ Check Out</label>
+										</div>
+										<div class="row price-date-box">
+											<input type="text" class="form-control date-picker search-bar-placeholder" ng-model="chkInOutDate" placeholder="mm/dd/yyyy - mm/dd/yyyy" name="daterange" value="">
+										</div>
+										<div class="row">
+											<label class="price-date-label">Guests</label>
+										</div>
+										<div class="row address-box price-guest-box">
+									    	<div class="price-guest-text"><input type="text" class="form-control price-guest-text" placeholder="Guests" ng-model="noOfGuests"/></div>
+											<span ng-click="noOfGuests = noOfGuests - 1" class="price-guest-button">-</span>
+											<span ng-click="noOfGuests = noOfGuests + 1" class="price-guest-button" style="border-right:none;">+</span>
+										</div>
+										<div class="row">
+											<label class="price-date-label">Your Bid</label>
+										</div>
+										<div class="row address-box price-guest-box">
+											<input type="text" class="form-control price-guest-text" ng-model="bid_amount" style="width:100%;" placeholder="Minimum Bid"/>
+										</div>
+										<div class="row">
+											<button class="btn btn-primary book-button" ng-click="requestBooking()">Request to Book</button>
+										</div>
+										<div class="row">
+											<button class="btn btn-primary book-button" ng-click="instantBooking()">Instant Book</button>
+										</div>
+										<div class="row text-center">
+											<span class="charged-text ">You won't be charged yet</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<script>
+		$(function() {
+			$('input[name="daterange"]').daterangepicker({
+				autoApply: true,
+				linkedCalendars: true,
+				isCustomDate: function() {
+					return 'customDates';
+				}
+			}).val('');
+		});
+	</script>
+	</main>
+	</body>
+</html>

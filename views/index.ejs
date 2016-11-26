@@ -6,11 +6,11 @@
 	    <script src="js/ngRangeSlider.js"></script>
 	</head>
 
-	<body class="body full-body" ng-app="airBnB" ng-controller="homepage" ng-cloak>
+	<body class="body full-body" ng-app="airBnB" ng-cloak>
 	<!-- Header -->
 	<header><% include ./header %></header>
 	<!-- Main -->
-	<main>
+	<main ng-controller="homepage">
 		<div class="container-fluid">
 			<div class="row main-body">
 				<div class="col-lg-1 col-md-1 hidden-sm hidden-xs">
@@ -24,16 +24,15 @@
 						<div class="col-lg-4 col-md-4 hidden-sm hidden-xs">
 						</div>
 					</div>
-					<div class="row header-space" ng-controller="searchBarController">
+					<div class="row header-space">
 					<form action="/searchListing" method="GET">
 						<div class="col-md-4 search-box left-search-box">
 							<span class="search-box-text">Where</span>
 							<input type="text" name = "where" class="form-control ul_Three search-bar-placeholder" placeholder="Destination, City, Address" ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="city" details="details" options="options">
-							
 						</div>
 						<div class="col-md-4 search-box">
 							<span class="search-box-text">When</span>
-							<input type="text" class="form-control date-picker search-bar-placeholder" placeholder="Check In		⟶ Check Out" name="daterange" value="">
+							<input type="text" class="form-control date-picker search-bar-placeholder" placeholder="Check In		→ Check Out" name="daterange" value="">
 						</div>
 						<div class="col-md-4 search-box right-search-box">
 							<div class="col-md-7">
@@ -200,8 +199,8 @@
 			                </div><!--.item-->
 			                 
 			                </div><!--.carousel-inner-->
-			                  <a data-slide="prev" href="#SFO" class="left carousel-control">‹</a>
-			                  <a data-slide="next" href="#SFO" class="right carousel-control">›</a>
+			                  <a data-slide="prev" href="#SFO" class="left carousel-control">&lt</a>
+			                  <a data-slide="next" href="#SFO" class="right carousel-control">&gt</a>
 			                </div><!--.Carousel-->
 			            </div>
 					</div>
@@ -239,8 +238,8 @@
 			                </div><!--.item-->
 			                 
 			                </div><!--.carousel-inner-->
-			                  <a data-slide="prev" href="#NY" class="left carousel-control">‹</a>
-			                  <a data-slide="next" href="#NY" class="right carousel-control">›</a>
+			                  <a data-slide="prev" href="#NY" class="left carousel-control">&lt</a>
+			                  <a data-slide="next" href="#NY" class="right carousel-control">&gt</a>
 			                </div><!--.Carousel-->
 			            </div>
 					</div>
@@ -278,8 +277,8 @@
 			                </div><!--.item-->
 			                 
 			                </div><!--.carousel-inner-->
-			                  <a data-slide="prev" href="#LA" class="left carousel-control">‹</a>
-			                  <a data-slide="next" href="#LA" class="right carousel-control">›</a>
+			                  <a data-slide="prev" href="#LA" class="left carousel-control">&lt</a>
+			                  <a data-slide="next" href="#LA" class="right carousel-control">&gt</a>
 			                </div><!--.Carousel-->
 			            </div>
 					</div>
@@ -317,8 +316,8 @@
 			                </div><!--.item-->
 			                 
 			                </div><!--.carousel-inner-->
-			                  <a data-slide="prev" href="#Washington" class="left carousel-control">‹</a>
-			                  <a data-slide="next" href="#Washington" class="right carousel-control">›</a>
+			                  <a data-slide="prev" href="#Washington" class="left carousel-control">&lt</a>
+			                  <a data-slide="next" href="#Washington" class="right carousel-control">&gt</a>
 			                </div><!--.Carousel-->
 			            </div>
 					</div>
@@ -356,8 +355,8 @@
 			                </div><!--.item-->
 			                 
 			                </div><!--.carousel-inner-->
-			                  <a data-slide="prev" href="#Chicago" class="left carousel-control">‹</a>
-			                  <a data-slide="next" href="#Chicago" class="right carousel-control">›</a>
+			                  <a data-slide="prev" href="#Chicago" class="left carousel-control">&lt</a>
+			                  <a data-slide="next" href="#Chicago" class="right carousel-control">&gt</a>
 			                </div><!--.Carousel-->
 			            </div>
 					</div>
@@ -395,8 +394,8 @@
 			                </div><!--.item-->
 			                 
 			                </div><!--.carousel-inner-->
-			                  <a data-slide="prev" href="#Austin" class="left carousel-control">‹</a>
-			                  <a data-slide="next" href="#Austin" class="right carousel-control">›</a>
+			                  <a data-slide="prev" href="#Austin" class="left carousel-control">&lt</a>
+			                  <a data-slide="next" href="#Austin" class="right carousel-control">&gt</a>
 			                </div><!--.Carousel-->
 			            </div>
 					</div>
@@ -434,8 +433,8 @@
 			                </div><!--.item-->
 			                 
 			                </div><!--.carousel-inner-->
-			                  <a data-slide="prev" href="#Boston" class="left carousel-control">‹</a>
-			                  <a data-slide="next" href="#Boston" class="right carousel-control">›</a>
+			                  <a data-slide="prev" href="#Boston" class="left carousel-control">&lt</a>
+			                  <a data-slide="next" href="#Boston" class="right carousel-control">&gt</a>
 			                </div><!--.Carousel-->
 			            </div>
 					</div>
@@ -473,8 +472,8 @@
 			                </div><!--.item-->
 			                 
 			                </div><!--.carousel-inner-->
-			                  <a data-slide="prev" href="#Seattle" class="left carousel-control">‹</a>
-			                  <a data-slide="next" href="#Seattle" class="right carousel-control">›</a>
+			                  <a data-slide="prev" href="#Seattle" class="left carousel-control">&lt</a>
+			                  <a data-slide="next" href="#Seattle" class="right carousel-control">&gt</a>
 			                </div><!--.Carousel-->
 			            </div>
 					</div>
@@ -512,8 +511,8 @@
 			                </div><!--.item-->
 			                 
 			                </div><!--.carousel-inner-->
-			                  <a data-slide="prev" href="#Raleigh" class="left carousel-control">‹</a>
-			                  <a data-slide="next" href="#Raleigh" class="right carousel-control">›</a>
+			                  <a data-slide="prev" href="#Raleigh" class="left carousel-control">&lt</a>
+			                  <a data-slide="next" href="#Raleigh" class="right carousel-control">&gt</a>
 			                </div><!--.Carousel-->
 			            </div>
 					</div>
@@ -551,8 +550,8 @@
 			                </div><!--.item-->
 			                 
 			                </div><!--.carousel-inner-->
-			                  <a data-slide="prev" href="#SJC" class="left carousel-control">‹</a>
-			                  <a data-slide="next" href="#SJC" class="right carousel-control">›</a>
+			                  <a data-slide="prev" href="#SJC" class="left carousel-control">&lt</a>
+			                  <a data-slide="next" href="#SJC" class="right carousel-control">&gt</a>
 			                </div><!--.Carousel-->
 			            </div>
 					</div>
