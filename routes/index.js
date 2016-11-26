@@ -478,8 +478,109 @@ router.get('/listing', function(req, res, next) {
 	res.render('listing');
 });
 
-/*router.get('/viewListing', function(req, res, next) {
+router.get('/listing', function(req, res, next) {
+	res.render('listing');
+});
+
+router.get('/profile', function(req, res, next) {
 	
-});*/
+
+	console.log("here");
+    // var listing_id = req.body.listing_id;
+   var owner = req.query.owner;
+
+   //get property details of that user..
+	mysql.fetchData('*', 'property_details', {'owner_id':owner}, (error, property) => {
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if(property) {
+				console.log(property);
+
+				//get listing details as well..
+				 var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
+				    var parameters = [owner,owner];
+				    mysql.executeQuery(query, parameters, function(error, listing) {
+				        if (error) {
+				            /*res.send({
+				                'statusCode' : 500
+				            });*/
+				        } else {
+				            if (listing) {
+				            	console.log(listing);
+				            	// res.render('viewListing');
+
+
+				            	//get trip informations. 
+				            	var query = "select * from trip_details,property_details,listings WHERE trip_details.user_id = ? AND trip_details.listing_id= listings.listing_id AND listings.property_id=property_details.property_id";
+							    var parameters = owner;
+
+								 mysql.executeQuery(query, parameters, function(error, trip) {
+									if(error) {
+										res.send({
+											'statusCode' : 500
+										});
+									} else {
+										if(trip) {
+											console.log(trip);
+
+											//get users info who made trip on that owner's property.
+											var query = "select * from trip_details,property_details,listings WHERE property_details.owner_id = ? AND listings.property_id=property_details.property_id AND trip_details.listing_id = listings.listing_id";
+										    var parameters = owner;
+
+											 mysql.executeQuery(query, parameters, function(error, tripped_user) {
+												if(error) {
+													res.send({
+														'statusCode' : 500
+													});
+												} else {
+													if(tripped_user) {
+														console.log(tripped_user);
+
+														var result = {
+															property_data: (property),
+										                	listing_data : (listing),
+										                	trip_data : (trip),
+										                	tripped_user_data : (tripped_user)
+														}
+
+														//transection is comleted here!
+														console.log("user profile retirveal is successfull");
+														res.render('profile', {data : JSON.stringify(result)});
+														
+													} else {
+														res.send({
+															'statusCode' : 500
+														});
+													}
+												}
+											})					
+										
+										} else {
+											res.send({
+												'statusCode' : 500
+											});
+										}
+									}
+								})         
+				             } else {
+				                /*res.send({
+				                    'statusCode' : 409
+				                });*/
+				            }
+				        }
+				    });				
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+
+	// res.render('profile');
+});
 
 module.exports = router;
