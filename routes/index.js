@@ -4,7 +4,7 @@ var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
 var logger = require('../utils/logger');
 var cache = require('../utils/cache');
-// var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt');
 
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -174,7 +174,7 @@ router.post('/register', function(req, res, next) {
 		});
 	}
 
-	var salt = 'hi';//bcrypt.genSaltSync(10);
+	var salt = bcrypt.genSaltSync(10);
 	mysql.fetchData('user_id, email', 'account_details', {
 		'email' : email
 	}, (error, results) => {
@@ -193,7 +193,7 @@ router.post('/register', function(req, res, next) {
 						'email' : email,
 						'f_name' : first_name,
 						'l_name' : last_name,
-						'secret' : 'hi',//bcrypt.hashSync(secret, salt),
+						'secret' : bcrypt.hashSync(secret, salt),
 						'salt' : salt,
 						'last_login' : require('fecha').format(Date.now(), 'YYYY-MM-DD HH:mm:ss')
 					}, (error, result) => {
