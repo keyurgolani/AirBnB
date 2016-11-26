@@ -486,7 +486,6 @@ router.post('/instantBook', function(req, res, next) {
 			});
 		}
 	})
-
 });
 
 // Local Authentication
