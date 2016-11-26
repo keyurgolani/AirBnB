@@ -440,67 +440,10 @@ router.post('/fetchUserHostings', (req, res, next) => {
 });
 
 router.get('/viewListing', function(req, res, next) {
-<<<<<<< HEAD
 	var listing_id = req.query.listing;
 	var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
 	var parameters = [ listing_id, listing_id ];
 	mysql.executeQuery(query, parameters, function(error, results) {
-=======
-
-
-
-	console.log("here");
-    // var listing_id = req.body.listing_id;
-    var listing_id = '0000000002';
-
-    var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
-    var parameters = [listing_id,listing_id];
-    mysql.executeQuery(query, parameters, function(error, results) {
-        if (error) {
-            /*res.send({
-                'statusCode' : 500
-            });*/
-        } else {
-            if (results && results.length > 0) {
-            	console.log(results);
-            	// res.render('viewListing');
-
-            	results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
-            	// console.log('results[0].start_date', results[0].start_date);
-
-            	results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
-            	// console.log('results[0].end_date', results[0].end_date);
-            	console.log("Rendering!");
-                res.render('viewListing', {data: JSON.stringify(results[0])});
-
-            } else {
-                /*res.send({
-                    'statusCode' : 409
-                });*/
-            }
-        }
-    });
-});
-
-router.post('/placeBidOnListing', function(req, res, next) {
-	var listing_id = req.body.listing_id;
-	var checkin = req.body.checkin;
-	var checkout = req.body.checkout;
-	var bid_amount = req.body.bid_amount;
-	var no_of_guests = req.body.guests;
-
-	//TODO Get user Id from session
-	//var userId = req.session.user.userId;
-	var userId = 1;
-	mysql.insertData('bid_details', {
-		'listing_id' : listing_id,
-		'checkin' : checkin,
-		'checkout' : checkout,
-		'bid_amount' : bid_amount,
-		'bidder_id' : userId,
-		'no_of_guests' : no_of_guests
-	}, (error, results) => {
->>>>>>> 55b4677db7d57a250917aaba73c19f70bd181e9e
 		if (error) {
 			res.send({
 				'statusCode' : 500
