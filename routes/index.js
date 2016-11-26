@@ -59,7 +59,6 @@ router.post('/addListing', (req, res, next) => {
 		'accommodations' : accommodations,
 		'active' : active
 	}, (error, listing_insert_result) => {
-		console.log(error, listing_insert_result);
 		if (error) {
 			res.send({
 				'statusCode' : 500
@@ -133,8 +132,6 @@ router.post('/addProperty', (req, res, next) => {
 		'zip' : zip,
 		'active' : active
 	}, function(error, result) {
-		console.log(error, result);
-	}, (error, result) => {
 		if (error) {
 			res.send({
 				'statusCode' : 500
@@ -310,7 +307,6 @@ router.post('/fetchUserProperties', (req, res, next) => {
 			});
 		} else {
 			if (results && results.length > 0) {
-				console.log(results);
 				res.send({
 					'statusCode' : 200,
 					'property_details' : results
@@ -337,7 +333,6 @@ router.post('/fetchUserListings', (req, res, next) => {
 			});
 		} else {
 			if (results && results.length > 0) {
-				console.log(results);
 				res.send({
 					'statusCode' : 200,
 					'property_details' : results
@@ -364,7 +359,6 @@ router.post('/fetchUserTrips', (req, res, next) => {
 			});
 		} else {
 			if (results && results.length > 0) {
-				console.log(results);
 				res.send({
 					'statusCode' : 200,
 					'property_details' : results
@@ -391,7 +385,6 @@ router.post('/fetchUserHostings', (req, res, next) => {
 			});
 		} else {
 			if (results && results.length > 0) {
-				console.log(results);
 				res.send({
 					'statusCode' : 200,
 					'property_details' : results
@@ -411,7 +404,6 @@ router.get('/viewListing', function(req, res, next) {
 	var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
 	var parameters = [ listing_id, listing_id ];
 	mysql.executeQuery(query, parameters, function(error, results) {
-		console.log(error, results);
 		if (error) {
 			res.render('error', {
 				'statusCode' : 500,
@@ -433,18 +425,16 @@ router.get('/viewListing', function(req, res, next) {
 });
 
 router.post('/placeBidOnListing', function(req, res, next) {
-	
-	console.log("here");
 	var listing_id = req.body.listing_id;
 	var checkin = req.body.checkin;
-	var checkout = req.body.checkout; 
+	var checkout = req.body.checkout;
 	var bid_amount = req.body.bid_amount;
 	var no_of_guests = req.body.guests;
-	
+
 	//TODO Get user Id from session
 	//var userId = req.session.user.userId;
 	var userId = 1;
-	mysql.insertData('bid_details',{
+	mysql.insertData('bid_details', {
 		'listing_id' : listing_id,
 		'checkin' : checkin,
 		'checkout' : checkout,
@@ -452,8 +442,7 @@ router.post('/placeBidOnListing', function(req, res, next) {
 		'bidder_id' : userId,
 		'no_of_guests' : no_of_guests
 	}, (error, results) => {
-		console.log(error, results);
-		if(error) {
+		if (error) {
 			res.send({
 				'statusCode' : 500
 			});
@@ -462,26 +451,23 @@ router.post('/placeBidOnListing', function(req, res, next) {
 				'statusCode' : 200
 			});
 		}
-})
-	
+	})
+
 });
 
 router.post('/instantBook', function(req, res, next) {
-	
-	console.log("here");
 	var listing_id = req.body.listing_id;
 	var checkin = req.body.checkin;
-	var checkout = req.body.checkout; 
+	var checkout = req.body.checkout;
 	var deposit = 100;
 	var no_of_guests = req.body.guests;
 	var active = 1;
-	
+
 	//TODO Get user Id from session
 	//var userId = req.session.user.userId;
 	var userId = 1;
-	console.log(listing_id + " " + checkin + " " + checkout + " " + deposit + " " + no_of_guests + " " + active);
-	
-	mysql.insertData('trip_details',{
+
+	mysql.insertData('trip_details', {
 		'listing_id' : listing_id,
 		'checkin' : checkin,
 		'checkout' : checkout,
@@ -490,8 +476,7 @@ router.post('/instantBook', function(req, res, next) {
 		'user_id' : userId,
 		'active' : active
 	}, (error, results) => {
-		console.log(error, results);
-		if(error) {
+		if (error) {
 			res.send({
 				'statusCode' : 500
 			});
@@ -500,8 +485,7 @@ router.post('/instantBook', function(req, res, next) {
 				'statusCode' : 200
 			});
 		}
-})
-	
+	})
 });
 
 // Local Authentication
@@ -546,7 +530,91 @@ router.get('/listing', function(req, res, next) {
 });
 
 router.get('/profile', function(req, res, next) {
-	res.render('profile');
+	// var listing_id = req.body.listing_id;
+	var owner = req.query.owner;
+
+	//get property details of that user..
+	mysql.fetchData('*', 'property_details', {
+		'owner_id' : owner
+	}, (error, property) => {
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (property) {
+				//get listing details as well..
+				var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
+				var parameters = [ owner, owner ];
+				mysql.executeQuery(query, parameters, function(error, listing) {
+					if (error) {
+						/*res.send({
+						    'statusCode' : 500
+						});*/
+					} else {
+						if (listing) {
+							//get trip informations. 
+							var query = "select * from trip_details,property_details,listings WHERE trip_details.user_id = ? AND trip_details.listing_id= listings.listing_id AND listings.property_id=property_details.property_id";
+							var parameters = owner;
+							mysql.executeQuery(query, parameters, function(error, trip) {
+								if (error) {
+									res.send({
+										'statusCode' : 500
+									});
+								} else {
+									if (trip) {
+										//get users info who made trip on that owner's property.
+										var query = "select * from trip_details,property_details,listings WHERE property_details.owner_id = ? AND listings.property_id=property_details.property_id AND trip_details.listing_id = listings.listing_id";
+										var parameters = owner;
+										mysql.executeQuery(query, parameters, function(error, tripped_user) {
+											if (error) {
+												res.send({
+													'statusCode' : 500
+												});
+											} else {
+												if (tripped_user) {
+													var result = {
+														property_data : (property),
+														listing_data : (listing),
+														trip_data : (trip),
+														tripped_user_data : (tripped_user)
+													}
+													//transection is comleted here!
+													res.render('profile', {
+														data : JSON.stringify(result)
+													});
+
+												} else {
+													res.send({
+														'statusCode' : 500
+													});
+												}
+											}
+										})
+
+									} else {
+										res.send({
+											'statusCode' : 500
+										});
+									}
+								}
+							})
+						} else {
+							/*res.send({
+							    'statusCode' : 409
+							});*/
+						}
+					}
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+
+// res.render('profile');
 });
 
 module.exports = router;
