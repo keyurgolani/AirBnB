@@ -1752,6 +1752,193 @@ input[type='checkbox'] {
 	margin-left: 5px;
 }
 
+.profile-left-text {
+	color: #484848;
+	float: right;
+	line-height: 35px;
+}
+
+.profile-large-box {
+	width: 620px;
+	height: 36px;
+	border-radius: 2px;
+	border: 1px solid #aaaaaa;
+	padding-left: 10px;
+	margin-left:20px;
+}
+
+.profile-bottom-space {
+	margin-bottom: 30px!important;
+}
+
+.profile-info {
+	color: #767676;
+	font-size: 14px;
+	margin-top: 10px;
+	margin-left:20px;
+}
+
+.gender-box {
+	width: 101.25px;
+	height: 36px;
+	border-radius: 2px!important;
+	border: 1px solid #aaaaaa;
+	padding-left: 10px;
+	background-color: #fff;
+	margin-left:20px;
+}
+
+.month-box {
+	width: 110px;
+	height: 36px;
+	border-radius: 2px!important;
+	border: 1px solid #aaaaaa;
+	padding-left: 10px;
+	background-color: #fff;
+	margin-left:20px;
+}
+
+.date-box {
+	width: 58px;
+	height: 38px;
+	border-radius: 2px!important;
+	border: 1px solid #aaaaaa;
+	padding-left: 10px;
+	background-color: #fff;
+}
+
+.year-box {
+	width: 73px;
+	height: 38px;
+	border-radius: 2px!important;
+	border: 1px solid #aaaaaa;
+	padding-left: 10px;
+	background-color: #fff;
+}
+
+.profile-describe-box {
+	width: 620px;
+	border-radius: 2px;
+	border: 1px solid #aaaaaa;
+	padding-left: 10px;
+	margin-left:20px;
+}
+
+.save-button {
+	height: 42px;
+	width: 91.73px;
+	border-color: #ff5a5f;
+	background-color: #ff5a5f;
+	color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+	border-radius: 4px;
+	color: #fff;
+}
+
+.save-button:hover {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+}
+
+.save-button:active {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.save-button:focus {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.save-button:active:focus {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.password-box {
+	width: 236.19px;
+	height: 36px;
+	border-radius: 2px;
+	border: 1px solid #aaaaaa;
+	padding-left: 10px;
+	margin-left:20px;
+}
+
+.password-footer {
+	text-align: right;
+}
+
+.password-button {
+	height: 36px;
+	width: 157.11px;
+	border-color: #ff5a5f;
+	background-color: #ff5a5f;
+	color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+	border-radius: 4px;
+	background-color: #ff5a5f;
+	color: #fff;
+}
+
+.password-button:hover {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+}
+
+.password-button:active {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.password-button:focus {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.password-button:active:focus {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
 
 
 
