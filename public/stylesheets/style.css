@@ -570,6 +570,27 @@ body {
 	 
 	}
 
+
+
+	.imgHolder {
+	    position: relative;
+	}
+
+	.imgHolder .leftLabel {
+	    position: absolute;
+	    left: 5px;
+	    top: 170px;
+	    border: 0px solid green;
+	    background-color: rgba(0, 0, 0, 0.7);
+	    padding: 10px;
+	}
+
+	.imgHolder .leftLabel .textProp {
+	    color: white;
+	    font-size: 20px;
+	}
+
+
 }
 
 .main {

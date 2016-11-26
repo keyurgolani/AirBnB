@@ -37,11 +37,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	.controller('signUpController', function($scope, $http, Random) {
 		$scope.emailSignUp = false;
 		$scope.beforeSignUp = true;
-		// console.log('$scope.emailSignUp', $scope.emailSignUp);
-
+		
 		$scope.signUpWithEmail = function(){
 			$scope.emailSignUp = true;
-			// console.log('$scope.emailSignUp', $scope.emailSignUp);
+			
 			$scope.beforeSignUp = false;
 		};
 	})
@@ -53,10 +52,27 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
   		  // console.log("Data: ", data);
 
 			$scope.data = JSON.parse(retrievedData);
-			// console.log('$scope.data', $scope.data);
 
-			$scope.range = { from: 0, to: 100 };
-	       	$scope.max = 100;
+			// console.log(" >>><<<  >>><<<  >>><<< ");
+			// console.log('$scope.data', $scope.data);
+			// console.log('$scope.data', $scope.data.results.length);
+
+			var maxRange = 0;
+
+			for(var j = 0 ; j < $scope.data.results.length; j++){
+
+				if($scope.data.results[j].daily_price > maxRange){
+					maxRange = $scope.data.results[j].daily_price;
+				}
+
+			}
+
+			// console.log('maxRange', maxRange);
+
+
+
+			$scope.range = { from: 0, to: maxRange };
+	       	$scope.max = maxRange;
 
 
 	       	var min,max;

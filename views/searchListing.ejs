@@ -3,89 +3,42 @@
   <head>
     <% include ./head %>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/gmaps.js"></script>
-    <script type="text/javascript" src="js/prettify.js"></script>
-    <link href='//fonts.googleapis.com/css?family=Convergence|Bitter|Droid+Sans|Ubuntu+Mono' rel='stylesheet' type='text/css' />
+    
     <link href='css/style.css' rel='stylesheet' type='text/css' />
-    <link href='css/prettify.css' rel='stylesheet' type='text/css' />
     <link href='css/example.css' rel='stylesheet' type='text/css' />
     
     <link rel='stylesheet' href='css/Default.css'/>
 
     <script src="js/markerclusterer.js"></script>
     <link href='css/custom-marker.css' rel='stylesheet' type='text/css' />
+    <link href="css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="js/bootstrap-toggle.min.js"></script>
+    <style>
+      .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
+      .toggle.ios .toggle-handle { border-radius: 20px; }
+    </style>
+    
 
   </head>
 
 
 
-  <body class="body full-body" ng-app="airBnB" ng-cloak ng-controller="searchListingController as vm" ng-init="init('<%= data %>')" id="div1">
+  <body class="body full-body" ng-app="airBnB" ng-cloak ng-controller="searchListingController as vm" ng-init="init('<%= data %>')" id="div1" style="background-color:white;">
 
-    <div class="container-fluid well">
+    <div class="container-fluid">
       <header>
             <% include ./header %>
       </header>
     </div>
 
-      <input type="hidden" id="wow" >
-      
-
-        <div value="filteredResults" on-change="myFunc()"></div>
-    
-
-     {{filteredResults}}
-
-     <h4><%= JSON.parse(data).results[0].latitude%></h4>
-
-     <h3>{{data.centerLatLng.center_lat}}</h3>
-      
-      <!-- <script type="text/javascript">
-
-        // var x = document.getElementById('wow').value;
-        // console.log(x);
-
-        var map;
-
-
-
-        $(document).ready(function(){
-
-          // var scope = angular.element("#div1").scope();
-
-          // console.log(scope.filteredResults);
-
-          prettyPrint();
-
-          var retrievedData = <%- (data)%>;
-          // console.log("retrievedData", retrievedData);
-
-          //These lat and long values centers the map on the page wherever called.
-          map = new GMaps({
-            div: '#map',
-            zoom: 12,
-            lat: retrievedData.centerLatLng.center_lat,
-            lng: retrievedData.centerLatLng.center_lng
-          });
-
-          
-          for(var i = 0 ; i < retrievedData.results.length ; i++){
-            map.drawOverlay({
-              lat: retrievedData.results[i].latitude,
-              lng: retrievedData.results[i].longitude,
-              content: '<div class="overlay">$<b>'+retrievedData.results[i].daily_price+'</b><div class="overlay_arrow above"></div></div>'
-            });
-          }
-
-        });
-      </script> -->
-
-
-      <div class="container-fluid" style="border-radius:0px; padding:0px;">
+      <div class="container-fluid" style="border-radius:0px; padding:0px; margin-top:5px;">
         
         <div class="row"  style="border-radius:0px; padding:0px;">
           
-          <div class="col-lg-7 " style="border-radius:0px; padding: 20px 20px 20px 20px;">
-            <div class="row" style="padding-left:0px; border-bottom: 1px solid #AAAAAA; padding-bottom:20px;">
+          <div class="col-lg-7 " style="border-radius:5px; padding: 20px 20px 20px 20px;">
+            
+
+            <div class="row-fluid" style="padding-bottom:60px;">
                 <div class="col-lg-3" style="padding-left:0px; padding-top:7px;">
                     Dates
                 </div>
@@ -125,7 +78,12 @@
                   </div>                  
                 </div>
             </div>
-            <div class="row " style="padding-left:0px; padding-bottom:20px; margin-top:20px; border-bottom: 1px solid #AAAAAA;">
+
+            <div style="border-bottom:1px solid #EDEFED; margin-bottom:25px;">
+              
+            </div>
+            
+            <div class="row-fluid"  style="padding-bottom:60px;">
                 <div class="col-lg-3" style="padding-left:0px; padding-top:7px;">
                     Room Type <i class="fa fa-question-circle" style="margin-top:-2px;"></i>
                 </div>
@@ -144,85 +102,139 @@
                     <i class="fa fa-share" style="margin-top:-2px; margin-right:15px; margin-left: 10px; display:inline-block;"></i>Shared Room<input type="checkbox" id="home" style="margin-left:15px; margin-top:;"/>
                   </div>                  
                 </div>
-
-                 <!-- <%= data %> -->
             </div>
-            <div class="row " style="padding-left:0px; margin-top:20px;">
+
+            <div style="border-bottom:1px solid #EDEFED; margin-bottom:25px;">
+              
+            </div>
+
+            <div class="row-fluid" style="padding-bottom:60px;">
+              
                 <div class="col-lg-3" style="padding-left:0px; padding-top:7px;">
                     Price Range
 
                 </div>
                 <div class="col-lg-9" style="">
                     <section data-ticks="true" data-range-slider class="range-slider" step="0.5" ng-model="range" min="0" max="max"></section>
+                    <!-- <div>Current model: {{range}}</div> -->
+                    <!-- <div> <span><b>${{range.from}}</b></span> <span style="margin-left:467px; position:fixed;"><b>${{range.to}}</b></span> </div> -->
+                    <div class="row-fluid rangetext">
+                        
+                        <div class="col-lg-2">
+                          <span class=" glyphicon glyphicon-usd"></span>{{range.from}}
+                        </div>
+                        <div class="col-lg-8">
+                          
+                        </div>
+                        <div class="col-lg-2 text-right">
+                          <span class=" glyphicon glyphicon-usd"></span>{{range.to}}
+                        </div>
 
-                    <div>Current model: {{range}}</div>
-
-                     <!-- <ul class="from-to">
-                        <li><label>From:</label><input type="number" ng-model="range.from"/></li>
-                        <li><label>To:</label><input type="number" ng-model="range.to"/></li>
-
-                    </ul> -->
+                    </div>
                 </div>
-            </div>
-
-
-                <div class="col-lg-3">
-            <div class="row well">
-                  
-                </div>
-                <div class="col-lg-3">
-                  
-                </div>
-                <div class="col-lg-3">
-                  
-                </div>
-                <div class="col-lg-3">
-                  
-                </div>
-            </div>
-            <div class="row well">
-                <div class="col-lg-3">
-                  
-                </div>
-                <div class="col-lg-3">
-                  
-                </div>
-                <div class="col-lg-3">
-                  
-                </div>
-                <div class="col-lg-3">
-                  
-                </div>
-            </div>
-            <div class="row well">
-                <div class="col-lg-3">
-                  
-                </div>
-                <div class="col-lg-3">
-                  
-                </div>
-                <div class="col-lg-3">
-                  
-                </div>
-                <div class="col-lg-3">
-                  
-                </div>
-            </div>
             
+            </div>
+          
+            <div style="border-bottom:1px solid #EDEFED; margin-bottom:25px;">
+              
+            </div>
 
+
+
+            <div class="row-fluid" style="padding-bottom:60px;">
+              
+                <div class="col-lg-3" style="padding-left:0px;">
+                    
+                    <span class="glyphicon glyphicon-flash" style="color:#FFB400;"></span> Instant Book
+
+                </div>
+                <div class="col-lg-7" style="">
+                    Listings you can book without waiting for host approval.
+                </div>
+                <div class="col-lg-2 text-right" style="padding-left:0px; padding-top:-15px;">
+                    <input type="checkbox" checked data-toggle="toggle" data-style="ios" style="background-color: #00A699 !important;">
+                </div>
+            
+            </div>
+          
+            <div style="border-bottom:1px solid #EDEFED; margin-bottom:25px;">
+              
+            </div>
+
+
+
+            <div class="row-fluid" style="padding-bottom:60px;">
+              
+                <div class="col-lg-6" style="padding-left:0px;">
+                    
+                    <div class="btn btn-default"><b>Filters</b></div><br>
+                    <div style="margin-top:10px; color:#898989;"><span class="fa fa-usd"></span> Additional fees apply. Taxes may be added.</div>
+
+                </div>
+                <div class="col-lg-6 text-right" style="padding-left:0px; padding-top:-15px;">
+                    <div class="col-lg-10" style="font-size:13px;">
+                      <b>Only 18% of listings are left for these dates.</b>
+                      <div style="margin-top:0px; color:#898989;"> We recommend booking a place soon.</div>
+                    </div>
+                    <div class="col-lg-2">
+                      <img class="images" src="images/ic_dates_trend-58a970e5258ad10deefb384559ed8d14.png" alt="here" style="margin-top:-10px; padding:10px;">
+                    </div>
+                </div>
+            
+            </div>
+
+
+            <div class="row-fluid" style="padding-bottom:60px; margin-top:20px; margin-bottom:40px;position">
+              
+                <div class="col-lg-6" style="padding-left:0px; margin-bottom:20px;" ng-repeat="l in filteredResults">
+                    
+                    <div class="imgHolder">
+                      
+                      <img class="images" src="images/84ae415b-35c4-4abc-b594-7ba58f86990e.jpg" alt="here" >
+                      <div class="leftLabel"><span class="textProp"><span class=" glyphicon glyphicon-usd" style="font-size:14px;"></span> {{l.daily_price}}</span> <span class="fa fa-bolt" style="color:#FFB400;" ng-show="l.is_bid"></span></div>
+
+                    </div>
+
+                    <div>
+                      <span style="margin-left:10px; font-size:16px; font-weight: 400;">{{l.title}}</span><br>
+                      <span style="margin-left:10px; font-size:12px; color:#898989;">{{l.room_type}}</span>&nbsp;&nbsp;&nbsp;&nbsp;.    
+                      <span style="margin-left:10px; font-size:12px; color:#898989;">{{l.accommodations}} guest(s)</span>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+          
+            <div class="row-fluid" style="padding-bottom:60px; border: 0px solid black;">
+
+                <div class="col-lg-12 ">
+                  
+                      <!-- {{filteredResults}} -->
+               
+                </div>
+
+            </div>
+
+            <div class="row" style="border-bottom: 1px solid #DCE0E0; margin-top: 45px;">
+              
+            </div>
+
+            <div class="row" style="border-bottom: 0px solid #DCE0E0; margin-top: 45px; color: #787878">
+                United States  &nbsp;&nbsp; >  &nbsp;&nbsp; {{data.results[0].state}} &nbsp;&nbsp;  >  &nbsp;&nbsp; {{data.results[0].city}}
+            </div>
           </div>
 
-          <div class="col-lg-5 well" style="border-radius:0px;">
 
-            {{data.centerLatLng.center_lat}}
-            {{data.centerLatLng.center_lng}}
+          <div class="col-lg-5" style="border-radius:0px; padding:0px;">
 
-            <ng-map zoom="11" center="[{{data.centerLatLng.center_lat}}, {{data.centerLatLng.center_lng}}]" style="height:550px;">
+            <ng-map zoom="12" center="[{{data.centerLatLng.center_lat}}, {{data.centerLatLng.center_lng}}]" style="height:650px; width:650px; position:fixed; margin:0px;">
               <div ng-repeat="l in filteredResults">
                 <custom-marker position="[{{l.latitude}}, {{l.longitude}}]" animation="Animation.BOUNCE" >
                   <div class="cm">
                     
-                    <b style="color:white;">${{l.daily_price}}</b> <span class="glyphicon glyphicon-flash" style="color:yellow;" ng-show="l.is_bid"></span>
+                    <b style="color:white;">${{l.daily_price}}</b> <span class="fa fa-bolt" style="color:yellow;" ng-show="l.is_bid"></span>
                   </div>
                 </custom-marker>
               </div>

@@ -221,10 +221,6 @@ router.get('/searchListing', function(req, res, next) {
 		  apiKey: 'AIzaSyA67uROXPqm2Nnfg5HOTHttn2C7QRn1zIo', // for Mapquest, OpenCage, Google Premier 
 		  formatter: null         // 'gpx', 'string', ... 
 		};
-		
-
-
-
 
 		var geocoder = NodeGeocoder(options);
 		 
@@ -248,7 +244,7 @@ router.get('/searchListing', function(req, res, next) {
 			var latitude_lower = bouningcoordinates[0]._degLat;
 			var latitude_upper = bouningcoordinates[1]._degLat;
 
-			var query = "select * from property_details,listings WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=?";
+			var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=?";
 
 			
 			var parameters = [longitude_upper,longitude_lower,latitude_upper,latitude_lower];
@@ -280,7 +276,8 @@ router.get('/searchListing', function(req, res, next) {
 							// console.log(results);
 							// res.render('searchListing', {data: JSON.stringify(data)});// 							
 							res.render('searchListing', {data: JSON.stringify(data)});// 							
-							console.log(data);
+							console.log(">>>>>>>>>>>>>><<<<<<<<<<<<<<<<<");
+							console.log(data.results);
 						} else {
 							res.send({
 								'statusCode' : 204
