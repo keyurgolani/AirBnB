@@ -390,7 +390,7 @@ router.post('/tripped_user', (req, res, next) => {
 		if(error) {
 			res.send({
 				'statusCode' : 500
-			});
+			});	
 		} else {
 			if(results && results.length > 0) {
 				console.log(results);
@@ -409,6 +409,8 @@ router.post('/tripped_user', (req, res, next) => {
 
 router.get('/viewListing', function(req, res, next) {
 
+
+
 	console.log("here");
     // var listing_id = req.body.listing_id;
     var listing_id = '0000000001';
@@ -424,7 +426,13 @@ router.get('/viewListing', function(req, res, next) {
             if (results && results.length > 0) {
             	console.log(results);
             	// res.render('viewListing');
-                
+
+            	results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
+            	// console.log('results[0].start_date', results[0].start_date);
+
+            	results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
+            	// console.log('results[0].end_date', results[0].end_date);
+            	console.log("Rendering!");
                 res.render('viewListing', {data: JSON.stringify(results[0])});
 
             } else {
