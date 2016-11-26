@@ -4,7 +4,7 @@ var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
 var logger = require('../utils/logger');
 var cache = require('../utils/cache');
-// var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt');
 
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -132,6 +132,8 @@ router.post('/addProperty', (req, res, next) => {
 		'state' : state,
 		'zip' : zip,
 		'active' : active
+	}, function(error, result) {
+		console.log(error, result);
 	}, (error, result) => {
 		if (error) {
 			res.send({
@@ -430,6 +432,77 @@ router.get('/viewListing', function(req, res, next) {
 	});
 });
 
+router.post('/placeBidOnListing', function(req, res, next) {
+	
+	console.log("here");
+	var listing_id = req.body.listing_id;
+	var checkin = req.body.checkin;
+	var checkout = req.body.checkout; 
+	var bid_amount = req.body.bid_amount;
+	var no_of_guests = req.body.guests;
+	
+	//TODO Get user Id from session
+	//var userId = req.session.user.userId;
+	var userId = 1;
+	mysql.insertData('bid_details',{
+		'listing_id' : listing_id,
+		'checkin' : checkin,
+		'checkout' : checkout,
+		'bid_amount' : bid_amount,
+		'bidder_id' : userId,
+		'no_of_guests' : no_of_guests
+	}, (error, results) => {
+		console.log(error, results);
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			res.send({
+				'statusCode' : 200
+			});
+		}
+})
+	
+});
+
+router.post('/instantBook', function(req, res, next) {
+	
+	console.log("here");
+	var listing_id = req.body.listing_id;
+	var checkin = req.body.checkin;
+	var checkout = req.body.checkout; 
+	var deposit = 100;
+	var no_of_guests = req.body.guests;
+	var active = 1;
+	
+	//TODO Get user Id from session
+	//var userId = req.session.user.userId;
+	var userId = 1;
+	console.log(listing_id + " " + checkin + " " + checkout + " " + deposit + " " + no_of_guests + " " + active);
+	
+	mysql.insertData('trip_details',{
+		'listing_id' : listing_id,
+		'checkin' : checkin,
+		'checkout' : checkout,
+		'deposit' : deposit,
+		'no_of_guests' : no_of_guests,
+		'user_id' : userId,
+		'active' : active
+	}, (error, results) => {
+		console.log(error, results);
+		if(error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			res.send({
+				'statusCode' : 200
+			});
+		}
+})
+	
+});
 
 // Local Authentication
 
