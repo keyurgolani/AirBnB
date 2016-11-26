@@ -106,18 +106,16 @@ CREATE TABLE `listing_amenity_mapping` (
 DROP TABLE IF EXISTS `bid_details`;
 CREATE TABLE `bid_details` (
   `bid_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
-  `no_of_guests` INT NOT NULL AFTER `bidder_id`;
   `bid_amount` DECIMAL(5,2) NOT NULL,
   `listing_id` INT(10) ZEROFILL NOT NULL,
   `bidder_id` INT(10) ZEROFILL NOT NULL,
-  `checkin` DATETIME NULL,
-  `checkout` DATETIME NULL,
   PRIMARY KEY (`bid_id`)
 );
 
 DROP TABLE IF EXISTS `trip_details`;
 CREATE TABLE `trip_details` (
   `trip_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
+  `trip_amount` DECIMAL(5,2) NOT NULL,
   `listing_id` INT(10) ZEROFILL NOT NULL,
   `user_id` INT(10) ZEROFILL NOT NULL,
   `deposit` DECIMAL(5,2) NULL,
@@ -143,7 +141,7 @@ DROP TABLE IF EXISTS `bill_details`;
 CREATE TABLE `bill_details` (
   `bill_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `trip_id` INT(10) ZEROFILL NOT NULL,
-  `receipt_id` INT(10) ZEROFILL NOT NULL,
+  `receipt_id` VARCHAR(255) NOT NULL,
   `cc_id` INT(10) ZEROFILL NOT NULL,
   PRIMARY KEY (`bill_id`)
 );
@@ -243,6 +241,7 @@ INSERT INTO `amenities` SET `amenity` = 'First aid kit';
 INSERT INTO `amenities` SET `amenity` = 'Safety card';
 INSERT INTO `amenities` SET `amenity` = 'Fire extinguisher';
 INSERT INTO `amenities` SET `amenity` = 'Lock on bedroom door';
+
 
 INSERT INTO airbnb.listings (property_id, room_type_id, title, is_bid, start_date, end_date, daily_price, bedrooms, accommodations, active) VALUES (1, 2, 'Luxury Resort for the Superbowl', 1, '2016-12-18', '2016-12-23', 200.20, 2, 5, 1);
 INSERT INTO airbnb.listings (property_id, room_type_id, title, is_bid, start_date, end_date, daily_price, bedrooms, accommodations, active) VALUES (1, 3, 'Super Bowl House w/ Pool and Spa', 1, '2016-12-11', '2016-12-20', 45.22, 1, 2, 1);

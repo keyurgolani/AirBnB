@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete' ])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap' ])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
@@ -221,11 +221,78 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	.controller('signUpController', function($scope, $http, Random) {
 		$scope.emailSignUp = false;
 		$scope.beforeSignUp = true;
-
 		$scope.signUpWithEmail = function() {
 			$scope.emailSignUp = true;
 			$scope.beforeSignUp = false;
 		};
+	})
+	.controller('navBarController', function($scope, $http, Random) {
+		$scope.getHomePage = function(){
+			window.location.assign('/');
+		};
+	})
+	.controller('searchListingController', function($scope, $http, Random, $interval, NgMap) {
+		
+		$scope.init = function(retrievedData) {
+  		  
+  		  var data = JSON.parse(retrievedData);
+  		  // console.log("Data: ", data);
+
+			$scope.data = JSON.parse(retrievedData);
+
+			// console.log(" >>><<<  >>><<<  >>><<< ");
+			// console.log('$scope.data', $scope.data);
+			// console.log('$scope.data', $scope.data.results.length);
+
+			var maxRange = 0;
+
+			for(var j = 0 ; j < $scope.data.results.length; j++){
+
+				if($scope.data.results[j].daily_price > maxRange){
+					maxRange = $scope.data.results[j].daily_price;
+				}
+
+			}
+
+			// console.log('maxRange', maxRange);
+
+
+
+			$scope.range = { from: 0, to: maxRange };
+	       	$scope.max = maxRange;
+
+
+	       	var min,max;
+
+	       	$scope.from = function(){
+	       		min = ($scope.min);       		
+	       	}
+	       	$scope.to = function(){
+	       		max = ($scope.max);       		
+	       	}
+
+	       	$scope.$watch('range', function(){
+	       		
+	       		console.log();
+	        	// console.log('$scope.range', $scope.range);
+
+	        	// $scope.data
+	        	// console.log('$scope.data', $scope.data);
+
+	        	$scope.propertyArray = $scope.data.results;
+	        	// console.log('$scope.propertyArray', $scope.propertyArray);
+
+	        	$scope.filteredResults  = $scope.propertyArray.filter(function(elem, index, array){
+
+	        		return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
+	        		
+	        	});
+	        		// console.log('$scope.filteredResults', $scope.filteredResults);
+
+	       	});
+		
+		}
+		
 	})
 	.directive('ngEnter', function() {
 		return function(scope, element, attrs) {
