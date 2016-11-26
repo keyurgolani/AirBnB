@@ -9,10 +9,11 @@
     
     <link rel='stylesheet' href='css/Default.css'/>
 
-    <script src="js/markerclusterer.js"></script>
+    <script src="modules/ngmap/spec/lib/markerclusterer.js"></script>
     <link href='css/custom-marker.css' rel='stylesheet' type='text/css' />
     <link href="css/bootstrap-toggle.min.css" rel="stylesheet">
-    <script src="js/bootstrap-toggle.min.js"></script>
+    <script src="modules/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+
     <style>
       .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
       .toggle.ios .toggle-handle { border-radius: 20px; }
@@ -191,7 +192,7 @@
                     <div class="imgHolder">
                       
                       <img class="images" src="images/84ae415b-35c4-4abc-b594-7ba58f86990e.jpg" alt="here" >
-                      <div class="leftLabel"><span class="textProp"><span class=" glyphicon glyphicon-usd" style="font-size:14px;"></span> {{l.daily_price}}</span> <span class="fa fa-bolt" style="color:#FFB400;" ng-show="l.is_bid"></span></div>
+                      <div class="leftLabel"><span class="textProp"><span class=" glyphicon glyphicon-usd" style="font-size:14px;"></span> {{l.daily_price}}</span> <span class="glyphicon glyphicon-flash" style="color:#FFB400;" ng-show="l.is_bid"></span></div>
 
                     </div>
 
@@ -229,12 +230,12 @@
 
           <div class="col-lg-5" style="border-radius:0px; padding:0px;">
 
-            <ng-map zoom="12" center="[{{data.centerLatLng.center_lat}}, {{data.centerLatLng.center_lng}}]" style="height:650px; width:650px; position:fixed; margin:0px;">
+            <ng-map zoom="11" center="[{{data.centerLatLng.center_lat}}, {{data.centerLatLng.center_lng}}]" style="height:90%; width:550px; position:fixed; margin:0px;">
               <div ng-repeat="l in filteredResults">
                 <custom-marker position="[{{l.latitude}}, {{l.longitude}}]" animation="Animation.BOUNCE" >
                   <div class="cm">
                     
-                    <b style="color:white;">${{l.daily_price}}</b> <span class="fa fa-bolt" style="color:yellow;" ng-show="l.is_bid"></span>
+                    <b style="color:white;">${{l.daily_price}}</b> <span class="glyphicon glyphicon-flash" style="color:yellow;" ng-show="l.is_bid"></span>
                   </div>
                 </custom-marker>
               </div>
