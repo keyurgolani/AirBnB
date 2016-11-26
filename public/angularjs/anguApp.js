@@ -76,7 +76,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()), 
 					"listing_id" : $scope.data.listing_id,
 					"userId" : 1,
-					"guests" : $scope.noOfGuests
+					"guests" : $scope.noOfGuests,
+					"trip_amount" : $scope.data.daily_price
 				}
 			}).then((results) => {
 				if(results.data.statusCode === 200) {
