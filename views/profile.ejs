@@ -4,11 +4,13 @@
 		<% include ./head %>
 	</head>
 
-	<body class="body full-body" ng-app="airBnB" ng-controller="profile" ng-cloak ng-init="init('<%= data %>')">
+
+	<body class="body full-body" ng-app="airBnB" >
+
 	<!-- Header -->
 	<header><% include ./header %></header>
 	<!-- Main -->
-	<main ng-app="airBnB">
+	<main ng-controller="profile" ng-cloak ng-init="init('<%= data %>')">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="row nav-body">
