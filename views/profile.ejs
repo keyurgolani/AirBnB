@@ -333,16 +333,16 @@
 										<div class="row location-text" style="margin-top:15px;">Rate host</div>
 										<div class="stars">
 											<form action="">
-											    <input class="hostStar hostStar-5" id="hostStar-5" type="radio" name="hostStar"/>
-											    <label class="hostStar hostStar-5" for="hostStar-5"></label>
-											    <input class="hostStar hostStar-4" id="hostStar-4" type="radio" name="hostStar"/>
-											    <label class="hostStar hostStar-4" for="hostStar-4"></label>
-											    <input class="hostStar hostStar-3" id="hostStar-3" type="radio" name="hostStar"/>
-											    <label class="hostStar hostStar-3" for="hostStar-3"></label>
-											    <input class="hostStar hostStar-2" id="hostStar-2" type="radio" name="hostStar"/>
-											    <label class="hostStar hostStar-2" for="hostStar-2"></label>
-											    <input class="hostStar hostStar-1" id="hostStar-1" type="radio" name="hostStar"/>
-											    <label class="hostStar hostStar-1" for="hostStar-1"></label>
+											    <input class="star star-5" id="star-5" type="radio" name="star"/>
+											    <label class="star star-5" for="star-5"></label>
+											    <input class="star star-4" id="star-4" type="radio" name="star"/>
+											    <label class="star star-4" for="star-4"></label>
+											    <input class="star star-3" id="star-3" type="radio" name="star"/>
+											    <label class="star star-3" for="star-3"></label>
+											    <input class="star star-2" id="star-2" type="radio" name="star"/>
+											    <label class="star star-2" for="star-2"></label>
+											    <input class="star star-1" id="star-1" type="radio" name="star"/>
+											    <label class="star star-1" for="star-1"></label>
 											</form>
 										</div>
 										<div class="row">
@@ -393,6 +393,155 @@
 											</form>
 										</div>									
 									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row item-body">
+							<div class="row item-head">Payment Methods</div>
+							<div class="row item-content">
+								<div class="row">
+									<div class="col-md-4 added-card-box">
+										<div class="row">
+											<div class="added-card-text">XXXXXXXXXXXX0125</div>
+											<div class="added-card-text">03 / 2020</div>
+										</div>
+										<div class="row" style="margin-top: 40px;">
+											<div class="col-md-9">
+												<span class="added-card-text">Default Card</span><i class="fa fa-question-circle question-icon"></i>
+											</div>
+											<div class="col-md-3">
+												<img src="../images/cards/mastercard.jpg" class="added-card-image">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-4 second-box" data-toggle="modal" data-target=".addPayment-modal-md">
+										<div class="row text-center">
+											<i class="material-icons add-icon">add</i>
+										</div>
+										<div class="row text-center">
+											<span class="add-text">Add Payment Method</span>
+										</div>
+									</div>
+									<div class="col-md-4"></div>
+								</div>
+								<div class="modal container fade addPayment-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+		  							<div class="modal-dialog container modal-md" role="document">
+								  		<div class="row payment-box">
+								  			<div class="row item-head border">Add New Payment Method</div>
+								  			<div class="row payment-body">
+								  				<div class="row bottom-space">
+								  					<img src="../images/cards/visa.png" class="card-images">
+								  					<img src="../images/cards/mastercard.jpg" class="card-images">
+								  					<img src="../images/cards/amex.jpg" class="card-images">
+								  					<img src="../images/cards/discover.png" class="card-images">
+								  				</div>
+								  				<div class="row bottom-space">
+								  					<label class="credit-card-text">Card number *</label>
+								  					<input type="text" ui-mask="9999 9999 9999 9999" class="credit-card-box">
+								  				</div>
+								  				<div class="row">
+								  					<div class="col-md-3">
+								  						<label class="credit-card-text">Expires on *</label>
+								  					</div>
+								  					<div class="col-md-3"></div>
+								  					<div class="col-md-6">
+								  						<label class="credit-card-text">Security code *</label>
+								  					</div>
+								  				</div>
+								  				<div class="row bottom-space">
+								  					<div class="col-md-3">
+								  						<select class="expiry-box">
+								  						 	<option>MM</option>
+														  	<option>1</option>
+														  	<option>2</option>
+														  	<option>3</option>
+														  	<option>4</option>
+														  	<option>5</option>
+														  	<option>6</option>
+														  	<option>7</option>
+														  	<option>8</option>
+														  	<option>9</option>
+														  	<option>10</option>
+														  	<option>11</option>
+														  	<option>12</option>
+														</select>
+								  					</div>
+								  					<div class="col-md-3">
+								  						<select class="expiry-box">
+								  						 	<option>YYYY</option>
+														  	<option>2016</option>
+														  	<option>2017</option>
+														  	<option>2018</option>
+														  	<option>2019</option>
+														  	<option>2020</option>
+														  	<option>2021</option>
+														  	<option>2022</option>
+														  	<option>2023</option>
+														  	<option>2024</option>
+														  	<option>2025</option>
+														  	<option>2026</option>
+														  	<option>2027</option>
+														  	<option>2028</option>
+														  	<option>2029</option>
+														  	<option>2030</option>
+														  	<option>2031</option>
+														  	<option>2032</option>
+														  	<option>2033</option>
+														  	<option>2034</option>
+														  	<option>2035</option>
+														</select>
+								  					</div>
+								  					<div class="col-md-6">
+								  						<input type="text" class="medium-box">
+								  					</div>
+								  				</div>
+								  				<div class="row">
+								  					<div class="col-md-6">
+								  						<label class="credit-card-text">First name</label>
+								  					</div>
+								  					<div class="col-md-6">
+								  						<label class="credit-card-text">Last name</label>
+								  					</div>
+								  				</div>
+								  				<div class="row bottom-space">
+								  					<div class="col-md-6">
+								  						<input type="text" class="medium-box">
+								  					</div>
+								  					<div class="col-md-6">
+								  						<input type="text" class="medium-box">
+								  					</div>
+								  				</div>
+								  				<div class="row">
+								  					<div class="col-md-6">
+								  						<label class="credit-card-text">Postal code</label>
+								  					</div>
+								  					<div class="col-md-6">
+								  						<label class="credit-card-text">Country</label>
+								  					</div>
+								  				</div>
+								  				<div class="row bottom-space">
+								  					<div class="col-md-6">
+								  						<input type="text" class="medium-box">
+								  					</div>
+								  					<div class="col-md-6">
+								  						<select class="medium-box">
+								  						 	<option>United States</option>
+														</select>
+								  					</div>
+								  				</div>
+								  			</div>
+								  			<div class="row payment-footer">
+							  					<div class="col-md-6"></div>
+							  					<div class="col-md-6">
+							  						<button class="btn btn-primary cancel-button" data-dismiss="modal">Cancel</button>
+							  						<button class="btn btn-primary add-card-button">Add Card</button>
+							  					</div>
+							  				</div>
+								  		</div>
+								  	</div>
+								</div>
+								<div class="row remember-text">
+									<span>Remember: Airbnb will never ask you to wire money. <a href="" class="learn-more">Learn more.</a></span>
 								</div>
 							</div>
 						</div>
