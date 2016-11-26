@@ -371,6 +371,11 @@ body {
 		width: 90% !important;
 		border-color: #fff !important;
 	}
+
+	.guest-dropdown-searchListing {
+		border:1px solid #AAAAAA !important; border-radius:2px; width:80% !important; height:32px;
+	}
+
 	.search-button {
 		height: 48px;
 		width: 106px;
@@ -494,7 +499,7 @@ body {
 		margin-top: 12px;
 		border-radius: 2px;
 		color: #dce0e0;
-		height: 60px;
+		height: 40px;
 		margin-top: 5px;
 	}
 	.login-button {
@@ -520,6 +525,71 @@ body {
 	.signup-modal-md {
 		overflow-y: hidden !important;
 	}
+
+	#checkInPlaceholder::-webkit-input-placeholder { /* Chrome */
+	  color: grey;
+	  font-size:14px;
+	  padding-left: 7px;
+	}
+
+	#signUpPlaceHolder::-webkit-input-placeholder { /* Chrome */
+	  color: grey;
+	  font-size:16px;
+	  padding-left: 0px;
+	}
+	#signUpPlaceHolder { /* Chrome */
+		margin-top:3px;
+	}
+
+
+	input[type=checkbox]{
+	    display: inline-block;
+	    width: 15px;
+	    height: 15px;
+	    padding-left: 40px;
+	    margin-left: 10px;
+	    padding-top: 5px;
+	   /* background-position: 0 0;
+	    background-repeat: no-repeat;*/
+	    line-height: 32px;
+	    cursor: pointer;
+	    background: white;
+	}
+
+
+
+	input[type=checkbox]:checked{
+	  background-position: left -15px;
+	}
+
+	label{
+	 background-image:url(http://csscheckbox.com/checkboxes/u/csscheckbox_d2a60beb8fb6bbb280642579049ebf65.png);
+	 height: 15px;
+	 width: 15px;
+	 
+	}
+
+
+
+	.imgHolder {
+	    position: relative;
+	}
+
+	.imgHolder .leftLabel {
+	    position: absolute;
+	    left: 5px;
+	    top: 170px;
+	    border: 0px solid green;
+	    background-color: rgba(0, 0, 0, 0.7);
+	    padding: 10px;
+	}
+
+	.imgHolder .leftLabel .textProp {
+	    color: white;
+	    font-size: 20px;
+	}
+
+
 }
 
 main {
@@ -600,6 +670,143 @@ main {
 	border-top-color: #4ddfd4;
 	border-left-color: #4ddfd4;
 	border-right-color: #4ddfd4;
+
+}
+
+
+
+	/*********************************************************
+	*********************************************************/
+	body{
+	  background:#f3f3f3;
+	  margin:0;
+	  padding:0;
+	  font-family: 'Helvetica', 'Arial', sans-serif;
+	}
+
+	h1{
+	  font-family: 'Convergence';
+	  font-size: 95px;
+	  text-align: center;
+	  letter-spacing: -6px;
+	  margin: 8px 0;
+	  text-shadow: 0 0 1px #000;
+	}
+	h2{
+	  font-family:'Bitter';
+	  font-size:20px;
+	  font-weight:normal;
+	  color:;
+	  text-shadow: 0 0 1px ;
+	  text-align:center;
+	  margin: 6px 0;
+	  text-transform:lowercase;
+	}
+
+	h3{
+	  margin:8px 0;
+	}
+
+	h4{
+	  margin:6px 0;
+	}
+
+	a{
+	  color: ;
+	  text-decoration:none;
+	}
+	a:hover{
+	  text-decoration:underline;
+	}
+
+	p.big{
+	  font-family:'Droid Sans';
+	  font-size:24px;
+	  color:;
+	}
+	p.centered{
+	  text-align:center;
+	}
+	#header, #body{
+	  width:800px;
+	  margin:0 auto;
+	}
+	#body{
+	  margin:20px auto;
+	}
+
+	#header a{
+	  color:#000;
+	}
+	#header a:hover{
+	  text-decoration:none;
+	}
+
+	.row{
+	  margin:24px 0;
+	}
+
+
+
+	.popin{
+	  background:#fff;
+	  padding:15px;
+	  box-shadow: 0 0 20px #999;
+	  border-radius:2px;
+	}
+
+	ul.gallery{
+	  list-style:none;
+	  margin:0;
+	  padding:0;
+	  width:100%;
+	}
+	ul.gallery li{
+	  font-family:'Droid Sans';
+	  display:inline-block;
+	  width:30%;
+	  background:#fff;
+	  padding:10px 8px;
+	  margin:4px 1px;
+	  border-radius:3px;
+	  border:solid 1px #ddd;
+	}
+	ul.gallery li:hover{
+	  background:#f3f3f3;
+	}
+	ul.gallery li a{
+	  display:block;
+	}
+	ul.gallery li h5{
+	  font-weight:normal;
+	  margin:0;
+	  font-size:16px;
+	}
+
+	#map,
+	#panorama {
+	  height:600px !important;
+	  width: 540px !important;
+	  background:#6699cc;
+	}
+
+	#sponsors {
+	  font-size: 12px;
+	  text-align: center;
+	  padding: 4px 6px;
+	}
+
+	#sponsors img {
+	  height: 40px;
+	  margin: 4px;
+	}
+
+	code {
+	  font-family: 'Ubuntu Mono', 'Monaco', 'Andale Mono', 'Courier New', monospace;
+	  font-weight: bold;
+	}
+	/*********************************************************
+	*********************************************************/
 }
 
 .curve-border>.dropdown-toggle {
@@ -1910,6 +2117,11 @@ input[type='checkbox'] {
 	color: #fff;
 }
 
+label.hostStar:before {
+  content: '\f006';
+  font-family: FontAwesome;
+}
+
 .password-button:active {
 	border-top-color: #ff5a5f;
 	border-left-color: #ff5a5f;
@@ -1939,38 +2151,6 @@ input[type='checkbox'] {
 	color: #fff;
 	outline: none;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 div.stars {
 	margin-left: -15px;

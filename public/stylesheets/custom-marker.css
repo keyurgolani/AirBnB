@@ -1,0 +1,43 @@
+.custom-marker {
+  font-size: 1em;
+  padding: 0px;
+  background: #ff5a5f;
+  /* height: auto;
+  width: auto; */
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border: #767676 solid 1px;
+  text-align: center;
+  padding: 5px 5px 1px 5px ;
+  font-size: 12px;
+  
+}
+
+.custom-marker:after {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 7px 6px 0;
+  border-color: #ff5a5f transparent;
+  display: block;
+  width: 0;
+  z-index: 1;
+  margin-left: -6px;
+  bottom: -6px;
+  left: 50%;
+}
+
+.custom-marker:before {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 7px 6px 0;
+  border-color: #7F7F7F transparent;
+  display: block;
+  width: 0;
+  z-index: 0;
+  margin-left: -6px;
+  bottom: -7px;
+  left: 50%;
+}

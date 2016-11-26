@@ -4,6 +4,8 @@ var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
 var logger = require('../utils/logger');
 var cache = require('../utils/cache');
+var NodeGeocoder = require('node-geocoder');
+var GeoPoint = require('geopoint');
 var bcrypt = require('bcrypt');
 
 var passport = require("passport");
@@ -563,6 +565,76 @@ router.get('/property', function(req, res, next) {
 
 router.get('/listing', function(req, res, next) {
 	res.render('listing');
+});
+
+router.get('/searchListing', function(req, res, next) {
+
+	var address = req.query.where;
+	var guest = req.query.guest;
+	var daterange = req.query.daterange;
+
+	var options = {
+		provider : 'google',
+		// Optional depending on the providers 
+		httpAdapter : 'https', // Default 
+		apiKey : 'AIzaSyA67uROXPqm2Nnfg5HOTHttn2C7QRn1zIo', // for Mapquest, OpenCage, Google Premier 
+		formatter : null // 'gpx', 'string', ... 
+	};
+
+	var geocoder = NodeGeocoder(options);
+
+	// Using callback 
+	geocoder.geocode(address, function(err, georesult) {
+		
+		var longitude = Number((georesult[0].longitude) * Math.PI / 180);
+		var latitude = Number((georesult[0].latitude) * Math.PI / 180);
+
+		center_lat = georesult[0].latitude;
+		center_lng = georesult[0].longitude;
+
+		var locat = new GeoPoint(georesult[0].latitude, georesult[0].longitude);
+		var bouningcoordinates = locat.boundingCoordinates(10);
+		
+		var longitude_lower = bouningcoordinates[0]._degLon;
+		var longitude_upper = bouningcoordinates[1]._degLon;
+		var latitude_lower = bouningcoordinates[0]._degLat;
+		var latitude_upper = bouningcoordinates[1]._degLat;
+
+		var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=?";
+		var parameters = [ longitude_upper, longitude_lower, latitude_upper, latitude_lower ];
+
+		var centerLatLng = {
+			center_lat : center_lat,
+			center_lng : center_lng
+		};
+
+		mysql.executeQuery(query, parameters, function(error, results) {
+			var data = {
+				results : results,
+				centerLatLng : centerLatLng
+			};
+			console.log(error, results);
+			if (error) {
+				res.send({
+					'statusCode' : 500
+				});
+			} else {
+				if (results && results.length > 0) {
+					// console.log(results);
+					// res.render('searchListing', {data: JSON.stringify(data)});// 							
+					res.render('searchListing', {
+						data : JSON.stringify(data)
+					}); // 							
+					console.log(">>>>>>>>>>>>>><<<<<<<<<<<<<<<<<");
+					console.log(data.results);
+				} else {
+					res.send({
+						'statusCode' : 204
+					});
+				}
+			}
+		});
+	});
 });
 
 router.get('/profile', function(req, res, next) {
