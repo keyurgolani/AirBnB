@@ -1,6 +1,6 @@
 <div >
 	<div>
-		<nav class="navbar navbar-fixed-top" style="border-radius:0px; box-shadow: 1px 3px 1px 0 rgba(0, 0, 0, 0.05);">
+		<nav class="navbar navbar-fixed-top" style="border-radius:0px; box-shadow: 1px 3px 1px 0 rgba(0, 0, 0, 0.05);" ng-controller="navBarController">
 		<!--<nav class="navbar navbar-fixed-top" style="border-radius:0px;">-->
 			<div class="container-fluid">
 				<div class="navbar-header">
@@ -9,7 +9,7 @@
 						<span class="icon-bar" style="border: 1px solid #AAAAAA;"></span>
 						<span class="icon-bar" style="border: 1px solid #AAAAAA;"></span>
 					</button>
-					<a class="navbar-brand" href="#" id="header_logo" >
+					<a class="navbar-brand" href="#" id="header_logo" ng-click="getHomePage();">
 						<img src="images/airbnb_horizontal_lockup_web.png" height="58" width="127" alt="">
 					</a>
 				</div>

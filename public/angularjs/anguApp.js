@@ -222,6 +222,11 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.beforeSignUp = false;
 		};
 	})
+	.controller('navBarController', function($scope, $http, Random) {
+		$scope.getHomePage = function(){
+			window.location.assign('/');
+		};
+	})
 	.controller('searchListingController', function($scope, $http, Random, $interval, NgMap) {
 		
 		$scope.init = function(retrievedData) {
