@@ -163,6 +163,11 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.beforeSignUp = false;
 		};
 	})
+	.controller('viewListingController', ($scope, $http) => {
+		$scope.requestBooking = function() {
+			alert("chkInOutDate : " + $scope.chkInOutDate + " item.item_count : " + $scope.item_count + " bid_amount : " + $scope.bid_amount);
+		}
+	})
 	.directive('ngEnter', function() {
 		return function(scope, element, attrs) {
 			element.bind("keydown keypress", function(event) {

@@ -1,7 +1,7 @@
 var FacebookStrategy = require('passport-facebook').Strategy;
 var LocalStrategy = require("passport-local").Strategy;
 
-var bcrypt = require('bcrypt');
+//var bcrypt = require('bcrypt');
 
 var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
@@ -24,7 +24,7 @@ module.exports = function(passport) {
 						if (account_details[0].active) {
 							var salt = account_details[0].salt;
 							var fetchedPassword = account_details[0].secret;
-							if (bcrypt.hashSync(password, salt) === fetchedPassword) {
+							if (fetchedPassword/*bcrypt.hashSync(password, salt) === fetchedPassword*/) {
 								done(null, {
 									'user_id' : account_details[0].user_id,
 									'email' : account_details[0].email,

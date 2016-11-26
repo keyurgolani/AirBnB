@@ -106,7 +106,7 @@ CREATE TABLE `listing_amenity_mapping` (
 DROP TABLE IF EXISTS `bid_details`;
 CREATE TABLE `bid_details` (
   `bid_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
-  `bid_amount` DECIMAL(2,2) NOT NULL,
+  `bid_amount` DECIMAL(5,2) NOT NULL,
   `listing_id` INT(10) ZEROFILL NOT NULL,
   `bidder_id` INT(10) ZEROFILL NOT NULL,
   PRIMARY KEY (`bid_id`)
