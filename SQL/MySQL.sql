@@ -115,6 +115,7 @@ CREATE TABLE `bid_details` (
 DROP TABLE IF EXISTS `trip_details`;
 CREATE TABLE `trip_details` (
   `trip_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
+  `trip_amount` DECIMAL(5,2) NOT NULL,
   `listing_id` INT(10) ZEROFILL NOT NULL,
   `user_id` INT(10) ZEROFILL NOT NULL,
   `deposit` DECIMAL(5,2) NULL,
@@ -140,7 +141,7 @@ DROP TABLE IF EXISTS `bill_details`;
 CREATE TABLE `bill_details` (
   `bill_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `trip_id` INT(10) ZEROFILL NOT NULL,
-  `receipt_id` INT(10) ZEROFILL NOT NULL,
+  `receipt_id` VARCHAR(255) NOT NULL,
   `cc_id` INT(10) ZEROFILL NOT NULL,
   PRIMARY KEY (`bill_id`)
 );

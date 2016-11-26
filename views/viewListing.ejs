@@ -483,10 +483,16 @@
 			</div>
 		</div>
 	<script>
-		$(function() {
+
+	var data = <%- data %>;
+	console.log('start_date', data.start_date);
+	
+	$(function() {
 			$('input[name="daterange"]').daterangepicker({
 				autoApply: true,
 				linkedCalendars: true,
+				  "minDate": data.start_date,
+  				  "maxDate": data.end_date,				
 				isCustomDate: function() {
 					return 'customDates';
 				}
