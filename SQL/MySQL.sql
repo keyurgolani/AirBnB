@@ -106,9 +106,12 @@ CREATE TABLE `listing_amenity_mapping` (
 DROP TABLE IF EXISTS `bid_details`;
 CREATE TABLE `bid_details` (
   `bid_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
-  `bid_amount` DECIMAL(2,2) NOT NULL,
+  `no_of_guests` INT NOT NULL AFTER `bidder_id`;
+  `bid_amount` DECIMAL(5,2) NOT NULL,
   `listing_id` INT(10) ZEROFILL NOT NULL,
   `bidder_id` INT(10) ZEROFILL NOT NULL,
+  `checkin` DATETIME NULL,
+  `checkout` DATETIME NULL,
   PRIMARY KEY (`bid_id`)
 );
 
@@ -117,7 +120,7 @@ CREATE TABLE `trip_details` (
   `trip_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `listing_id` INT(10) ZEROFILL NOT NULL,
   `user_id` INT(10) ZEROFILL NOT NULL,
-  `deposit` DECIMAL(2,2) NULL,
+  `deposit` DECIMAL(5,2) NULL,
   `checkin` DATETIME NULL,
   `checkout` DATETIME NULL,
   `no_of_guests` INT(2) NOT NULL,
@@ -240,3 +243,20 @@ INSERT INTO `amenities` SET `amenity` = 'First aid kit';
 INSERT INTO `amenities` SET `amenity` = 'Safety card';
 INSERT INTO `amenities` SET `amenity` = 'Fire extinguisher';
 INSERT INTO `amenities` SET `amenity` = 'Lock on bedroom door';
+
+INSERT INTO airbnb.listings (property_id, room_type_id, title, is_bid, start_date, end_date, daily_price, bedrooms, accommodations, active) VALUES (1, 2, 'Luxury Resort for the Superbowl', 1, '2016-12-18', '2016-12-23', 200.20, 2, 5, 1);
+INSERT INTO airbnb.listings (property_id, room_type_id, title, is_bid, start_date, end_date, daily_price, bedrooms, accommodations, active) VALUES (1, 3, 'Super Bowl House w/ Pool and Spa', 1, '2016-12-11', '2016-12-20', 45.22, 1, 2, 1);
+INSERT INTO airbnb.listings (property_id, room_type_id, title, is_bid, start_date, end_date, daily_price, bedrooms, accommodations, active) VALUES (2, 1, '10 mins to Levi''s in luxurious apt', 1, '2016-11-26', '2016-12-06', 200.00, 2, 4, 1);
+INSERT INTO airbnb.listings (property_id, room_type_id, title, is_bid, start_date, end_date, daily_price, bedrooms, accommodations, active) VALUES (3, 2, '2 bed/1bth in quiet home, full bfst', 1, '2016-11-30', '2016-12-11', 120.90, 2, 2, 1);
+INSERT INTO airbnb.listings (property_id, room_type_id, title, is_bid, start_date, end_date, daily_price, bedrooms, accommodations, active) VALUES (4, 2, 'Entire Apartment for Super Bowl 50', 1, '2016-12-12', '2016-12-27', 200.00, 3, 5, 1);
+INSERT INTO airbnb.listings (property_id, room_type_id, title, is_bid, start_date, end_date, daily_price, bedrooms, accommodations, active) VALUES (4, 2, 'Beautiful San Jose court house', 1, '2016-12-04', '2016-12-27', 230.00, 4, 7, 1);
+INSERT INTO airbnb.listing_details (listing_id, description, bathrooms, beds, checkin, checkout) VALUES (1, 'Your Lucky Day 4miles to Levi, Beautiful Superbowl Weekend Resort Setting with heated pool and Cabana, Fine Dining On Site, plus High-Speed Internet, Business Center, Flat Screen Entertainment Center, 24 Hour staff and security', 2, 3, '02:00:00', '11:00:00');
+INSERT INTO airbnb.listing_details (listing_id, description, bathrooms, beds, checkin, checkout) VALUES (2, '3 br/1 ba home located in San Jose''s beautiful rose garden area with pool and spa. Located 7 miles from Levi Stadium. Take Uber, light rail or Cal Train to the big game. Sleeps up to 5. Refrigerator, microwave, gas range, garage gym, pool, spa.', 1, 2, '02:00:00', '11:00:00');
+INSERT INTO airbnb.listing_details (listing_id, description, bathrooms, beds, checkin, checkout) VALUES (3, 'One bedroom w/ den smoke & pet free apt. in brand new complex. Sleeps 4 people (queen + pull out). 15 mins to SJO airport, 10 mins to Levi''s stadium with access to pool, playground, Starbucks, restaurants etc. Excellent amenities. Family friendly.', 2, 4, '02:00:00', '11:00:00');
+INSERT INTO airbnb.listing_details (listing_id, description, bathrooms, beds, checkin, checkout) VALUES (4, 'Great location near light rail, shopping and highways 85 and 87. Quiet neighborhood. 1800 sq ft house with pool, deck, fire pit, patio seating and a barbecue. Modern kitchen access, washer dryer, iron, towels. Free parking and wifi.', 1, 2, '02:00:00', '11:00:00');
+INSERT INTO airbnb.listing_details (listing_id, description, bathrooms, beds, checkin, checkout) VALUES (5, 'This is a furnished Luxury apartment located 2mi from Levis stadium and the Outlet Great Mall, just steps from the VTA. Experience resort style with premium amenities like pool, gym, and jacuzzi. The apartment is on the top floor with a great view.', 2, 5, '02:00:00', '11:00:00');
+INSERT INTO airbnb.listing_details (listing_id, description, bathrooms, beds, checkin, checkout) VALUES (6, '- 20 min drive from Levi''s stadium - Spacious front and back yard - Free Wifi - New furniture and beds - Very safe neighborhood - 4 bedrooms - 2 bathrooms', 3, 4, '02:00:00', '11:00:00');
+INSERT INTO airbnb.property_details (owner_id, property_type_id, house_rules, longitude, latitude, st_address, apt, city, state, zip, active) VALUES (1, 1, 'No Smoking. No pets allowed. No dirt.', -121.88633, 37.338207, 'Perfect Location for the Superbowl, San Jose, CA, United States', '234', 'San Jose', 'California', 95134, 1);
+INSERT INTO airbnb.property_details (owner_id, property_type_id, house_rules, longitude, latitude, st_address, apt, city, state, zip, active) VALUES (1, 1, 'Want minimal to no activity after 10PM. Want a tidy house. Smoking allowed. Pets are allowed.', -121.932396, 37.37373, '1659 Airport Boulevard', '223', 'San Jose', 'California', 95110, 1);
+INSERT INTO airbnb.property_details (owner_id, property_type_id, house_rules, longitude, latitude, st_address, apt, city, state, zip, active) VALUES (1, 3, 'Refer Super 8 Motels Website for the list of rules.', -121.92162, 37.340446, '1860 The Alameda', '214', 'San Jose', 'California', 95126, 1);
+INSERT INTO airbnb.property_details (owner_id, property_type_id, house_rules, longitude, latitude, st_address, apt, city, state, zip, active) VALUES (1, 5, 'Tidy community. No smoking allowed. Please visit leasing office for pets policy. No subleasing is allowed.', -121.912476, 37.332733, '1300 The Alameda', '1322260', 'San Jose', 'California', 95126, 1);

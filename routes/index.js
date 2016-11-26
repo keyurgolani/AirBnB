@@ -482,6 +482,11 @@ router.get('/listing', function(req, res, next) {
 	res.render('listing');
 });
 
+
+
+
+
+
 router.get('/profile', function(req, res, next) {
 	
 
@@ -581,10 +586,6 @@ router.get('/profile', function(req, res, next) {
 	})
 
 	// res.render('profile');
-});
-
-router.get('/profile', function(req, res, next) {
-	res.render('profile');
 });
 
 module.exports = router;
