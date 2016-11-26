@@ -16,6 +16,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 		});
 	})
+	.controller('homepage', function() {
+		
+	})
 	.controller('login', function($scope, $http, Random) {
 		$scope.login = function() {
 			console.log($scope.email);
@@ -36,11 +39,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('viewListing', function($scope, $http, Random) {
 		$scope.init = function(retrievedData) {
-           console.log("here")
-           var data = JSON.parse(retrievedData);
-           console.log("Data: ", data);
-
-           $scope.data = JSON.parse(retrievedData);
+			var data = JSON.parse(retrievedData);
+			$scope.data = JSON.parse(retrievedData);
 		}
 	})
 	.controller('profile', ($scope, $http) => {
@@ -71,6 +71,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 		$scope.addProperty = () => {
+			console.log($scope.house_rules);
 			$http({
 				method : "POST",
 				url : "/addProperty",
