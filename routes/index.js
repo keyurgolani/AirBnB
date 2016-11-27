@@ -6,11 +6,10 @@ var logger = require('../utils/logger');
 var cache = require('../utils/cache');
 
 var uuid = require('node-uuid');
-// var bcrypt = require('bcrypt');
 
 var NodeGeocoder = require('node-geocoder');
 var GeoPoint = require('geopoint');
-
+//var bcrypt = require('bcrypt');
 
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -36,7 +35,6 @@ router.post('/addListing', (req, res, next) => {
 
 	// Listings Table Fields
 	var property_id = req.body.property_id;
-	console.log('property_id', property_id);
 	var room_type_id = req.body.room_type.room_type_id;
 	var title = req.body.title;
 	var is_bid = req.body.is_bid;
@@ -66,7 +64,6 @@ router.post('/addListing', (req, res, next) => {
 		'accommodations' : accommodations,
 		'active' : active
 	}, (error, listing_insert_result) => {
-		console.log('error, listing_insert_result', error, listing_insert_result);
 		if (error) {
 			res.send({
 				'statusCode' : 500
@@ -81,7 +78,6 @@ router.post('/addListing', (req, res, next) => {
 					'checkin' : checkin,
 					'checkout' : checkout
 				}, (error, listing_details_insert_result) => {
-					console.log('error, listing_details_insert_result', error, listing_details_insert_result);
 					if (error) {
 						res.send({
 							'statusCode' : 500
@@ -89,36 +85,36 @@ router.post('/addListing', (req, res, next) => {
 					} else {
 						if (listing_details_insert_result.affectedRows === 1) {
 
-							
+
 							//automate task to inactivate the listing after end date!
 
-								var end_date = new Date(end_date);
-								console.log('end_date', end_date);
-								var current_date = new Date();
-								console.log('current_date', current_date);
+							var end_date = new Date(end_date);
+							console.log('end_date', end_date);
+							var current_date = new Date();
+							console.log('current_date', current_date);
 
-								var time = end_date.getTime() - current_date.getTime() 
-								
-								setTimeout(function (){
+							var time = end_date.getTime() - current_date.getTime()
 
-										mysql.updateData('listings', {											
-											'active' : 0											
-										}, {
-											'listing_id' : listing_insert_result.insertId
-										},function(error, result) {
-											if (error) {												
-													console.log("error in update of listing!");
-												
-											} else {
-												if (result.affectedRows === 1) {
-													console.log("success in update of listing!")
-												} else {
-													console.log("error in update of listing!");
-												}
-											}
-										});
+							setTimeout(function() {
 
-								},30000);							
+								mysql.updateData('listings', {
+									'active' : 0
+								}, {
+									'listing_id' : listing_insert_result.insertId
+								}, function(error, result) {
+									if (error) {
+										console.log("error in update of listing!");
+
+									} else {
+										if (result.affectedRows === 1) {
+											console.log("success in update of listing!")
+										} else {
+											console.log("error in update of listing!");
+										}
+									}
+								});
+
+							}, 30000);
 
 							res.send({
 								'statusCode' : 200
@@ -423,7 +419,7 @@ router.post('/fetchUserHostings', (req, res, next) => {
 		if (error) {
 			res.send({
 				'statusCode' : 500
-			});	
+			});
 		} else {
 			if (results && results.length > 0) {
 				res.send({
@@ -440,24 +436,32 @@ router.post('/fetchUserHostings', (req, res, next) => {
 });
 
 router.get('/viewListing', function(req, res, next) {
-	var listing_id = req.query.listing;
+//	var listing_id = req.query.listing;
+	var listing_id = '0000000002';
 	var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
 	var parameters = [ listing_id, listing_id ];
 	mysql.executeQuery(query, parameters, function(error, results) {
 		if (error) {
-			res.send({
-				'statusCode' : 500
+			res.render('error', {
+				'statusCode' : 500,
+				'message' : 'Internal Error'
 			});
 		} else {
-			res.send({
-				'statusCode' : 200
-			});
+			if (results && results.length > 0) {
+				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
+				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
+				res.render('viewListing', {
+					data : JSON.stringify(results[0])
+				});
+			} else {
+				res.render('error', {
+					'statusCode' : 204,
+					'message' : 'Listing expired or unlisted!'
+				});
+			}
 		}
-	})
-
+	});
 });
-
-
 
 router.post('/placeBidOnListing', function(req, res, next) {
 	var listing_id = req.body.listing_id;
@@ -487,8 +491,7 @@ router.post('/placeBidOnListing', function(req, res, next) {
 			});
 		}
 	})
-	});
-
+});
 
 router.post('/instantBook', function(req, res, next) {
 	var listing_id = req.body.listing_id;
@@ -502,9 +505,6 @@ router.post('/instantBook', function(req, res, next) {
 	//TODO Get user Id from session
 	//var userId = req.session.user.userId;
 	var userId = 1;
-	/*var query = "SELECT * FROM trip_details WHERE listing_id = ? AND BETWEEN 170 AND 300"; 
-	var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=? AND listings.active != 0";
-	var parameters = [ listing_id ];*/
 
 	mysql.fetchData('*', 'trip_details', {'listing_id' : listing_id}, (error, results) => {
 		if (error) {
@@ -546,12 +546,9 @@ router.post('/instantBook', function(req, res, next) {
 							});
 						} else {
 							var receipt_id = uuid.v1();
-							console.log('receipt_id', receipt_id);
 
 							//TODO
 							var cc_id = 1;
-							console.log('trip', trip);
-							console.log('trip.insertedID', trip.insertId);
 							//generate bill
 							mysql.insertData('bill_details', {
 								'trip_id' : trip.insertId,
@@ -574,10 +571,6 @@ router.post('/instantBook', function(req, res, next) {
 						'statusCode' : 500
 					});
 				}
-				/*res.send({
-					'statusCode' : 200,
-					'room_types' : results
-				});*/
 			} else {
 				mysql.insertData('trip_details', {
 					'listing_id' : listing_id,
@@ -589,26 +582,21 @@ router.post('/instantBook', function(req, res, next) {
 					'active' : active,
 					'trip_amount' : trip_amount
 				}, (error, trip) => {
-					
 					if (error) {
 						res.send({
 							'statusCode' : 500
 						});
 					} else {
 						var receipt_id = uuid.v1();
-						console.log('receipt_id', receipt_id);
 
-						//TO DO
+						//TODO
 						var cc_id = 1;
-						console.log('trip', trip);
-						console.log('trip.insertedID', trip.insertId);
 						//generate bill
 						mysql.insertData('bill_details', {
 							'trip_id' : trip.insertId,
 							'receipt_id' : receipt_id,
 							'cc_id' : cc_id				
 						}, (error, results) => {
-							console.log('error, results', error, results);
 							if (error) {
 								res.send({
 									'statusCode' : 500
@@ -684,7 +672,7 @@ router.get('/searchListing', function(req, res, next) {
 
 	// Using callback 
 	geocoder.geocode(address, function(err, georesult) {
-		
+
 		var longitude = Number((georesult[0].longitude) * Math.PI / 180);
 		var latitude = Number((georesult[0].latitude) * Math.PI / 180);
 
@@ -693,7 +681,7 @@ router.get('/searchListing', function(req, res, next) {
 
 		var locat = new GeoPoint(georesult[0].latitude, georesult[0].longitude);
 		var bouningcoordinates = locat.boundingCoordinates(10);
-		
+
 		var longitude_lower = bouningcoordinates[0]._degLon;
 		var longitude_upper = bouningcoordinates[1]._degLon;
 		var latitude_lower = bouningcoordinates[0]._degLat;
