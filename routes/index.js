@@ -52,6 +52,10 @@ router.post('/addListing', (req, res, next) => {
 	var checkin = req.body.checkin;
 	var checkout = req.body.checkout;
 
+	//TODO Get user Id from session
+	//var userId = req.session.user.userId;
+	var userId = 1;
+
 	mysql.insertData('listings', {
 		'property_id' : property_id,
 		'room_type_id' : room_type_id,
@@ -85,9 +89,7 @@ router.post('/addListing', (req, res, next) => {
 					} else {
 						if (listing_details_insert_result.affectedRows === 1) {
 
-
-							//automate task to inactivate the listing after end date!
-
+							
 							var end_date = new Date(end_date);
 							console.log('end_date', end_date);
 							var current_date = new Date();
@@ -95,6 +97,7 @@ router.post('/addListing', (req, res, next) => {
 
 							var time = end_date.getTime() - current_date.getTime()
 
+							//automate task to inactivate the listing after end date!
 							setTimeout(function() {
 
 								mysql.updateData('listings', {
@@ -114,7 +117,72 @@ router.post('/addListing', (req, res, next) => {
 									}
 								});
 
-							}, 30000);
+							}, time);
+
+
+							//this is to setup automatic task for the bid winner
+							if (is_bid) {		
+								console.log('is_bid', is_bid);
+
+								setTimeout(function() {
+									var query = "select * from bid_details WHERE listing_id = ? AND bid_amount = (SELECT MAX(bid_amount) FROM bid_details WHERE listing_id = ?)";
+									var parameters = [ listing_insert_result.insertId,listing_insert_result.insertId];
+
+									mysql.executeQuery(query, parameters, function(error, winner) {
+										if (error) {
+											console.log('error', error);											
+										} else {
+											if (winner && winner.length > 0) {
+
+												console.log("highest bidder is selected");
+
+												//update trip_details and bid_details
+
+													mysql.insertData('trip_details', {
+														'listing_id' : listing_insert_result.insertId,
+														'checkin' : start_date,
+														'checkout' : end_date,
+														'deposit' : 100,
+														'no_of_guests' : winner[0].no_of_guests,
+														'user_id' : userId,
+														'active' : 1,
+														'trip_amount' : winner[0].bid_amount
+													}, (error, trip) => {
+														
+														if (error) {
+															console.log(error);
+														} else {
+															var receipt_id = uuid.v1();
+
+															//TODO
+															var cc_id = 1;
+															//generate bill
+															mysql.insertData('bill_details', {
+																'trip_id' : trip.insertId,
+																'receipt_id' : receipt_id,
+																'cc_id' : cc_id				
+															}, (error, results) => {
+																console.log('error, results', error, results);
+																if (error) {
+																	console.log(error);
+																} else {
+																	console.log("highest bidder is selected and got the property to stay.");
+																}
+															})
+														}
+													})
+											} else {
+												console.log("No bidder is awarded for the selected property");
+												/*res.send({
+													'statusCode' : 500
+												});*/
+											}
+										}
+									})																
+
+								},60000);
+							}
+
 
 							res.send({
 								'statusCode' : 200
@@ -436,11 +504,12 @@ router.post('/fetchUserHostings', (req, res, next) => {
 });
 
 router.get('/viewListing', function(req, res, next) {
-//	var listing_id = req.query.listing;
-	var listing_id = '0000000002';
+	var listing_id = req.query.listing;
+	// var listing_id = '0000000011';
 	var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
 	var parameters = [ listing_id, listing_id ];
 	mysql.executeQuery(query, parameters, function(error, results) {
+		console.log('error, results', error, results);
 		if (error) {
 			res.render('error', {
 				'statusCode' : 500,
@@ -469,29 +538,73 @@ router.post('/placeBidOnListing', function(req, res, next) {
 	var checkout = req.body.checkout;
 	var bid_amount = req.body.bid_amount;
 	var no_of_guests = req.body.guests;
-
+	console.log('no_of_guests', no_of_guests);
+	var accommodations = req.body.accommodations;
+	console.log('accommodations', accommodations);
+	var base_price = req.body.daily_price;
+	console.log('base_price', base_price);
 	//TODO Get user Id from session
 	//var userId = req.session.user.userId;
 	var userId = 1;
-	mysql.insertData('bid_details', {
-		'listing_id' : listing_id,
-		'checkin' : checkin,
-		'checkout' : checkout,
-		'bid_amount' : bid_amount,
-		'bidder_id' : userId,
-		'no_of_guests' : no_of_guests
-	}, (error, results) => {
-		if (error) {
-			res.send({
-				'statusCode' : 500
-			});
+
+
+
+	if(bid_amount > base_price && no_of_guests <= accommodations){
+
+		console.log("valid bid!");
+
+		//update the daily_price as bid_amount in listings
+		mysql.updateData('listings',{
+			'daily_price' : bid_amount
+		},{
+			'listing_id' : listing_id
+		},function (error, results) {
+			console.log('error, results', error, results);
+			if (error) {
+				res.send({
+					'statusCode' : 500
+				});
+			} else {
+
+				//insert the bid details in bid_details table
+				mysql.insertData('bid_details', {
+					'listing_id' : listing_id,
+					'checkin' : checkin,
+					'checkout' : checkout,
+					'bid_amount' : bid_amount,
+					'bidder_id' : userId,
+					'no_of_guests' : no_of_guests
+				}, (error, results) => {
+					console.log('error, results', error, results);
+					if (error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						res.send({
+							'statusCode' : 200,
+							'updated_base_price' : bid_amount
+						});
+					}
+				})				
+			}
+		})
+		
+	}else{
+
+		if (bid_amount < base_price) {
+			console.log("entered bid amount is less than the listing amount");
+		} if (no_of_guests > accommodations) {
+			console.log("entered no. of guests are more than the listing specified!");
 		} else {
-			res.send({
-				'statusCode' : 200
-			});
+			console.log("you have entered bid price less than the listing price and also no. of guests are more than specified listing");
 		}
-	})
-});
+
+		res.send({
+					'statusCode' : 500
+				});
+	}
+	});
 
 router.post('/instantBook', function(req, res, next) {
 	var listing_id = req.body.listing_id;

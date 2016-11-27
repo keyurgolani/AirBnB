@@ -56,11 +56,15 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"bid_amount" : $scope.bid_amount,
 					"listing_id" : $scope.data.listing_id,
 					"userId" : 1,
-					"guests" : $scope.noOfGuests
+					"guests" : $scope.noOfGuests,
+					"daily_price" : $scope.data.daily_price,
+					"accommodations" :  $scope.data.accommodations
 				}
 			}).then((results) => {
 				if(results.data.statusCode === 200) {
 					console.log("Results", results);
+					
+					$scope.data.daily_price = results.data.updated_base_price;
 				}
 			}, (error) => {
 				console.log("Error", error);
