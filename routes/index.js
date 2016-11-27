@@ -502,51 +502,127 @@ router.post('/instantBook', function(req, res, next) {
 	//TODO Get user Id from session
 	//var userId = req.session.user.userId;
 	var userId = 1;
+	/*var query = "SELECT * FROM trip_details WHERE listing_id = ? AND BETWEEN 170 AND 300"; 
+	var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=? AND listings.active != 0";
+	var parameters = [ listing_id ];*/
 
-	mysql.insertData('trip_details', {
-		'listing_id' : listing_id,
-		'checkin' : checkin,
-		'checkout' : checkout,
-		'deposit' : deposit,
-		'no_of_guests' : no_of_guests,
-		'user_id' : userId,
-		'active' : active,
-		'trip_amount' : trip_amount
-	}, (error, trip) => {
-		
+	mysql.fetchData('*', 'trip_details', {'listing_id' : listing_id}, (error, results) => {
 		if (error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
+			if (results && results.length > 0) {
+				var isValid = true;
+				for(var i = 0; i < results.length;  i++) {
+					var checkinDate = new Date(checkin);
+					var checkinDateDB = new Date(results[i].checkin);
+					var checkoutDate = new Date(checkout);
+					var checkoutDateDB = new Date(results[i].checkout);
+					if(!(checkinDate.getTime() > checkoutDateDB.getTime() 
+							|| checkoutDate.getTime() < checkinDateDB.getTime())) {
+						isValid = false;
+					}
+					/*if((checkinDate.getTime() < checkinDateDB.getTime() 
+							&& checkoutDate.getTime() < checkoutDateDB.getTime())
+							|| (checkinDate.getTime() < checkinDateDB.getTime() 
+									&& checkoutDate.getTime() < checkoutDateDB.getTime()))*/
+				}
+				if(isValid) {
+					mysql.insertData('trip_details', {
+						'listing_id' : listing_id,
+						'checkin' : checkin,
+						'checkout' : checkout,
+						'deposit' : deposit,
+						'no_of_guests' : no_of_guests,
+						'user_id' : userId,
+						'active' : active,
+						'trip_amount' : trip_amount
+					}, (error, trip) => {
+						
+						if (error) {
+							res.send({
+								'statusCode' : 500
+							});
+						} else {
+							var receipt_id = uuid.v1();
+							console.log('receipt_id', receipt_id);
 
-			var receipt_id = uuid.v1();
-			console.log('receipt_id', receipt_id);
-
-			//TO DO
-			var cc_id = 1;
-			console.log('trip', trip);
-			console.log('trip.insertedID', trip.insertId);
-			//generate bill
-			mysql.insertData('bill_details', {
-				'trip_id' : trip.insertId,
-				'receipt_id' : receipt_id,
-				'cc_id' : cc_id				
-			}, (error, results) => {
-				console.log('error, results', error, results);
-				if (error) {
+							//TODO
+							var cc_id = 1;
+							console.log('trip', trip);
+							console.log('trip.insertedID', trip.insertId);
+							//generate bill
+							mysql.insertData('bill_details', {
+								'trip_id' : trip.insertId,
+								'receipt_id' : receipt_id,
+								'cc_id' : cc_id				
+							}, (error, results) => {
+								console.log('error, results', error, results);
+								if (error) {
+									res.send({
+										'statusCode' : 500
+									});
+								} else {
+									res.send({'statusCode' : 200});
+								}
+							})
+						}
+					})
+				} else {
 					res.send({
 						'statusCode' : 500
 					});
-				} else {
-					res.send({'statusCode' : 200});
 				}
-			})
+				/*res.send({
+					'statusCode' : 200,
+					'room_types' : results
+				});*/
+			} else {
+				mysql.insertData('trip_details', {
+					'listing_id' : listing_id,
+					'checkin' : checkin,
+					'checkout' : checkout,
+					'deposit' : deposit,
+					'no_of_guests' : no_of_guests,
+					'user_id' : userId,
+					'active' : active,
+					'trip_amount' : trip_amount
+				}, (error, trip) => {
+					
+					if (error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						var receipt_id = uuid.v1();
+						console.log('receipt_id', receipt_id);
 
-
-			
+						//TO DO
+						var cc_id = 1;
+						console.log('trip', trip);
+						console.log('trip.insertedID', trip.insertId);
+						//generate bill
+						mysql.insertData('bill_details', {
+							'trip_id' : trip.insertId,
+							'receipt_id' : receipt_id,
+							'cc_id' : cc_id				
+						}, (error, results) => {
+							console.log('error, results', error, results);
+							if (error) {
+								res.send({
+									'statusCode' : 500
+								});
+							} else {
+								res.send({'statusCode' : 200});
+							}
+						})
+					}
+				})
+			}
 		}
 	})
+	
 });
 
 // Local Authentication
