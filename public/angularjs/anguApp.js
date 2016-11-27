@@ -225,6 +225,63 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.emailSignUp = true;
 			$scope.beforeSignUp = false;
 		};
+
+		// $scope.f_name
+		// console.log('$scope.f_name', $scope.f_name);
+
+		// $scope.$watch('f_name', function(){
+	
+		// 	console.log('$scope.f_name', $scope.f_name);
+			
+			
+		// });
+		// $scope.$watch('l_name', function(){
+	
+		// 	console.log('$scope.l_name', $scope.l_name);
+			
+		// });
+		// $scope.$watch('email', function(){
+			
+		// 	console.log('$scope.email', $scope.email);
+			
+		// });
+		// $scope.$watch('password', function(){
+	
+		// 	console.log('$scope.password', $scope.password);
+
+		// });
+		// $scope.$watch('month', function(){
+	
+		// 	console.log('$scope.month', $scope.month);
+			
+		// });
+
+
+		$scope.signUp = function(){
+			//sending new user data to node
+			$http({
+
+				url: '/register',
+				method: 'POST',
+				data : {
+					'email'    : $scope.email,
+					'firstname': $scope.f_name,
+					'lastname' : $scope.l_name,
+					'password' : $scope.password,
+					'month'    : $scope.month,
+					'day'      : $scope.day,
+					'year'     : $scope.year
+				}
+
+			}).then(function mySuccess(response){
+				console.log("Sign Up Done !!");
+			}, function myError(response){
+				console.log("Could not register !!");
+			});			
+		};
+
+
+
 	})
 	.controller('navBarController', function($scope, $http, Random) {
 		$scope.getHomePage = function(){
