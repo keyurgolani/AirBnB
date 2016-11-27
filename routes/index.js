@@ -4,9 +4,12 @@ var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
 var logger = require('../utils/logger');
 var cache = require('../utils/cache');
+
+var uuid = require('node-uuid');
+
 var NodeGeocoder = require('node-geocoder');
 var GeoPoint = require('geopoint');
-var bcrypt = require('bcrypt');
+//var bcrypt = require('bcrypt');
 
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -81,6 +84,38 @@ router.post('/addListing', (req, res, next) => {
 						});
 					} else {
 						if (listing_details_insert_result.affectedRows === 1) {
+
+
+							//automate task to inactivate the listing after end date!
+
+							var end_date = new Date(end_date);
+							console.log('end_date', end_date);
+							var current_date = new Date();
+							console.log('current_date', current_date);
+
+							var time = end_date.getTime() - current_date.getTime()
+
+							setTimeout(function() {
+
+								mysql.updateData('listings', {
+									'active' : 0
+								}, {
+									'listing_id' : listing_insert_result.insertId
+								}, function(error, result) {
+									if (error) {
+										console.log("error in update of listing!");
+
+									} else {
+										if (result.affectedRows === 1) {
+											console.log("success in update of listing!")
+										} else {
+											console.log("error in update of listing!");
+										}
+									}
+								});
+
+							}, 30000);
+
 							res.send({
 								'statusCode' : 200
 							});
@@ -384,7 +419,7 @@ router.post('/fetchUserHostings', (req, res, next) => {
 		if (error) {
 			res.send({
 				'statusCode' : 500
-			});	
+			});
 		} else {
 			if (results && results.length > 0) {
 				res.send({
@@ -401,8 +436,8 @@ router.post('/fetchUserHostings', (req, res, next) => {
 });
 
 router.get('/viewListing', function(req, res, next) {
-	// var listing_id = req.body.listing_id;
-	var listing_id = '0000000001';
+//	var listing_id = req.query.listing;
+	var listing_id = '0000000002';
 	var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
 	var parameters = [ listing_id, listing_id ];
 	mysql.executeQuery(query, parameters, function(error, results) {
@@ -413,6 +448,8 @@ router.get('/viewListing', function(req, res, next) {
 			});
 		} else {
 			if (results && results.length > 0) {
+				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
+				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
 				res.render('viewListing', {
 					data : JSON.stringify(results[0])
 				});
@@ -463,30 +500,117 @@ router.post('/instantBook', function(req, res, next) {
 	var deposit = 100;
 	var no_of_guests = req.body.guests;
 	var active = 1;
+	var trip_amount = req.body.trip_amount;
 
 	//TODO Get user Id from session
 	//var userId = req.session.user.userId;
 	var userId = 1;
 
-	mysql.insertData('trip_details', {
-		'listing_id' : listing_id,
-		'checkin' : checkin,
-		'checkout' : checkout,
-		'deposit' : deposit,
-		'no_of_guests' : no_of_guests,
-		'user_id' : userId,
-		'active' : active
-	}, (error, results) => {
+	mysql.fetchData('*', 'trip_details', {'listing_id' : listing_id}, (error, results) => {
 		if (error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
-			res.send({
-				'statusCode' : 200
-			});
+			if (results && results.length > 0) {
+				var isValid = true;
+				for(var i = 0; i < results.length;  i++) {
+					var checkinDate = new Date(checkin);
+					var checkinDateDB = new Date(results[i].checkin);
+					var checkoutDate = new Date(checkout);
+					var checkoutDateDB = new Date(results[i].checkout);
+					if(!(checkinDate.getTime() > checkoutDateDB.getTime() 
+							|| checkoutDate.getTime() < checkinDateDB.getTime())) {
+						isValid = false;
+					}
+					/*if((checkinDate.getTime() < checkinDateDB.getTime() 
+							&& checkoutDate.getTime() < checkoutDateDB.getTime())
+							|| (checkinDate.getTime() < checkinDateDB.getTime() 
+									&& checkoutDate.getTime() < checkoutDateDB.getTime()))*/
+				}
+				if(isValid) {
+					mysql.insertData('trip_details', {
+						'listing_id' : listing_id,
+						'checkin' : checkin,
+						'checkout' : checkout,
+						'deposit' : deposit,
+						'no_of_guests' : no_of_guests,
+						'user_id' : userId,
+						'active' : active,
+						'trip_amount' : trip_amount
+					}, (error, trip) => {
+						
+						if (error) {
+							res.send({
+								'statusCode' : 500
+							});
+						} else {
+							var receipt_id = uuid.v1();
+
+							//TODO
+							var cc_id = 1;
+							//generate bill
+							mysql.insertData('bill_details', {
+								'trip_id' : trip.insertId,
+								'receipt_id' : receipt_id,
+								'cc_id' : cc_id				
+							}, (error, results) => {
+								console.log('error, results', error, results);
+								if (error) {
+									res.send({
+										'statusCode' : 500
+									});
+								} else {
+									res.send({'statusCode' : 200});
+								}
+							})
+						}
+					})
+				} else {
+					res.send({
+						'statusCode' : 500
+					});
+				}
+			} else {
+				mysql.insertData('trip_details', {
+					'listing_id' : listing_id,
+					'checkin' : checkin,
+					'checkout' : checkout,
+					'deposit' : deposit,
+					'no_of_guests' : no_of_guests,
+					'user_id' : userId,
+					'active' : active,
+					'trip_amount' : trip_amount
+				}, (error, trip) => {
+					if (error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						var receipt_id = uuid.v1();
+
+						//TODO
+						var cc_id = 1;
+						//generate bill
+						mysql.insertData('bill_details', {
+							'trip_id' : trip.insertId,
+							'receipt_id' : receipt_id,
+							'cc_id' : cc_id				
+						}, (error, results) => {
+							if (error) {
+								res.send({
+									'statusCode' : 500
+								});
+							} else {
+								res.send({'statusCode' : 200});
+							}
+						})
+					}
+				})
+			}
 		}
 	})
+	
 });
 
 // Local Authentication
@@ -552,7 +676,7 @@ router.get('/searchListing', function(req, res, next) {
 
 	// Using callback 
 	geocoder.geocode(address, function(err, georesult) {
-		
+
 		var longitude = Number((georesult[0].longitude) * Math.PI / 180);
 		var latitude = Number((georesult[0].latitude) * Math.PI / 180);
 
@@ -561,13 +685,13 @@ router.get('/searchListing', function(req, res, next) {
 
 		var locat = new GeoPoint(georesult[0].latitude, georesult[0].longitude);
 		var bouningcoordinates = locat.boundingCoordinates(10);
-		
+
 		var longitude_lower = bouningcoordinates[0]._degLon;
 		var longitude_upper = bouningcoordinates[1]._degLon;
 		var latitude_lower = bouningcoordinates[0]._degLat;
 		var latitude_upper = bouningcoordinates[1]._degLat;
 
-		var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=?";
+		var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=? AND listings.active != 0";
 		var parameters = [ longitude_upper, longitude_lower, latitude_upper, latitude_lower ];
 
 		var centerLatLng = {
