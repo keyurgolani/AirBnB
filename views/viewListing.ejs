@@ -4,11 +4,11 @@
 		<% include ./head %>
 	</head>
 
-	<body class="body full-body" ng-app="airBnB" ng-controller="viewListing" ng-cloak ng-init="init('<%= data %>')">
+	<body class="body full-body" ng-app="airBnB" ng-cloak>
 	<!-- Header -->
 	<header><% include ./header %></header>
 	<!-- Main -->
-	<main ng-app="airBnB">
+	<main ng-controller="viewListing" ng-init="init('<%= data %>')">
 		<div class="row cover-image-container cover-image-margin-top">
 			<div class="col-md-12">
 				<div style="background-image: url('../images/SFO/b.jpg');" class="cover-image">
@@ -463,13 +463,13 @@
 											<label class="price-date-label">Your Bid</label>
 										</div>
 										<div class="row address-box price-guest-box">
-											<input type="text" class="form-control price-guest-text" ng-model="bid_amount" style="width:100%;" placeholder="Minimum Bid"/>
+											<input type="text" class="form-control price-guest-text" ng-show="data.is_bid" ng-model="bid_amount" style="width:100%;" placeholder="Minimum Bid"/>
 										</div>
 										<div class="row">
-											<button class="btn btn-primary book-button" ng-click="requestBooking()">Request to Book</button>
+											<button class="btn btn-primary book-button" ng-show="data.is_bid" ng-click="requestBooking()">Request to Book</button>
 										</div>
 										<div class="row">
-											<button class="btn btn-primary book-button" ng-click="instantBooking()">Instant Book</button>
+											<button class="btn btn-primary book-button" ng-hide="data.is_bid" ng-click="instantBooking()">Instant Book</button>
 										</div>
 										<div class="row text-center">
 											<span class="charged-text ">You won't be charged yet</span>
@@ -497,7 +497,7 @@
 					return 'customDates';
 				}
 			}).val('');
-		});
+		});	
 	</script>
 	</main>
 	</body>
