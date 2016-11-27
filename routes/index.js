@@ -4,9 +4,13 @@ var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
 var logger = require('../utils/logger');
 var cache = require('../utils/cache');
+
+var uuid = require('node-uuid');
+// var bcrypt = require('bcrypt');
+
 var NodeGeocoder = require('node-geocoder');
 var GeoPoint = require('geopoint');
-var bcrypt = require('bcrypt');
+
 
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -32,6 +36,7 @@ router.post('/addListing', (req, res, next) => {
 
 	// Listings Table Fields
 	var property_id = req.body.property_id;
+	console.log('property_id', property_id);
 	var room_type_id = req.body.room_type.room_type_id;
 	var title = req.body.title;
 	var is_bid = req.body.is_bid;
@@ -61,6 +66,7 @@ router.post('/addListing', (req, res, next) => {
 		'accommodations' : accommodations,
 		'active' : active
 	}, (error, listing_insert_result) => {
+		console.log('error, listing_insert_result', error, listing_insert_result);
 		if (error) {
 			res.send({
 				'statusCode' : 500
@@ -75,12 +81,45 @@ router.post('/addListing', (req, res, next) => {
 					'checkin' : checkin,
 					'checkout' : checkout
 				}, (error, listing_details_insert_result) => {
+					console.log('error, listing_details_insert_result', error, listing_details_insert_result);
 					if (error) {
 						res.send({
 							'statusCode' : 500
 						});
 					} else {
 						if (listing_details_insert_result.affectedRows === 1) {
+
+							
+							//automate task to inactivate the listing after end date!
+
+								var end_date = new Date(end_date);
+								console.log('end_date', end_date);
+								var current_date = new Date();
+								console.log('current_date', current_date);
+
+								var time = end_date.getTime() - current_date.getTime() 
+								
+								setTimeout(function (){
+
+										mysql.updateData('listings', {											
+											'active' : 0											
+										}, {
+											'listing_id' : listing_insert_result.insertId
+										},function(error, result) {
+											if (error) {												
+													console.log("error in update of listing!");
+												
+											} else {
+												if (result.affectedRows === 1) {
+													console.log("success in update of listing!")
+												} else {
+													console.log("error in update of listing!");
+												}
+											}
+										});
+
+								},30000);							
+
 							res.send({
 								'statusCode' : 200
 							});
@@ -401,29 +440,81 @@ router.post('/fetchUserHostings', (req, res, next) => {
 });
 
 router.get('/viewListing', function(req, res, next) {
+<<<<<<< HEAD
 	var listing_id = req.query.listing;
 	var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
 	var parameters = [ listing_id, listing_id ];
 	mysql.executeQuery(query, parameters, function(error, results) {
+=======
+
+
+
+	console.log("here");
+    // var listing_id = req.body.listing_id;
+    var listing_id = '0000000002';
+
+    var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
+    var parameters = [listing_id,listing_id];
+    mysql.executeQuery(query, parameters, function(error, results) {
+        if (error) {
+            /*res.send({
+                'statusCode' : 500
+            });*/
+        } else {
+            if (results && results.length > 0) {
+            	console.log(results);
+            	// res.render('viewListing');
+
+            	results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
+            	// console.log('results[0].start_date', results[0].start_date);
+
+            	results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
+            	// console.log('results[0].end_date', results[0].end_date);
+            	console.log("Rendering!");
+                res.render('viewListing', {data: JSON.stringify(results[0])});
+
+            } else {
+                /*res.send({
+                    'statusCode' : 409
+                });*/
+            }
+        }
+    });
+});
+
+router.post('/placeBidOnListing', function(req, res, next) {
+	var listing_id = req.body.listing_id;
+	var checkin = req.body.checkin;
+	var checkout = req.body.checkout;
+	var bid_amount = req.body.bid_amount;
+	var no_of_guests = req.body.guests;
+
+	//TODO Get user Id from session
+	//var userId = req.session.user.userId;
+	var userId = 1;
+	mysql.insertData('bid_details', {
+		'listing_id' : listing_id,
+		'checkin' : checkin,
+		'checkout' : checkout,
+		'bid_amount' : bid_amount,
+		'bidder_id' : userId,
+		'no_of_guests' : no_of_guests
+	}, (error, results) => {
+>>>>>>> 55b4677db7d57a250917aaba73c19f70bd181e9e
 		if (error) {
-			res.render('error', {
-				'statusCode' : 500,
-				'message' : 'Internal Error'
+			res.send({
+				'statusCode' : 500
 			});
 		} else {
-			if (results && results.length > 0) {
-				res.render('viewListing', {
-					data : JSON.stringify(results[0])
-				});
-			} else {
-				res.render('error', {
-					'statusCode' : 204,
-					'message' : 'Listing expired or unlisted!'
-				});
-			}
+			res.send({
+				'statusCode' : 200
+			});
 		}
-	});
+	})
+
 });
+
+
 
 router.post('/placeBidOnListing', function(req, res, next) {
 	var listing_id = req.body.listing_id;
@@ -453,7 +544,8 @@ router.post('/placeBidOnListing', function(req, res, next) {
 			});
 		}
 	})
-});
+	});
+
 
 router.post('/instantBook', function(req, res, next) {
 	var listing_id = req.body.listing_id;
@@ -462,6 +554,7 @@ router.post('/instantBook', function(req, res, next) {
 	var deposit = 100;
 	var no_of_guests = req.body.guests;
 	var active = 1;
+	var trip_amount = req.body.trip_amount;
 
 	//TODO Get user Id from session
 	//var userId = req.session.user.userId;
@@ -474,16 +567,41 @@ router.post('/instantBook', function(req, res, next) {
 		'deposit' : deposit,
 		'no_of_guests' : no_of_guests,
 		'user_id' : userId,
-		'active' : active
-	}, (error, results) => {
+		'active' : active,
+		'trip_amount' : trip_amount
+	}, (error, trip) => {
+		
 		if (error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
-			res.send({
-				'statusCode' : 200
-			});
+
+			var receipt_id = uuid.v1();
+			console.log('receipt_id', receipt_id);
+
+			//TO DO
+			var cc_id = 1;
+			console.log('trip', trip);
+			console.log('trip.insertedID', trip.insertId);
+			//generate bill
+			mysql.insertData('bill_details', {
+				'trip_id' : trip.insertId,
+				'receipt_id' : receipt_id,
+				'cc_id' : cc_id				
+			}, (error, results) => {
+				console.log('error, results', error, results);
+				if (error) {
+					res.send({
+						'statusCode' : 500
+					});
+				} else {
+					res.send({'statusCode' : 200});
+				}
+			})
+
+
+			
 		}
 	})
 });
@@ -562,7 +680,7 @@ router.get('/searchListing', function(req, res, next) {
 		var latitude_lower = bouningcoordinates[0]._degLat;
 		var latitude_upper = bouningcoordinates[1]._degLat;
 
-		var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=?";
+		var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=? AND listings.active != 0";
 		var parameters = [ longitude_upper, longitude_lower, latitude_upper, latitude_lower ];
 
 		var centerLatLng = {
