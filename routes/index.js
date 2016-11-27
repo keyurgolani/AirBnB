@@ -526,6 +526,10 @@ router.get('/property', function(req, res, next) {
 	res.render('property');
 });
 
+router.get('/admin_fTYcN2a', function(req, res, next) {
+	res.render('administrator');
+});
+
 router.get('/listing', function(req, res, next) {
 	res.render('listing');
 });
