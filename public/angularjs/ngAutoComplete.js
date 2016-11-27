@@ -40,7 +40,7 @@ angular.module("ngAutocomplete", [])
 				options : '='
 			},
 
-			link : function(scope, element, attrs, model) {
+			link : function($scope, element, attrs, model) {
 
 				//options for autocomplete
 				var opts
@@ -48,47 +48,84 @@ angular.module("ngAutocomplete", [])
 				//convert options provided to opts
 				var initOpts = function() {
 					opts = {}
-					if (scope.options) {
-						if (scope.options.types) {
+					if ($scope.options) {
+						if ($scope.options.types) {
 							opts.types = []
-							opts.types.push(scope.options.types)
+							opts.types.push($scope.options.types)
 						}
-						if (scope.options.bounds) {
-							opts.bounds = scope.options.bounds
+						if ($scope.options.bounds) {
+							opts.bounds = $scope.options.bounds
 						}
-						if (scope.options.country) {
+						if ($scope.options.country) {
 							opts.componentRestrictions = {
-								country : scope.options.country
+								country : $scope.options.country
 							}
 						}
 					}
 				}
 				initOpts()
 
+
+				// A function that computes degrees to radians
+				function deg2rad(deg) {
+				  return deg * (Math.PI/180)
+				}
+
+				// A function to calculate the km radius within which properties will be shown
+				function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+				  var R = 6371; // Radius of the earth in km
+				  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+				  var dLon = deg2rad(lon2-lon1); 
+				  var a = 
+				    Math.sin(dLat/2) * Math.sin(dLat/2) +
+				    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+				    Math.sin(dLon/2) * Math.sin(dLon/2)
+				    ; 
+				  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+				  var d = R * c; // Distance in km
+				  return d;
+				}
+
+				// 37.35410789999999
+				// -121.95523559999998
+
+				// 37.5482697
+				// -121.98857190000001
+
+				// 1 mile = 0.621371 km
+
+				// console.log('getDistanceFromLatLonInKm', getDistanceFromLatLonInKm(37.35410789999999, -121.95523559999998, 37.5482697, -121.98857190000001));
+				//converting km to miles
+				// console.log('getDistanceFromLatLonInMiles', (getDistanceFromLatLonInKm(37.35410789999999, -121.95523559999998, 37.5482697, -121.98857190000001)) * 0.621371);
+
+
 				//create new autocomplete
 				//reinitializes on every change of the options provided
 				var newAutocomplete = function() {
-					scope.gPlace = new google.maps.places.Autocomplete(element[0], opts);
-					google.maps.event.addListener(scope.gPlace, 'place_changed', function() {
-						scope.$apply(function() {
-							//              if (scope.details) {
-							scope.details = scope.gPlace.getPlace();
+					$scope.gPlace = new google.maps.places.Autocomplete(element[0], opts);
+					google.maps.event.addListener($scope.gPlace, 'place_changed', function() {
+						$scope.$apply(function() {
+							//              if ($scope.details) {
+							$scope.details = $scope.gPlace.getPlace();
+							// console.log('$scope.details', $scope.details);
+							// console.log($scope.details.geometry.location.lat());							
+							// console.log($scope.details.geometry.location.lng());
 							//              }
-							scope.ngAutocomplete = scope.details;
+							$scope.ngAutocomplete = $scope.details;
 						});
 					})
 				}
 				newAutocomplete()
 
 				//watch options provided to directive
-				scope.watchOptions = function() {
-					return scope.options
+				$scope.watchOptions = function() {
+					return $scope.options
 				};
-				scope.$watch(scope.watchOptions, function() {
+				$scope.$watch($scope.watchOptions, function() {
 					initOpts()
 					newAutocomplete()
 					element[0].value = '';
-					scope.ngAutocomplete = element.val();
+					$scope.ngAutocomplete = element.val();
 				}, true);
 			}
 		};

@@ -8,12 +8,14 @@
   "dependencies": {
     "angular": "^1.5.8",
     "angular-animate": "^1.5.8",
+    "angular-messages": "^1.5.9",
     "bcrypt": "^0.8.7",
     "body-parser": "~1.15.1",
     "bootstrap": "^3.3.7",
     "bootstrap-daterangepicker": "^2.1.24",
     "bootstrap-material-design": "^0.5.10",
     "bootstrap-select": "^1.12.0",
+    "bootstrap-toggle": "^2.2.2",
     "cache-manager": "^2.2.0",
     "cache-manager-redis": "^0.3.0",
     "chai": "^3.5.0",
@@ -24,6 +26,9 @@
     "express-session": "^1.14.2",
     "fecha": "^2.3.0",
     "font-awesome": "^4.7.0",
+    "geocoder": "^0.2.2",
+    "geopoint": "^1.0.1",
+    "gmaps": "^0.4.24",
     "html5shiv": "^3.7.3",
     "jquery": "^3.1.1",
     "mocha": "^3.1.2",
@@ -33,6 +38,13 @@
     "mysql": "^2.12.0",
     "mysql-cache": "^0.5.5-b",
     "ng-focus-if": "^1.0.7",
+
+    "node-uuid": "^1.4.7",
+
+    "ng-range-slider": "^0.2.0",
+    "ngmap": "^1.17.8",
+    "node-geocoder": "^3.15.1",
+
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
