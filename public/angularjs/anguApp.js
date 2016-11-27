@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap' ])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3' ])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
@@ -286,6 +286,188 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.getHomePage = function(){
 			window.location.assign('/');
 		};
+	})
+	.controller('lineBarController', function($scope, $http, Random) {
+
+		$scope.options = {
+            chart: {
+                type: 'linePlusBarChart',
+                height: 500,
+                margin: {
+                    top: 30,
+                    right: 75,
+                    bottom: 50,
+                    left: 75
+                },
+                bars: {
+                    forceY: [0]
+                },
+                bars2: {
+                    forceY: [0]
+                },
+                color: ['#2ca02c', 'darkred'],
+                x: function(d,i) { return i },
+                xAxis: {
+                    axisLabel: 'X Axis',
+                    tickFormat: function(d) {
+                        var dx = $scope.data[0].values[d] && $scope.data[0].values[d].x || 0;
+                        if (dx > 0) {
+                            return d3.time.format('%x')(new Date(dx))
+                        }
+                        return null;
+                    }
+                },
+                x2Axis: {
+                    tickFormat: function(d) {
+                        var dx = $scope.data[0].values[d] && $scope.data[0].values[d].x || 0;
+                        return d3.time.format('%b-%Y')(new Date(dx))
+                    },
+                    showMaxMin: false
+                },
+                y1Axis: {
+                    axisLabel: 'Y1 Axis',
+                    tickFormat: function(d){
+                        return d3.format(',f')(d);
+                    },
+                    axisLabelDistance: 12
+                },
+                y2Axis: {
+                    axisLabel: 'Y2 Axis',
+                    tickFormat: function(d) {
+                        return '$' + d3.format(',.2f')(d)
+                    }
+                },
+                y3Axis: {
+                    tickFormat: function(d){
+                        return d3.format(',f')(d);
+                    }
+                },
+                y4Axis: {
+                    tickFormat: function(d) {
+                        return '$' + d3.format(',.2f')(d)
+                    }
+                }
+            }
+        };
+
+        $http.get('../analytics/admin/lineBarData.json')
+        .then(function(res){
+			$scope.data = res.data.map(function(series) {
+				series.values = series.values.map(function(d) { return {x: d[0], y: d[1] } });
+				return series;
+			});
+        });
+
+	})
+	.controller('adminSunController', function($scope, $http, Random) {
+		
+
+			$scope.options = {
+			    chart: {
+			        type: 'sunburstChart',
+			        height: 700,
+			        color: d3.scale.category20c(),
+			        duration: 250
+			    }
+			};
+
+			$http.get('../analytics/admin/sunData.json')
+	        .then(function(res){
+	          $scope.data = res.data;
+	        });
+
+	})
+	.controller('adminPieController', function($scope, $http, Random) {
+		console.log("from admin pie controller");
+
+		$scope.options = {
+            chart: {
+                type: 'pieChart',
+                height: 500,
+                x: function(d){return d.key;},
+                y: function(d){return d.y;},
+                showLabels: true,
+                duration: 500,
+                labelThreshold: 0.01,
+                labelSunbeamLayout: true,
+                legend: {
+                    margin: {
+                        top: 5,
+                        right: 35,
+                        bottom: 5,
+                        left: 0
+                    }
+                }
+            }
+        };
+
+
+        //file to fetch admin analytical data from
+        $http.get('../analytics/admin/data.json')
+        .then(function(res){
+          $scope.data = res.data;                
+        });
+
+	})
+	.controller('adminBarController', function($scope, $http, Random) {
+		console.log("from admin bar controller");
+
+
+
+		  $scope.options = {
+            chart: {
+                type: 'historicalBarChart',
+                height: 450,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 65,
+                    left: 50
+                },
+                x: function(d){return d[0];},
+                y: function(d){return d[1]/100000;},
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format(',.1f')(d);
+                },
+                duration: 100,
+                xAxis: {
+                    axisLabel: 'X Axis',
+                    tickFormat: function(d) {
+                        return d3.time.format('%x')(new Date(d))
+                    },
+                    rotateLabels: 30,
+                    showMaxMin: false
+                },
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    axisLabelDistance: -10,
+                    tickFormat: function(d){
+                        return d3.format(',.1f')(d);
+                    }
+                },
+                tooltip: {
+                    keyFormatter: function(d) {
+                        return d3.time.format('%x')(new Date(d));
+                    }
+                },
+                zoom: {
+                    enabled: true,
+                    scaleExtent: [1, 10],
+                    useFixedDomain: false,
+                    useNiceScale: false,
+                    horizontalOff: false,
+                    verticalOff: true,
+                    unzoomEventType: 'dblclick.zoom'
+                }
+            }
+        };
+		//file to fetch admin analytical data from
+        $http.get('../analytics/admin/barData.json')
+        .then(function(res){
+          $scope.data = res.data;                
+        });
+
 	})
 	.controller('searchListingController', function($scope, $http, Random, $interval, NgMap) {
 		
