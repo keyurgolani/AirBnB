@@ -263,12 +263,12 @@ router.post('/addProperty', (req, res, next) => {
 
 router.post('/register', function(req, res, next) {
 	var first_name = req.body.firstname;
-	var last_name = req.body.lastname;
-	var email = req.body.email;
-	var secret = req.body.password;
-	var month = req.body.month;
-	var day = req.body.day;
-	var year = req.body.year;
+	var last_name  = req.body.lastname;
+	var email      = req.body.email;
+	var secret     = req.body.password;
+	var month      = req.body.month;
+	var day        = req.body.day;
+	var year       = req.body.year;
 
 	if (req.body.password === null || req.body.password === undefined) {
 		res.send({
@@ -292,12 +292,12 @@ router.post('/register', function(req, res, next) {
 			} else {
 				if (!results || results.length === 0) {
 					mysql.insertData('account_details', {
-						'email' : email,
-						'f_name' : first_name,
-						'l_name' : last_name,
-						'secret' : bcrypt.hashSync(secret, salt),
-						'salt' : salt,
-						'last_login' : require('fecha').format(Date.now(), 'YYYY-MM-DD HH:mm:ss')
+						'email'     : email,
+						'f_name'    : first_name,
+						'l_name'    : last_name,
+						'secret'    : bcrypt.hashSync(secret, salt),
+						'salt'      : salt,
+						'last_login': require('fecha').format(Date.now(), 'YYYY-MM-DD HH:mm:ss')
 					}, (error, result) => {
 						if (error) {
 							res.send({
@@ -761,6 +761,10 @@ router.post('/login', function(req, res, next) {
 
 router.get('/property', function(req, res, next) {
 	res.render('property');
+});
+
+router.get('/admin_fTYcN2a', function(req, res, next) {
+	res.render('administrator');
 });
 
 router.get('/listing', function(req, res, next) {
