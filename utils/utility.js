@@ -1,5 +1,5 @@
 module.exports = {
-	generateReceiptNo : function(length = 10) {
+	generateReceiptNo : function(length) {
 		var generatedString = "";
 		var possible = "0123456789";
 		for (var i = 0; i < length; i++) {
@@ -7,7 +7,7 @@ module.exports = {
 		}
 		return generatedString;
 	},
-	generateConfirmationCode : function(length = 6) {
+	generateConfirmationCode : function(length) {
 		var generatedString = "";
 		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		for (var i = 0; i < length; i++) {

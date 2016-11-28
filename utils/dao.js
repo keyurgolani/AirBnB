@@ -83,6 +83,7 @@ module.exports = {
 		connectionPool.get(function(connectionNumber, connection) {
 			var query = connection.query(sqlQuery, parameters, processResult);
 			connectionPool.release(connectionNumber, connection);
+			console.log(query.sql);
 			logger.logQuery(query.sql);
 		});
 	},
