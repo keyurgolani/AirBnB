@@ -73,6 +73,7 @@ module.exports = {
 				queryString = "SELECT " + selectFields + " FROM " + tableName + " WHERE ?";
 			}
 			var query = connection.query(queryString, queryParameters, processResult);
+			console.log(query.sql);
 			connectionPool.release(connectionNumber, connection);
 			logger.logQuery(query.sql);
 		});
@@ -82,6 +83,7 @@ module.exports = {
 		connectionPool.get(function(connectionNumber, connection) {
 			var query = connection.query(sqlQuery, parameters, processResult);
 			connectionPool.release(connectionNumber, connection);
+			console.log(query.sql);
 			logger.logQuery(query.sql);
 		});
 	},
