@@ -10,7 +10,8 @@ function getConnection() {
 		user : properties.get('mysql.user'),
 		password : properties.get('mysql.password'),
 		database : properties.get('mysql.db'),
-		port : properties.get('mysql.port')
+		port : properties.get('mysql.port'),
+		timeout : Number(properties.get('mysql.timeout'))*1000
 	});
 	return connection;
 }

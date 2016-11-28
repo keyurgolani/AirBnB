@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete' ])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap' ])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
@@ -15,6 +15,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$window.location.href = '/searchListing?where='+$scope.city.formatted_address;
 			}
 		});
+	})
+	.controller('homepage', function() {
+		
 	})
 	.controller('login', function($scope, $http, Random) {
 		$scope.login = function() {
@@ -34,8 +37,68 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		};
 	})
-	.controller('profile', function($scope, $http, Random) {
-		$scope.randomPassword = Random.randomString(25);
+	.controller('viewListing', function($scope, $http, Random, Date) {
+		$scope.init = function(retrievedData) {
+			var data = JSON.parse(retrievedData);
+			$scope.data = JSON.parse(retrievedData);	
+			console.log('$scope.data', $scope.data);
+				
+
+		}
+		
+		$scope.requestBooking = function() {
+			$http({
+				method : "POST",
+				url : '/placeBidOnListing',
+				data : {
+					"checkin" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[0].trim()),
+					"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()), 
+					"bid_amount" : $scope.bid_amount,
+					"listing_id" : $scope.data.listing_id,
+					"userId" : 1,
+					"guests" : $scope.noOfGuests
+				}
+			}).then((results) => {
+				if(results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
+		
+		$scope.instantBooking = function() {
+			$http({
+				method : "POST",
+				url : '/instantBook',
+				data : {
+					"checkin" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[0].trim()),
+					"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()), 
+					"listing_id" : $scope.data.listing_id,
+					"userId" : 1,
+					"guests" : $scope.noOfGuests,
+					"trip_amount" : $scope.data.daily_price
+				}
+			}).then((results) => {
+				if(results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
+	})
+
+	.controller('profile', ($scope, $http) => {
+
+		$scope.init = function(retrievedData) {
+           console.log("here")
+           var data = JSON.parse(retrievedData);
+           console.log(data.listing_data[0]);
+
+           // $scope.data = JSON.parse(retrievedData);
+		}	
+		
 	})
 	.controller('addProperty', ($scope, $http) => {
 		$scope.page = 1;
@@ -61,6 +124,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 		$scope.addProperty = () => {
+			console.log($scope.house_rules);
 			$http({
 				method : "POST",
 				url : "/addProperty",
@@ -157,11 +221,135 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	.controller('signUpController', function($scope, $http, Random) {
 		$scope.emailSignUp = false;
 		$scope.beforeSignUp = true;
-
 		$scope.signUpWithEmail = function() {
 			$scope.emailSignUp = true;
 			$scope.beforeSignUp = false;
 		};
+
+		// $scope.f_name
+		// console.log('$scope.f_name', $scope.f_name);
+
+		// $scope.$watch('f_name', function(){
+	
+		// 	console.log('$scope.f_name', $scope.f_name);
+			
+			
+		// });
+		// $scope.$watch('l_name', function(){
+	
+		// 	console.log('$scope.l_name', $scope.l_name);
+			
+		// });
+		// $scope.$watch('email', function(){
+			
+		// 	console.log('$scope.email', $scope.email);
+			
+		// });
+		// $scope.$watch('password', function(){
+	
+		// 	console.log('$scope.password', $scope.password);
+
+		// });
+		// $scope.$watch('month', function(){
+	
+		// 	console.log('$scope.month', $scope.month);
+			
+		// });
+
+
+		$scope.signUp = function(){
+			//sending new user data to node
+			$http({
+
+				url: '/register',
+				method: 'POST',
+				data : {
+					'email'    : $scope.email,
+					'firstname': $scope.f_name,
+					'lastname' : $scope.l_name,
+					'password' : $scope.password,
+					'month'    : $scope.month,
+					'day'      : $scope.day,
+					'year'     : $scope.year
+				}
+
+			}).then(function mySuccess(response){
+				console.log("Sign Up Done !!");
+			}, function myError(response){
+				console.log("Could not register !!");
+			});			
+		};
+
+
+
+	})
+	.controller('navBarController', function($scope, $http, Random) {
+		$scope.getHomePage = function(){
+			window.location.assign('/');
+		};
+	})
+	.controller('searchListingController', function($scope, $http, Random, $interval, NgMap) {
+		
+		$scope.init = function(retrievedData) {
+  		  
+  		  var data = JSON.parse(retrievedData);
+  		  // console.log("Data: ", data);
+
+			$scope.data = JSON.parse(retrievedData);
+
+			// console.log(" >>><<<  >>><<<  >>><<< ");
+			// console.log('$scope.data', $scope.data);
+			// console.log('$scope.data', $scope.data.results.length);
+
+			var maxRange = 0;
+
+			for(var j = 0 ; j < $scope.data.results.length; j++){
+
+				if($scope.data.results[j].daily_price > maxRange){
+					maxRange = $scope.data.results[j].daily_price;
+				}
+
+			}
+
+			// console.log('maxRange', maxRange);
+
+
+
+			$scope.range = { from: 0, to: maxRange };
+	       	$scope.max = maxRange;
+
+
+	       	var min,max;
+
+	       	$scope.from = function(){
+	       		min = ($scope.min);       		
+	       	}
+	       	$scope.to = function(){
+	       		max = ($scope.max);       		
+	       	}
+
+	       	$scope.$watch('range', function(){
+	       		
+	       		console.log();
+	        	// console.log('$scope.range', $scope.range);
+
+	        	// $scope.data
+	        	// console.log('$scope.data', $scope.data);
+
+	        	$scope.propertyArray = $scope.data.results;
+	        	// console.log('$scope.propertyArray', $scope.propertyArray);
+
+	        	$scope.filteredResults  = $scope.propertyArray.filter(function(elem, index, array){
+
+	        		return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
+	        		
+	        	});
+	        		// console.log('$scope.filteredResults', $scope.filteredResults);
+
+	       	});
+		
+		}
+		
 	})
 	.directive('ngEnter', function() {
 		return function(scope, element, attrs) {
@@ -204,6 +392,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				return true;
 			}
 		};
+
 		this.validateTextBox = function(value) {
 			if(value.length > 100) {
 				return false;
@@ -274,6 +463,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					return false;
 				} else {
 					return true;
+
 				}
 			} else {
 				return false;
