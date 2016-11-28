@@ -88,15 +88,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 	})
-
 	.controller('profile', ($scope, $http) => {
-
-		$scope.init = function(retrievedData) {
-           console.log("here")
-           var data = JSON.parse(retrievedData);
-           console.log(data.listing_data[0]);
-
-           // $scope.data = JSON.parse(retrievedData);
+		$scope.active_tab = 'profile_tab';
+		$scope.init = function(profileDetails) {
+			$scope.data = JSON.parse(profileDetails);
 		}	
 		
 	})

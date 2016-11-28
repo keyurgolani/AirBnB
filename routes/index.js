@@ -6,6 +6,7 @@ var logger = require('../utils/logger');
 var cache = require('../utils/cache');
 var pdf = require('html-pdf');
 var utility = require('../utils/utility');
+var async = require("async");
 
 var uuid = require('node-uuid');
 
@@ -739,91 +740,75 @@ router.get('/searchListing', function(req, res, next) {
 });
 
 router.get('/profile', function(req, res, next) {
-	// var listing_id = req.body.listing_id;
-	var owner = req.query.owner;
 
-	//get property details of that user..
-	mysql.fetchData('*', 'property_details', {
-		'owner_id' : owner
-	}, (error, property) => {
-		if (error) {
-			res.send({
-				'statusCode' : 500
+	/*
+	 * Queries to be replaced.
+	 * select property_id, house_rules, longitude, latitude, st_address, apt, city, state, zip, active, property_type from property_details inner join property_types on property_details.property_type_id = property_types.property_type_id
+		  where owner_id = 1;
+		
+		select listing_id, listings.property_id, title, is_bid, start_date, end_date, daily_price, listings.active as listing_active, property_details.active as property_active, room_type from listings inner join property_details on listings.property_id = property_details.property_id
+		  inner join room_types on listings.room_type_id = room_types.room_type_id
+		  where property_details.owner_id = 1;
+		
+		select title, st_address, city, state, zip, longitude, latitude, checkin, checkout, trip_amount, host_rating, receipt_id from trip_details inner join listings on listings.listing_id = trip_details.listing_id
+		  inner join property_details on listings.property_id = property_details.property_id
+		  left join ratings on ratings.trip_id = trip_details.trip_id
+		  left join bill_details on bill_details.trip_id = trip_details.trip_id
+		  where user_id = 1;
+		
+		select f_name, l_name, st_address, city, state, zip, checkin, checkout, no_of_guests, traveller_rating from account_details
+		  inner join property_details on account_details.user_id = property_details.owner_id
+		  inner join listings on listings.property_id = property_details.property_id
+		  inner join trip_details on listings.listing_id = trip_details.listing_id
+		  left join ratings on ratings.trip_id = trip_details.trip_id
+		  where account_details.user_id = 1;
+	 */
+
+	async.parallel([
+		function(callback) {
+			mysql.executeQuery('select property_id, house_rules, longitude, latitude, st_address, apt, city, state, zip, active, property_type from property_details inner join property_types on property_details.property_type_id = property_types.property_type_id where owner_id = ?', [ req.query.owner ], (error, property_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, property_details);
+				}
 			});
-		} else {
-			if (property) {
-				//get listing details as well..
-				var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
-				var parameters = [ owner, owner ];
-				mysql.executeQuery(query, parameters, function(error, listing) {
-					if (error) {
-						/*res.send({
-						    'statusCode' : 500
-						});*/
-					} else {
-						if (listing) {
-							//get trip informations. 
-							var query = "select * from trip_details,property_details,listings WHERE trip_details.user_id = ? AND trip_details.listing_id= listings.listing_id AND listings.property_id=property_details.property_id";
-							var parameters = owner;
-							mysql.executeQuery(query, parameters, function(error, trip) {
-								if (error) {
-									res.send({
-										'statusCode' : 500
-									});
-								} else {
-									if (trip) {
-										//get users info who made trip on that owner's property.
-										var query = "select * from trip_details,property_details,listings WHERE property_details.owner_id = ? AND listings.property_id=property_details.property_id AND trip_details.listing_id = listings.listing_id";
-										var parameters = owner;
-										mysql.executeQuery(query, parameters, function(error, tripped_user) {
-											if (error) {
-												res.send({
-													'statusCode' : 500
-												});
-											} else {
-												if (tripped_user) {
-													var result = {
-														property_data : (property),
-														listing_data : (listing),
-														trip_data : (trip),
-														tripped_user_data : (tripped_user)
-													}
-													//transection is comleted here!
-													res.render('profile', {
-														data : JSON.stringify(result)
-													});
-
-												} else {
-													res.send({
-														'statusCode' : 500
-													});
-												}
-											}
-										})
-
-									} else {
-										res.send({
-											'statusCode' : 500
-										});
-									}
-								}
-							})
-						} else {
-							/*res.send({
-							    'statusCode' : 409
-							});*/
-						}
-					}
-				});
-			} else {
-				res.send({
-					'statusCode' : 500
-				});
-			}
+		},
+		function(callback) {
+			mysql.executeQuery('select listing_id, listings.property_id, title, is_bid, start_date, end_date, daily_price, listings.active as listing_active, property_details.active as property_active, room_type from listings inner join property_details on listings.property_id = property_details.property_id inner join room_types on listings.room_type_id = room_types.room_type_id where property_details.owner_id = ?', [ req.query.owner ], (error, listing_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, listing_details);
+				}
+			});
+		},
+		function(callback) {
+			mysql.executeQuery('select title, st_address, city, state, zip, longitude, latitude, checkin, checkout, trip_amount, host_rating, receipt_id from trip_details inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id left join ratings on ratings.trip_id = trip_details.trip_id left join bill_details on bill_details.trip_id = trip_details.trip_id where user_id = ?', [ req.query.owner ], (error, trip_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, trip_details);
+				}
+			});
+		},
+		function(callback) {
+			mysql.executeQuery('select f_name, l_name, st_address, city, state, zip, checkin, checkout, no_of_guests, traveller_rating from account_details inner join property_details on account_details.user_id = property_details.owner_id inner join listings on listings.property_id = property_details.property_id inner join trip_details on listings.listing_id = trip_details.listing_id left join ratings on ratings.trip_id = trip_details.trip_id where account_details.user_id = ?', [ req.query.owner ], (error, hosting_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, hosting_details);
+				}
+			});
 		}
-	})
-
-// res.render('profile');
+	], function(error, results) {
+		if (error) {
+			throw error;
+		}
+		res.render('profile', {
+			data : JSON.stringify(results)
+		});
+	});
 });
 
 router.get('/getBill', function(req, res, next) {
@@ -841,8 +826,8 @@ router.get('/getBill', function(req, res, next) {
 			strVar += "<link type=\"text\/css\" rel=\"stylesheet\" href=\"https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/font-awesome\/4.7.0\/css\/font-awesome.min.css\" \/>";
 			strVar += "<link type=\"text\/css\" rel=\"stylesheet\" href=\"https:\/\/maxcdn.bootstrapcdn.com\/bootstrap\/3.3.7\/css\/bootstrap.min.css\" \/><script type=\"text\/javascript\" src=\"https:\/\/ajax.googleapis.com\/ajax\/libs\/jquery\/1.12.4\/jquery.min.js\"><\/script>";
 			strVar += "<script type=\"text\/javascript\" src=\"https:\/\/maxcdn.bootstrapcdn.com\/bootstrap\/3.3.7\/js\/bootstrap.min.js\"><\/script>";
-//			strVar += "<script type=\"text\/javascript\" src=\"https:\/\/cdn.jsdelivr.net\/jsbarcode\/3.5.1\/JsBarcode.all.min.js\"><\/script>";
-//			strVar += "<script>JsBarcode(\"#barcode\", \"" + results[0].receipt_id + "\");</script>";
+			//			strVar += "<script type=\"text\/javascript\" src=\"https:\/\/cdn.jsdelivr.net\/jsbarcode\/3.5.1\/JsBarcode.all.min.js\"><\/script>";
+			//			strVar += "<script>JsBarcode(\"#barcode\", \"" + results[0].receipt_id + "\");</script>";
 			strVar += "<\/head>";
 			strVar += "<body class=\"container\" style=\"background-image:url('data:image\/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAACH0lEQVQ4T03U2W5CMQwE0KRAofD\/38dWFal9Lftyq2N1EJZQLrE9Hi9x3263w+PxaG9vb42Mx+N2Pp\/b+\/t7u91ubTKZtMvlUjo2bIdhaPP5vOym02mdbD8+PlpfrVbDbDYrJyDX67X13gvofr+X8WKxaMfjsYAi8RGEPSnfz8\/PwQXn0WhUoJxFA4YRFgnI0T1bPgCf7Hpv\/efnZ3Dxyux0Oj1TVgI6ApwAw3C\/39dJkJJB\/\/r6KoZERD\/ppo6c6QUhADi6PxwOpfMtA7q+Xq+HFJmBFCgASNWJpSD0Ef\/dA5QBv6onQKmI4gyDFNl9UsJCbQELJptMAtDKZrfbDdITiZEoaYoaaRJH52uqxiYjlHK468vlcoAcyqGfZtABAkhSltRdRggQNsUwg83xWYv\/UeLoTqDofQuYlOkFlmF1OZ0NsLr4vdYvI8P2tX6Aw66akjkUPaPCiJIzoDBRowSXeoa\/5u8\/k2cN83aBZdDzvIByJuplZLB0jwQf3+675SACB0AMfLtLzTJCaZjgQLDE+vf3t84aLzXMA8+LYAwsw5z\/0uWIJZ\/Y8EOmUt9sNjU2\/qCdTcMg9cppsAVJvbOR0mHz2L+\/v6vLMU4j1IgkcgLmbWfLSJ+v+9JZX0A0QE3sPpGSUoCygDNK2L1uIffVFCljk7eYrmGWx68U2ZPZjQIAoMumqRUIUFe9W+KbIqkDynoSIIs208A25fH9B0YMRT02B3K8AAAAAElFTkSuQmCC')!important;\">";
 			strVar += "<div class=\"row\">";

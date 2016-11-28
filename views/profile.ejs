@@ -17,10 +17,11 @@
 					<div class="col-md-1"></div>
 					<div class="col-md-10 subnav">
 						<ul class="subnav-list">
-							<li><a href="" aria-selected"true" class="subnav-item subnav-item-border" id="host">Host</a></li>
-							<li><a href="" aria-selected"true" class="subnav-item" id="account">Account</a></li>
-							<li><a href="" aria-selected"true" class="subnav-item" id="profile">Profile</a></li>
-							<li><a href="" aria-selected"true" class="subnav-item" id="trips">Your Trips</a></li>
+							<li><a href="" aria-selected"true" class="subnav-item" ng-class="{'profile_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'profile_tab'" id="profile">Profile</a></li>
+							<li><a href="" aria-selected"true" class="subnav-item" ng-class="{'media_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'media_tab'" id="trips">Profile Picture and Video</a></li>
+							<li><a href="" aria-selected"true" class="subnav-item" ng-class="{'account_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'account_tab'" id="account">Account</a></li>
+							<li><a href="" aria-selected"true" class="subnav-item" ng-class="{'host_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'host_tab'" id="host">Host</a></li>
+							<li><a href="" aria-selected"true" class="subnav-item" ng-class="{'activity_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'activity_tab'" id="trips">Your Activity</a></li>
 						</ul>
 					</div>
 					<div class="col-md-1"></div>
@@ -28,636 +29,7 @@
 				<div class="row">
 					<div class="col-md-1"></div>
 					<div class="col-md-10 profile-body">
-						<div class="row item-body">
-							<div class="row item-head">Dashboard</div>
-							<div class="row item-content">
-							</div>
-						</div>
-						<div class="row item-body">
-							<div class="row item-head">Your listings</div>
-							<div class="row item-content">
-								<div class="row">
-									<div class="col-md-3">
-										<button class="btn btn-primary add-new-button">Post a new listing</button>
-									</div>
-									<div class="col-md-9 no-listing-subtext" style="margin-left: -15px;!important">Make money by renting out your extra space on Airbnb. You'll also get to meet interesting travelers from around the world!</div>
-								</div>
-								<div class="row no-listing">You don't have any listings!</div>
-								<div class="row listing-activated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row listing-title">Perfectly located Castro</div>
-										<div class="row">
-											<div class="col-md-12 details-text"><i class="fa fa-bolt instant-book-icon"></i>Instant Booking</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12 details-text"><i class="fa fa-dollar dollar-symbol"></i>79</div>
-										</div>
-										<div class="row from-to-row">From - To</div>
-										<div class="row">
-											<div class="col-md-7 details-text">10/10/2017-10/23/2017</div>
-											<div class="col-md-5">
-												<button class="btn btn-primary deactivate-button">Deactivate</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row listing-activated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row listing-title">Perfectly located Castro</div>
-										<div class="row">
-											<div class="col-md-12 details-text"><i class="fa fa-bolt instant-book-icon"></i>Instant Booking</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12 details-text"><i class="fa fa-dollar dollar-symbol"></i>79</div>
-										</div>
-										<div class="row from-to-row">From - To</div>
-										<div class="row">
-											<div class="col-md-7 details-text">10/10/2017-10/23/2017</div>
-											<div class="col-md-5">
-												<button class="btn btn-primary deactivate-button">Deactivate</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row listing-deactivated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row listing-title">Perfectly located Castro</div>
-										<div class="row">
-											<div class="col-md-12 details-text"><i class="fa fa-bolt instant-book-icon"></i>Instant Booking</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12 details-text"><i class="fa fa-dollar dollar-symbol"></i>79</div>
-										</div>
-										<div class="row from-to-row">From - To</div>
-										<div class="row">
-											<div class="col-md-7 details-text">10/10/2017-10/23/2017</div>
-											<div class="col-md-5">
-												<div class="row inactive-text">Inactive</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row listing-deactivated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row listing-title">Perfectly located Castro</div>
-										<div class="row">
-											<div class="col-md-12 details-text"><i class="fa fa-bolt instant-book-icon"></i>Instant Booking</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12 details-text"><i class="fa fa-dollar dollar-symbol"></i>79</div>
-										</div>
-										<div class="row from-to-row">From - To</div>
-										<div class="row">
-											<div class="col-md-7 details-text">10/10/2017-10/23/2017</div>
-											<div class="col-md-5">
-												<div class="row inactive-text">Inactive</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row item-body">
-							<div class="row item-head">Your properties</div>
-							<div class="row item-content">
-								<div class="row">
-									<div class="col-md-3">
-										<button class="btn btn-primary add-new-button">Post a new property</button>
-									</div>
-									<div class="col-md-9 no-listing-subtext">Make money by renting out your extra space on Airbnb. You'll also get to meet interesting travelers from around the world!</div>
-								</div>
-								<div class="row no-listing">You don't have any properties!</div>
-								<div class="row listing-activated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row location-text">Location</div>
-										<div class="row">
-											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12 location-text" style="margin-top:25px;">House</div>
-										</div>
-										<div class="row" style="margin-top:50px;">
-											<div class="col-md-7"></div>
-											<div class="col-md-5">
-												<button class="btn btn-primary deactivate-button">Deactivate</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row listing-activated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row location-text">Location</div>
-										<div class="row">
-											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12 location-text" style="margin-top:25px;">House</div>
-										</div>
-										<div class="row" style="margin-top:50px;">
-											<div class="col-md-7"></div>
-											<div class="col-md-5">
-												<button class="btn btn-primary deactivate-button">Deactivate</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row listing-deactivated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row location-text">Location</div>
-										<div class="row">
-											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12 location-text" style="margin-top:25px;">House</div>
-										</div>
-										<div class="row" style="margin-top:50px;">
-											<div class="col-md-7"></div>
-											<div class="col-md-5">
-												<button class="btn btn-primary activate-button">Activate</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row listing-deactivated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row location-text">Location</div>
-										<div class="row">
-											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12 location-text" style="margin-top:25px;">House</div>
-										</div>
-										<div class="row" style="margin-top:50px;">
-											<div class="col-md-7"></div>
-											<div class="col-md-5">
-												<button class="btn btn-primary activate-button">Activate</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row item-body">
-							<div class="row item-head">Your trips</div>
-							<div class="row item-content">
-								<div class="row no-listing">You don't have any trips!</div>
-								<div class="row listing-activated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row location-text">Listing title @</div>
-										<div class="row">
-											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
-										</div>
-										<div class="row" style="margin-top:20px;">
-											<div class="col-md-9 location-text">Check In - Check Out</div>
-											<div class="col-md-3 location-text" style="padding-left:30px;">Daily Price</div>
-										</div>
-										<div class="row">
-											<div class="col-md-9 details-text">10/10/2017-10/23/2017</div>
-											<div class="col-md-3 details-text" style="padding-left:30px;"><i class="fa fa-dollar dollar-symbol"></i>79</div>
-										</div>
-										<div class="row location-text" style="margin-top:15px;">Rate host</div>
-										<div class="row">
-											<div class="col-md-7"></div>
-											<div class="col-md-5">
-												<button class="btn btn-primary deactivate-button" style="margin-top: -5px;">View bill</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row listing-activated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row location-text">Listing title @</div>
-										<div class="row">
-											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
-										</div>
-										<div class="row" style="margin-top:20px;">
-											<div class="col-md-9 location-text">Check In - Check Out</div>
-											<div class="col-md-3 location-text" style="padding-left:30px;">Daily Price</div>
-										</div>
-										<div class="row">
-											<div class="col-md-9 details-text">10/10/2017-10/23/2017</div>
-											<div class="col-md-3 details-text" style="padding-left:30px;"><i class="fa fa-dollar dollar-symbol"></i>79</div>
-										</div>
-										<div class="row location-text" style="margin-top:15px;">Rate host</div>
-										<div class="row">
-											<div class="col-md-7"></div>
-											<div class="col-md-5">
-												<button class="btn btn-primary deactivate-button" style="margin-top: -5px;">View bill</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row listing-activated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row location-text">Listing title @</div>
-										<div class="row">
-											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
-										</div>
-										<div class="row" style="margin-top:20px;">
-											<div class="col-md-9 location-text">Check In - Check Out</div>
-											<div class="col-md-3 location-text" style="padding-left:30px;">Daily Price</div>
-										</div>
-										<div class="row">
-											<div class="col-md-9 details-text">10/10/2017-10/23/2017</div>
-											<div class="col-md-3 details-text" style="padding-left:30px;"><i class="fa fa-dollar dollar-symbol"></i>79</div>
-										</div>
-										<div class="row location-text" style="margin-top:15px;">Rate host</div>
-										<div class="row">
-											<div class="col-md-7"></div>
-											<div class="col-md-5">
-												<button class="btn btn-primary deactivate-button" style="margin-top: -5px;">View bill</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row listing-activated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row location-text">Listing title @</div>
-										<div class="row">
-											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
-										</div>
-										<div class="row" style="margin-top:20px;">
-											<div class="col-md-9 location-text">Check In - Check Out</div>
-											<div class="col-md-3 location-text" style="padding-left:30px;">Daily Price</div>
-										</div>
-										<div class="row">
-											<div class="col-md-9 details-text">10/10/2017-10/23/2017</div>
-											<div class="col-md-3 details-text" style="padding-left:30px;"><i class="fa fa-dollar dollar-symbol"></i>79</div>
-										</div>
-										<div class="row location-text" style="margin-top:15px;">Rate host</div>
-										<div class="stars">
-											<form action="">
-											    <input class="star star-5" id="star-5" type="radio" name="star"/>
-											    <label class="star star-5" for="star-5"></label>
-											    <input class="star star-4" id="star-4" type="radio" name="star"/>
-											    <label class="star star-4" for="star-4"></label>
-											    <input class="star star-3" id="star-3" type="radio" name="star"/>
-											    <label class="star star-3" for="star-3"></label>
-											    <input class="star star-2" id="star-2" type="radio" name="star"/>
-											    <label class="star star-2" for="star-2"></label>
-											    <input class="star star-1" id="star-1" type="radio" name="star"/>
-											    <label class="star star-1" for="star-1"></label>
-											</form>
-										</div>
-										<div class="row">
-											<div class="col-md-7"></div>
-											<div class="col-md-5">
-												<button class="btn btn-primary deactivate-button" style="margin-top: -5px;">View bill</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row item-body">
-							<div class="row item-head">Your hostings</div>
-							<div class="row item-content">
-								<div class="row no-listing">You don't have any hostings!</div>
-								<div class="row listing-activated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row location-text">Kalgi Bhatt @</div>
-										<div class="row">
-											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
-										</div>
-										<div class="row" style="margin-top:20px;">
-											<div class="col-md-9 location-text">Check In - Check Out</div>
-											<div class="col-md-3 location-text" style="padding-left:30px;">Guests</div>
-										</div>
-										<div class="row">
-											<div class="col-md-9 details-text">10/10/2017-10/23/2017</div>
-											<div class="col-md-3 details-text" style="padding-left:30px;">7</div>
-										</div>
-										<div class="row location-text" style="margin-top:15px;">Rate traveler</div>
-										<div class="stars">
-											<form action="">
-											    <input class="star star-5" id="star-5" type="radio" name="star"/>
-											    <label class="star star-5" for="star-5"></label>
-											    <input class="star star-4" id="star-4" type="radio" name="star"/>
-											    <label class="star star-4" for="star-4"></label>
-											    <input class="star star-3" id="star-3" type="radio" name="star"/>
-											    <label class="star star-3" for="star-3"></label>
-											    <input class="star star-2" id="star-2" type="radio" name="star"/>
-											    <label class="star star-2" for="star-2"></label>
-											    <input class="star star-1" id="star-1" type="radio" name="star"/>
-											    <label class="star star-1" for="star-1"></label>
-											</form>
-										</div>									
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row item-body">
-							<div class="row item-head">Payment Methods</div>
-							<div class="row item-content">
-								<div class="row">
-									<div class="col-md-4 added-card-box">
-										<div class="row">
-											<div class="added-card-text">XXXXXXXXXXXX0125</div>
-											<div class="added-card-text">03 / 2020</div>
-										</div>
-										<div class="row" style="margin-top: 40px;">
-											<div class="col-md-9">
-												<span class="added-card-text">Default Card</span><i class="fa fa-question-circle question-icon"></i>
-											</div>
-											<div class="col-md-3">
-												<img src="../images/cards/mastercard.jpg" class="added-card-image">
-											</div>
-										</div>
-									</div>
-									<div class="col-md-4 second-box" data-toggle="modal" data-target=".addPayment-modal-md">
-										<div class="row text-center">
-											<i class="material-icons add-icon">add</i>
-										</div>
-										<div class="row text-center">
-											<span class="add-text">Add Payment Method</span>
-										</div>
-									</div>
-									<div class="col-md-4"></div>
-								</div>
-								<div class="modal container fade addPayment-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-		  							<div class="modal-dialog container modal-md" role="document">
-								  		<div class="row payment-box">
-								  			<div class="row item-head border">Add New Payment Method</div>
-								  			<div class="row payment-body">
-								  				<div class="row bottom-space">
-								  					<img src="../images/cards/visa.png" class="card-images">
-								  					<img src="../images/cards/mastercard.jpg" class="card-images">
-								  					<img src="../images/cards/amex.jpg" class="card-images">
-								  					<img src="../images/cards/discover.png" class="card-images">
-								  				</div>
-								  				<div class="row bottom-space">
-								  					<label class="credit-card-text">Card number *</label>
-								  					<input type="text" ui-mask="9999 9999 9999 9999" class="credit-card-box">
-								  				</div>
-								  				<div class="row">
-								  					<div class="col-md-3">
-								  						<label class="credit-card-text">Expires on *</label>
-								  					</div>
-								  					<div class="col-md-3"></div>
-								  					<div class="col-md-6">
-								  						<label class="credit-card-text">Security code *</label>
-								  					</div>
-								  				</div>
-								  				<div class="row bottom-space">
-								  					<div class="col-md-3">
-								  						<select class="expiry-box">
-								  						 	<option>MM</option>
-														  	<option>1</option>
-														  	<option>2</option>
-														  	<option>3</option>
-														  	<option>4</option>
-														  	<option>5</option>
-														  	<option>6</option>
-														  	<option>7</option>
-														  	<option>8</option>
-														  	<option>9</option>
-														  	<option>10</option>
-														  	<option>11</option>
-														  	<option>12</option>
-														</select>
-								  					</div>
-								  					<div class="col-md-3">
-								  						<select class="expiry-box">
-								  						 	<option>YYYY</option>
-														  	<option>2016</option>
-														  	<option>2017</option>
-														  	<option>2018</option>
-														  	<option>2019</option>
-														  	<option>2020</option>
-														  	<option>2021</option>
-														  	<option>2022</option>
-														  	<option>2023</option>
-														  	<option>2024</option>
-														  	<option>2025</option>
-														  	<option>2026</option>
-														  	<option>2027</option>
-														  	<option>2028</option>
-														  	<option>2029</option>
-														  	<option>2030</option>
-														  	<option>2031</option>
-														  	<option>2032</option>
-														  	<option>2033</option>
-														  	<option>2034</option>
-														  	<option>2035</option>
-														</select>
-								  					</div>
-								  					<div class="col-md-6">
-								  						<input type="text" class="medium-box">
-								  					</div>
-								  				</div>
-								  				<div class="row">
-								  					<div class="col-md-6">
-								  						<label class="credit-card-text">First name</label>
-								  					</div>
-								  					<div class="col-md-6">
-								  						<label class="credit-card-text">Last name</label>
-								  					</div>
-								  				</div>
-								  				<div class="row bottom-space">
-								  					<div class="col-md-6">
-								  						<input type="text" class="medium-box">
-								  					</div>
-								  					<div class="col-md-6">
-								  						<input type="text" class="medium-box">
-								  					</div>
-								  				</div>
-								  				<div class="row">
-								  					<div class="col-md-6">
-								  						<label class="credit-card-text">Postal code</label>
-								  					</div>
-								  					<div class="col-md-6">
-								  						<label class="credit-card-text">Country</label>
-								  					</div>
-								  				</div>
-								  				<div class="row bottom-space">
-								  					<div class="col-md-6">
-								  						<input type="text" class="medium-box">
-								  					</div>
-								  					<div class="col-md-6">
-								  						<select class="medium-box">
-								  						 	<option>United States</option>
-														</select>
-								  					</div>
-								  				</div>
-								  			</div>
-								  			<div class="row payment-footer">
-							  					<div class="col-md-6"></div>
-							  					<div class="col-md-6">
-							  						<button class="btn btn-primary cancel-button" data-dismiss="modal">Cancel</button>
-							  						<button class="btn btn-primary add-card-button">Add Card</button>
-							  					</div>
-							  				</div>
-								  		</div>
-								  	</div>
-								</div>
-								<div class="row remember-text">
-									<span>Remember: Airbnb will never ask you to wire money. <a href="" class="learn-more">Learn more.</a></span>
-								</div>
-							</div>
-						</div>
-						<div class="row item-body">
-							<div class="row item-head">Change Your Password</div>
-							<div class="row item-content" style="padding:20px;">
-								<div class="row profile-bottom-space">
-									<div class="col-md-3">
-										<span class="profile-left-text">Old Password</span>
-									</div>
-									<div class="col-md-9">
-										<input type="text" class="password-box">
-									</div>
-								</div>
-								<div class="row profile-bottom-space">
-									<div class="col-md-3">
-										<span class="profile-left-text">New Password</span>
-									</div>
-									<div class="col-md-9">
-										<input type="text" class="password-box">
-									</div>
-								</div>
-								<div class="row profile-bottom-space">
-									<div class="col-md-3">
-										<span class="profile-left-text">Confirm Password</span>
-									</div>
-									<div class="col-md-9">
-										<input type="text" class="password-box">
-									</div>
-								</div>
-								<div class="row password-footer">
-			  						<div class="col-md-6"></div>
-			  						<div class="col-md-6">
-			  							<button class="btn btn-primary password-button">Update Password</button>
-			  						</div>
-			  					</div>
-							</div>
-						</div>
-						<div class="row item-body">
-							<div class="row item-head">Profile Photo</div>
-							<div class="row item-content" style="padding:20px;">
-								<div class="row">
-									<div class="col-md-4">
-										<div class="profile-photo"><img src="images/city/paris.jpg" alt="Paris"></div>
-									</div>
-									<div class="col-md-8">
-										<div class="row profile-photo-text">
-											<span>Clear frontal face photos are an important way for hosts and guests to learn about each other. It's not much fun to host a landscape! Please upload a photo that clearly shows your face.</span>
-										</div>
-										<div class="row">
-											<button class="btn btn-primary photo-upload-button">Upload a file from your computer</button>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-4">
-										<div class="profile-photo glyphicon glyphicon-user no-profile"></div>
-									</div>
-									<div class="col-md-8">
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row item-body">
-							<div class="row item-head">Profile Video</div>
-							<div class="row item-content" style="padding:20px;">
-								<div class="row">
-									<div class="col-md-6">
-										<div class="profile-video-container">
-											<div class="row no-video-text">
-												<div>You haven't recorded a video profile yet.</div>
-												<i class="fa fa-video-camera camera-icon"></i>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-6" style="padding-left: 20px;">
-										<div class="row bottom-space">
-											<div class="video-checklist">Video Checklist</div>
-											<ul style="padding-left:25px;">
-												<li>We love close-ups, but we suggest you sit at arm's length.</li>
-												<li>You've got 30 seconds, so do your best to be concise.</li>
-												<li>Try to keep the light in front of you, not behind you.</li>
-												<li>Look into the camera to create that personal connection.</li>
-												<li>You'll get a chance to preview your video before it uploads.</li>
-											</ul>
-										</div>
-										<div class="row">
-											<div class="video-checklist">Tell the community a little bit about yourself</div>
-											<div style="margin-top:10px;margin-bottom:10px;">Start with your name and answer some of the following questions, or make up some of your own!</div>
-											<ul style="padding-left:25px;">
-												<li>Where are you from?</li>
-												<li>What are some of your interests?</li>
-												<li>What do you do in your spare time?</li>
-												<li>What is a fun fact about yourself?</li>
-												<li>What are some of your favorite things?</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="row video-footer">
-			  						<div class="col-md-6"></div>
-			  						<div class="col-md-6">
-			  							<button class="btn btn-primary password-button">Record a new video</button>
-			  						</div>
-			  					</div>
-							</div>
-						</div>
-						<div class="row item-body">
-							<div class="row item-head">Cancel Account</div>
-							<div class="row item-content" style="padding:20px;">
-								<button class="btn btn-primary password-button">Cancel my account</button>
-							</div>
-						</div>
-						<div class="row item-body">
+						<div class="row item-body" ng-show="active_tab === 'profile_tab'">
 							<div class="row item-head">Required</div>
 							<div class="row item-content" style="padding:20px;">
 								<div class="row profile-bottom-space">
@@ -877,10 +249,639 @@
 										<div class="profile-info">Tell them about you: Do you have a life motto?</div>
 									</div>
 								</div>
+								<div class="row">
+									<button class="btn btn-primary save-button">Save</button>
+								</div>
 							</div>
 						</div>
-						<div class="row">
-							<button class="btn btn-primary save-button">Save</button>
+						<div class="row item-body" ng-show="active_tab === 'media_tab'">
+							<div class="row item-head">Profile Photo</div>
+							<div class="row item-content" style="padding:20px;">
+								<div class="row">
+									<div class="col-md-4">
+										<div class="profile-photo"><img src="images/city/paris.jpg" alt="Paris"></div>
+									</div>
+									<div class="col-md-8">
+										<div class="row profile-photo-text">
+											<span>Clear frontal face photos are an important way for hosts and guests to learn about each other. It's not much fun to host a landscape! Please upload a photo that clearly shows your face.</span>
+										</div>
+										<div class="row">
+											<button class="btn btn-primary photo-upload-button">Upload a file from your computer</button>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-4">
+										<div class="profile-photo glyphicon glyphicon-user no-profile"></div>
+									</div>
+									<div class="col-md-8">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row item-body" ng-show="active_tab === 'media_tab'">
+							<div class="row item-head">Profile Video</div>
+							<div class="row item-content" style="padding:20px;">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="profile-video-container">
+											<div class="row no-video-text">
+												<div>You haven't recorded a video profile yet.</div>
+												<i class="fa fa-video-camera camera-icon"></i>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6" style="padding-left: 20px;">
+										<div class="row bottom-space">
+											<div class="video-checklist">Video Checklist</div>
+											<ul style="padding-left:25px;">
+												<li>We love close-ups, but we suggest you sit at arm's length.</li>
+												<li>You've got 30 seconds, so do your best to be concise.</li>
+												<li>Try to keep the light in front of you, not behind you.</li>
+												<li>Look into the camera to create that personal connection.</li>
+												<li>You'll get a chance to preview your video before it uploads.</li>
+											</ul>
+										</div>
+										<div class="row">
+											<div class="video-checklist">Tell the community a little bit about yourself</div>
+											<div style="margin-top:10px;margin-bottom:10px;">Start with your name and answer some of the following questions, or make up some of your own!</div>
+											<ul style="padding-left:25px;">
+												<li>Where are you from?</li>
+												<li>What are some of your interests?</li>
+												<li>What do you do in your spare time?</li>
+												<li>What is a fun fact about yourself?</li>
+												<li>What are some of your favorite things?</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="row video-footer">
+			  						<div class="col-md-6"></div>
+			  						<div class="col-md-6">
+			  							<button class="btn btn-primary password-button">Record a new video</button>
+			  						</div>
+			  					</div>
+							</div>
+						</div>
+						<div class="row item-body" ng-show="active_tab === 'host_tab'">
+							<div class="row item-head">Dashboard</div>
+							<div class="row item-content">
+							</div>
+						</div>
+						<div class="row item-body" ng-show="active_tab === 'activity_tab'">
+							<div class="row item-head">Your listings</div>
+							<div class="row item-content">
+								<div class="row">
+									<div class="col-md-3">
+										<button class="btn btn-primary add-new-button">Post a new listing</button>
+									</div>
+									<div class="col-md-9 no-listing-subtext" style="margin-left: -15px;!important">Make money by renting out your extra space on Airbnb. You'll also get to meet interesting travelers from around the world!</div>
+								</div>
+								<div class="row no-listing">You don't have any listings!</div>
+								<div class="row listing-activated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row listing-title">Perfectly located Castro</div>
+										<div class="row">
+											<div class="col-md-12 details-text"><i class="fa fa-bolt instant-book-icon"></i>Instant Booking</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 details-text"><i class="fa fa-dollar dollar-symbol"></i>79</div>
+										</div>
+										<div class="row from-to-row">From - To</div>
+										<div class="row">
+											<div class="col-md-7 details-text">10/10/2017-10/23/2017</div>
+											<div class="col-md-5">
+												<button class="btn btn-primary deactivate-button">Deactivate</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row listing-activated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row listing-title">Perfectly located Castro</div>
+										<div class="row">
+											<div class="col-md-12 details-text"><i class="fa fa-bolt instant-book-icon"></i>Instant Booking</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 details-text"><i class="fa fa-dollar dollar-symbol"></i>79</div>
+										</div>
+										<div class="row from-to-row">From - To</div>
+										<div class="row">
+											<div class="col-md-7 details-text">10/10/2017-10/23/2017</div>
+											<div class="col-md-5">
+												<button class="btn btn-primary deactivate-button">Deactivate</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row listing-deactivated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row listing-title">Perfectly located Castro</div>
+										<div class="row">
+											<div class="col-md-12 details-text"><i class="fa fa-bolt instant-book-icon"></i>Instant Booking</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 details-text"><i class="fa fa-dollar dollar-symbol"></i>79</div>
+										</div>
+										<div class="row from-to-row">From - To</div>
+										<div class="row">
+											<div class="col-md-7 details-text">10/10/2017-10/23/2017</div>
+											<div class="col-md-5">
+												<div class="row inactive-text">Inactive</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row listing-deactivated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row listing-title">Perfectly located Castro</div>
+										<div class="row">
+											<div class="col-md-12 details-text"><i class="fa fa-bolt instant-book-icon"></i>Instant Booking</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 details-text"><i class="fa fa-dollar dollar-symbol"></i>79</div>
+										</div>
+										<div class="row from-to-row">From - To</div>
+										<div class="row">
+											<div class="col-md-7 details-text">10/10/2017-10/23/2017</div>
+											<div class="col-md-5">
+												<div class="row inactive-text">Inactive</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row item-body" ng-show="active_tab === 'activity_tab'">
+							<div class="row item-head">Your properties</div>
+							<div class="row item-content">
+								<div class="row">
+									<div class="col-md-3">
+										<button class="btn btn-primary add-new-button">Post a new property</button>
+									</div>
+									<div class="col-md-9 no-listing-subtext">Make money by renting out your extra space on Airbnb. You'll also get to meet interesting travelers from around the world!</div>
+								</div>
+								<div class="row no-listing">You don't have any properties!</div>
+								<div class="row listing-activated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row location-text">Location</div>
+										<div class="row">
+											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 location-text" style="margin-top:25px;">House</div>
+										</div>
+										<div class="row" style="margin-top:50px;">
+											<div class="col-md-7"></div>
+											<div class="col-md-5">
+												<button class="btn btn-primary deactivate-button">Deactivate</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row listing-activated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row location-text">Location</div>
+										<div class="row">
+											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 location-text" style="margin-top:25px;">House</div>
+										</div>
+										<div class="row" style="margin-top:50px;">
+											<div class="col-md-7"></div>
+											<div class="col-md-5">
+												<button class="btn btn-primary deactivate-button">Deactivate</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row listing-deactivated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row location-text">Location</div>
+										<div class="row">
+											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 location-text" style="margin-top:25px;">House</div>
+										</div>
+										<div class="row" style="margin-top:50px;">
+											<div class="col-md-7"></div>
+											<div class="col-md-5">
+												<button class="btn btn-primary activate-button">Activate</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row listing-deactivated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row location-text">Location</div>
+										<div class="row">
+											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 location-text" style="margin-top:25px;">House</div>
+										</div>
+										<div class="row" style="margin-top:50px;">
+											<div class="col-md-7"></div>
+											<div class="col-md-5">
+												<button class="btn btn-primary activate-button">Activate</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row item-body" ng-show="active_tab === 'activity_tab'">
+							<div class="row item-head">Your trips</div>
+							<div class="row item-content">
+								<div class="row no-listing">You don't have any trips!</div>
+								<div class="row listing-activated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row location-text">Listing title @</div>
+										<div class="row">
+											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
+										</div>
+										<div class="row" style="margin-top:20px;">
+											<div class="col-md-9 location-text">Check In - Check Out</div>
+											<div class="col-md-3 location-text" style="padding-left:30px;">Daily Price</div>
+										</div>
+										<div class="row">
+											<div class="col-md-9 details-text">10/10/2017-10/23/2017</div>
+											<div class="col-md-3 details-text" style="padding-left:30px;"><i class="fa fa-dollar dollar-symbol"></i>79</div>
+										</div>
+										<div class="row location-text" style="margin-top:15px;">Rate host</div>
+										<div class="row">
+											<div class="col-md-7"></div>
+											<div class="col-md-5">
+												<button class="btn btn-primary deactivate-button" style="margin-top: -5px;">View bill</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row listing-activated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row location-text">Listing title @</div>
+										<div class="row">
+											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
+										</div>
+										<div class="row" style="margin-top:20px;">
+											<div class="col-md-9 location-text">Check In - Check Out</div>
+											<div class="col-md-3 location-text" style="padding-left:30px;">Daily Price</div>
+										</div>
+										<div class="row">
+											<div class="col-md-9 details-text">10/10/2017-10/23/2017</div>
+											<div class="col-md-3 details-text" style="padding-left:30px;"><i class="fa fa-dollar dollar-symbol"></i>79</div>
+										</div>
+										<div class="row location-text" style="margin-top:15px;">Rate host</div>
+										<div class="row">
+											<div class="col-md-7"></div>
+											<div class="col-md-5">
+												<button class="btn btn-primary deactivate-button" style="margin-top: -5px;">View bill</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row listing-activated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row location-text">Listing title @</div>
+										<div class="row">
+											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
+										</div>
+										<div class="row" style="margin-top:20px;">
+											<div class="col-md-9 location-text">Check In - Check Out</div>
+											<div class="col-md-3 location-text" style="padding-left:30px;">Daily Price</div>
+										</div>
+										<div class="row">
+											<div class="col-md-9 details-text">10/10/2017-10/23/2017</div>
+											<div class="col-md-3 details-text" style="padding-left:30px;"><i class="fa fa-dollar dollar-symbol"></i>79</div>
+										</div>
+										<div class="row location-text" style="margin-top:15px;">Rate host</div>
+										<div class="row">
+											<div class="col-md-7"></div>
+											<div class="col-md-5">
+												<button class="btn btn-primary deactivate-button" style="margin-top: -5px;">View bill</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row listing-activated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row location-text">Listing title @</div>
+										<div class="row">
+											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
+										</div>
+										<div class="row" style="margin-top:20px;">
+											<div class="col-md-9 location-text">Check In - Check Out</div>
+											<div class="col-md-3 location-text" style="padding-left:30px;">Daily Price</div>
+										</div>
+										<div class="row">
+											<div class="col-md-9 details-text">10/10/2017-10/23/2017</div>
+											<div class="col-md-3 details-text" style="padding-left:30px;"><i class="fa fa-dollar dollar-symbol"></i>79</div>
+										</div>
+										<div class="row location-text" style="margin-top:15px;">Rate host</div>
+										<div class="stars">
+											<form action="">
+											    <input class="star star-5" id="star-5" type="radio" name="star"/>
+											    <label class="star star-5" for="star-5"></label>
+											    <input class="star star-4" id="star-4" type="radio" name="star"/>
+											    <label class="star star-4" for="star-4"></label>
+											    <input class="star star-3" id="star-3" type="radio" name="star"/>
+											    <label class="star star-3" for="star-3"></label>
+											    <input class="star star-2" id="star-2" type="radio" name="star"/>
+											    <label class="star star-2" for="star-2"></label>
+											    <input class="star star-1" id="star-1" type="radio" name="star"/>
+											    <label class="star star-1" for="star-1"></label>
+											</form>
+										</div>
+										<div class="row">
+											<div class="col-md-7"></div>
+											<div class="col-md-5">
+												<button class="btn btn-primary deactivate-button" style="margin-top: -5px;">View bill</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row item-body" ng-show="active_tab === 'activity_tab'">
+							<div class="row item-head">Your hostings</div>
+							<div class="row item-content">
+								<div class="row no-listing">You don't have any hostings!</div>
+								<div class="row listing-activated-body well">
+									<div class="col-md-3">
+										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-8 listing-details">
+										<div class="row location-text">Kalgi Bhatt @</div>
+										<div class="row">
+											<div class="col-md-12 details-text">201 S 4th St. San Jose CA 95112</div>
+										</div>
+										<div class="row" style="margin-top:20px;">
+											<div class="col-md-9 location-text">Check In - Check Out</div>
+											<div class="col-md-3 location-text" style="padding-left:30px;">Guests</div>
+										</div>
+										<div class="row">
+											<div class="col-md-9 details-text">10/10/2017-10/23/2017</div>
+											<div class="col-md-3 details-text" style="padding-left:30px;">7</div>
+										</div>
+										<div class="row location-text" style="margin-top:15px;">Rate traveler</div>
+										<div class="stars">
+											<form action="">
+											    <input class="star star-5" id="star-5" type="radio" name="star"/>
+											    <label class="star star-5" for="star-5"></label>
+											    <input class="star star-4" id="star-4" type="radio" name="star"/>
+											    <label class="star star-4" for="star-4"></label>
+											    <input class="star star-3" id="star-3" type="radio" name="star"/>
+											    <label class="star star-3" for="star-3"></label>
+											    <input class="star star-2" id="star-2" type="radio" name="star"/>
+											    <label class="star star-2" for="star-2"></label>
+											    <input class="star star-1" id="star-1" type="radio" name="star"/>
+											    <label class="star star-1" for="star-1"></label>
+											</form>
+										</div>									
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row item-body" ng-show="active_tab === 'account_tab'">
+							<div class="row item-head">Payment Methods</div>
+							<div class="row item-content">
+								<div class="row">
+									<div class="col-md-4 added-card-box">
+										<div class="row">
+											<div class="added-card-text">XXXXXXXXXXXX0125</div>
+											<div class="added-card-text">03 / 2020</div>
+										</div>
+										<div class="row" style="margin-top: 40px;">
+											<div class="col-md-9">
+												<span class="added-card-text">Default Card</span><i class="fa fa-question-circle question-icon"></i>
+											</div>
+											<div class="col-md-3">
+												<img src="../images/cards/mastercard.jpg" class="added-card-image">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-4 second-box" data-toggle="modal" data-target=".addPayment-modal-md">
+										<div class="row text-center">
+											<i class="material-icons add-icon">add</i>
+										</div>
+										<div class="row text-center">
+											<span class="add-text">Add Payment Method</span>
+										</div>
+									</div>
+									<div class="col-md-4"></div>
+								</div>
+								<div class="modal container fade addPayment-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+		  							<div class="modal-dialog container modal-md" role="document">
+								  		<div class="row payment-box">
+								  			<div class="row item-head border">Add New Payment Method</div>
+								  			<div class="row payment-body">
+								  				<div class="row bottom-space">
+								  					<img src="../images/cards/visa.png" class="card-images">
+								  					<img src="../images/cards/mastercard.jpg" class="card-images">
+								  					<img src="../images/cards/amex.jpg" class="card-images">
+								  					<img src="../images/cards/discover.png" class="card-images">
+								  				</div>
+								  				<div class="row bottom-space">
+								  					<label class="credit-card-text">Card number *</label>
+								  					<input type="text" ui-mask="9999 9999 9999 9999" class="credit-card-box">
+								  				</div>
+								  				<div class="row">
+								  					<div class="col-md-3">
+								  						<label class="credit-card-text">Expires on *</label>
+								  					</div>
+								  					<div class="col-md-3"></div>
+								  					<div class="col-md-6">
+								  						<label class="credit-card-text">Security code *</label>
+								  					</div>
+								  				</div>
+								  				<div class="row bottom-space">
+								  					<div class="col-md-3">
+								  						<select class="expiry-box">
+								  						 	<option>MM</option>
+														  	<option>1</option>
+														  	<option>2</option>
+														  	<option>3</option>
+														  	<option>4</option>
+														  	<option>5</option>
+														  	<option>6</option>
+														  	<option>7</option>
+														  	<option>8</option>
+														  	<option>9</option>
+														  	<option>10</option>
+														  	<option>11</option>
+														  	<option>12</option>
+														</select>
+								  					</div>
+								  					<div class="col-md-3">
+								  						<select class="expiry-box">
+								  						 	<option>YYYY</option>
+														  	<option>2016</option>
+														  	<option>2017</option>
+														  	<option>2018</option>
+														  	<option>2019</option>
+														  	<option>2020</option>
+														  	<option>2021</option>
+														  	<option>2022</option>
+														  	<option>2023</option>
+														  	<option>2024</option>
+														  	<option>2025</option>
+														  	<option>2026</option>
+														  	<option>2027</option>
+														  	<option>2028</option>
+														  	<option>2029</option>
+														  	<option>2030</option>
+														  	<option>2031</option>
+														  	<option>2032</option>
+														  	<option>2033</option>
+														  	<option>2034</option>
+														  	<option>2035</option>
+														</select>
+								  					</div>
+								  					<div class="col-md-6">
+								  						<input type="text" class="medium-box">
+								  					</div>
+								  				</div>
+								  				<div class="row">
+								  					<div class="col-md-6">
+								  						<label class="credit-card-text">First name</label>
+								  					</div>
+								  					<div class="col-md-6">
+								  						<label class="credit-card-text">Last name</label>
+								  					</div>
+								  				</div>
+								  				<div class="row bottom-space">
+								  					<div class="col-md-6">
+								  						<input type="text" class="medium-box">
+								  					</div>
+								  					<div class="col-md-6">
+								  						<input type="text" class="medium-box">
+								  					</div>
+								  				</div>
+								  				<div class="row">
+								  					<div class="col-md-6">
+								  						<label class="credit-card-text">Postal code</label>
+								  					</div>
+								  					<div class="col-md-6">
+								  						<label class="credit-card-text">Country</label>
+								  					</div>
+								  				</div>
+								  				<div class="row bottom-space">
+								  					<div class="col-md-6">
+								  						<input type="text" class="medium-box">
+								  					</div>
+								  					<div class="col-md-6">
+								  						<select class="medium-box">
+								  						 	<option>United States</option>
+														</select>
+								  					</div>
+								  				</div>
+								  			</div>
+								  			<div class="row payment-footer">
+							  					<div class="col-md-6"></div>
+							  					<div class="col-md-6">
+							  						<button class="btn btn-primary cancel-button" data-dismiss="modal">Cancel</button>
+							  						<button class="btn btn-primary add-card-button">Add Card</button>
+							  					</div>
+							  				</div>
+								  		</div>
+								  	</div>
+								</div>
+								<div class="row remember-text">
+									<span>Remember: Airbnb will never ask you to wire money. <a href="" class="learn-more">Learn more.</a></span>
+								</div>
+							</div>
+						</div>
+						<div class="row item-body" ng-show="active_tab === 'account_tab'">
+							<div class="row item-head">Change Your Password</div>
+							<div class="row item-content" style="padding:20px;">
+								<div class="row profile-bottom-space">
+									<div class="col-md-3">
+										<span class="profile-left-text">Old Password</span>
+									</div>
+									<div class="col-md-9">
+										<input type="text" class="password-box">
+									</div>
+								</div>
+								<div class="row profile-bottom-space">
+									<div class="col-md-3">
+										<span class="profile-left-text">New Password</span>
+									</div>
+									<div class="col-md-9">
+										<input type="text" class="password-box">
+									</div>
+								</div>
+								<div class="row profile-bottom-space">
+									<div class="col-md-3">
+										<span class="profile-left-text">Confirm Password</span>
+									</div>
+									<div class="col-md-9">
+										<input type="text" class="password-box">
+									</div>
+								</div>
+								<div class="row password-footer">
+			  						<div class="col-md-6"></div>
+			  						<div class="col-md-6">
+			  							<button class="btn btn-primary password-button">Update Password</button>
+			  						</div>
+			  					</div>
+							</div>
+						</div>
+						<div class="row item-body" ng-show="active_tab === 'account_tab'">
+							<div class="row item-head">Cancel Account</div>
+							<div class="row item-content" style="padding:20px;">
+								<button class="btn btn-primary password-button">Cancel my account</button>
+							</div>
 						</div>
 					</div>
 					<div class="col-md-1"></div>
