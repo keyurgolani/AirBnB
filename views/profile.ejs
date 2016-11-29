@@ -510,7 +510,7 @@
 											<div class="col-md-3 details-text" style="padding-left:30px;"><i class="fa fa-dollar dollar-symbol"></i>{{trip.trip_amount}}</div>
 										</div>
 										<div class="row location-text" style="margin-top:15px;">Rate host</div>
-										<div star-rating ng-model="trip.host_rating" max="5" on-rating-select="rating.rateFunction(rating)"></div>
+										<div star-rating ng-model="trip.host_rating" max="5" on-rating-select="updateHostRating(trip.trip_id, rating)"></div>
 										<div class="row">
 											<div class="col-md-7"></div>
 											<div class="col-md-5">
@@ -544,7 +544,7 @@
 											<div class="col-md-3 details-text" style="padding-left:30px;">{{hosting.no_of_guests}}</div>
 										</div>
 										<div class="row location-text" style="margin-top:15px;">Rate traveler</div>
-										<div star-rating ng-model="hosting.traveller_rating" max="5" on-rating-select="rating.rateFunction(rating)"></div>									
+										<div star-rating ng-model="hosting.traveller_rating" max="5" on-rating-select="updateTravellerRating(hosting.trip_id, rating)"></div>									
 									</div>
 								</div>
 							</div>

@@ -110,7 +110,43 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.birth_year = $scope.years[0];
 				$scope.birth_date = $scope.dates[0];
 			}
-		}	
+		}
+		
+		$scope.updateHostRating = function(trip, rating) {
+			$http({
+				method : "POST",
+				url : '/updateRating',
+				data : {
+					"rating" : rating,
+					"trip" : trip, 
+					"is_host" : true
+				}
+			}).then((results) => {
+				if(results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
+		
+		$scope.updateTravellerRating = function(trip, rating) {
+			$http({
+				method : "POST",
+				url : '/updateRating',
+				data : {
+					"rating" : rating,
+					"trip" : trip, 
+					"is_host" : false
+				}
+			}).then((results) => {
+				if(results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
 		
 	})
 	.controller('addProperty', ($scope, $http) => {
