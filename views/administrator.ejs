@@ -3,37 +3,54 @@
 	<head>
     
     	<% include ./head %>
-
-
-		
-
 	</head>
 
 	<body class="body full-body" ng-app="airBnB" ng-cloak>
 
+	<div class="container">
+
+		<div class="row" style="background-color: #5496C4; padding:10px 10px 10px 10px;">
+			<div class="col-lg-3">
+				<div style="font-family: 'Brush Script MT'; font-size:28px; padding-left:10px; color: white;">airbnb admin</div>
+			</div>
+			<div class="col-lg-3">
+				
+			</div>
+			<div class="col-lg-3">
+				
+			</div>
+			<div class="col-lg-3 text-right">
+				<div style="font-family: 'Brush Script MT'; font-size:28px; padding-left:10px; color: white;">Team #1</div>
+			</div>
+		</div>
+		
+	</div>
+		
 		<div class="container">
+
+				
 
 			<div class="row">
 	
-				<div class="col-lg-6 well" ng-controller="adminPieController">
+				<div class="col-lg-6" ng-controller="adminPieController">
 					
 					<nvd3 options="options" data="data"></nvd3>
 
 				</div>
 
-				<div class="col-lg-6 well" ng-controller="adminBarController">
+				<div class="col-lg-6" ng-controller="adminBarController">
 					
 					<nvd3 options="options" data="data"></nvd3>
 
 				</div>
 
-				<div class="col-lg-12 well" ng-controller="adminSunController">
+				<div class="col-lg-12" ng-controller="adminSunController">
 					
 					<nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3>
 
 				</div>
 
-				<div class="col-lg-12 well" ng-controller="lineBarController">
+				<div class="col-lg-12" ng-controller="lineBarController">
 					
 					<nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3>
 

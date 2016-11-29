@@ -7,15 +7,32 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	}])
 	.controller("searchBarController", function($scope, $http, $window) {
 		$scope.city = '';
-		$scope.options = {};
+		$scope.options = {
+			country: 'usa',
+			types: '(cities)'
+		};
 		$scope.options.watchEnter = true;
 
 		$scope.$watch('city', function() {
-			if ($scope.city !== undefined && typeof $scope.city !== 'string') {
+			if ($scope.city !== undefined && (typeof ($scope.city)) !== 'string') {
 				$window.location.href = '/searchListing?where='+$scope.city.formatted_address;
 			}
 		});
 	})
+	// .controller("propertyLocationController", function($scope, $http, $window) {
+	// 	$scope.city = '';
+	// 	$scope.options = {
+	// 		country: 'usa',
+	// 		types: '(cities)'
+	// 	};
+	// 	$scope.options.watchEnter = true;
+
+	// 	$scope.$watch('city', function() {
+	// 		if ($scope.city !== undefined && (typeof ($scope.city)) !== 'string') {
+	// 			$window.location.href = '/searchListing?where='+$scope.city.formatted_address;
+	// 		}
+	// 	});
+	// })
 	.controller('homepage', function() {
 		
 	})
@@ -133,12 +150,12 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					'house_rules' : $scope.house_rules,
 					'location' : {
 						'longitude' : $scope.addressDetails.geometry.location.lng(),
-						'latitude' : $scope.addressDetails.geometry.location.lat(),
-						'st_address' : $scope.addressDetails.address_components[0].long_name + ' ' + $scope.addressDetails.address_components[1].long_name,
-						'apt' : $scope.apt,
-						'city' : $scope.addressDetails.address_components[3].long_name,
-						'state' : $scope.addressDetails.address_components[5].long_name,
-						'zip' : $scope.addressDetails.address_components[7].long_name
+						'latitude'  : $scope.addressDetails.geometry.location.lat(),
+						'st_address': $scope.addressDetails.address_components[0].long_name + ' ' + $scope.addressDetails.address_components[1].long_name,
+						'apt'       : $scope.apt,
+						'city'      : $scope.addressDetails.address_components[3].long_name,
+						'state'     : $scope.addressDetails.address_components[5].long_name,
+						'zip'       : $scope.addressDetails.address_components[7].long_name
 					}
 				}
 			}).then((result) => {
