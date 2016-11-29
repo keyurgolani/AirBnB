@@ -90,6 +90,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('profile', ($scope, $http) => {
 		$scope.init = function(profileDetails) {
+			$scope.rating_test = 3;
 			$scope.data = JSON.parse(profileDetails);
 			$scope.active_tab = 'profile_tab';
 			$scope.genders = ['Male', 'Female', 'Other'];
@@ -342,6 +343,51 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					event.preventDefault();
 				}
 			});
+		};
+	})
+	.directive('starRating', function starRating() {
+		return {
+			restrict : 'EA',
+			template : '<ul class="star-rating" ng-class="{readonly: readonly}">' +
+				'  <li ng-repeat="star in stars" class="star" ng-class="{filled: star.filled, low_rating: ratingValue === 1, high_rating: ratingValue === 5}" ng-click="toggle($index)">' +
+				'    <i class="fa fa-star"></i>' + // or &#9733
+				'  </li>' +
+				'</ul>',
+			scope : {
+				ratingValue : '=ngModel',
+				max : '=?', // optional (default is 5)
+				onRatingSelect : '&?',
+				readonly : '=?'
+			},
+			link : function(scope, element, attributes) {
+				if(scope.ratingValue == null) {
+					scope.ratingValue = 1;
+				}
+				if (scope.max == undefined) {
+					scope.max = 5;
+				}
+				function updateStars() {
+					scope.stars = [];
+					for (var i = 0; i < scope.max; i++) {
+						scope.stars.push({
+							filled : i < scope.ratingValue
+						});
+					}
+				};
+				scope.toggle = function(index) {
+					if (scope.readonly == undefined || scope.readonly === false) {
+						scope.ratingValue = index + 1;
+						scope.onRatingSelect({
+							rating : index + 1
+						});
+					}
+				};
+				scope.$watch('ratingValue', function(oldValue, newValue) {
+					if (newValue) {
+						updateStars();
+					}
+				});
+			}
 		};
 	})
 	.directive('ngEncrypt', function() {
