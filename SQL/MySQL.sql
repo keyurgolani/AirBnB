@@ -118,12 +118,16 @@ CREATE TABLE `bid_details` (
   `bid_amount` DECIMAL(5,2) NOT NULL,
   `listing_id` INT(10) ZEROFILL NOT NULL,
   `bidder_id` INT(10) ZEROFILL NOT NULL,
+  `checkin` DATETIME NULL,
+  `checkout` DATETIME NULL,
+  `no_of_guests` INT NOT NULL,
   PRIMARY KEY (`bid_id`)
 );
 
 DROP TABLE IF EXISTS `trip_details`;
 CREATE TABLE `trip_details` (
   `trip_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
+  `trip_amount` DECIMAL(5,2) NOT NULL,
   `listing_id` INT(10) ZEROFILL NOT NULL,
   `user_id` INT(10) ZEROFILL NOT NULL,
   `deposit` DECIMAL(5,2) NULL,
