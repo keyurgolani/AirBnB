@@ -89,9 +89,26 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		}
 	})
 	.controller('profile', ($scope, $http) => {
-		$scope.active_tab = 'profile_tab';
 		$scope.init = function(profileDetails) {
 			$scope.data = JSON.parse(profileDetails);
+			$scope.active_tab = 'profile_tab';
+			$scope.genders = ['Male', 'Female', 'Other'];
+			$scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+			$scope.dates = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
+			$scope.years = ['2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005',
+			                '2004', '2003', '2002', '2001', '2000', '1999', '1998', '1997', '1996', '1995', '1994', '1993',
+			                '1992', '1991', '1990', '1989', '1988', '1987', '1986', '1985', '1984', '1983', '1982', '1981',
+			                '1980', '1979', '1978', '1977', '1976', '1975', '1974', '1973', '1972', '1971', '1970', '1969',
+			                '1968', '1967', '1966', '1965', '1964', '1963', '1962', '1961', '1960', '1959', '1958', '1957'];
+			if($scope.data[0][0].dob !== null) {
+				$scope.birth_month = $scope.months[new Date($scope.data.dob).getMonth() + 1];
+				$scope.birth_year = new Date($scope.data.dob).getFullYear();
+				$scope.birth_date = new Date($scope.data.dob).getDate();
+			} else {
+				$scope.birth_month = $scope.months[0];
+				$scope.birth_year = $scope.years[0];
+				$scope.birth_date = $scope.dates[0];
+			}
 		}	
 		
 	})
@@ -220,37 +237,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.emailSignUp = true;
 			$scope.beforeSignUp = false;
 		};
-
-		// $scope.f_name
-		// console.log('$scope.f_name', $scope.f_name);
-
-		// $scope.$watch('f_name', function(){
-	
-		// 	console.log('$scope.f_name', $scope.f_name);
-			
-			
-		// });
-		// $scope.$watch('l_name', function(){
-	
-		// 	console.log('$scope.l_name', $scope.l_name);
-			
-		// });
-		// $scope.$watch('email', function(){
-			
-		// 	console.log('$scope.email', $scope.email);
-			
-		// });
-		// $scope.$watch('password', function(){
-	
-		// 	console.log('$scope.password', $scope.password);
-
-		// });
-		// $scope.$watch('month', function(){
-	
-		// 	console.log('$scope.month', $scope.month);
-			
-		// });
-
 
 		$scope.signUp = function(){
 			//sending new user data to node

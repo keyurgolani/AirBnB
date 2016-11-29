@@ -740,30 +740,34 @@ router.get('/searchListing', function(req, res, next) {
 
 router.get('/profile', function(req, res, next) {
 
-	/*
-	 * Queries to be replaced.
-	 * select property_id, house_rules, longitude, latitude, st_address, apt, city, state, zip, active, property_type from property_details inner join property_types on property_details.property_type_id = property_types.property_type_id
-		  where owner_id = 1;
-		
-		select listing_id, listings.property_id, title, is_bid, start_date, end_date, daily_price, listings.active as listing_active, property_details.active as property_active, room_type from listings inner join property_details on listings.property_id = property_details.property_id
-		  inner join room_types on listings.room_type_id = room_types.room_type_id
-		  where property_details.owner_id = 1;
-		
-		select title, st_address, city, state, zip, longitude, latitude, checkin, checkout, trip_amount, host_rating, receipt_id from trip_details inner join listings on listings.listing_id = trip_details.listing_id
-		  inner join property_details on listings.property_id = property_details.property_id
-		  left join ratings on ratings.trip_id = trip_details.trip_id
-		  left join bill_details on bill_details.trip_id = trip_details.trip_id
-		  where user_id = 1;
-		
-		select f_name, l_name, st_address, city, state, zip, checkin, checkout, no_of_guests, traveller_rating from account_details
-		  inner join property_details on account_details.user_id = property_details.owner_id
-		  inner join listings on listings.property_id = property_details.property_id
-		  inner join trip_details on listings.listing_id = trip_details.listing_id
-		  left join ratings on ratings.trip_id = trip_details.trip_id
-		  where account_details.user_id = 1;
-	 */
-
 	async.parallel([
+		function(callback) {
+			mysql.executeQuery('select f_name, l_name, email, active, phone, gender, dob, st_address, apt, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner ], (error, profile_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, profile_details);
+				}
+			});
+		},
+		function(callback) {
+			mysql.executeQuery('select card_id, card_number, exp, cvv from card_details where user_id = ?', [ req.query.owner ], (error, card_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, card_details);
+				}
+			});
+		},
+		function(callback) {
+			mysql.executeQuery('select timestamp, user_agent from login_history where user_id = ?', [ req.query.owner ], (error, login_history) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, login_history);
+				}
+			});
+		},
 		function(callback) {
 			mysql.executeQuery('select property_id, house_rules, longitude, latitude, st_address, apt, city, state, zip, active, property_type from property_details inner join property_types on property_details.property_type_id = property_types.property_type_id where owner_id = ?', [ req.query.owner ], (error, property_details) => {
 				if (error) {
@@ -815,12 +819,13 @@ router.get('/getBill', function(req, res, next) {
 		mysql.executeQuery('select * from bill_details, trip_details, card_details, account_details, listings inner join room_types on listings.room_type_id = room_types.room_type_id, property_details inner join property_types on property_details.property_type_id = property_types.property_type_id where receipt_id = ? and trip_details.trip_id = bill_details.trip_id and bill_details.cc_id = card_details.card_id and trip_details.user_id = account_details.user_id and trip_details.listing_id = listings.listing_id and listings.property_id = property_details.property_id;', [ req.query.receipt ], (error, results) => {
 			console.log(error, results);
 			barcode('code128', {
-			    data: "http://localhost:3000/getBill?receipt=" + results[0].receipt_id,
-			    width: 566,
-			    height: 40,
-			}).getBase64(function (err, imgsrc) {
-			    if (err) throw err;
-			    var nights = parseInt((results[0].checkout - results[0].checkin) / 86400000);
+				data : "http://localhost:3000/getBill?receipt=" + results[0].receipt_id,
+				width : 566,
+				height : 40,
+			}).getBase64(function(err, imgsrc) {
+				if (err)
+					throw err;
+				var nights = parseInt((results[0].checkout - results[0].checkin) / 86400000);
 				var total_amount = results[0].trip_amount * nights;
 				var strVar = "";
 				strVar += "<!DOCTYPE html>";
