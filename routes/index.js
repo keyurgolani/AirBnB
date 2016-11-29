@@ -855,9 +855,15 @@ router.get('/profile', function(req, res, next) {
 			});
 		} else {
 			if (property) {
+
+				for(var i=0;i<property.length;i++){
+					console.log("here");
+				}
 				//get listing details as well..
-				var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
-				var parameters = [ owner, owner ];
+				var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.property_id = ? AND listing_details.listing_id = listings.listing_id AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
+				var parameters = [ property[0].property_id];
+				console.log('parameters', parameters);
+
 				mysql.executeQuery(query, parameters, function(error, listing) {
 					if (error) {
 						/*res.send({

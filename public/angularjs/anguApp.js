@@ -97,7 +97,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.init = function(retrievedData) {
            console.log("here")
            var data = JSON.parse(retrievedData);
-           console.log(data.listing_data[0]);
+           console.log(data);
+           // console.log(data.listing_data[0]);
 
            // $scope.data = JSON.parse(retrievedData);
 		}	
