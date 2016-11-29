@@ -401,7 +401,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.options = {
             chart: {
                 type: 'pieChart',
-                height: 500,
+                height: 300,
                 x: function(d){return d.key;},
                 y: function(d){return d.y;},
                 showLabels: true,
@@ -421,7 +421,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 
         //file to fetch admin analytical data from
-        $http.get('../analytics/admin/data.json')
+        $http.get('../analytics/admin/dataPie.json')
         .then(function(res){
           $scope.data = res.data;                
         });
@@ -429,13 +429,14 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('adminBarController', function($scope, $http, Random) {
 		console.log("from admin bar controller");
-
+		// new Date(d)
+		console.log('new Date(d)', new Date(1136005200000));
 
 
 		  $scope.options = {
             chart: {
                 type: 'historicalBarChart',
-                height: 450,
+                height: 300,
                 margin : {
                     top: 20,
                     right: 20,
@@ -453,6 +454,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
                     axisLabel: 'X Axis',
                     tickFormat: function(d) {
                         return d3.time.format('%x')(new Date(d))
+				
                     },
                     rotateLabels: 30,
                     showMaxMin: false
@@ -686,59 +688,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			return year + '-' + (month + 1) + '-' + day;
 		}
 	})
-	// .controller('fileUploadController', [ '$scope', 'FileUploader', function($scope, FileUploader) {
- //        var uploader = $scope.uploader = new FileUploader({
- //            url: 'property.ejs'
- //        });
-
- //        // FILTERS
-
- //        uploader.filters.push({
- //            name: 'customFilter',
- //            fn: function(item /*{File|FileLikeObject}*/, options) {
- //                return this.queue.length < 10;
- //            }
- //        });
-
- //        // CALLBACKS
-
- //        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
- //            console.info('onWhenAddingFileFailed', item, filter, options);
- //        };
- //        uploader.onAfterAddingFile = function(fileItem) {
- //            console.info('onAfterAddingFile', fileItem);
- //        };
- //        uploader.onAfterAddingAll = function(addedFileItems) {
- //            console.info('onAfterAddingAll', addedFileItems);
- //        };
- //        uploader.onBeforeUploadItem = function(item) {
- //            console.info('onBeforeUploadItem', item);
- //        };
- //        uploader.onProgressItem = function(fileItem, progress) {
- //            console.info('onProgressItem', fileItem, progress);
- //        };
- //        uploader.onProgressAll = function(progress) {
- //            console.info('onProgressAll', progress);
- //        };
- //        uploader.onSuccessItem = function(fileItem, response, status, headers) {
- //            console.info('onSuccessItem', fileItem, response, status, headers);
- //        };
- //        uploader.onErrorItem = function(fileItem, response, status, headers) {
- //            console.info('onErrorItem', fileItem, response, status, headers);
- //        };
- //        uploader.onCancelItem = function(fileItem, response, status, headers) {
- //            console.info('onCancelItem', fileItem, response, status, headers);
- //        };
- //        uploader.onCompleteItem = function(fileItem, response, status, headers) {
- //            console.info('onCompleteItem', fileItem, response, status, headers);
- //        };
- //        uploader.onCompleteAll = function() {
- //            console.info('onCompleteAll');
- //        };
-
- //        console.info('uploader', uploader);
- //    }])
-.controller('fileUploadController', ['$scope', 'FileUploader', function($scope, FileUploader) {
+	.controller('fileUploadController', ['$scope', 'FileUploader', function($scope, FileUploader) {
         var uploader = $scope.uploader = new FileUploader({
             url: '/property'
         });

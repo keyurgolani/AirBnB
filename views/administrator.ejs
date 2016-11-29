@@ -3,15 +3,21 @@
 	<head>
     
     	<% include ./head %>
+
+
 	</head>
 
 	<body class="body full-body" ng-app="airBnB" ng-cloak>
 
 	<div class="container">
 
-		<div class="row" style="background-color: #5496C4; padding:10px 10px 10px 10px;">
-			<div class="col-lg-3">
-				<div style="font-family: 'Brush Script MT'; font-size:28px; padding-left:10px; color: white;">airbnb admin</div>
+		<div class="row" style="background-color: #5799C7; padding:5px 10px 5px 10px; ">
+			<div class="col-lg-1" style="padding: 0px 0px 0px 0px;">
+				<div style="display: inline-block; padding-left: 10px; padding-top:5px;"><img src="images/airbnb_logo_detail.png" style="" height="40" width="40" alt="">
+				</div>
+				<div style="font-size:20px; padding-left:5px; display: inline-block; color: white;">admin</div>
+			</div>
+			<div class="col-lg-2 text-left" style="padding-top:5px;">
 			</div>
 			<div class="col-lg-3">
 				
@@ -20,41 +26,128 @@
 				
 			</div>
 			<div class="col-lg-3 text-right">
-				<div style="font-family: 'Brush Script MT'; font-size:28px; padding-left:10px; color: white;">Team #1</div>
+				<div style="font-size:28px; padding-left:10px; padding-top:20px;color: white;">Team #1</div>
 			</div>
 		</div>
 		
 	</div>
+	<div class="container">
+
+		<div class="row" style="background-color: #ffffff; padding:10px 10px 10px 10px;">
+			<div class="col-lg-3" style="border-right: 1px solid #5496C4; padding-right:30px;">
+				<div class="row text-right">
+					<span style="color:#2A3F54;" class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;<span style="color:#2A3F54;">Total Users</span>
+				</div>
+				<div class="row text-right">
+					<span style="color:#2A3F54; font-size:24px;">867</span>
+				</div>
+				<div class="row text-right">
+					<span style="color:#2A3F54; font-size:14px;">From last week: <b>14</b>% </span> <span style="color:#00CC33;" class="glyphicon glyphicon-triangle-top"></span>
+				</div>
+			</div>
+			<div class="col-lg-3" style="border-left: 0px solid #5496C4; padding-left:30px;">
+				<div class="row text-left">
+					<span style="color:#00CC33;" class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;<span style="color:#2A3F54;">Users Online</span>
+				</div>
+				<div class="row text-left">
+					<span style="color:#2A3F54; font-size:24px;">825</span>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				
+			</div>
+			<div class="col-lg-3 text-right">
+				
+			</div>
+		</div>
 		
-		<div class="container">
+	</div>
+	<div class="container">
+
+		<div class="row" style="background-color: #2A3F54; padding:5px 5px 5px 5px;" class="text-center">
+			<div class="col-lg-4" class="text-justify">
+				<div style="font-size:14px; padding-left:10px; color: white;">Top 10 Properties in 365 days before today</div>
+			</div>
+			<div class="col-lg-4" class="text-justify">
+				<div style="font-size:14px; padding-left:10px; color: white;">City Wise Revenue in 365 days before today</div>
+			</div>
+			<div class="col-lg-4" class="text-justify">
+				<div style="font-size:14px; padding-left:10px; color: white;">Top 10 Sellers (Sales in last 30 days)</div>
+			</div>
+			
+		</div>
+		
+	</div>
+		
+		<div class="container" style="margin-bottom: 0px;">
+
+			<div class="row" style="margin-bottom: 0px;">
+				<div class="col-lg-8">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<span style="font-size:20px; font-color: #2A3F54;">Top 10 properties in a year</span>
+						</div>
+						<div class="panel-body">
+							<div class="row" ng-controller="adminBarController">
+								
+								<nvd3 options="options" data="data"></nvd3>
+
+							</div>
+						</div>
+					</div>					
+				</div>
+				<div class="col-lg-4">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<span style="font-size:20px; font-color: #2A3F54;">Top 10 properties: Sale Weightage</span>
+						</div>
+						<div class="panel-body">
+							<div class="row" ng-controller="adminPieController">
+								
+								<nvd3 options="options" data="data"></nvd3>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+
+			<div class="row" style="margin-top:0px;">
+	
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span style="font-size:20px; font-color: #2A3F54;">Total Sales</span>
+					</div>
+					<div class="panel-body">
+						
+						<div class="row" ng-controller="adminSunController">
+							
+							<nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3>
+
+						</div>
+
+					</div>
+				</div>
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span style="font-size:20px; font-color: #2A3F54;">Number Of Properties Sold vs Revenue</span>
+					</div>
+					<div class="panel-body">
+						
+						<div class="row" ng-controller="lineBarController">
+					
+							<nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3>
+
+						</div>
+
+					</div>
+				</div>
 
 				
 
-			<div class="row">
-	
-				<div class="col-lg-6" ng-controller="adminPieController">
-					
-					<nvd3 options="options" data="data"></nvd3>
-
-				</div>
-
-				<div class="col-lg-6" ng-controller="adminBarController">
-					
-					<nvd3 options="options" data="data"></nvd3>
-
-				</div>
-
-				<div class="col-lg-12" ng-controller="adminSunController">
-					
-					<nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3>
-
-				</div>
-
-				<div class="col-lg-12" ng-controller="lineBarController">
-					
-					<nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3>
-
-				</div>
+				
 
 				
 			</div>		
