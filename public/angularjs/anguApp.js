@@ -20,9 +20,28 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		
 	})
 	.controller('login', function($scope, $http, Random) {
+
+
 		$scope.login = function() {
 			console.log($scope.email);
 
+			$http({
+				method : "POST",
+				url : '/login',
+				data : {
+					"email" : $scope.email,
+					"password" : $scope.password
+				}
+			}).then((results) => {
+				console.log("Results", results);
+			}, (error) => {
+				console.log("Error", error);
+			})
+		};
+
+
+		$scope.host = function() {
+			
 			$http({
 				method : "POST",
 				url : '/login',
@@ -288,6 +307,29 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 	})
 	.controller('navBarController', function($scope, $http, Random) {
+
+
+		$http({
+
+				url: '/getSession',
+				method: 'POST'
+			}).then(function mySuccess(response){
+				$scope.loggedInUser = response.loggedInUser;
+				console.log("session exist !!");
+
+			}, function myError(response){
+				console.log("session doesn't exist!!");
+			});	
+
+			$scope.host = () => {
+
+					if($scope.loggedInUser){
+						window.location.assign('/property');
+					}else{
+						alert("please signin first!");
+					}			
+				}
+
 		$scope.getHomePage = function(){
 			window.location.assign('/');
 		};

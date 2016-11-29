@@ -12,7 +12,7 @@ var uuid = require('node-uuid');
 
 var NodeGeocoder = require('node-geocoder');
 var GeoPoint = require('geopoint');
-var bcrypt = require('bcrypt');
+// var bcrypt = require('bcrypt');
 
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -338,6 +338,8 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', (error, 
 	if (error) {
 		res.redirect('/');
 	} else {
+
+		console.log(req.session.loggedInUser);
 		res.redirect('/');
 	}
 }));
@@ -512,6 +514,16 @@ router.get('/viewListing', function(req, res, next) {
 	var listing_id = req.query.listing;
 	// var listing_id = '0000000011';
 
+
+	//log for listing click
+	//TODO
+	// var user_id = req.session.loggedInUser.user_id;
+	var user_id = 1;
+	logger.pageClickLogger(listing_id,user_id);
+
+
+	// logger.log("hi");
+
 	var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
 	var parameters = [ listing_id, listing_id ];
 	mysql.executeQuery(query, parameters, function(error, results) {
@@ -553,7 +565,9 @@ router.post('/placeBidOnListing', function(req, res, next) {
 	//var userId = req.session.user.userId;
 	var userId = 1;
 
+	//do bidding log
 
+	logger.bidLogger(listing_id,userId,bid_amount);	
 
 	if(bid_amount > base_price && no_of_guests <= accommodations){
 
@@ -789,6 +803,13 @@ router.get('/searchListing', function(req, res, next) {
 	var address = req.query.where;
 	var guest = req.query.guest;
 	var daterange = req.query.daterange;
+
+	//TODO
+	// var user_id = req.session.loggedInUser.user_id;
+	var user_id = 1;
+
+	//area seen logging
+	logger.areaLogger(address,user_id);
 
 	var options = {
 		provider : 'google',
