@@ -116,9 +116,9 @@
 								<div class="btn btn-primary upload-button">
 									<i class="fa fa-cloud-upload" style="margin-right:10px;" aria-hidden="true"></i>
 									<span style="font-weight:bold;">Upload Photos</span>
+									<input type="file" ng-model="photos" class="upload" name="photos" base-sixty-four-input multiple accept="image/*" minsize="500" required minnum="1">
 								</div>
 							</div>
-							<input type="file" ng-model="photos" name="photos" base-sixty-four-input multiple accept="image/*" minsize="500" required minnum="1">
 							<div class="row">
 								<span class="h4">or drag them in</span>
 							</div>
@@ -128,7 +128,7 @@
 				<div class="row" ng-hide="show_upload">
 			      	<div ng-repeat="photo in photos" class="col-md-4" style="padding: 10px 10px 10px 10px;">
 			      		<i class="fa fa-trash-o trash-icon" ng-click="remove($index)"></i>
-				        <img data-ng-src="data:image/png;base64,{{photo.base64}}" style="max-height: 300px; width: 100%"/>
+				        <img data-ng-src="data:{{photo.filetype}};base64,{{photo.base64}}" style="max-height: 300px; width: 100%"/>
 				    </div>
 			    </div>
 				<div class="row" style="margin-top: 30px;">
