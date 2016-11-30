@@ -149,16 +149,15 @@
 							<div class="row item-content" style="padding:20px;">
 								<div class="row">
 									<div class="col-md-6">
-										<div class="profile-video-container">
+										<div class="profile-video-container" ng-hide="data[7].video">
 											<div class="row no-video-text">
 												<div ng-hide="data[7].video">You haven't recorded a video profile yet.</div>
-												<i class="fa fa-video-camera camera-icon" ng-hide="data[7].video"></i>
-												<div ng-show="data[7].video">
-													<video controls> 
-														<source type="{{data[7].video.filetype}}" src="data:{{data[7].video.filetype}};base64,{{data[7].video.base64}}"> 
-													</video>
-												</div>
+												<i class="fa fa-video-camera camera-icon"></i>
 											</div>
+										</div>
+										<div class="row" ng-show="data[7].video">
+											<video autoplay controls src="data:{{data[7].video.filetype}};base64,{{data[7].video.base64}}" width="400px" style=""> 
+											</video>
 										</div>
 									</div>
 									<div class="col-md-6" style="padding-left: 20px;">
