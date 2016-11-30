@@ -369,6 +369,71 @@ router.post('/fetchRoomTypes', (req, res, next) => {
 	})
 });
 
+router.post('/changePropertyStatus', (req, res, next) => {
+	console.log("jere");
+	var status;
+	var property_id = req.body.property_id;
+
+	if(req.body.status === "deactivate"){
+		status = 0;
+	}else {
+		status = 1;
+	}
+
+	console.log('status', status);
+
+	mysql.updateData('property_details',{"active" : status}, {"property_id" : property_id}, (error, results) => {
+						
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (results) {
+				res.send({
+					'statusCode' : 200					
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
+router.post('/changeListingStatus', (req, res, next) => {
+	var status;
+	var listing_id = req.body.listing_id;
+
+	if(req.body.status === "deactivate"){
+		status = 0;
+	}else {
+		status = 1;
+	}
+
+	console.log('status', status);
+
+	mysql.updateData('listings',{"active" : status}, {"listing_id" : listing_id}, (error, results) => {
+						
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (results) {
+				res.send({
+					'statusCode' : 200					
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
 router.post('/updatePassword', (req, res, next) => {
 	//TODO
 	//var user_id = req.session.loggedInUser.user_id;
@@ -956,7 +1021,7 @@ router.get('/searchListing', function(req, res, next) {
 		var latitude_lower = bouningcoordinates[0]._degLat;
 		var latitude_upper = bouningcoordinates[1]._degLat;
 
-		var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=? AND listings.active != 0";
+		var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=? AND listings.active != 0 AND property_details.active != 0";
 		var parameters = [ longitude_upper, longitude_lower, latitude_upper, latitude_lower ];
 
 		var centerLatLng = {

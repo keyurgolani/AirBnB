@@ -198,7 +198,102 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			alert("please enter in all fields!");
 		}
 	}
-			                
+
+
+		$scope.propertyDeactivate = function(property_id){
+			
+			$http({
+				method : "POST",
+				url : "/changePropertyStatus",
+				data : {
+					"status" : "deactivate",
+					"property_id" : property_id
+				}
+			}).then((result) => {
+				if(result.data.statusCode == 200){
+					angular.forEach($scope.data[3], function(property, index) {
+						if(property.property_id == property_id){
+							property.active = 0;
+						}
+							$scope.data[3].push(index,property);
+					});
+				}					
+				
+			}, (error) => {
+				// $scope.room_types = [];
+			})
+		}
+		
+		$scope.propertyActivate = function(property_id){
+			$http({
+				method : "POST",
+				url : "/changePropertyStatus",
+				data : {
+					"status" : "activate",
+					"property_id" : property_id
+				}
+			}).then((result) => {
+				if(result.data.statusCode == 200){
+					angular.forEach($scope.data[3], function(property, index) {
+						if(property.property_id == property_id){
+							property.active = 1;
+						}
+							$scope.data[3].push(index,property);
+					});
+				}					
+				
+			}, (error) => {
+				// $scope.room_types = [];
+			})
+		}
+
+	$scope.listingDeactivate = function(listing_id){
+			
+			$http({
+				method : "POST",
+				url : "/changeListingStatus",
+				data : {
+					"status" : "deactivate",
+					"listing_id" : listing_id
+				}
+			}).then((result) => {
+				if(result.data.statusCode == 200){
+					angular.forEach($scope.data[4], function(listing, index) {
+						if(listing.listing_id == listing_id){
+							listing.listing_active = 0;
+						}
+							$scope.data[4].push(index,listing);
+					});
+				}					
+				
+			}, (error) => {
+				// $scope.room_types = [];
+			})
+		}
+
+		$scope.listingActivate = function(listing_id){
+			
+			$http({
+				method : "POST",
+				url : "/changeListingStatus",
+				data : {
+					"status" : "deactivate",
+					"listing_id" : listing_id
+				}
+			}).then((result) => {
+				if(result.data.statusCode == 200){
+					angular.forEach($scope.data[4], function(listing, index) {
+						if(listing.listing_id == listing_id){
+							listing.listing_active = 0;
+						}
+							$scope.data[4].push(index,listing);
+					});
+				}					
+				
+			}, (error) => {
+				// $scope.room_types = [];
+			})
+		}
 			if($scope.data[0][0].dob !== null) {
 				$scope.birth_month = $scope.months[new Date($scope.data.dob).getMonth() + 1];
 				$scope.birth_year = new Date($scope.data.dob).getFullYear();

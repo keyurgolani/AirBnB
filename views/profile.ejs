@@ -412,8 +412,8 @@
 										<div class="row">
 											<div class="col-md-7"></div>
 											<div class="col-md-5">
-												<button class="btn btn-primary deactivate-button" ng-show="property.active === 1">Deactivate</button>
-												<button class="btn btn-primary activate-button" ng-hide="property.active === 1">Activate</button>
+												<button ng-click="propertyDeactivate(property.property_id)" class="btn btn-primary deactivate-button" ng-show="property.active === 1">Deactivate</button>
+												<button ng-click="propertyActivate(property.property_id)" class="btn btn-primary activate-button" ng-hide="property.active === 1">Activate</button>
 											</div>
 										</div>
 									</div>
@@ -447,8 +447,8 @@
 										<div class="row">
 											<div class="col-md-7 details-text">{{listing.start_date | date:'MM/dd/yyyy'}} - {{listing.end_date | date:'MM/dd/yyyy'}}</div>
 											<div class="col-md-5">
-												<button class="btn btn-primary deactivate-button" ng-show="listing.listing_active === 1 && listing.property_active === 1">Deactivate</button>
-												<div class="row inactive-text" ng-hide="listing.listing_active === 1 || listing.property_active === 1">Inactive</div>
+												<button class="btn btn-primary deactivate-button" ng-click="listingDeactivate(listing.listing_id)" ng-show="listing.listing_active === 1 && listing.property_active === 1">Deactivate</button>
+												<div class="row inactive-text" ng-click="listingActivate(listing.listing_id)" ng-hide="listing.listing_active === 1 && listing.property_active === 1">Inactive</div>
 											</div>
 										</div>
 									</div>
