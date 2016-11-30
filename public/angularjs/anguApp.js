@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap' ])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'naif.base64'])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
@@ -101,7 +101,16 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		
 	})
 	.controller('addProperty', ($scope, $http) => {
+		$scope.photos = [];
 		$scope.page = 1;
+		
+		$scope.remove = function(index) {
+			$scope.photos.splice( index, 1 );
+			if($scope.photos.length === 0) {
+				$scope.show_upload = true;
+			}
+		};
+		
 		$scope.fetchRoomTypes = () => {
 			$http({
 				method : "POST",
@@ -124,7 +133,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 		$scope.addProperty = () => {
-			console.log($scope.house_rules);
+			console.log($scope.photos);
 			$http({
 				method : "POST",
 				url : "/addProperty",
@@ -149,6 +158,14 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 			})
 		}
+		
+		$scope.$watch('photos', function() {
+			if ($scope.photos.length === 0) {
+				$scope.show_upload = true;
+			} else {
+				$scope.show_upload = false;
+			}
+		});
 
 		$scope.$watch('addressDetails', function() {
 			if ($scope.addressDetails !== undefined && typeof $scope.addressDetails != 'string') {
