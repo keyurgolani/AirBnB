@@ -34,6 +34,109 @@ var commonLogger = new winston.Logger({
 	exitOnError: false
 });
 
+//this is for logging of clicks on logging
+var pageClickLog = new winston.Logger({
+	transports: [
+		new winston.transports.File({
+			level: 'silly',
+			colorize: true,
+			timestamp: true,
+			filename: './logs/pageClickLog.log',
+			maxsize: 100000,
+			maxFiles: 1000,
+			logstash: true,
+			tailable: true,
+			zippedArchive: false,
+			json: true,
+			stringify: false,
+			prettyPrint: true,
+			depth: 5,
+			humanReadableUnhandledException: true,
+			showLevel: true,
+			stderrLevels: ['error', 'debug']
+
+		})
+		,
+		new winston.transports.Console({
+			level: 'debug',
+			handleExceptions: true,
+			json: true,
+			timestamp: true,
+			prettyPrint: true,
+			colorize: true
+		})		
+	],
+	exitOnError: false
+});
+
+var areaLog = new winston.Logger({
+	transports: [
+		new winston.transports.File({
+			level: 'silly',
+			colorize: true,
+			timestamp: true,
+			filename: './logs/areaLog.log',
+			maxsize: 100000,
+			maxFiles: 1000,
+			logstash: true,
+			tailable: true,
+			zippedArchive: false,
+			json: true,
+			stringify: false,
+			prettyPrint: true,
+			depth: 5,
+			humanReadableUnhandledException: true,
+			showLevel: true,
+			stderrLevels: ['error', 'debug']
+
+		})
+		,
+		new winston.transports.Console({
+			level: 'debug',
+			handleExceptions: true,
+			json: true,
+			timestamp: true,
+			prettyPrint: true,
+			colorize: true
+		})		
+	],
+	exitOnError: false
+});
+
+var bidLog = new winston.Logger({
+	transports: [
+		new winston.transports.File({
+			level: 'silly',
+			colorize: true,
+			timestamp: true,
+			filename: './logs/bidLog.log',
+			maxsize: 100000,
+			maxFiles: 1000,
+			logstash: true,
+			tailable: true,
+			zippedArchive: false,
+			json: true,
+			stringify: false,
+			prettyPrint: true,
+			depth: 5,
+			humanReadableUnhandledException: true,
+			showLevel: true,
+			stderrLevels: ['error', 'debug']
+
+		})
+		,
+		new winston.transports.Console({
+			level: 'debug',
+			handleExceptions: true,
+			json: true,
+			timestamp: true,
+			prettyPrint: true,
+			colorize: true
+		})		
+	],
+	exitOnError: false
+});
+
 var responseTimeLogger = new winston.Logger({
 	transports: [
 		new winston.transports.File({
@@ -284,6 +387,32 @@ module.exports = {
 			'message' : message
 		});
 	},
+
+	pageClickLogger : (listing_id, user_id) => {
+	pageClickLog.log('info',{
+		'listing_id' : listing_id,
+		'user_id' : user_id
+	});	
+	// pageClickLog.info("listing_id: " + listing_id + " - " + "user_id: " + user_id);
+	},
+
+	areaLogger : (address,user_id) => {
+	areaLog.log('info',{
+		'address' : address,
+		'user_id,' : user_id
+	});	
+	
+	},
+
+	bidLogger : (listing_id,user_id,bid_amount) => {
+	bidLog.log('info',{		
+		'listing_id' : listing_id,
+		'user_id,' : user_id,
+		'bid_amount':bid_amount
+	});	
+	
+	},
+
 	logQuery : (querySQL) => {
 		dataAccessLogger.info('SQL: ' + querySQL);
 	},

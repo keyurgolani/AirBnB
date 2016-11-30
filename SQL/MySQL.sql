@@ -164,8 +164,13 @@ CREATE TABLE `card_details` (
   `card_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `user_id` INT(10) ZEROFILL NOT NULL,
   `card_number` NUMERIC(16) NOT NULL,
-  `exp` VARCHAR(4) NOT NULL,
   `cvv` NUMERIC(4) NOT NULL,
+  `exp_month` INT(2) NOT NULL,
+  `exp_year` INT(4) NOT NULL,
+  `first_name` VARCHAR(45) NOT NULL,
+  `last_name` VARCHAR(45) NOT NULL,
+  `postal_code` INT NOT NULL ,
+  `country` VARCHAR(45) NOT NULL
   PRIMARY KEY (`card_id`)
 );
 

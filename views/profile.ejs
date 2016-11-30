@@ -37,10 +37,12 @@
 				<div class="row">
 					<div class="col-md-1"></div>
 					<div class="col-md-10 profile-body">
+
 						<div class="row item-body" ng-show="active_tab === 'profile_tab'">
 							<div class="row item-head">Required</div>
 							<div class="row item-content" style="padding:20px;">
 								<div class="row profile-bottom-space">
+
 									<div class="col-md-3">
 										<span class="profile-left-text">First Name</span>
 									</div>
@@ -48,6 +50,7 @@
 										<input type="text" class="profile-large-box" ng-model="data[0][0].f_name">
 									</div>
 								</div>
+
 								<div class="row profile-bottom-space">
 									<div class="col-md-3">
 										<span class="profile-left-text">Last Name</span>
@@ -75,6 +78,7 @@
 										<select class="date-box" ng-options="date for date in dates" ng-model="birth_date"></select>
 										<select class="year-box" ng-options="year for year in years" ng-model="birth_year"></select>
 										<div class="profile-info">The magical day you were dropped from the sky by a stork. We use this data for analysis and never share it with other users.</div>
+
 									</div>
 								</div>
 								<div class="row profile-bottom-space">
@@ -218,7 +222,7 @@
 									</div>
 									<div class="col-md-4"></div>
 								</div>
-								<div class="modal container fade addPayment-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+								<div id="payment_model" class="modal container fade addPayment-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 		  							<div class="modal-dialog container modal-md" role="document">
 								  		<div class="row payment-box">
 								  			<div class="row item-head border">Add New Payment Method</div>
@@ -231,7 +235,7 @@
 								  				</div>
 								  				<div class="row bottom-space">
 								  					<label class="credit-card-text">Card number *</label>
-								  					<input type="text" ui-mask="9999 9999 9999 9999" class="credit-card-box">
+								  					<input type="text" ng-model="cc_no" ui-mask="9999 9999 9999 9999" class="credit-card-box">
 								  				</div>
 								  				<div class="row">
 								  					<div class="col-md-3">
@@ -244,49 +248,17 @@
 								  				</div>
 								  				<div class="row bottom-space">
 								  					<div class="col-md-3">
-								  						<select class="expiry-box">
-								  						 	<option>MM</option>
-														  	<option>1</option>
-														  	<option>2</option>
-														  	<option>3</option>
-														  	<option>4</option>
-														  	<option>5</option>
-														  	<option>6</option>
-														  	<option>7</option>
-														  	<option>8</option>
-														  	<option>9</option>
-														  	<option>10</option>
-														  	<option>11</option>
-														  	<option>12</option>
+								  						<select ng-model="cc_month" ng-options="x for x in get_month" class="expiry-box">
+								  						 	
 														</select>
 								  					</div>
 								  					<div class="col-md-3">
-								  						<select class="expiry-box">
-								  						 	<option>YYYY</option>
-														  	<option>2016</option>
-														  	<option>2017</option>
-														  	<option>2018</option>
-														  	<option>2019</option>
-														  	<option>2020</option>
-														  	<option>2021</option>
-														  	<option>2022</option>
-														  	<option>2023</option>
-														  	<option>2024</option>
-														  	<option>2025</option>
-														  	<option>2026</option>
-														  	<option>2027</option>
-														  	<option>2028</option>
-														  	<option>2029</option>
-														  	<option>2030</option>
-														  	<option>2031</option>
-														  	<option>2032</option>
-														  	<option>2033</option>
-														  	<option>2034</option>
-														  	<option>2035</option>
+								  						<select ng-model="cc_year" ng-options="x for x in get_year" class="expiry-box">
+								  						 	
 														</select>
 								  					</div>
 								  					<div class="col-md-6">
-								  						<input type="text" class="medium-box">
+								  						<input type="text" ng-model="security_code" class="medium-box">
 								  					</div>
 								  				</div>
 								  				<div class="row">
@@ -299,10 +271,10 @@
 								  				</div>
 								  				<div class="row bottom-space">
 								  					<div class="col-md-6">
-								  						<input type="text" class="medium-box">
+								  						<input type="text" ng-model="first_name" class="medium-box">
 								  					</div>
 								  					<div class="col-md-6">
-								  						<input type="text" class="medium-box">
+								  						<input type="text" ng-model="last_name" class="medium-box">
 								  					</div>
 								  				</div>
 								  				<div class="row">
@@ -315,7 +287,7 @@
 								  				</div>
 								  				<div class="row bottom-space">
 								  					<div class="col-md-6">
-								  						<input type="text" class="medium-box">
+								  						<input type="text" ng-model="postal" class="medium-box">
 								  					</div>
 								  					<div class="col-md-6">
 								  						<select class="medium-box">
@@ -328,7 +300,7 @@
 							  					<div class="col-md-6"></div>
 							  					<div class="col-md-6">
 							  						<button class="btn btn-primary cancel-button" data-dismiss="modal">Cancel</button>
-							  						<button class="btn btn-primary add-card-button">Add Card</button>
+							  						<button ng-click="add_card()" class="btn btn-primary add-card-button">Add Card</button>
 							  					</div>
 							  				</div>
 								  		</div>
@@ -392,7 +364,7 @@
 										<span class="profile-left-text">Old Password</span>
 									</div>
 									<div class="col-md-9">
-										<input type="text" class="password-box">
+										<input ng-model="old_pass" type="text" ng-model="" class="password-box">
 									</div>
 								</div>
 								<div class="row profile-bottom-space">
@@ -400,7 +372,7 @@
 										<span class="profile-left-text">New Password</span>
 									</div>
 									<div class="col-md-9">
-										<input type="text" class="password-box">
+										<input ng-model="new_pass" type="text" class="password-box">
 									</div>
 								</div>
 								<div class="row profile-bottom-space">
@@ -408,13 +380,13 @@
 										<span class="profile-left-text">Confirm Password</span>
 									</div>
 									<div class="col-md-9">
-										<input type="text" class="password-box">
+										<input ng-model="confirm_pass" type="text" class="password-box">
 									</div>
 								</div>
 								<div class="row password-footer">
 			  						<div class="col-md-6"></div>
 			  						<div class="col-md-6">
-			  							<button class="btn btn-primary password-button">Update Password</button>
+			  							<button ng-click="updatePass()" class="btn btn-primary password-button">Update Password</button>
 			  						</div>
 			  					</div>
 							</div>
