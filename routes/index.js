@@ -369,6 +369,120 @@ router.post('/fetchRoomTypes', (req, res, next) => {
 	})
 });
 
+router.post('/updatePassword', (req, res, next) => {
+	//TODO
+	//var user_id = req.session.loggedInUser.user_id;
+	var user_id = 1;
+
+	var password = req.body.old_pass;
+	var new_pass = req.body.new_pass;
+	mysql.fetchData('secret, salt', 'account_details', {"user_id" : user_id}, (error, results) => {
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (results && results.length > 0) {
+				if (results[0].active) {
+					var salt = results[0].salt;
+					var fetchedPassword = results[0].secret;
+					if (bcrypt.hashSync(password, salt) === fetchedPassword) {
+
+						//password matches! update the new password
+
+						var salt = bcrypt.genSaltSync(10);
+						var new_secret = bcrypt.hashSync(new_pass, salt);
+
+						mysql.updateData('account_details',{"secret" : new_secret, "salt" : new_salt}, {"user_id" : user_id}, (error, results) => {
+							console.log('error, results', error, results);
+							if (error) {
+								res.send({
+									'statusCode' : 500
+								});
+							} else {
+								if (results) {
+									res.send({
+										'statusCode' : 200										
+									});
+								} else {
+									res.send({
+										'statusCode' : 500
+									});
+								}
+							}
+						})
+
+					}else{
+						console.log("Password is incorrect");
+						res.send({
+										'statusCode' : 500										
+									});
+					}
+				} else{
+					console.log("user is no longer active!");
+					res.send({
+										'statusCode' : 500										
+									});
+				}				
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
+router.post('/addCard', (req, res, next) => {
+
+	var cc_no = req.body.cc_no;
+	var cc_month = req.body.cc_month;
+	var cc_year = req.body.cc_year;
+	var first_name = req.body.first_name;
+	var last_name = req.body.last_name;
+	var security = req.body.security;
+	var postal = req.body.postal;
+	var country = req.body.country;
+
+	//TODO
+	// var user_id = req.session.loggedInUser.user_id;
+	var user_id = 1;
+
+
+	var JSON_OBJ = {
+		"card_number":cc_no,
+		"cvv":security,
+		"exp_month":cc_month,
+		"exp_year":cc_year,
+		"first_name":first_name,
+		"last_name":last_name,
+		"postal_code":postal,
+		"country":country,
+		"user_id": user_id
+	}
+
+	mysql.insertData('card_details', JSON_OBJ, (error, results) => {
+		console.log('error, results', error, results);
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (results && results.length > 0) {
+				res.send({
+					'statusCode' : 200,
+					"card_id" : results.insertId
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
+
 router.post('/fetchPropertyTypes', (req, res, next) => {
 	mysql.fetchData('property_type_id, property_type', 'property_types', null, (error, results) => {
 		if (error) {
@@ -894,7 +1008,7 @@ router.get('/profile', function(req, res, next) {
 			});
 		},
 		function(callback) {
-			mysql.executeQuery('select card_id, card_number, exp, cvv from card_details where user_id = ?', [ req.query.owner ], (error, card_details) => {
+			mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = ?', [ req.query.owner ], (error, card_details) => {
 				if (error) {
 					throw error;
 				} else {
