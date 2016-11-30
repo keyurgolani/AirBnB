@@ -20,9 +20,28 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		
 	})
 	.controller('login', function($scope, $http, Random) {
+
+
 		$scope.login = function() {
 			console.log($scope.email);
 
+			$http({
+				method : "POST",
+				url : '/login',
+				data : {
+					"email" : $scope.email,
+					"password" : $scope.password
+				}
+			}).then((results) => {
+				console.log("Results", results);
+			}, (error) => {
+				console.log("Error", error);
+			})
+		};
+
+
+		$scope.host = function() {
+			
 			$http({
 				method : "POST",
 				url : '/login',
@@ -41,8 +60,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.init = function(retrievedData) {
 			var data = JSON.parse(retrievedData);
 			$scope.data = JSON.parse(retrievedData);	
-			console.log('$scope.data', $scope.data);
-				
+			console.log('$scope.data', $scope.data);		
 
 		}
 		
@@ -56,11 +74,15 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"bid_amount" : $scope.bid_amount,
 					"listing_id" : $scope.data.listing_id,
 					"userId" : 1,
-					"guests" : $scope.noOfGuests
+					"guests" : $scope.noOfGuests,
+					"daily_price" : $scope.data.daily_price,
+					"accommodations" :  $scope.data.accommodations
 				}
 			}).then((results) => {
 				if(results.data.statusCode === 200) {
 					console.log("Results", results);
+					
+					$scope.data.daily_price = results.data.updated_base_price;
 				}
 			}, (error) => {
 				console.log("Error", error);
@@ -101,6 +123,83 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			                '1992', '1991', '1990', '1989', '1988', '1987', '1986', '1985', '1984', '1983', '1982', '1981',
 			                '1980', '1979', '1978', '1977', '1976', '1975', '1974', '1973', '1972', '1971', '1970', '1969',
 			                '1968', '1967', '1966', '1965', '1964', '1963', '1962', '1961', '1960', '1959', '1958', '1957'];
+			
+			$scope.get_month=[1,2,3,4,5,6,7,8,9,10,11,12];
+
+			$scope.get_year=['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027',
+			                '2028', '2029', '2030', '2031', '2032'];
+
+			$scope.add_card = function(){
+			// alert($scope.cc_no+" "+$scope.cc_month+" "+$scope.cc_year+" "+$scope.first_name+" "+$scope.last_name+" "+$scope.postal);
+				
+				var newCard = {
+						"cc_no":$scope.cc_no,
+						"cc_month":$scope.cc_month,
+						"cc_year":$scope.cc_year,
+						"first_name":$scope.first_name,
+						"last_name":$scope.last_name,
+						"security":$scope.security_code,
+						"postal":$scope.postal,
+						"country" : "United States"}
+				$http({
+				method : "POST",
+					url : "/addCard",
+					data: newCard
+					
+				}).then((result) => {
+					alert("success");
+					
+					$scope.data[1].push({
+						"card_id" : result.card_id,
+						"card_number":$scope.cc_no,
+						"exp_month":$scope.cc_month,
+						"exp_year":$scope.cc_year,
+						"first_name":$scope.first_name,
+						"last_name":$scope.last_name,
+						"cvv":$scope.security_code,
+						"postal_code":$scope.postal,
+						"country" : "United States"
+				});
+					console.log($scope.data[1]);
+
+					$("#payment_model").modal('toggle');
+					// $scope.data = result.data.room_types;
+				}, (error) => {
+					alert("error");
+					// $scope.room_types = [];
+				})
+			}
+
+
+			//update password
+	$scope.updatePass = function() {
+
+		if ($scope.new_pass !== undefined && $scope.old_pass !== undefined
+			&& $scope.confirm_pass !== undefined && $scope.new_pass.trim().length > 0 && $scope.old_pass.trim().length > 0) {
+					// statement
+				
+				if($scope.new_pass != $scope.confirm_pass){
+					alert("Password mismatch!");
+				} else {
+
+				$http({
+					method : "POST",
+					url : "/updatePassword",
+					data:{
+						"old_pass" : $scope.old_pass,
+						"new_pass" : $scope.new_pass
+					}
+				}).then((result) => {
+					alert("Success");
+				}, (error) => {
+					console.log("Error", error);
+				})
+			}
+		}else{
+			alert("please enter in all fields!");
+		}
+	}
+			                
 			if($scope.data[0][0].dob !== null) {
 				$scope.birth_month = $scope.months[new Date($scope.data.dob).getMonth() + 1];
 				$scope.birth_year = new Date($scope.data.dob).getFullYear();
@@ -319,6 +418,29 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 	})
 	.controller('navBarController', function($scope, $http, Random) {
+
+
+		$http({
+
+				url: '/getSession',
+				method: 'POST'
+			}).then(function mySuccess(response){
+				$scope.loggedInUser = response.loggedInUser;
+				console.log("session exist !!");
+
+			}, function myError(response){
+				console.log("session doesn't exist!!");
+			});	
+
+			$scope.host = () => {
+
+					if($scope.loggedInUser){
+						window.location.assign('/property');
+					}else{
+						alert("please signin first!");
+					}			
+				}
+
 		$scope.getHomePage = function(){
 			window.location.assign('/');
 		};
