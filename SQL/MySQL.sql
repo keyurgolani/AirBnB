@@ -11,7 +11,7 @@ CREATE TABLE `account_details` (
   `secret` varchar(255) NULL,
   `salt` varchar(255) NULL,
   `last_login` DATETIME DEFAULT NULL,
-  'is_host' INT(10) NOT NULL,
+  `is_host` INT(10) NOT NULL,
   `active` BOOLEAN DEFAULT TRUE NOT NULL,
   PRIMARY KEY (`user_id`)
 );

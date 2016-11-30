@@ -8,11 +8,8 @@
   "dependencies": {
     "angular": "^1.5.8",
     "angular-animate": "^1.5.8",
-<<<<<<< HEAD
     "angular-file-upload": "^2.3.4",
-=======
     "angular-base64-upload": "^0.1.19",
->>>>>>> fb47d97c4dad1bb5611a138c9b6bfb0dc426cb5d
     "angular-messages": "^1.5.9",
     "async": "^2.1.4",
     "barcode": "^0.1.0",
