@@ -178,10 +178,12 @@ router.post('/addProperty', (req, res, next) => {
 			});
 		} else {
 			if (result.affectedRows === 1) {
-				req.db.get('property_photos').insert({
-					'property_id' : result.insertId,
-					'photos' : photos
-				});
+				for(var i = 0; i < photos.length; i++) {
+					req.db.get('property_photos').insert({
+						'property_id' : result.insertId,
+						'photos' : photos[i]
+					});
+				}
 				res.send({
 					'statusCode' : 200
 				});
