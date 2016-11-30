@@ -182,13 +182,13 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 		$scope.addProperty = () => {
-			console.log($scope.photos);
 			$http({
 				method : "POST",
 				url : "/addProperty",
 				data : {
 					'property_type' : $scope.property_type,
 					'house_rules' : $scope.house_rules,
+					'photos' : $scope.photos,
 					'location' : {
 						'longitude' : $scope.addressDetails.geometry.location.lng(),
 						'latitude' : $scope.addressDetails.geometry.location.lat(),

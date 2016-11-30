@@ -156,6 +156,7 @@ router.post('/addProperty', (req, res, next) => {
 	var city = req.body.location.city;
 	var state = req.body.location.state;
 	var zip = req.body.location.zip;
+	var photos = req.body.photos;
 	var active = true; //Default value at the time of adding new property.
 
 	mysql.insertData('property_details', {
@@ -177,6 +178,10 @@ router.post('/addProperty', (req, res, next) => {
 			});
 		} else {
 			if (result.affectedRows === 1) {
+				req.db.get('property_photos').insert({
+					'property_id' : result.insertId,
+					'photos' : photos
+				});
 				res.send({
 					'statusCode' : 200
 				});

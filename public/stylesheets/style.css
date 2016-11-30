@@ -916,23 +916,6 @@ input[type='checkbox'] {
 	text-align: center;
 }
 
-.upload-button {
-	border-color: #ff5a5f;
-	background-color: #ff5a5f;
-	color: #fff;
-	width: 226.09px;
-	height: 63px;
-	font-size: 18px;
-	padding: 20px 36px;
-	line-height: 1;
-}
-
-.upload-button:hover {
-	border-color: #ff7e82;
-	background-color: #ff7e82;
-	color: #fff;
-}
-
 #radioBtn.notActive {
 	color: #008489;
 	background-color: #fff;
@@ -2334,4 +2317,41 @@ label.star:before {
 .trash-icon:hover {
 	cursor: pointer;
 	opacity: 0.7
+}
+
+.upload-button {
+    position: relative;
+    overflow: hidden;
+    border-color: #ff5a5f;
+	background-color: #ff5a5f;
+	color: #fff;
+	width: 226.09px;
+	height: 63px;
+	font-size: 18px;
+	padding: 20px 36px;
+	line-height: 1
+}
+.upload-button input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    border-color: #ff5a5f;
+	background-color: #ff5a5f;
+	color: #fff;
+	width: 226.09px;
+	height: 63px;
+	font-size: 18px;
+	padding: 20px 36px;
+	line-height: 1
+}
+
+.upload-button:hover, .upload-button:active, .upload-button:focus, .upload-button:active:focus {
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
 }
