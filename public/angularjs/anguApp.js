@@ -784,4 +784,172 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
                 }
             }
         };
-    }]);
+    }])
+    .controller('horizontalMultibarController', function($scope) {
+	  $scope.options = {
+	            chart: {
+					type: 'multiBarHorizontalChart',
+					height: 350,
+					width: 550,
+	                x: function(d){return d.label;},
+	                y: function(d){return d.value;},
+	                showControls: true,
+	                showValues: true,
+	                duration: 500,
+	                xAxis: {
+	                    showMaxMin: false
+	                },
+	                yAxis: {
+	                    axisLabel: 'Values',
+	                    tickFormat: function(d){
+	                        return d3.format(',.2f')(d);
+	                    }
+	                }
+	            }
+	        };
+
+	        $scope.data = [
+	            {
+	                "key": "Series1",
+	                "color": "#d62728",
+	                "values": [
+	                    {
+	                        "label" : "A" ,
+	                        "value" : -1.8746444827653
+	                    } ,
+	                    {
+	                        "label" : "B" ,
+	                        "value" : -8.0961543492239
+	                    } ,
+	                    {
+	                        "label" : "C" ,
+	                        "value" : -0.57072943117674
+	                    } ,
+	                    {
+	                        "label" : "D" ,
+	                        "value" : -2.4174010336624
+	                    } ,
+	                    {
+	                        "label" : "E" ,
+	                        "value" : -0.72009071426284
+	                    } ,
+	                    {
+	                        "label" : "F" ,
+	                        "value" : -0.77154485523777
+	                    } ,
+	                    {
+	                        "label" : "G" ,
+	                        "value" : -0.90152097798131
+	                    } ,
+	                    {
+	                        "label" : "H" ,
+	                        "value" : -0.91445417330854
+	                    } ,
+	                    {
+	                        "label" : "I" ,
+	                        "value" : -0.055746319141851
+	                    }
+	                ]
+	            },
+	            {
+	                "key": "Series2",
+	                "color": "#1f77b4",
+	                "values": [
+	                    {
+	                        "label" : "A" ,
+	                        "value" : 25.307646510375
+	                    } ,
+	                    {
+	                        "label" : "B" ,
+	                        "value" : 16.756779544553
+	                    } ,
+	                    {
+	                        "label" : "C" ,
+	                        "value" : 18.451534877007
+	                    } ,
+	                    {
+	                        "label" : "D" ,
+	                        "value" : 8.6142352811805
+	                    } ,
+	                    {
+	                        "label" : "E" ,
+	                        "value" : 7.8082472075876
+	                    } ,
+	                    {
+	                        "label" : "F" ,
+	                        "value" : 5.259101026956
+	                    } ,
+	                    {
+	                        "label" : "G" ,
+	                        "value" : 0.30947953487127
+	                    } ,
+	                    {
+	                        "label" : "H" ,
+	                        "value" : 0
+	                    } ,
+	                    {
+	                        "label" : "I" ,
+	                        "value" : 0
+	                    }
+	                ]
+	            }
+	        ]
+	})
+	.controller('donutChartController', function($scope) {
+	$scope.options = {
+	        chart: {
+	            type: 'pieChart',
+	            height: 350,
+	            width: 550,
+	            donut: true,
+	            x: function(d){return d.key;},
+	            y: function(d){return d.y;},
+	            showLabels: true,
+
+	            pie: {
+	                startAngle: function(d) { return d.startAngle/2 -Math.PI/2 },
+	                endAngle: function(d) { return d.endAngle/2 -Math.PI/2 }
+	            },
+	            duration: 500,
+	            legend: {
+	                margin: {
+	                    top: 5,
+	                    right: 70,
+	                    bottom: 5,
+	                    left: 0
+	                }
+	            }
+	        }
+	    };
+
+	    $scope.data = [
+	        {
+	            key: "One",
+	            y: 5
+	        },
+	        {
+	            key: "Two",
+	            y: 2
+	        },
+	        {
+	            key: "Three",
+	            y: 9
+	        },
+	        {
+	            key: "Four",
+	            y: 7
+	        },
+	        {
+	            key: "Five",
+	            y: 4
+	        },
+	        {
+	            key: "Six",
+	            y: 3
+	        },
+	        {
+	            key: "Seven",
+	            y: .5
+	        }
+	    ];
+	})

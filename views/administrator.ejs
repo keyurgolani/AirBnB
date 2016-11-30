@@ -11,7 +11,7 @@
 
 	<div class="container">
 
-		<div class="row" style="background-color: #5799C7; padding:5px 10px 5px 10px; ">
+		<div class="row" style="background-color: #FF5A5F; padding:5px 10px 5px 10px; ">
 			<div class="col-lg-1" style="padding: 0px 0px 0px 0px;">
 				<div style="display: inline-block; padding-left: 10px; padding-top:5px;"><img src="images/airbnb_logo_detail.png" style="" height="40" width="40" alt="">
 				</div>
@@ -64,15 +64,18 @@
 	</div>
 	<div class="container">
 
-		<div class="row" style="background-color: #2A3F54; padding:5px 5px 5px 5px;" class="text-center">
-			<div class="col-lg-4" class="text-justify">
-				<div style="font-size:14px; padding-left:10px; color: white;">Top 10 Properties in 365 days before today</div>
+		<div class="row" style="background-color: #FF5A5F; padding:5px 5px 5px 5px;" class="text-center">
+			<div class="col-lg-3 text-center" class="text-justify" style="border-right:1px solid black; border-color: #FFFFFF;">
+				<div style="font-size:13px; padding-left:10px; color: white;">Top 10 Properties in 365 days before today</div>
 			</div>
-			<div class="col-lg-4" class="text-justify">
-				<div style="font-size:14px; padding-left:10px; color: white;">City Wise Revenue in 365 days before today</div>
+			<div class="col-lg-3 text-center" class="text-justify" style="border-right:1px solid black; border-color: #FFFFFF;">
+				<div style="font-size:13px; padding-left:10px; color: white;">City Wise Revenue in 365 days before today</div>
 			</div>
-			<div class="col-lg-4" class="text-justify">
-				<div style="font-size:14px; padding-left:10px; color: white;">Top 10 Sellers (Sales in last 30 days)</div>
+			<div class="col-lg-3 text-center" class="text-justify" style="border-right:1px solid black; border-color: #FFFFFF;">
+				<div style="font-size:13px; padding-left:10px; color: white;">Top 10 Sellers (Sales in last 30 days)</div>
+			</div>
+			<div class="col-lg-3 text-center" class="text-justify" style="border-right:0px solid black; border-color: #FFFFFF;">
+				<div style="font-size:13px; padding-left:10px; color: white;">Total Sales</div>
 			</div>
 			
 		</div>
@@ -113,22 +116,50 @@
 				
 			</div>
 
-			<div class="row" style="margin-top:0px;">
-	
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<span style="font-size:20px; font-color: #2A3F54;">Total Sales</span>
-					</div>
-					<div class="panel-body">
-						
-						<div class="row" ng-controller="adminSunController">
-							
-							<nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3>
 
+			<div class="row">
+					
+					<div class="col-lg-6">
+						
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<span style="font-size:20px; font-color: #2A3F54;">Number Of Properties Sold vs Revenue</span>
+							</div>
+							<div class="panel-body">
+								
+								<div class="row" ng-controller="horizontalMultibarController">
+							
+									<nvd3 options="options" data="data"></nvd3>
+
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+					<div class="col-lg-6">
+						
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<span style="font-size:20px; font-color: #2A3F54;">Number Of Properties Sold vs Revenue</span>
+							</div>
+							<div class="panel-body">
+								
+								<div class="row" ng-controller="donutChartController">
+							
+									<nvd3 options="options" data="data"></nvd3>
+
+								</div>
+
+							</div>
 						</div>
 
 					</div>
 				</div>
+
+			<div class="row" style="margin-top:0px;">
+
 
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -144,8 +175,21 @@
 
 					</div>
 				</div>
+	
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span style="font-size:20px; font-color: #2A3F54;">Total Sales</span>
+					</div>
+					<div class="panel-body">
+						
+						<div class="row" ng-controller="adminSunController">
+							
+							<nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3>
 
-				
+						</div>
+
+					</div>
+				</div>
 
 				
 
