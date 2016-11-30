@@ -127,13 +127,14 @@
 				<div class="row que_1">
 					<span class="h3 que_1">Show travelers what your space looks like</span>
 				</div>
-				<div class="row que_1">
+				<div class="row que_1" ng-show="show_upload">
 					<div class="col-md-12 upload-panel" style="padding: 20px;">
 						<div class="upload-image-icon">
 							<div class="row">
 								<div class="btn btn-primary upload-button">
 									<i class="fa fa-cloud-upload" style="margin-right:10px;" aria-hidden="true"></i>
 									<span style="font-weight:bold;">Upload Photos</span>
+									<input type="file" ng-model="photos" class="upload" name="photos" base-sixty-four-input multiple accept="image/*" minsize="500" required minnum="1">
 								</div>
 							</div>
 							<div class="row">
@@ -142,6 +143,12 @@
 						</div>
 					</div>
 				</div>
+				<div class="row" ng-hide="show_upload">
+			      	<div ng-repeat="photo in photos" class="col-md-4" style="padding: 10px 10px 10px 10px;">
+			      		<i class="fa fa-trash-o trash-icon" ng-click="remove($index)"></i>
+				        <img data-ng-src="data:{{photo.filetype}};base64,{{photo.base64}}" style="max-height: 300px; width: 100%"/>
+				    </div>
+			    </div>
 				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">
 						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>

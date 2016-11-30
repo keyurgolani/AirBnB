@@ -8,8 +8,14 @@
   "dependencies": {
     "angular": "^1.5.8",
     "angular-animate": "^1.5.8",
+<<<<<<< HEAD
     "angular-file-upload": "^2.3.4",
+=======
+    "angular-base64-upload": "^0.1.19",
+>>>>>>> fb47d97c4dad1bb5611a138c9b6bfb0dc426cb5d
     "angular-messages": "^1.5.9",
+    "async": "^2.1.4",
+    "barcode": "^0.1.0",
     "bcrypt": "^0.8.7",
     "body-parser": "~1.15.1",
     "bootstrap": "^3.3.7",
@@ -31,7 +37,9 @@
     "font-awesome": "^4.7.0",
     "geocoder": "^0.2.2",
     "geopoint": "^1.0.1",
+    "gm": "^1.23.0",
     "gmaps": "^0.4.24",
+    "html-pdf": "^2.1.0",
     "html5shiv": "^3.7.3",
     "jquery": "^3.1.1",
     "mocha": "^3.1.2",
