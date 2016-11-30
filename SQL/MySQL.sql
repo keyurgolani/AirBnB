@@ -11,8 +11,17 @@ CREATE TABLE `account_details` (
   `secret` varchar(255) NULL,
   `salt` varchar(255) NULL,
   `last_login` DATETIME DEFAULT NULL,
+  'is_host' INT(10) NOT NULL,
   `active` BOOLEAN DEFAULT TRUE NOT NULL,
   PRIMARY KEY (`user_id`)
+);
+
+DROP TABLE IF EXISTS `login_history`;
+CREATE TABLE `login_history` (
+  `user_id` INT(10) NOT NULL,
+  `timestamp` TIMESTAMP(6) NOT NULL,
+  `user_agent` varchar(255) NOT NULL,
+  PRIMARY KEY (`user_id`, `timestamp`)
 );
 
 DROP TABLE IF EXISTS `profile_details`;
@@ -20,6 +29,7 @@ CREATE TABLE `profile_details` (
   `profile_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `user_id` INT(10) ZEROFILL NOT NULL,
   `phone` NUMERIC(12) NULL,
+  `gender` ENUM('Male', 'Female', 'Other') NULL,
   `dob` DATE NOT NULL,
   `st_address` VARCHAR(255) NOT NULL,
   `apt` VARCHAR(20) NOT NULL,
@@ -144,7 +154,7 @@ DROP TABLE IF EXISTS `bill_details`;
 CREATE TABLE `bill_details` (
   `bill_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `trip_id` INT(10) ZEROFILL NOT NULL,
-  `receipt_id` VARCHAR(255) NOT NULL,
+  `receipt_id` INT(10) ZEROFILL NOT NULL,
   `cc_id` INT(10) ZEROFILL NOT NULL,
   PRIMARY KEY (`bill_id`)
 );
