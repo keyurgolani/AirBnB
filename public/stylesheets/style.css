@@ -119,14 +119,14 @@ body {
 		border: 0px solid #D7D7D7;
 		padding: 3px 15px 3px 15px;
 		font-size: 14px;
-		color: black;
+		color: #484848;
 	}
 	.ul_Six {
 		border-right: 0px solid #dce0e0;
 		line-height: 60px;
 		padding: 0px 20px 0px 20px;
 		font-size: 14px;
-		color: black;
+		color: #484848;
 	}
 	.ul_Seven {
 		border-right: 0px solid #dce0e0;
@@ -139,10 +139,11 @@ body {
 	}
 	.ul_Nine {
 		font-size: 14px;
-		color: black;
+		color: #484848;
 	}
 	.ul_Nine:hover {
-		color: black;
+		color: #484848;
+		cursor: pointer;
 	}
 	.ul_Ten {
 		padding: 0px 0px 0px 0px;
@@ -152,7 +153,7 @@ body {
 		padding: 0px 10px 0px 0px;
 		margin: 22px 0px 0px 22px;
 		font-size: 14px;
-		color: black;
+		color: #484848;
 	}
 	.header>.pac-container {
 		margin-left: -40px;
@@ -2354,4 +2355,52 @@ label.star:before {
 	border-color: #ff7e82;
 	background-color: #ff7e82;
 	color: #fff;
+}
+
+.on-hover:hover {
+	text-decoration: none!important;
+	cursor: pointer;
+}
+
+.button-effect:hover {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+}
+
+.button-effect:active {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.button-effect:focus {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.button-effect:active:focus {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	outline: none;
+}
+
+.carousel-size.carousel-control {
+	font-size: 300%!important;
 }
