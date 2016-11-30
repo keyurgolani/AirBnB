@@ -90,7 +90,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('profile', ($scope, $http) => {
 		$scope.init = function(profileDetails) {
-			$scope.rating_test = 3;
 			$scope.data = JSON.parse(profileDetails);
 			$scope.active_tab = 'profile_tab';
 			$scope.genders = ['Male', 'Female', 'Other'];

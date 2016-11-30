@@ -125,22 +125,17 @@
 							<div class="row item-content" style="padding:20px;">
 								<div class="row">
 									<div class="col-md-4">
-										<div class="profile-photo"><img src="images/city/paris.jpg" alt="Paris"></div>
+										<div class="profile-photo" ng-show="data[7].photo"><img data-ng-src="data:{{data[7].photo.filetype}};base64,{{data[7].photo.base64}}" alt="Profile" style="height: 100%;"></div>
+										<div class="profile-photo glyphicon glyphicon-user no-profile" ng-hide="data[7].photo"></div>
 									</div>
 									<div class="col-md-8">
 										<div class="row profile-photo-text">
 											<span>Clear frontal face photos are an important way for hosts and guests to learn about each other. It's not much fun to host a landscape! Please upload a photo that clearly shows your face.</span>
 										</div>
 										<div class="row">
+											<input type="file" ng-model="data[7].photo" class="upload" name="photo" base-sixty-four-input accept="image/*" minsize="500" maxsize="16000" required>
 											<button class="btn btn-primary photo-upload-button">Upload a file from your computer</button>
 										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-4">
-										<div class="profile-photo glyphicon glyphicon-user no-profile"></div>
-									</div>
-									<div class="col-md-8">
 									</div>
 								</div>
 							</div>
@@ -152,8 +147,13 @@
 									<div class="col-md-6">
 										<div class="profile-video-container">
 											<div class="row no-video-text">
-												<div>You haven't recorded a video profile yet.</div>
-												<i class="fa fa-video-camera camera-icon"></i>
+												<div ng-hide="data[7].video">You haven't recorded a video profile yet.</div>
+												<i class="fa fa-video-camera camera-icon" ng-hide="data[7].video"></i>
+												<div ng-show="data[7].video">
+													<video controls> 
+														<source type="{{data[7].video.filetype}}" src="data:{{data[7].video.filetype}};base64,{{data[7].video.base64}}"> 
+													</video>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -184,6 +184,7 @@
 								<div class="row video-footer">
 			  						<div class="col-md-6"></div>
 			  						<div class="col-md-6">
+			  							<input type="file" ng-model="data[7].video" class="upload" name="video" base-sixty-four-input accept="video/*" minsize="500" required>
 			  							<button class="btn btn-primary password-button">Record a new video</button>
 			  						</div>
 			  					</div>
