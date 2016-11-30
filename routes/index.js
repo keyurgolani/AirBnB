@@ -6,9 +6,8 @@ var logger = require('../utils/logger');
 var cache = require('../utils/cache');
 var pdf = require('html-pdf');
 var utility = require('../utils/utility');
+var async = require("async");
 var barcode = require('barcode');
-
-var uuid = require('node-uuid');
 
 var NodeGeocoder = require('node-geocoder');
 var GeoPoint = require('geopoint');
@@ -740,91 +739,79 @@ router.get('/searchListing', function(req, res, next) {
 });
 
 router.get('/profile', function(req, res, next) {
-	// var listing_id = req.body.listing_id;
-	var owner = req.query.owner;
 
-	//get property details of that user..
-	mysql.fetchData('*', 'property_details', {
-		'owner_id' : owner
-	}, (error, property) => {
-		if (error) {
-			res.send({
-				'statusCode' : 500
+	async.parallel([
+		function(callback) {
+			mysql.executeQuery('select f_name, l_name, email, active, phone, gender, dob, st_address, apt, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner ], (error, profile_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, profile_details);
+				}
 			});
-		} else {
-			if (property) {
-				//get listing details as well..
-				var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
-				var parameters = [ owner, owner ];
-				mysql.executeQuery(query, parameters, function(error, listing) {
-					if (error) {
-						/*res.send({
-						    'statusCode' : 500
-						});*/
-					} else {
-						if (listing) {
-							//get trip informations. 
-							var query = "select * from trip_details,property_details,listings WHERE trip_details.user_id = ? AND trip_details.listing_id= listings.listing_id AND listings.property_id=property_details.property_id";
-							var parameters = owner;
-							mysql.executeQuery(query, parameters, function(error, trip) {
-								if (error) {
-									res.send({
-										'statusCode' : 500
-									});
-								} else {
-									if (trip) {
-										//get users info who made trip on that owner's property.
-										var query = "select * from trip_details,property_details,listings WHERE property_details.owner_id = ? AND listings.property_id=property_details.property_id AND trip_details.listing_id = listings.listing_id";
-										var parameters = owner;
-										mysql.executeQuery(query, parameters, function(error, tripped_user) {
-											if (error) {
-												res.send({
-													'statusCode' : 500
-												});
-											} else {
-												if (tripped_user) {
-													var result = {
-														property_data : (property),
-														listing_data : (listing),
-														trip_data : (trip),
-														tripped_user_data : (tripped_user)
-													}
-													//transection is comleted here!
-													res.render('profile', {
-														data : JSON.stringify(result)
-													});
-
-												} else {
-													res.send({
-														'statusCode' : 500
-													});
-												}
-											}
-										})
-
-									} else {
-										res.send({
-											'statusCode' : 500
-										});
-									}
-								}
-							})
-						} else {
-							/*res.send({
-							    'statusCode' : 409
-							});*/
-						}
-					}
-				});
-			} else {
-				res.send({
-					'statusCode' : 500
-				});
-			}
+		},
+		function(callback) {
+			mysql.executeQuery('select card_id, card_number, exp, cvv from card_details where user_id = ?', [ req.query.owner ], (error, card_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, card_details);
+				}
+			});
+		},
+		function(callback) {
+			mysql.executeQuery('select timestamp, user_agent from login_history where user_id = ?', [ req.query.owner ], (error, login_history) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, login_history);
+				}
+			});
+		},
+		function(callback) {
+			mysql.executeQuery('select property_id, house_rules, longitude, latitude, st_address, apt, city, state, zip, active, property_type from property_details inner join property_types on property_details.property_type_id = property_types.property_type_id where owner_id = ?', [ req.query.owner ], (error, property_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, property_details);
+				}
+			});
+		},
+		function(callback) {
+			mysql.executeQuery('select listing_id, listings.property_id, title, is_bid, start_date, end_date, daily_price, listings.active as listing_active, property_details.active as property_active, room_type from listings inner join property_details on listings.property_id = property_details.property_id inner join room_types on listings.room_type_id = room_types.room_type_id where property_details.owner_id = ?', [ req.query.owner ], (error, listing_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, listing_details);
+				}
+			});
+		},
+		function(callback) {
+			mysql.executeQuery('select trip_details.trip_id, title, st_address, city, state, zip, longitude, latitude, checkin, checkout, trip_amount, host_rating, receipt_id from trip_details inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id left join ratings on ratings.trip_id = trip_details.trip_id left join bill_details on bill_details.trip_id = trip_details.trip_id where user_id = ?', [ req.query.owner ], (error, trip_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, trip_details);
+				}
+			});
+		},
+		function(callback) {
+			mysql.executeQuery('select trip_details.trip_id, f_name, l_name, st_address, city, state, zip, checkin, checkout, no_of_guests, traveller_rating from account_details inner join property_details on account_details.user_id = property_details.owner_id inner join listings on listings.property_id = property_details.property_id inner join trip_details on listings.listing_id = trip_details.listing_id left join ratings on ratings.trip_id = trip_details.trip_id where account_details.user_id = ?', [ req.query.owner ], (error, hosting_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, hosting_details);
+				}
+			});
 		}
-	})
-
-// res.render('profile');
+	], function(error, results) {
+		if (error) {
+			throw error;
+		}
+		res.render('profile', {
+			data : JSON.stringify(results)
+		});
+	});
 });
 
 router.get('/getBill', function(req, res, next) {
@@ -832,12 +819,13 @@ router.get('/getBill', function(req, res, next) {
 		mysql.executeQuery('select * from bill_details, trip_details, card_details, account_details, listings inner join room_types on listings.room_type_id = room_types.room_type_id, property_details inner join property_types on property_details.property_type_id = property_types.property_type_id where receipt_id = ? and trip_details.trip_id = bill_details.trip_id and bill_details.cc_id = card_details.card_id and trip_details.user_id = account_details.user_id and trip_details.listing_id = listings.listing_id and listings.property_id = property_details.property_id;', [ req.query.receipt ], (error, results) => {
 			console.log(error, results);
 			barcode('code128', {
-			    data: "http://localhost:3000/getBill?receipt=" + results[0].receipt_id,
-			    width: 566,
-			    height: 40,
-			}).getBase64(function (err, imgsrc) {
-			    if (err) throw err;
-			    var nights = parseInt((results[0].checkout - results[0].checkin) / 86400000);
+				data : "http://localhost:3000/getBill?receipt=" + results[0].receipt_id,
+				width : 566,
+				height : 40,
+			}).getBase64(function(err, imgsrc) {
+				if (err)
+					throw err;
+				var nights = parseInt((results[0].checkout - results[0].checkin) / 86400000);
 				var total_amount = results[0].trip_amount * nights;
 				var strVar = "";
 				strVar += "<!DOCTYPE html>";
@@ -1118,7 +1106,7 @@ router.get('/getBill', function(req, res, next) {
 					"type" : "pdf",
 					"zoomFactor" : "1"
 				}).toBuffer(function(err, buffer) {
-					//				res.setHeader("content-disposition", "attachment; filename=\"Something.pdf\"");
+					res.setHeader("content-disposition", "attachment; filename=\"Something.pdf\"");
 					res.contentType("application/pdf");
 					res.send(buffer);
 				});
@@ -1126,5 +1114,107 @@ router.get('/getBill', function(req, res, next) {
 		});
 	}
 });
+
+router.post('/updateRating', (req, res, next) => {
+	mysql.fetchData('rating_id', 'ratings', {
+		'trip_id' : req.body.trip
+	}, (error, results) => {
+		if(error || results.length === 0) {
+			if(req.body.is_host) {
+				mysql.insertData('ratings', {
+					'host_rating' : req.body.rating,
+					'trip_id' : req.body.trip
+				}, (error, results) => {
+					console.log(error, results);
+					if(error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if(results.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							})
+						} else {
+							res.send({
+								'statusCode' : 500
+							})
+						}
+					}
+				})
+			} else {
+				mysql.insertData('ratings', {
+					'traveller_rating' : req.body.rating,
+					'trip_id' : req.body.trip
+				}, (error, results) => {
+					console.log(error, results);
+					if(error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if(results.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							})
+						} else {
+							res.send({
+								'statusCode' : 500
+							})
+						}
+					}
+				})
+			}
+		} else {
+			if(req.body.is_host) {
+				mysql.updateData('ratings', {
+					'host_rating' : req.body.rating
+				}, {
+					'trip_id' : req.body.trip
+				}, (error, results) => {
+					console.log(error, results);
+					if(error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if(results.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							})
+						} else {
+							res.send({
+								'statusCode' : 500
+							})
+						}
+					}
+				})
+			} else {
+				mysql.updateData('ratings', {
+					'traveller_rating' : req.body.rating
+				}, {
+					'trip_id' : req.body.trip
+				}, (error, results) => {
+					console.log(error, results);
+					if(error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if(results.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							})
+						} else {
+							res.send({
+								'statusCode' : 500
+							})
+						}
+					}
+				})
+			}
+		}
+	})
+})
 
 module.exports = router;

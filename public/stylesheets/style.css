@@ -782,6 +782,7 @@ ul.gallery li h5 {
 	background: #6699cc;
 }
 
+
 #sponsors {
 	font-size: 12px;
 	text-align: center;
@@ -1453,6 +1454,11 @@ input[type='checkbox'] {
 	height: 40px;
 	background-color: #484848;
 	margin-top: -60px !important;
+}
+
+.fixed-bar {
+	position: fixed;
+	z-index: 99;
 }
 
 .subnav {
@@ -2269,35 +2275,36 @@ label.hostStar:before {
 	border-left-color: #959595 !important;
 }
 
-div.stars {
-	margin-left: -15px;
+.star-rating {
+	margin: 0;
+	padding: 0;
 	display: inline-block;
 }
 
-input.star {
-	display: none;
+.star-rating .star {
+	padding: 2px;
+	color: #FFFFFF;
+	font-size: 27px;
+	text-shadow: .1em .1em #666;
+	list-style-type: none;
+	display: inline-block;
+	cursor: pointer;
 }
 
-label.star {
-	float: right;
-	padding: 10px;
-	font-size: 24px;
-	color: #444;
-	transition: all .2s;
+.star-rating .star.filled {
+	color: #12BA00;
 }
 
-input.star:checked ~ label.star:before {
-	content: '\f005';
-	color: #008489;
-	transition: all .25s;
+.star-rating.readonly .star.filled {
+	color: #0B7500;
 }
 
-input.star-5:checked ~ label.star:before {
+.star-rating .star.filled.high_rating {
 	color: #FE7;
-	text-shadow: 0 0 20px #952;
+  	text-shadow: 0 0 20px #952;
 }
 
-input.star-1:checked ~ label.star:before {
+.star-rating .star.filled.low_rating {
 	color: #F62;
 }
 

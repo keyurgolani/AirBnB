@@ -88,16 +88,65 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 	})
-
 	.controller('profile', ($scope, $http) => {
-
-		$scope.init = function(retrievedData) {
-           console.log("here")
-           var data = JSON.parse(retrievedData);
-           console.log(data.listing_data[0]);
-
-           // $scope.data = JSON.parse(retrievedData);
-		}	
+		$scope.init = function(profileDetails) {
+			$scope.rating_test = 3;
+			$scope.data = JSON.parse(profileDetails);
+			$scope.active_tab = 'profile_tab';
+			$scope.genders = ['Male', 'Female', 'Other'];
+			$scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+			$scope.dates = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
+			$scope.years = ['2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005',
+			                '2004', '2003', '2002', '2001', '2000', '1999', '1998', '1997', '1996', '1995', '1994', '1993',
+			                '1992', '1991', '1990', '1989', '1988', '1987', '1986', '1985', '1984', '1983', '1982', '1981',
+			                '1980', '1979', '1978', '1977', '1976', '1975', '1974', '1973', '1972', '1971', '1970', '1969',
+			                '1968', '1967', '1966', '1965', '1964', '1963', '1962', '1961', '1960', '1959', '1958', '1957'];
+			if($scope.data[0][0].dob !== null) {
+				$scope.birth_month = $scope.months[new Date($scope.data.dob).getMonth() + 1];
+				$scope.birth_year = new Date($scope.data.dob).getFullYear();
+				$scope.birth_date = new Date($scope.data.dob).getDate();
+			} else {
+				$scope.birth_month = $scope.months[0];
+				$scope.birth_year = $scope.years[0];
+				$scope.birth_date = $scope.dates[0];
+			}
+		}
+		
+		$scope.updateHostRating = function(trip, rating) {
+			$http({
+				method : "POST",
+				url : '/updateRating',
+				data : {
+					"rating" : rating,
+					"trip" : trip, 
+					"is_host" : true
+				}
+			}).then((results) => {
+				if(results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
+		
+		$scope.updateTravellerRating = function(trip, rating) {
+			$http({
+				method : "POST",
+				url : '/updateRating',
+				data : {
+					"rating" : rating,
+					"trip" : trip, 
+					"is_host" : false
+				}
+			}).then((results) => {
+				if(results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
 		
 	})
 	.controller('addProperty', ($scope, $http) => {
@@ -243,37 +292,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.beforeSignUp = false;
 		};
 
-		// $scope.f_name
-		// console.log('$scope.f_name', $scope.f_name);
-
-		// $scope.$watch('f_name', function(){
-	
-		// 	console.log('$scope.f_name', $scope.f_name);
-			
-			
-		// });
-		// $scope.$watch('l_name', function(){
-	
-		// 	console.log('$scope.l_name', $scope.l_name);
-			
-		// });
-		// $scope.$watch('email', function(){
-			
-		// 	console.log('$scope.email', $scope.email);
-			
-		// });
-		// $scope.$watch('password', function(){
-	
-		// 	console.log('$scope.password', $scope.password);
-
-		// });
-		// $scope.$watch('month', function(){
-	
-		// 	console.log('$scope.month', $scope.month);
-			
-		// });
-
-
 		$scope.signUp = function(){
 			//sending new user data to node
 			$http({
@@ -378,6 +396,51 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					event.preventDefault();
 				}
 			});
+		};
+	})
+	.directive('starRating', function starRating() {
+		return {
+			restrict : 'EA',
+			template : '<ul class="star-rating" ng-class="{readonly: readonly}">' +
+				'  <li ng-repeat="star in stars" class="star" ng-class="{filled: star.filled, low_rating: ratingValue === 1, high_rating: ratingValue === 5}" ng-click="toggle($index)">' +
+				'    <i class="fa fa-star"></i>' + // or &#9733
+				'  </li>' +
+				'</ul>',
+			scope : {
+				ratingValue : '=ngModel',
+				max : '=?', // optional (default is 5)
+				onRatingSelect : '&?',
+				readonly : '=?'
+			},
+			link : function(scope, element, attributes) {
+				if(scope.ratingValue == null) {
+					scope.ratingValue = 1;
+				}
+				if (scope.max == undefined) {
+					scope.max = 5;
+				}
+				function updateStars() {
+					scope.stars = [];
+					for (var i = 0; i < scope.max; i++) {
+						scope.stars.push({
+							filled : i < scope.ratingValue
+						});
+					}
+				};
+				scope.toggle = function(index) {
+					if (scope.readonly == undefined || scope.readonly === false) {
+						scope.ratingValue = index + 1;
+						scope.onRatingSelect({
+							rating : index + 1
+						});
+					}
+				};
+				scope.$watch('ratingValue', function(oldValue, newValue) {
+					if (newValue) {
+						updateStars();
+					}
+				});
+			}
 		};
 	})
 	.directive('ngEncrypt', function() {
