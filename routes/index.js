@@ -1087,17 +1087,34 @@ router.post('/login', function(req, res, next) {
 					'user_id' : userObject.user_id,
 					'user_agent' : req.body.user_agent.os + ' ' + req.body.user_agent.os_version + ' - ' + req.body.user_agent.browser + ' ' + req.body.user_agent.browser_version
 				}, (error, result) => {
-					req.db.get('user_photos').findOne({
-						'user_id' : userObject.user_id
-					}).then((photo) => {
-						if (photo) {
-							userObject.photo = photo.photo;
-						}
-						req.session.loggedInUser = userObject;
-						res.send({
-							'statusCode' : 200
+					async.parallel([function(callback) {
+						req.db.get('user_photos').findOne({
+							'user_id' : userObject.user_id
+						}).then((photo) => {
+							callback(null, photo.photo);
 						});
-					});
+					},
+					function(callback) {
+						req.db.get('user_videos').findOne({
+							'user_id' : userObject.user_id
+						}).then((video) => {
+							callback(null, video.video);
+						});
+					}], function(error, results) {
+						if(error) {
+							res.send({
+								'statusCode' : 500
+							});
+						} else {
+							userObject.photo = results[0];
+							userObject.video = results[1];
+							req.session.loggedInUser = userObject;
+							res.send({
+								'statusCode' : 200
+							});
+						}
+					})
+					
 				});
 			} else {
 				res.send({
