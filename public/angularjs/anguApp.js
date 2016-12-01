@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64' ])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector' ])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
@@ -20,7 +20,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		});
 	})
 	.controller('homepage', function() {})
-	.controller('login', function($scope, $http, Random) {
+	.controller('login', function($scope, $http, Random, deviceDetector) {
 		$scope.login = function() {
 
 			$http({
@@ -28,7 +28,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				url : '/login',
 				data : {
 					"email" : $scope.email,
-					"password" : $scope.password
+					"password" : $scope.password,
+					"user_agent" : deviceDetector
 				}
 			}).then((results) => {
 				console.log("Results", results);
@@ -670,14 +671,16 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.fetchRoomTypes();
 		$scope.fetchAmenities();
 	})
-	.controller('signUpController', function($scope, $http, Random) {
+	.controller('signUpController', function($scope, $http, Random, deviceDetector) {
 		$scope.emailSignUp = false;
 		$scope.beforeSignUp = true;
 		$scope.signUpWithEmail = function() {
 			$scope.emailSignUp = true;
 			$scope.beforeSignUp = false;
 		};
-
+		
+		$scope.deviceDetector = deviceDetector;
+		
 		$scope.signUp = function() {
 			//sending new user data to node
 			$http({
@@ -690,7 +693,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					'password' : $scope.password,
 					'month' : $scope.month,
 					'day' : $scope.day,
-					'year' : $scope.year
+					'year' : $scope.year,
+					'user_agent' : deviceDetector
 				}
 			}).then(function mySuccess(response) {
 				console.log("Sign Up Done !!");
