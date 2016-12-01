@@ -7,9 +7,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	}])
 	.controller("searchBarController", function($scope, $http, $window) {
 		$scope.city = '';
+		// console.log('$scope.city', $scope.city);
 		$scope.options = {
 			country: 'usa',
-			types: '(cities)'
+			types  : '(cities)'
 		};
 		$scope.options.watchEnter = true;
 
@@ -37,6 +38,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		
 	})
 	.controller('login', function($scope, $http, Random) {
+		
 		$scope.login = function() {
 			console.log($scope.email);
 
@@ -53,14 +55,13 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log("Error", error);
 			})
 		};
+
 	})
 	.controller('viewListing', function($scope, $http, Random, Date) {
 		$scope.init = function(retrievedData) {
 			var data = JSON.parse(retrievedData);
 			$scope.data = JSON.parse(retrievedData);	
 			console.log('$scope.data', $scope.data);
-				
-
 		}
 		
 		$scope.requestBooking = function() {
@@ -105,7 +106,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 	})
-	.controller('profile', ($scope, $http) => {
+	.controller('profile', ($scope, $http, $window) => {
 		$scope.init = function(profileDetails) {
 			$scope.rating_test = 3;
 			$scope.data = JSON.parse(profileDetails);
@@ -128,6 +129,17 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.birth_date = $scope.dates[0];
 			}
 		}
+
+		// $scope.city
+		// console.log('$scope.city', $scope.city);
+		// // $scope.details
+		// console.log('$scope.details', $scope.details);
+
+		$scope.details = '';
+
+		$scope.$watch('details', function(){
+			console.log($scope.details);
+		});
 		
 		$scope.updateHostRating = function(trip, rating) {
 			$http({
@@ -164,6 +176,101 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log("Error", error);
 			})
 		}
+
+		$scope.barcpp = true;
+		$scope.piecpp = false;
+
+		$scope.barpc = true;
+		$scope.piepc = false;
+
+		$scope.barlsa = true;
+		$scope.pielsa = false;
+
+		$scope.barpr = true;
+		$scope.piepr = false;
+
+		$scope.barug = true;
+		$scope.pieug = false;
+
+		$scope.barbi = true;
+		$scope.piebi = false;
+
+		$scope.showBarcpp = function(){
+			$scope.barcpp = true;
+			$scope.piecpp = false;
+
+		};
+
+
+		$scope.showPiecpp = function(){
+			$scope.barcpp = false;
+			$scope.piecpp = true;
+
+		};
+
+
+		$scope.showBarpc = function(){
+
+			$scope.barpc = true;
+			$scope.piepc = false;
+		};
+		
+		$scope.showPiepc = function(){
+			$scope.barpc = false;
+			$scope.piepc = true;
+
+		};
+
+
+		$scope.showBarlsa = function(){
+
+			$scope.barlsa = true;
+			$scope.pielsa = false;
+		};
+		
+		$scope.showPielsa = function(){
+			$scope.barlsa = false;
+			$scope.pielsa = true;
+
+		};
+
+
+		$scope.showBarpr = function(){
+
+			$scope.barpr = true;
+			$scope.piepr = false;
+		};
+		
+		$scope.showPiepr = function(){
+			$scope.barpr = false;
+			$scope.piepr = true;
+
+		};
+
+		$scope.showBarug = function(){
+
+			$scope.barug = true;
+			$scope.pieug = false;
+		};
+		
+		$scope.showPieug = function(){
+			$scope.barug = false;
+			$scope.pieug = true;
+
+		};
+
+		$scope.showBarbi = function(){
+
+			$scope.barbi = true;
+			$scope.piebi = false;
+		};
+		
+		$scope.showPiebi = function(){
+			$scope.barbi = false;
+			$scope.piebi = true;
+
+		};
+
 		
 	})
 	.controller('addProperty', ($scope, $http) => {
@@ -431,12 +538,13 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 	})
 	.controller('adminPieController', function($scope, $http, Random) {
-		console.log("from admin pie controller");
+		// console.log("from admin pie controller");
 
 		$scope.options = {
             chart: {
                 type: 'pieChart',
                 height: 300,
+                width: 350,
                 x: function(d){return d.key;},
                 y: function(d){return d.y;},
                 showLabels: true,
@@ -461,11 +569,17 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
           $scope.data = res.data;                
         });
 
+        //file to fetch host analytical data from
+        $http.get('../analytics/admin/dataPie.json')
+        .then(function(res){
+          $scope.hostData = res.data;                
+        });
+
 	})
 	.controller('adminBarController', function($scope, $http, Random) {
-		console.log("from admin bar controller");
+		// console.log("from admin bar controller");
 		// new Date(d)
-		console.log('new Date(d)', new Date(1136005200000));
+		// console.log('new Date(d)', new Date(1136005200000));
 
 
 		  $scope.options = {
@@ -517,10 +631,67 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
                 }
             }
         };
+        $scope.hostOptions = {
+            chart: {
+                type: 'historicalBarChart',
+                height: 300,
+                width: 375,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 65,
+                    left: 50
+                },
+                x: function(d){return d[0];},
+                y: function(d){return d[1]/100000;},
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format(',.1f')(d);
+                },
+                duration: 100,
+                xAxis: {
+                    axisLabel: 'X Axis',
+                    tickFormat: function(d) {
+                        return d3.time.format('%x')(new Date(d))
+				
+                    },
+                    rotateLabels: 30,
+                    showMaxMin: false
+                },
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    axisLabelDistance: -10,
+                    tickFormat: function(d){
+                        return d3.format(',.1f')(d);
+                    }
+                },
+                tooltip: {
+                    keyFormatter: function(d) {
+                        return d3.time.format('%x')(new Date(d));
+                    }
+                },
+                zoom: {
+                    enabled: true,
+                    scaleExtent: [1, 10],
+                    useFixedDomain: false,
+                    useNiceScale: false,
+                    horizontalOff: false,
+                    verticalOff: true,
+                    unzoomEventType: 'dblclick.zoom'
+                }
+            }
+        };
+		
 		//file to fetch admin analytical data from
         $http.get('../analytics/admin/barData.json')
         .then(function(res){
           $scope.data = res.data;                
+        });
+
+        //file to fetch host analytical data from
+        $http.get('../analytics/admin/barData.json')
+        .then(function(res){
+          $scope.hostData = res.data;                
         });
 
 	})

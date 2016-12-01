@@ -582,7 +582,7 @@ body {
 		border-radius: 50%;
 		padding: 0px;
 	}
-<<<<<<< HEAD
+
 
 	#adminTop{
 		background-color: #03569A;
@@ -599,10 +599,6 @@ body {
 		
 	}
 
-
-
-=======
->>>>>>> fb47d97c4dad1bb5611a138c9b6bfb0dc426cb5d
 }
 
 main {
@@ -2325,9 +2321,7 @@ label.star:before {
 	font-family: FontAwesome;
 }
 
-<<<<<<< HEAD
 
-=======
 .trash-icon {
 	width: 50px;
 	height: 50px;
@@ -2383,4 +2377,3 @@ label.star:before {
 	background-color: #ff7e82;
 	color: #fff;
 }
->>>>>>> fb47d97c4dad1bb5611a138c9b6bfb0dc426cb5d
