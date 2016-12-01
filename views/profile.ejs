@@ -330,45 +330,6 @@
 							</div>
 						</div>
 						<div class="row item-body" ng-show="active_tab === 'security_tab'">
-							<div class="row item-head">Login History</div>
-							<div class="row item-content" style="padding:20px;">
-								<div class="row">
-									<div class="col-md-3">
-										<span class="login-history-text">Browser/Device</span>
-									</div>
-									<div class="col-md-4">
-										<span class="login-history-text">Location <i class="fa fa-question-circle question-icon location-tooltip" data-toggle="tooltip" data-placement="right" title="Location is approximated."></i></span>
-									</div>
-									<div class="col-md-3">
-										<span class="login-history-text">Recent Activity</span>
-									</div>
-									<div class="col-md-2">
-									</div>
-								</div>
-								<div class="login-first-seperator"></div>
-								<div class="row" ng-repeat="history in data[2]">
-									<div class="col-md-3">
-										<div class="row"><span class="login-history-details">{{history.user_agent}}</span></div>
-									</div>
-									<div class="col-md-4">
-										<span class="login-history-details">San Jose, CA, United States</span>
-									</div>
-									<div class="col-md-3">
-										<span class="login-history-details">{{history.timestamp}}</span>
-									</div>
-									<div class="col-md-2">
-										<span class="login-green-text">Log Out</span>
-									</div>
-								</div>
-								<div class="login-second-seperator"></div>
-								<div class="row" style="padding-top:15px;">
-									<div class="col-md-12">
-										<span class="profile-left-text">If you see something unfamiliar, <span class="login-green-text">change your password.</span></span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row item-body" ng-show="active_tab === 'security_tab'">
 							<div class="row item-head">Change Your Password</div>
 							<div class="row item-content" style="padding:20px;">
 								<div class="row profile-bottom-space">
@@ -401,6 +362,42 @@
 			  							<button ng-click="updatePass()" class="btn btn-primary password-button">Update Password</button>
 			  						</div>
 			  					</div>
+							</div>
+						</div>
+						<div class="row item-body" ng-show="active_tab === 'security_tab'">
+							<div class="row item-head">Login History</div>
+							<div class="row item-content" style="padding:20px;">
+								<div class="row">
+									<div class="col-md-4">
+										<span class="login-history-text">Browser/Device</span>
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-4">
+										<span class="login-history-text">Location <i class="fa fa-question-circle question-icon location-tooltip" data-toggle="tooltip" data-placement="right" title="Location is approximated."></i></span>
+									</div>
+									<div class="col-md-3">
+										<span class="login-history-text">Recent Activity</span>
+									</div>
+								</div>
+								<div class="login-first-seperator"></div>
+								<div class="row" ng-repeat="history in data[2]">
+									<div class="col-md-4">
+										<div class="row"><span class="login-history-details">{{history.user_agent}}</span></div>
+									</div>
+									<div class="col-md-1"></div>
+									<div class="col-md-4">
+										<span class="login-history-details">San Jose, CA, United States</span>
+									</div>
+									<div class="col-md-3">
+										<span class="login-history-details">{{history.timestamp | date:'MMM dd, yyyy HH:mm:ss'}}</span>
+									</div>
+								</div>
+								<div class="login-second-seperator"></div>
+								<div class="row" style="padding-top:15px;">
+									<div class="col-md-12">
+										<span class="profile-left-text">If you see something unfamiliar, <span class="login-green-text">change your password above.</span></span>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="row item-body" ng-show="active_tab === 'properties_tab'">

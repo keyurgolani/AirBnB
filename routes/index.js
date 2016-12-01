@@ -1196,7 +1196,7 @@ router.get('/profile', function(req, res, next) {
 	//TODO naive nested query to be written to show performance increase.
 	async.parallel([
 		function(callback) {
-			mysql.executeQuery('select f_name, l_name, email, active, phone, gender, dob, st_address, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner ], (error, profile_details) => {
+			mysql.executeQuery('select f_name, l_name, email, active, phone, gender, month, day, year, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner ], (error, profile_details) => {
 				if (error) {
 					throw error;
 				} else {

@@ -21,8 +21,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('homepage', function() {})
 	.controller('login', function($scope, $http, Random, deviceDetector) {
+		$scope.deviceDetector = deviceDetector;
 		$scope.login = function() {
-
 			$http({
 				method : "POST",
 				url : '/login',
