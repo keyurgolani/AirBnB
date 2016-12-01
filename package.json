@@ -8,7 +8,6 @@
   "dependencies": {
     "angular": "^1.5.8",
     "angular-animate": "^1.5.8",
-    "angular-file-upload": "^2.3.4",
     "angular-base64-upload": "^0.1.19",
     "angular-messages": "^1.5.9",
     "async": "^2.1.4",
@@ -24,7 +23,6 @@
     "cache-manager-redis": "^0.3.0",
     "chai": "^3.5.0",
     "cookie-parser": "~1.4.3",
-    "d3": "^3.5.17",
     "debug": "~2.2.0",
     "ejs": "~2.4.1",
     "es5-shim": "^4.5.9",

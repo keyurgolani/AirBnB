@@ -39,7 +39,7 @@
 				</div>
 			</div>
 			<div class="col-md-6">
-				
+				<img src="./images/property.png" class="property-first-image">
 			</div>
 		</div>
 		<div class="row" ng-show="page === 2">
@@ -60,12 +60,14 @@
 					<div class="col-md-5 pull-left">
 						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
-					<div class="col-md-5" style="margin-left: 5px;">
-						<button class="btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
+					<div class="col-md-5 pull-right" style="margin-left: 5px;">
+						<button class="pull-right btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6"></div>
+			<div class="col-md-6">
+				<img src="./images/property.png" class="property-image">
+			</div>
 		</div>
 		<div class="row" ng-show="page === 3">
 			<div class="col-md-2"></div>
@@ -93,14 +95,14 @@
 					</div>
 				</div>
 				<div class="row" style="margin-top: 30px; margin-bottom: 20px;">
-					<span class="h3 que_2">How many guests can stay?</span>
+					<span class="h3 que_1">How many guests can stay?</span>
 				</div>
 				<div class="address-box form-control increment-box">
 			    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of guests" ng-model="number_of_guests"/></div>
 					<div ng-click="number_of_guests = number_of_guests - 1" class="count-button">-</div>
 					<div ng-click="number_of_guests = number_of_guests + 1" class="count-button" style="border-right:none;">+</div>
 				</div>
-				<div class="row que_1">
+				<div class="row que_1" style="margin-top: 30px; margin-bottom: 20px;">
 					<span class="h3 que_1">How many bathrooms will you provide?</span>
 				</div>
 				<div class="row" style="margin-top: 15px;">
@@ -116,12 +118,14 @@
 					<div class="col-md-5 pull-left">
 						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
-					<div class="col-md-5" style="margin-left: 5px;">
-						<button class="btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
+					<div class="col-md-5 pull-right" style="margin-left: 5px;">
+						<button class="pull-right btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6"></div>
+			<div class="col-md-6">
+				<img src="./images/property.png" class="property-image">
+			</div>
 		</div>
 		<div class="row"  ng-show="page === 4">
 			<div class="col-md-2"></div>
@@ -147,12 +151,14 @@
 					<div class="col-md-5 pull-left">
 						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
-					<div class="col-md-5">
-						<button class="btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
+					<div class="col-md-5 pull-right">
+						<button class="pull-right btn btn-primary back-next-button" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6"></div>
+			<div class="col-md-6">
+				<img src="./images/property.png" class="property-image">
+			</div>
 		</div>
 		<div class="row" ng-show="page === 5">
 			<div class="col-md-2"></div>
@@ -176,7 +182,7 @@
 				<div class="row que_1"style="margin-top: 20px" >
 					<span class="h3 que_1">Update your listing dates</span>
 				</div>
-				<div class="row search-box" style="margin-top: 15px">
+				<div class="row search-box" style="margin-top: 15px;width:100%;">
 					<span class="search-box-text">When</span>
 					<input type="text" class="form-control date-picker search-bar-placeholder" ng-model="dates" placeholder="Check In	→ Check Out" name="daterange" value="">
 				</div>
@@ -185,11 +191,13 @@
 						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
+						<button class="pull-right btn btn-primary back-next-button pull-right" ng-click="page = page + 1">Next</button>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6"></div>
+			<div class="col-md-6">
+				<img src="./images/property.png" class="property-image">
+			</div>
 		</div>
 		<div class="row" ng-show="page === 6">
 			<div class="col-md-2"></div>
@@ -236,12 +244,12 @@
 				</div>
 				<div class="seperator"></div>
 				<div class="row" ng-show="is_bid == 'true'">
-					<div class="col-md-4">
+					<div class="col-md-4" style="width:100%;">
 						<div class="row que_1" style="margin-bottom:20px;">
 							<span class="h3 que_1">Smart pricing</span>
 						</div>
 						<div class="row">
-							<div class="form-group">
+					  		<div class="form-group">
 					    		<label for="apt" class="labels">Minimum price</label>
 					    		<input type="text" class="form-control address-box curve-border" ng-model="price" id="apt" placeholder="Minimum bid">
 					  		</div>
@@ -249,7 +257,7 @@
 					</div>
 				</div>
 				<div class="row" ng-hide="is_bid == 'true'">
-					<div class="col-md-4">
+					<div class="col-md-4" style="width:100%;">
 						<div class="row que_1" style="margin-bottom:20px;">
 							<span class="h3 que_1">Base price</span>
 						</div>
@@ -270,7 +278,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6"></div>
+			<div class="col-md-6">
+				<img src="./images/property.png" class="property-image">
+			</div>
 		</div>
 		<div class="row" ng-show="page === 7">
 			<div class="col-md-2"></div>
@@ -288,7 +298,7 @@
 					<span class="h3 law-third-line">Most cities have rules covering homesharing, and the specific codes and ordinances can appear in many places (such as zoning, building, licensing or tax codes). In most places, you must register, get a permit, or obtain a license before you list your property or accept guests. You may also be responsible for collecting and remitting certain taxes. In some places, short-term rentals could be prohibited altogether.</span>
 				</div>
 				<div class="row law-third-line">
-					<span class="h3 law-third-line">Since you are responsible for your own decision to list or book, you should get comfortable with the applicable rules before listing on Airbnb. To get you started, we offer some helpful resources under â€œYour City Laws.â€�</span>
+					<span class="h3 law-third-line">Since you are responsible for your own decision to list or book, you should get comfortable with the applicable rules before listing on Airbnb. To get you started, we offer some helpful resources under "Your City Laws."</span>
 				</div>
 				<div class="row law-third-line">
 					<span class="h3 law-third-line">By accepting our Terms of Service and listing your space, you certify that you will follow applicable laws and regulations.</span>
@@ -298,11 +308,13 @@
 						<button class="pull-left btn btn-primary back-next-button" ng-click="page = page - 1">Back</button>
 					</div>
 					<div class="col-md-5 pull-right">
-						<button class="pull-right form-control btn btn-primary continue-button" ng-click="addListing()">Finish</button>
+						<button class="btn btn-primary back-next-button pull-right" ng-click="addListing()">Finish</button>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6"></div>
+			<div class="col-md-6">
+				<img src="./images/property.png" class="property-image">
+			</div>
 		</div>
 		<script>
 			$(function() {
