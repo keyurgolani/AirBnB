@@ -137,8 +137,17 @@
 											<span>Clear frontal face photos are an important way for hosts and guests to learn about each other. It's not much fun to host a landscape! Please upload a photo that clearly shows your face.</span>
 										</div>
 										<div class="row">
-											<input type="file" ng-model="data[7].photo" class="upload" name="photo" base-sixty-four-input accept="image/*" minsize="500" maxsize="16000" required>
-											<button class="btn btn-primary photo-upload-button">Upload a file from your computer</button>
+											<div class="col-md-6">
+												<div class="btn btn-primary photo-upload-button">
+													<span style="font-weight:bold;">Upload a file from your computer</span>
+													<input type="file" ng-model="data[7].photo" class="profile-photo-upload" name="photo" base-sixty-four-input accept="image/*" minsize="500" maxsize="16000" required>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div style="margin-top: 60px;">
+						  							<button class="btn btn-primary password-button">Record a new video</button>
+						  						</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -185,9 +194,13 @@
 									</div>
 								</div>
 								<div class="row video-footer">
-			  						<div class="col-md-6"></div>
-			  						<div class="col-md-6">
-			  							<input type="file" ng-model="data[7].video" class="upload" name="video" base-sixty-four-input accept="video/*" minsize="500" required>
+			  						<div class="col-md-6" style="padding-right: 120px;">
+			  							<div class="btn btn-primary photo-upload-button" style="margin-top: 0px;">
+											<span style="font-weight:bold;">Upload a file from your computer</span>
+											<input type="file" ng-model="data[7].video" class="profile-photo-upload" name="video" base-sixty-four-input accept="video/*" minsize="500" required>
+										</div>
+			  						</div>
+			  						<div class="col-md-6" style="margin-top: 15px;">
 			  							<button class="btn btn-primary password-button">Record a new video</button>
 			  						</div>
 			  					</div>
