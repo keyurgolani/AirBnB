@@ -1091,14 +1091,22 @@ router.post('/login', function(req, res, next) {
 						req.db.get('user_photos').findOne({
 							'user_id' : userObject.user_id
 						}).then((photo) => {
-							callback(null, photo.photo);
+							if(photo) {
+								callback(null, photo.photo);
+							} else {
+								callback(null, null);
+							}
 						});
 					},
 					function(callback) {
 						req.db.get('user_videos').findOne({
 							'user_id' : userObject.user_id
 						}).then((video) => {
-							callback(null, video.video);
+							if(video) {
+								callback(null, video.video);
+							} else {
+								callback(null, null);
+							}
 						});
 					}], function(error, results) {
 						if(error) {
