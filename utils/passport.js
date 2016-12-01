@@ -1,7 +1,7 @@
 var FacebookStrategy = require('passport-facebook').Strategy;
 var LocalStrategy = require("passport-local").Strategy;
 
-// var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt');
 
 var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
