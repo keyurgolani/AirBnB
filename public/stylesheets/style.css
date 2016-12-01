@@ -2159,29 +2159,6 @@ label.hostStar:before {
 	text-align: justify;
 }
 
-.photo-upload-button {
-	height: 64px;
-	width: 232px;
-	background-color: #fff;
-	font-size: 16px;
-	font-weight: bold;
-	border-radius: 4px;
-	border-color: #c4c4c4;
-	color: #484848;
-	padding: 9px 27px;
-	white-space: normal;
-	margin-top: 50px;
-}
-
-.photo-upload-button:hover, .photo-upload-button:active,
-	.photo-upload-button:focus, .photo-upload-button:active:focus {
-	cursor: pointer;
-	background-color: #fff;
-	border-color: #c4c4c4;
-	color: #484848;
-	outline: none;
-}
-
 .profile-video-container {
 	background-color: #edefed;
 	color: #484848;
@@ -2354,4 +2331,39 @@ label.star:before {
 	border-color: #ff7e82;
 	background-color: #ff7e82;
 	color: #fff;
+}
+
+.photo-upload-button {
+    position: relative;
+    overflow: hidden;
+    height: 64px;
+	width: 232px;
+	background-color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+	border-radius: 4px;
+	border-color: #c4c4c4;
+	color: #484848;
+	padding: 9px 27px;
+	white-space: normal;
+	margin-top: 50px;
+}
+.photo-upload-button input.profile-photo-upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    height: 64px;
+	width: 232px;
+}
+
+.photo-upload-button:hover, .photo-upload-button:active, .photo-upload-button:focus, .photo-upload-button:active:focus {
+	cursor: pointer;
+	background-color: #fff;
+	border-color: #c4c4c4;
+	color: #484848;
 }
