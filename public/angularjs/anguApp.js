@@ -21,7 +21,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 
 		$scope.login = function() {
-			console.log($scope.email);
 
 			$http({
 				method : "POST",
