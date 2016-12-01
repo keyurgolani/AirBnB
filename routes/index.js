@@ -229,6 +229,7 @@ router.post('/addProperty', (req, res, next) => {
 	var city = req.body.location.city;
 	var state = req.body.location.state;
 	var zip = req.body.location.zip;
+	var photos = req.body.photos;
 	var active = true; //Default value at the time of adding new property.
 
 	mysql.insertData('property_details', {
@@ -250,6 +251,12 @@ router.post('/addProperty', (req, res, next) => {
 			});
 		} else {
 			if (result.affectedRows === 1) {
+				for(var i = 0; i < photos.length; i++) {
+					req.db.get('property_photos').insert({
+						'property_id' : result.insertId,
+						'photos' : photos[i]
+					});
+				}
 				res.send({
 					'statusCode' : 200
 				});
@@ -1109,7 +1116,7 @@ router.get('/profile', function(req, res, next) {
 			});
 		},
 		function(callback) {
-			mysql.executeQuery('select title, st_address, city, state, zip, longitude, latitude, checkin, checkout, trip_amount, host_rating, receipt_id from trip_details inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id left join ratings on ratings.trip_id = trip_details.trip_id left join bill_details on bill_details.trip_id = trip_details.trip_id where user_id = ?', [ req.query.owner ], (error, trip_details) => {
+			mysql.executeQuery('select trip_details.trip_id, title, st_address, city, state, zip, longitude, latitude, checkin, checkout, trip_amount, host_rating, receipt_id from trip_details inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id left join ratings on ratings.trip_id = trip_details.trip_id left join bill_details on bill_details.trip_id = trip_details.trip_id where user_id = ?', [ req.query.owner ], (error, trip_details) => {
 				if (error) {
 					throw error;
 				} else {
@@ -1118,7 +1125,7 @@ router.get('/profile', function(req, res, next) {
 			});
 		},
 		function(callback) {
-			mysql.executeQuery('select f_name, l_name, st_address, city, state, zip, checkin, checkout, no_of_guests, traveller_rating from account_details inner join property_details on account_details.user_id = property_details.owner_id inner join listings on listings.property_id = property_details.property_id inner join trip_details on listings.listing_id = trip_details.listing_id left join ratings on ratings.trip_id = trip_details.trip_id where account_details.user_id = ?', [ req.query.owner ], (error, hosting_details) => {
+			mysql.executeQuery('select trip_details.trip_id, f_name, l_name, st_address, city, state, zip, checkin, checkout, no_of_guests, traveller_rating from account_details inner join property_details on account_details.user_id = property_details.owner_id inner join listings on listings.property_id = property_details.property_id inner join trip_details on listings.listing_id = trip_details.listing_id left join ratings on ratings.trip_id = trip_details.trip_id where account_details.user_id = ?', [ req.query.owner ], (error, hosting_details) => {
 				if (error) {
 					throw error;
 				} else {
@@ -1436,5 +1443,107 @@ router.get('/getBill', function(req, res, next) {
 		});
 	}
 });
+
+router.post('/updateRating', (req, res, next) => {
+	mysql.fetchData('rating_id', 'ratings', {
+		'trip_id' : req.body.trip
+	}, (error, results) => {
+		if(error || results.length === 0) {
+			if(req.body.is_host) {
+				mysql.insertData('ratings', {
+					'host_rating' : req.body.rating,
+					'trip_id' : req.body.trip
+				}, (error, results) => {
+					console.log(error, results);
+					if(error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if(results.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							})
+						} else {
+							res.send({
+								'statusCode' : 500
+							})
+						}
+					}
+				})
+			} else {
+				mysql.insertData('ratings', {
+					'traveller_rating' : req.body.rating,
+					'trip_id' : req.body.trip
+				}, (error, results) => {
+					console.log(error, results);
+					if(error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if(results.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							})
+						} else {
+							res.send({
+								'statusCode' : 500
+							})
+						}
+					}
+				})
+			}
+		} else {
+			if(req.body.is_host) {
+				mysql.updateData('ratings', {
+					'host_rating' : req.body.rating
+				}, {
+					'trip_id' : req.body.trip
+				}, (error, results) => {
+					console.log(error, results);
+					if(error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if(results.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							})
+						} else {
+							res.send({
+								'statusCode' : 500
+							})
+						}
+					}
+				})
+			} else {
+				mysql.updateData('ratings', {
+					'traveller_rating' : req.body.rating
+				}, {
+					'trip_id' : req.body.trip
+				}, (error, results) => {
+					console.log(error, results);
+					if(error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if(results.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							})
+						} else {
+							res.send({
+								'statusCode' : 500
+							})
+						}
+					}
+				})
+			}
+		}
+	})
+})
 
 module.exports = router;
