@@ -9,7 +9,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.city = '';
 		$scope.options = {};
 		$scope.options.watchEnter = true;
-
 		$scope.$watch('city', function() {
 			if ($scope.city !== undefined && typeof $scope.city !== 'string') {
 				$window.location.href = '/searchListing?where='+$scope.city.formatted_address;
@@ -110,14 +109,14 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 	})
-	.controller('profile', ($scope, $http) => {
+	.controller('profile', ($scope, $http, MonthNumber) => {
 		$scope.init = function(profileDetails) {
 			$scope.rating_test = 3;
 			$scope.data = JSON.parse(profileDetails);
 			$scope.active_tab = 'profile_tab';
 			$scope.genders = ['Male', 'Female', 'Other'];
 			$scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-			$scope.dates = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
+			$scope.dates = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
 			$scope.years = ['2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005',
 			                '2004', '2003', '2002', '2001', '2000', '1999', '1998', '1997', '1996', '1995', '1994', '1993',
 			                '1992', '1991', '1990', '1989', '1988', '1987', '1986', '1985', '1984', '1983', '1982', '1981',
@@ -130,7 +129,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			                '2028', '2029', '2030', '2031', '2032'];
 
 			$scope.add_card = function(){
-			// alert($scope.cc_no+" "+$scope.cc_month+" "+$scope.cc_year+" "+$scope.first_name+" "+$scope.last_name+" "+$scope.postal);
 				
 				var newCard = {
 						"cc_no":$scope.cc_no,
@@ -147,7 +145,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					data: newCard
 					
 				}).then((result) => {
-					alert("success");
 					
 					$scope.data[1].push({
 						"card_id" : result.card_id,
@@ -165,7 +162,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					$("#payment_model").modal('toggle');
 					// $scope.data = result.data.room_types;
 				}, (error) => {
-					alert("error");
 					// $scope.room_types = [];
 				})
 			}
@@ -199,11 +195,55 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			alert("please enter in all fields!");
 		}
 	}
+	
+	$scope.details = '';
+
+	$scope.$watch('details', function() {
+		if ($scope.details !== undefined && typeof $scope.details != 'string') {
+			console.log($scope.details);
+			var length = $scope.details.address_components.length;
+			$scope.streetAddress = $scope.details.address_components[0].long_name + " " + $scope.details.address_components[1].long_name;
+			$scope.city = $scope.details.address_components[3].long_name;
+			$scope.state = $scope.details.address_components[5].long_name;
+			$scope.zip = $scope.details.address_components[7].long_name;
+		}
+	});
+
+	$scope.updateProfile = () => {
+		
+        $http({
+            method : "POST",
+            url : "/updateProfile",
+            data:{
+                "f_name":$scope.data[0][0].f_name,
+                "l_name" : $scope.data[0][0].l_name,
+                "gender":$scope.data[0][0].gender,
+                "birth_month" : MonthNumber.getMonthFromString($scope.birth_month),
+                "birth_date" : $scope.birth_date,
+                "birth_year" : $scope.birth_year,
+                "email" : $scope.data[0][0].email,
+                "phone" : $scope.data[0][0].phone,
+                "st_address" : $scope.streetAddress,
+                "city" : $scope.city,
+                "state" : $scope.state,
+                "zip" : $scope.zip,
+                "description" : $scope.data[0][0].description
+            }
+        }).then((result) => {
+            alert('Success');
+        }, (error) => {
+        	alert('Error');
+        })
+    }
+	
+	console.log($scope.data);
 			                
 			if($scope.data[0][0].dob !== null) {
-				$scope.birth_month = $scope.months[new Date($scope.data.dob).getMonth() + 1];
-				$scope.birth_year = new Date($scope.data.dob).getFullYear();
-				$scope.birth_date = new Date($scope.data.dob).getDate();
+				$scope.birth_month = $scope.months[new Date($scope.data[0][0].dob).getMonth()];
+				$scope.birth_year = (new Date($scope.data[0][0].dob).getFullYear()).toString();
+				console.log($scope.birth_year);
+				$scope.birth_date = (new Date($scope.data[0][0].dob).getDate()).toString();
+				console.log($scope.birth_date);
 			} else {
 				$scope.birth_month = $scope.months[0];
 				$scope.birth_year = $scope.years[0];
@@ -687,5 +727,33 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			var month = date.getMonth();
 			var year = date.getFullYear();
 			return year + '-' + (month + 1) + '-' + day;
+		}
+	})
+	.service('MonthNumber', function() {
+		this.getMonthFromString = function(monthString) {
+			if(monthString === 'January')
+				return '01';
+			if(monthString === 'February')
+				return '02';
+			if(monthString === 'March')
+				return '03';
+			if(monthString === 'April')
+				return '04';
+			if(monthString === 'May')
+				return '05';
+			if(monthString === 'June')
+				return '06';
+			if(monthString === 'July')
+				return '07';
+			if(monthString === 'August')
+				return '08';
+			if(monthString === 'September')
+				return '09';
+			if(monthString === 'October')
+				return '10';
+			if(monthString === 'November')
+				return '11';
+			if(monthString === 'December')
+				return '12';
 		}
 	});

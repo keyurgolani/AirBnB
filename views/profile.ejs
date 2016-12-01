@@ -104,7 +104,7 @@
 										<span class="profile-left-text">Where You Live</span>
 									</div>
 									<div class="col-md-9">
-										<input type="text" class="profile-large-box" placeholder="" ng-click="selectCity" ng-autocomplete="city" ng-model="st_address" details="details" options="options">
+										<input type="text" class="profile-large-box" placeholder="" ng-click="selectCity" ng-autocomplete="address" ng-model="st_address" details="details" options="options">
 									</div>
 								</div>
 								<div class="row profile-bottom-space">
@@ -120,7 +120,7 @@
 									</div>
 								</div>
 								<div class="row">
-									<button class="btn btn-primary save-button">Save</button>
+									<button class="btn btn-primary save-button" ng-click="updateProfile()">Save</button>
 								</div>
 							</div>
 						</div>

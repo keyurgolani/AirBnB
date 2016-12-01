@@ -355,6 +355,75 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', (error, 
 	}
 }));
 
+router.post('/updateProfile', (req, res, next) => {
+	var f_name = req.body.f_name;
+	var l_name = req.body.l_name;
+	var gender = req.body.gender;
+	var birth_month = req.body.birth_month;
+	var birth_date = req.body.birth_date;
+	var birth_year = req.body.birth_year;
+	var email = req.body.email;
+	var phone = req.body.phone;
+	var st_address = req.body.st_address;
+	var city = req.body.city;
+	var state = req.body.state;
+	var zip = req.body.zip;
+	var description = req.body.description;
+	
+	console.log("inside");
+	
+	if(f_name === null || l_name === null || birth_month === null || birth_date === null || birth_year === null 
+			|| email === null || st_address === null || city === null || state === null || zip === null 
+			|| f_name === undefined || l_name === undefined || birth_month === undefined || birth_date === undefined || birth_year === undefined 
+			|| email === undefined || st_address === undefined || city === undefined || state === undefined || zip === undefined){
+		res.send({
+			'statusCode' : 500
+		});
+	} else {
+		
+		console.log("inside");
+	
+	var dob = birth_year + '-' + birth_month + '-' + birth_date;
+	var user_id = 1;
+	
+	async.parallel([
+		function(callback) {
+			mysql.updateData('account_details', {
+				"email" : email,
+				"f_name" : f_name,
+				"l_name" : l_name,
+			}, {"user_id" : user_id}, (error, result) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, result);
+				}
+			});
+		},
+		function(callback) {
+			mysql.updateData('profile_details', {
+				"gender" : gender,
+				"phone" : phone,
+				"st_address" : st_address,
+				"description" : description,
+				"dob" : dob,
+				"city" : city,
+				"state" : state,
+				"zip" : zip
+			},
+			{"user_id" : user_id}, (error, result2) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, result2);
+				}
+			});
+		}
+	]);
+	}
+});
+
+
 router.post('/fetchRoomTypes', (req, res, next) => {
 	mysql.fetchData('room_type_id, room_type', 'room_types', null, (error, results) => {
 		if (error) {
@@ -1006,7 +1075,7 @@ router.get('/profile', function(req, res, next) {
 	//TODO naive nested query to be written to show performance increase.
 	async.parallel([
 		function(callback) {
-			mysql.executeQuery('select f_name, l_name, email, active, phone, gender, dob, st_address, apt, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner ], (error, profile_details) => {
+			mysql.executeQuery('select f_name, l_name, email, active, phone, gender, dob, st_address, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner ], (error, profile_details) => {
 				if (error) {
 					throw error;
 				} else {
