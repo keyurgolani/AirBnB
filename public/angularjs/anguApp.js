@@ -126,168 +126,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.get_year = [ '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027',
 				'2028', '2029', '2030', '2031', '2032' ];
 
-			$scope.add_card = function() {
-
-				var newCard = {
-					"cc_no" : $scope.cc_no,
-					"cc_month" : $scope.cc_month,
-					"cc_year" : $scope.cc_year,
-					"first_name" : $scope.first_name,
-					"last_name" : $scope.last_name,
-					"security" : $scope.security_code,
-					"postal" : $scope.postal,
-					"country" : "United States"
-				}
-				$http({
-					method : "POST",
-					url : "/addCard",
-					data : newCard
-				}).then((result) => {
-
-					$scope.data[1].push({
-						"card_id" : result.card_id,
-						"card_number" : $scope.cc_no,
-						"exp_month" : $scope.cc_month,
-						"exp_year" : $scope.cc_year,
-						"first_name" : $scope.first_name,
-						"last_name" : $scope.last_name,
-						"cvv" : $scope.security_code,
-						"postal_code" : $scope.postal,
-						"country" : "United States"
-					});
-					console.log($scope.data[1]);
-
-					$("#payment_model").modal('toggle');
-				// $scope.data = result.data.room_types;
-				}, (error) => {
-					// $scope.room_types = [];
-				})
-			}
-
-
-			//update password
-			$scope.updatePass = function() {
-
-				if ($scope.new_pass !== undefined && $scope.old_pass !== undefined
-					&& $scope.confirm_pass !== undefined && $scope.new_pass.trim().length > 0 && $scope.old_pass.trim().length > 0) {
-					// statement
-
-					if ($scope.new_pass != $scope.confirm_pass) {
-						alert("Password mismatch!");
-					} else {
-
-						$http({
-							method : "POST",
-							url : "/updatePassword",
-							data : {
-								"old_pass" : $scope.old_pass,
-								"new_pass" : $scope.new_pass
-							}
-						}).then((result) => {
-							alert("Success");
-						}, (error) => {
-							console.log("Error", error);
-						})
-					}
-				} else {
-					alert("please enter in all fields!");
-				}
-			}
-
-			$scope.propertyDeactivate = function(property_id) {
-
-				$http({
-					method : "POST",
-					url : "/changePropertyStatus",
-					data : {
-						"status" : "deactivate",
-						"property_id" : property_id
-					}
-				}).then((result) => {
-					if (result.data.statusCode == 200) {
-						angular.forEach($scope.data[3], function(property, index) {
-							if (property.property_id == property_id) {
-								property.active = 0;
-							}
-							$scope.data[3].push(index, property);
-						});
-					}
-
-				}, (error) => {
-					// $scope.room_types = [];
-				})
-			}
-
-			$scope.propertyActivate = function(property_id) {
-				$http({
-					method : "POST",
-					url : "/changePropertyStatus",
-					data : {
-						"status" : "activate",
-						"property_id" : property_id
-					}
-				}).then((result) => {
-					if (result.data.statusCode == 200) {
-						angular.forEach($scope.data[3], function(property, index) {
-							if (property.property_id == property_id) {
-								property.active = 1;
-							}
-							$scope.data[3].push(index, property);
-						});
-					}
-
-				}, (error) => {
-					// $scope.room_types = [];
-				})
-			}
-
-			$scope.listingDeactivate = function(listing_id) {
-
-				$http({
-					method : "POST",
-					url : "/changeListingStatus",
-					data : {
-						"status" : "deactivate",
-						"listing_id" : listing_id
-					}
-				}).then((result) => {
-					if (result.data.statusCode == 200) {
-						angular.forEach($scope.data[4], function(listing, index) {
-							if (listing.listing_id == listing_id) {
-								listing.listing_active = 0;
-							}
-							$scope.data[4].push(index, listing);
-						});
-					}
-
-				}, (error) => {
-					// $scope.room_types = [];
-				})
-			}
-
-			$scope.listingActivate = function(listing_id) {
-
-				$http({
-					method : "POST",
-					url : "/changeListingStatus",
-					data : {
-						"status" : "deactivate",
-						"listing_id" : listing_id
-					}
-				}).then((result) => {
-					if (result.data.statusCode == 200) {
-						angular.forEach($scope.data[4], function(listing, index) {
-							if (listing.listing_id == listing_id) {
-								listing.listing_active = 0;
-							}
-							$scope.data[4].push(index, listing);
-						});
-					}
-
-				}, (error) => {
-					// $scope.room_types = [];
-				})
-			}
 			if ($scope.data[0][0].dob !== null) {
 				$scope.birth_month = $scope.months[new Date($scope.data[0][0].dob).getMonth()];
 				$scope.birth_year = (new Date($scope.data[0][0].dob).getFullYear()).toString();
@@ -299,6 +137,167 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.birth_year = $scope.years[0];
 				$scope.birth_date = $scope.dates[0];
 			}
+		}
+
+		$scope.updatePass = function() {
+
+			if ($scope.new_pass !== undefined && $scope.old_pass !== undefined
+				&& $scope.confirm_pass !== undefined && $scope.new_pass.trim().length > 0 && $scope.old_pass.trim().length > 0) {
+				// statement
+
+				if ($scope.new_pass != $scope.confirm_pass) {
+					alert("Password mismatch!");
+				} else {
+
+					$http({
+						method : "POST",
+						url : "/updatePassword",
+						data : {
+							"old_pass" : $scope.old_pass,
+							"new_pass" : $scope.new_pass
+						}
+					}).then((result) => {
+						alert("Success");
+					}, (error) => {
+						console.log("Error", error);
+					})
+				}
+			} else {
+				alert("please enter in all fields!");
+			}
+		}
+
+		$scope.propertyDeactivate = function(property_id) {
+
+			$http({
+				method : "POST",
+				url : "/changePropertyStatus",
+				data : {
+					"status" : "deactivate",
+					"property_id" : property_id
+				}
+			}).then((result) => {
+				if (result.data.statusCode == 200) {
+					angular.forEach($scope.data[3], function(property, index) {
+						if (property.property_id == property_id) {
+							property.active = 0;
+						}
+						$scope.data[3].push(index, property);
+					});
+				}
+
+			}, (error) => {
+				// $scope.room_types = [];
+			})
+		}
+
+		$scope.propertyActivate = function(property_id) {
+			$http({
+				method : "POST",
+				url : "/changePropertyStatus",
+				data : {
+					"status" : "activate",
+					"property_id" : property_id
+				}
+			}).then((result) => {
+				if (result.data.statusCode == 200) {
+					angular.forEach($scope.data[3], function(property, index) {
+						if (property.property_id == property_id) {
+							property.active = 1;
+						}
+						$scope.data[3].push(index, property);
+					});
+				}
+
+			}, (error) => {
+				// $scope.room_types = [];
+			})
+		}
+
+		$scope.listingDeactivate = function(listing_id) {
+
+			$http({
+				method : "POST",
+				url : "/changeListingStatus",
+				data : {
+					"status" : "deactivate",
+					"listing_id" : listing_id
+				}
+			}).then((result) => {
+				if (result.data.statusCode == 200) {
+					angular.forEach($scope.data[4], function(listing, index) {
+						if (listing.listing_id == listing_id) {
+							listing.listing_active = 0;
+						}
+						$scope.data[4].push(index, listing);
+					});
+				}
+
+			}, (error) => {
+				// $scope.room_types = [];
+			})
+		}
+
+		$scope.listingActivate = function(listing_id) {
+
+			$http({
+				method : "POST",
+				url : "/changeListingStatus",
+				data : {
+					"status" : "deactivate",
+					"listing_id" : listing_id
+				}
+			}).then((result) => {
+				if (result.data.statusCode == 200) {
+					angular.forEach($scope.data[4], function(listing, index) {
+						if (listing.listing_id == listing_id) {
+							listing.listing_active = 0;
+						}
+						$scope.data[4].push(index, listing);
+					});
+				}
+
+			}, (error) => {
+				// $scope.room_types = [];
+			})
+		}
+
+		$scope.add_card = function() {
+
+			var newCard = {
+				"cc_no" : $scope.cc_no,
+				"cc_month" : $scope.cc_month,
+				"cc_year" : $scope.cc_year,
+				"first_name" : $scope.first_name,
+				"last_name" : $scope.last_name,
+				"security" : $scope.security_code,
+				"postal" : $scope.postal,
+				"country" : "United States"
+			}
+			$http({
+				method : "POST",
+				url : "/addCard",
+				data : newCard
+			}).then((result) => {
+
+				$scope.data[1].push({
+					"card_id" : result.card_id,
+					"card_number" : $scope.cc_no,
+					"exp_month" : $scope.cc_month,
+					"exp_year" : $scope.cc_year,
+					"first_name" : $scope.first_name,
+					"last_name" : $scope.last_name,
+					"cvv" : $scope.security_code,
+					"postal_code" : $scope.postal,
+					"country" : "United States"
+				});
+				console.log($scope.data[1]);
+
+				$("#payment_model").modal('toggle');
+			// $scope.data = result.data.room_types;
+			}, (error) => {
+				// $scope.room_types = [];
+			})
 		}
 
 		// $scope.city
