@@ -129,8 +129,8 @@
 							<div class="row item-content" style="padding:20px;">
 								<div class="row">
 									<div class="col-md-4">
-										<div class="profile-photo" ng-show="data[7].photo"><img data-ng-src="data:{{data[7].photo.filetype}};base64,{{data[7].photo.base64}}" alt="Profile" style="height: 100%;"></div>
-										<div class="profile-photo glyphicon glyphicon-user no-profile" ng-hide="data[7].photo"></div>
+										<div class="profile-photo" ng-show="data[7]"><img data-ng-src="data:{{data[7].filetype}};base64,{{data[7].base64}}" alt="Profile" style="height: 100%;"></div>
+										<div class="profile-photo glyphicon glyphicon-user no-profile" ng-hide="data[7]"></div>
 									</div>
 									<div class="col-md-8">
 										<div class="row profile-photo-text">
@@ -140,12 +140,12 @@
 											<div class="col-md-6">
 												<div class="btn btn-primary photo-upload-button">
 													<span style="font-weight:bold;">Upload a file from your computer</span>
-													<input type="file" ng-model="data[7].photo" class="profile-photo-upload" name="photo" base-sixty-four-input accept="image/*" minsize="500" maxsize="16000" required>
+													<input type="file" ng-model="data[7]" class="profile-photo-upload" name="photo" base-sixty-four-input accept="image/*" minsize="500" maxsize="16000" required>
 												</div>
 											</div>
 											<div class="col-md-6">
 												<div style="margin-top: 60px;">
-						  							<button class="btn btn-primary password-button">Record a new video</button>
+						  							<button class="btn btn-primary password-button" ng-click="uploadPhoto()">Update Profile Photo</button>
 						  						</div>
 											</div>
 										</div>
@@ -158,14 +158,14 @@
 							<div class="row item-content" style="padding:20px;">
 								<div class="row">
 									<div class="col-md-6">
-										<div class="profile-video-container" ng-hide="data[7].video">
+										<div class="profile-video-container" ng-hide="data[8]">
 											<div class="row no-video-text">
-												<div ng-hide="data[7].video">You haven't recorded a video profile yet.</div>
+												<div ng-hide="data[8]">You haven't recorded a video profile yet.</div>
 												<i class="fa fa-video-camera camera-icon"></i>
 											</div>
 										</div>
-										<div class="row" ng-show="data[7].video">
-											<video autoplay controls src="data:{{data[7].video.filetype}};base64,{{data[7].video.base64}}" width="400px" style=""> 
+										<div class="row" ng-show="data[8]">
+											<video controls src="data:{{data[8].filetype}};base64,{{data[8].base64}}" width="400px" style=""> 
 											</video>
 										</div>
 									</div>
@@ -197,11 +197,11 @@
 			  						<div class="col-md-6" style="padding-right: 120px;">
 			  							<div class="btn btn-primary photo-upload-button" style="margin-top: 0px;">
 											<span style="font-weight:bold;">Upload a file from your computer</span>
-											<input type="file" ng-model="data[7].video" class="profile-photo-upload" name="video" base-sixty-four-input accept="video/*" minsize="500" required>
+											<input type="file" ng-model="data[8]" class="profile-photo-upload" name="video" base-sixty-four-input accept="video/*" minsize="500" required>
 										</div>
 			  						</div>
 			  						<div class="col-md-6" style="margin-top: 15px;">
-			  							<button class="btn btn-primary password-button">Record a new video</button>
+			  							<button class="btn btn-primary password-button" ng-click="uploadVideo()">Upload Profile Video</button>
 			  						</div>
 			  					</div>
 							</div>
@@ -773,5 +773,6 @@
 			</div>
 		</div>
 	</main>
+	<footer><% include ./footer %></footer>
 	</body>
 </html>
