@@ -59,7 +59,7 @@
 						<span class="icon-bar" style="border: 1px solid #AAAAAA;"></span>
 						<span class="icon-bar" style="border: 1px solid #AAAAAA;"></span>
 					</button>
-					<a class="navbar-brand" href="#" id="header_logo" ng-click="getHomePage();">
+					<a class="navbar-brand" ng-href="/" target="_self" id="header_logo">
 						<img src="images/airbnb_horizontal_lockup_web.png" height="58" width="127" alt="">
 					</a>
 				</div>
@@ -93,38 +93,39 @@
 		 				</li>
 		 				<li class="ul_Six" >
 		 					
-		 						<div class="col-lg-8" style="display:inline-block;" ng-hide="isLoggedIn">
+		 						<div class="col-lg-8" style="display:inline-block;" ng-hide="loggedInUser">
 		 							Help
 		 						</div>
-		 						<div class="col-lg-8" style="display:inline-block;" ng-show="isLoggedIn">
+		 						<div class="col-lg-8" style="display:inline-block;" ng-show="loggedInUser">
 		 							Trips
 		 						</div>
 		 					
 		 				</li>
 		 				<li class="ul_Seven" >
 		 					
-		 						<div  class="col-lg-12 ul_eight ul_Nine" data-toggle="modal" data-target=".signup-modal-md" ng-hide="isLoggedIn">
+		 						<div  class="col-lg-12 ul_eight ul_Nine" data-toggle="modal" data-target=".signup-modal-md" ng-hide="loggedInUser">
 		 							<a style="text-decoration:none;" href="#" class="ul_Nine">Sign Up</a>
 		 						</div>
 
-		 						<div  class="col-lg-12 ul_eight ul_Nine" ng-show="isLoggedIn">
+		 						<div  class="col-lg-12 ul_eight ul_Nine" ng-show="loggedInUser">
 		 							<a style="text-decoration:none;" href="#" class="ul_Nine">Messages</a>
 		 						</div>
 		 					
 		 				</li>
 		 				<li  class="ul_Ten">
 		 					<div  class="ul_Eleven">
-		 						<div  class="col-lg-12 ul_Nine" data-toggle="modal" data-target=".signin-modal-md" ng-hide="isLoggedIn">
+		 						<div  class="col-lg-12 ul_Nine" data-toggle="modal" data-target=".signin-modal-md" ng-hide="loggedInUser">
 		 							<a style="text-decoration:none;" href="#" class="ul_Nine">Log In</a>
 		 						</div>
 		 						<div  class="col-lg-12 ul_Nine dropdown">
-		 							<a style="text-decoration:none;" href="#" class="ul_Nine" ng-show="isLoggedIn" data-toggle="dropdown" class="dropdown-toggle">
-		 								<img style="border-radius:50%; margin-top:-8px; border: 2px solid grey;" src="images/user_one.jpeg" width="35" height="35" alt="here">
+		 							<a style="text-decoration:none;" href="#" class="ul_Nine" ng-show="loggedInUser" data-toggle="dropdown" class="dropdown-toggle">
+		 								<img ng-hide="loggedInUser.video" style="border-radius:50%; margin-top:-8px; border: 2px solid grey;" data-ng-src="data:{{loggedInUser.photo.filetype}};base64,{{loggedInUser.photo.base64}}" width="35" height="35" alt="No Profile Picture">
+		 								<video autoplay ng-show="loggedInUser.video" src="data:{{loggedInUser.video.filetype}};base64,{{loggedInUser.video.base64}}" width="35px" height="35" style="border-radius:50%; margin-top:-8px; border: 2px solid grey;"></video>
 		 							</a>
 										<ul class="dropdown-menu" id="menu1">
 										
 										
-										<li><a href="#">Another action</a></li>
+										<li><a ng-href="/profile?owner={{loggedInUser.user_id}}">Edit Profile</a></li>
 										<li><a href="#">Something else here</a></li>
 										<li class="divider"></li>
 										<li ng-click="logout();"><a href="#">Log Out</a></li>
@@ -397,7 +398,7 @@
 
 							<div class="facebookSignUpButton on-hover">
 								<i class="fa fa-facebook" style="color:white; font-size:18px;"></i>
-								<a href="" style="text-decoration:none;"><span class="text-center" style="color:white; font-size:16px; margin: 50px 95px 50px 85px">Log In with facebook</span></a>
+								<a href="/auth/facebook?user_agent={{deviceDetector}}" style="text-decoration:none;"><span class="text-center" style="color:white; font-size:16px; margin: 50px 95px 50px 85px">Log In with facebook</span></a>
 							</div>
 			    		</div>
 

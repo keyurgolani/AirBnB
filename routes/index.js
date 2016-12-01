@@ -1087,10 +1087,42 @@ router.post('/login', function(req, res, next) {
 					'user_id' : userObject.user_id,
 					'user_agent' : req.body.user_agent.os + ' ' + req.body.user_agent.os_version + ' - ' + req.body.user_agent.browser + ' ' + req.body.user_agent.browser_version
 				}, (error, result) => {
-					req.session.loggedInUser = userObject;
-					res.send({
-						'statusCode' : 200
-					});
+					async.parallel([function(callback) {
+						req.db.get('user_photos').findOne({
+							'user_id' : userObject.user_id
+						}).then((photo) => {
+							if(photo) {
+								callback(null, photo.photo);
+							} else {
+								callback(null, null);
+							}
+						});
+					},
+					function(callback) {
+						req.db.get('user_videos').findOne({
+							'user_id' : userObject.user_id
+						}).then((video) => {
+							if(video) {
+								callback(null, video.video);
+							} else {
+								callback(null, null);
+							}
+						});
+					}], function(error, results) {
+						if(error) {
+							res.send({
+								'statusCode' : 500
+							});
+						} else {
+							userObject.photo = results[0];
+							userObject.video = results[1];
+							req.session.loggedInUser = userObject;
+							res.send({
+								'statusCode' : 200
+							});
+						}
+					})
+					
 				});
 			} else {
 				res.send({
@@ -1196,7 +1228,7 @@ router.get('/profile', function(req, res, next) {
 	//TODO naive nested query to be written to show performance increase.
 	async.parallel([
 		function(callback) {
-			mysql.executeQuery('select f_name, l_name, email, active, phone, gender, dob, st_address, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner ], (error, profile_details) => {
+			mysql.executeQuery('select f_name, l_name, email, active, phone, gender, month, day, year, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner ], (error, profile_details) => {
 				if (error) {
 					throw error;
 				} else {
@@ -1693,28 +1725,20 @@ router.post('/updateRating', (req, res, next) => {
 	})
 });
 
-router.post('/getUserSessionInfo', (req, res, next) => {
-
-
-	console.log("{}{}{}{}{}{}{}{}{}");
-	console.log('req.session.loggedInUser', req.session.loggedInUser);
-
-	console.log(req.session);
-	if (req.session.loggedInUser !== undefined) {
+router.post('/getLoggedInUser', (req, res, next) => {
+	if (req.session !== undefined && req.session.loggedInUser !== undefined) {
 		res.send({
-			"success" : true
+			'session' : req.session.loggedInUser
 		});
 	} else {
 		res.send({
-			"success" : false
+			'session' : null
 		});
 	}
 
 });
 
 router.post('/logout', (req, res, next) => {
-
-
 	req.session.destroy();
 	res.send();
 
