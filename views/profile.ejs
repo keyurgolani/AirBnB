@@ -129,22 +129,26 @@
 							<div class="row item-content" style="padding:20px;">
 								<div class="row">
 									<div class="col-md-4">
-										<div class="profile-photo"><img src="images/city/paris.jpg" alt="Paris"></div>
+										<div class="profile-photo" ng-show="data[7].photo"><img data-ng-src="data:{{data[7].photo.filetype}};base64,{{data[7].photo.base64}}" alt="Profile" style="height: 100%;"></div>
+										<div class="profile-photo glyphicon glyphicon-user no-profile" ng-hide="data[7].photo"></div>
 									</div>
 									<div class="col-md-8">
 										<div class="row profile-photo-text">
 											<span>Clear frontal face photos are an important way for hosts and guests to learn about each other. It's not much fun to host a landscape! Please upload a photo that clearly shows your face.</span>
 										</div>
 										<div class="row">
-											<button class="btn btn-primary photo-upload-button">Upload a file from your computer</button>
+											<div class="col-md-6">
+												<div class="btn btn-primary photo-upload-button">
+													<span style="font-weight:bold;">Upload a file from your computer</span>
+													<input type="file" ng-model="data[7].photo" class="profile-photo-upload" name="photo" base-sixty-four-input accept="image/*" minsize="500" maxsize="16000" required>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div style="margin-top: 60px;">
+						  							<button class="btn btn-primary password-button">Record a new video</button>
+						  						</div>
+											</div>
 										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-4">
-										<div class="profile-photo glyphicon glyphicon-user no-profile"></div>
-									</div>
-									<div class="col-md-8">
 									</div>
 								</div>
 							</div>
@@ -154,11 +158,15 @@
 							<div class="row item-content" style="padding:20px;">
 								<div class="row">
 									<div class="col-md-6">
-										<div class="profile-video-container">
+										<div class="profile-video-container" ng-hide="data[7].video">
 											<div class="row no-video-text">
-												<div>You haven't recorded a video profile yet.</div>
+												<div ng-hide="data[7].video">You haven't recorded a video profile yet.</div>
 												<i class="fa fa-video-camera camera-icon"></i>
 											</div>
+										</div>
+										<div class="row" ng-show="data[7].video">
+											<video autoplay controls src="data:{{data[7].video.filetype}};base64,{{data[7].video.base64}}" width="400px" style=""> 
+											</video>
 										</div>
 									</div>
 									<div class="col-md-6" style="padding-left: 20px;">
@@ -186,8 +194,13 @@
 									</div>
 								</div>
 								<div class="row video-footer">
-			  						<div class="col-md-6"></div>
-			  						<div class="col-md-6">
+			  						<div class="col-md-6" style="padding-right: 120px;">
+			  							<div class="btn btn-primary photo-upload-button" style="margin-top: 0px;">
+											<span style="font-weight:bold;">Upload a file from your computer</span>
+											<input type="file" ng-model="data[7].video" class="profile-photo-upload" name="video" base-sixty-four-input accept="video/*" minsize="500" required>
+										</div>
+			  						</div>
+			  						<div class="col-md-6" style="margin-top: 15px;">
 			  							<button class="btn btn-primary password-button">Record a new video</button>
 			  						</div>
 			  					</div>
@@ -416,8 +429,8 @@
 										<div class="row">
 											<div class="col-md-7"></div>
 											<div class="col-md-5">
-												<button class="btn btn-primary deactivate-button" ng-show="property.active === 1">Deactivate</button>
-												<button class="btn btn-primary activate-button" ng-hide="property.active === 1">Activate</button>
+												<button ng-click="propertyDeactivate(property.property_id)" class="btn btn-primary deactivate-button" ng-show="property.active === 1">Deactivate</button>
+												<button ng-click="propertyActivate(property.property_id)" class="btn btn-primary activate-button" ng-hide="property.active === 1">Activate</button>
 											</div>
 										</div>
 									</div>
@@ -451,8 +464,8 @@
 										<div class="row">
 											<div class="col-md-7 details-text">{{listing.start_date | date:'MM/dd/yyyy'}} - {{listing.end_date | date:'MM/dd/yyyy'}}</div>
 											<div class="col-md-5">
-												<button class="btn btn-primary deactivate-button" ng-show="listing.listing_active === 1 && listing.property_active === 1">Deactivate</button>
-												<div class="row inactive-text" ng-hide="listing.listing_active === 1 || listing.property_active === 1">Inactive</div>
+												<button class="btn btn-primary deactivate-button" ng-click="listingDeactivate(listing.listing_id)" ng-show="listing.listing_active === 1 && listing.property_active === 1">Deactivate</button>
+												<div class="row inactive-text" ng-click="listingActivate(listing.listing_id)" ng-hide="listing.listing_active === 1 && listing.property_active === 1">Inactive</div>
 											</div>
 										</div>
 									</div>
@@ -523,7 +536,228 @@
 						</div>
 						<div class="row item-body" ng-show="active_tab === 'host_tab'">
 							<div class="row item-head">Dashboard</div>
+
 							<div class="row item-content">
+
+								<div class="col-lg-6">
+									
+									<div class="panel panel-default">
+										
+										<div class="panel-heading text-center">
+											<span style="font-size:16px; font-color: #2A3F54;">Clicks Per Page</span>
+										</div>
+										<div class="panel-body text-center">
+
+											<div class="dropdown">
+											  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Page to check clicks per page
+											  <span class="caret"></span></button>
+											  <ul class="dropdown-menu">
+											    <li><a href="#" style="font-size: 12px;">HTML</a></li>
+											    <li><a href="#" style="font-size: 12px;">CSS</a></li>
+											    <li><a href="#" style="font-size: 12px;">JavaScript</a></li>
+											  </ul>
+											</div>
+
+											<div class="btn btn-default" ng-click="showBarcpp();">
+												BAR
+											</div>
+											<div class="btn btn-default" ng-click="showPiecpp();">
+												PIE
+											</div>
+											
+											<div class="row" ng-controller="adminPieController">
+								
+												<nvd3 options="options" data="hostData" ng-show="piecpp"></nvd3>
+
+											</div>
+
+											<div class="row" ng-controller="adminBarController">
+								
+												<nvd3 options="hostOptions" data="hostData" ng-show="barcpp"></nvd3>
+
+											</div>
+										
+										</div>
+									
+									</div>
+
+								</div>
+
+
+								<div class="col-lg-6">
+									
+									<div class="panel panel-default">
+										
+										<div class="panel-heading text-center">
+											<span style="font-size:16px; font-color: #2A3F54;">Property Clicks</span>
+										</div>
+										<div class="panel-body text-center">
+
+											<div class="btn btn-default" ng-click="showBarpc();">
+												BAR
+											</div>
+											<div class="btn btn-default" ng-click="showPiepc();">
+												PIE
+											</div>
+											
+											<div class="row" ng-controller="adminPieController">
+								
+												<nvd3 options="options" data="hostData" ng-show="piepc"></nvd3>
+
+											</div>
+
+											<div class="row" ng-controller="adminBarController">
+								
+												<nvd3 options="hostOptions" data="hostData" ng-show="barpc"></nvd3>
+
+											</div>
+										
+										</div>
+									
+									</div>
+
+								</div>
+
+								<div class="col-lg-6">
+									
+									<div class="panel panel-default">
+										
+										<div class="panel-heading text-center">
+											<span style="font-size:16px; font-color: #2A3F54;">Least Seen Areas / Properties</span>
+										</div>
+										<div class="panel-body text-center">
+
+											<div class="btn btn-default" ng-click="showBarlsa();">
+												BAR
+											</div>
+											<div class="btn btn-default" ng-click="showPielsa();">
+												PIE
+											</div>
+											
+											<div class="row" ng-controller="adminPieController">
+								
+												<nvd3 options="options" data="hostData" ng-show="pielsa"></nvd3>
+
+											</div>
+
+											<div class="row" ng-controller="adminBarController">
+								
+												<nvd3 options="hostOptions" data="hostData" ng-show="barlsa"></nvd3>
+
+											</div>
+										
+										</div>
+									
+									</div>
+
+								</div>
+
+
+								<div class="col-lg-6">
+									
+									<div class="panel panel-default">
+										
+										<div class="panel-heading text-center">
+											<span style="font-size:16px; font-color: #2A3F54;">Property Reviews</span>
+										</div>
+										<div class="panel-body text-center">
+
+											<div class="btn btn-default" ng-click="showBarpr();">
+												BAR
+											</div>
+											<div class="btn btn-default" ng-click="showPiepr();">
+												PIE
+											</div>
+											
+											<div class="row" ng-controller="adminPieController">
+								
+												<nvd3 options="options" data="hostData" ng-show="piepr"></nvd3>
+
+											</div>
+
+											<div class="row" ng-controller="adminBarController">
+								
+												<nvd3 options="hostOptions" data="hostData" ng-show="barpr"></nvd3>
+
+											</div>
+										
+										</div>
+									
+									</div>
+
+								</div>
+
+								<div class="col-lg-6">
+									
+									<div class="panel panel-default">
+										
+										<div class="panel-heading text-center">
+											<span style="font-size:16px; font-color: #2A3F54;">User Groups</span>
+										</div>
+										<div class="panel-body text-center">
+
+											<div class="btn btn-default" ng-click="showBarug();">
+												BAR
+											</div>
+											<div class="btn btn-default" ng-click="showPieug();">
+												PIE
+											</div>
+											
+											<div class="row" ng-controller="adminPieController">
+								
+												<nvd3 options="options" data="hostData" ng-show="pieug"></nvd3>
+
+											</div>
+
+											<div class="row" ng-controller="adminBarController">
+								
+												<nvd3 options="hostOptions" data="hostData" ng-show="barug"></nvd3>
+
+											</div>
+										
+										</div>
+									
+									</div>
+
+								</div>
+
+								<div class="col-lg-6">
+									
+									<div class="panel panel-default">
+										
+										<div class="panel-heading text-center">
+											<span style="font-size:16px; font-color: #2A3F54;">Bids Information</span>
+										</div>
+										<div class="panel-body text-center">
+
+											<div class="btn btn-default" ng-click="showBarbi();">
+												BAR
+											</div>
+											<div class="btn btn-default" ng-click="showPiebi();">
+												PIE
+											</div>
+											
+											<div class="row" ng-controller="adminPieController">
+								
+												<nvd3 options="options" data="hostData" ng-show="piebi"></nvd3>
+
+											</div>
+
+											<div class="row" ng-controller="adminBarController">
+								
+												<nvd3 options="hostOptions" data="hostData" ng-show="barbi"></nvd3>
+
+											</div>
+										
+										</div>
+									
+									</div>
+
+								</div>
+
+								
+	
+
 							</div>
 						</div>
 					</div>

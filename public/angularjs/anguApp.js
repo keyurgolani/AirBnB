@@ -1,28 +1,27 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'naif.base64'])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'angularFileUpload', 'naif.base64' ])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
 			requireBase : false
 		});
-	}])
+	} ])
 	.controller("searchBarController", function($scope, $http, $window) {
 		$scope.city = '';
-		$scope.options = {};
+		// console.log('$scope.city', $scope.city);
+		$scope.options = {
+			country : 'usa',
+			types : '(cities)'
+		};
 		$scope.options.watchEnter = true;
 		$scope.$watch('city', function() {
-			if ($scope.city !== undefined && typeof $scope.city !== 'string') {
-				$window.location.href = '/searchListing?where='+$scope.city.formatted_address;
+			if ($scope.city !== undefined && (typeof ($scope.city)) !== 'string') {
+				$window.location.href = '/searchListing?where=' + $scope.city.formatted_address;
 			}
 		});
 	})
-	.controller('homepage', function() {
-		
-	})
+	.controller('homepage', function() {})
 	.controller('login', function($scope, $http, Random) {
-
-
 		$scope.login = function() {
-			console.log($scope.email);
 
 			$http({
 				method : "POST",
@@ -40,7 +39,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 
 		$scope.host = function() {
-			
+
 			$http({
 				method : "POST",
 				url : '/login',
@@ -54,54 +53,54 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log("Error", error);
 			})
 		};
+
 	})
 	.controller('viewListing', function($scope, $http, Random, Date) {
 		$scope.init = function(retrievedData) {
 			var data = JSON.parse(retrievedData);
-			$scope.data = JSON.parse(retrievedData);	
-			console.log('$scope.data', $scope.data);		
-
+			$scope.data = JSON.parse(retrievedData);
+			console.log('$scope.data', $scope.data);
 		}
-		
+
 		$scope.requestBooking = function() {
 			$http({
 				method : "POST",
 				url : '/placeBidOnListing',
 				data : {
 					"checkin" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[0].trim()),
-					"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()), 
+					"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()),
 					"bid_amount" : $scope.bid_amount,
 					"listing_id" : $scope.data.listing_id,
 					"userId" : 1,
 					"guests" : $scope.noOfGuests,
 					"daily_price" : $scope.data.daily_price,
-					"accommodations" :  $scope.data.accommodations
+					"accommodations" : $scope.data.accommodations
 				}
 			}).then((results) => {
-				if(results.data.statusCode === 200) {
+				if (results.data.statusCode === 200) {
 					console.log("Results", results);
-					
+
 					$scope.data.daily_price = results.data.updated_base_price;
 				}
 			}, (error) => {
 				console.log("Error", error);
 			})
 		}
-		
+
 		$scope.instantBooking = function() {
 			$http({
 				method : "POST",
 				url : '/instantBook',
 				data : {
 					"checkin" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[0].trim()),
-					"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()), 
+					"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()),
 					"listing_id" : $scope.data.listing_id,
 					"userId" : 1,
 					"guests" : $scope.noOfGuests,
 					"trip_amount" : $scope.data.daily_price
 				}
 			}).then((results) => {
-				if(results.data.statusCode === 200) {
+				if (results.data.statusCode === 200) {
 					console.log("Results", results);
 				}
 			}, (error) => {
@@ -111,56 +110,55 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('profile', ($scope, $http, MonthNumber) => {
 		$scope.init = function(profileDetails) {
-			$scope.rating_test = 3;
 			$scope.data = JSON.parse(profileDetails);
 			$scope.active_tab = 'profile_tab';
-			$scope.genders = ['Male', 'Female', 'Other'];
-			$scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-			$scope.dates = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
-			$scope.years = ['2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005',
-			                '2004', '2003', '2002', '2001', '2000', '1999', '1998', '1997', '1996', '1995', '1994', '1993',
-			                '1992', '1991', '1990', '1989', '1988', '1987', '1986', '1985', '1984', '1983', '1982', '1981',
-			                '1980', '1979', '1978', '1977', '1976', '1975', '1974', '1973', '1972', '1971', '1970', '1969',
-			                '1968', '1967', '1966', '1965', '1964', '1963', '1962', '1961', '1960', '1959', '1958', '1957'];
-			
-			$scope.get_month=[1,2,3,4,5,6,7,8,9,10,11,12];
+			$scope.genders = [ 'Male', 'Female', 'Other' ];
+			$scope.months = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
+			$scope.dates = [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31' ];
+			$scope.years = [ '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005',
+				'2004', '2003', '2002', '2001', '2000', '1999', '1998', '1997', '1996', '1995', '1994', '1993',
+				'1992', '1991', '1990', '1989', '1988', '1987', '1986', '1985', '1984', '1983', '1982', '1981',
+				'1980', '1979', '1978', '1977', '1976', '1975', '1974', '1973', '1972', '1971', '1970', '1969',
+				'1968', '1967', '1966', '1965', '1964', '1963', '1962', '1961', '1960', '1959', '1958', '1957' ];
 
-			$scope.get_year=['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027',
-			                '2028', '2029', '2030', '2031', '2032'];
+			$scope.get_month = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ];
 
-			$scope.add_card = function(){
-				
+			$scope.get_year = [ '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027',
+				'2028', '2029', '2030', '2031', '2032' ];
+
+			$scope.add_card = function() {
+
 				var newCard = {
-						"cc_no":$scope.cc_no,
-						"cc_month":$scope.cc_month,
-						"cc_year":$scope.cc_year,
-						"first_name":$scope.first_name,
-						"last_name":$scope.last_name,
-						"security":$scope.security_code,
-						"postal":$scope.postal,
-						"country" : "United States"}
+					"cc_no" : $scope.cc_no,
+					"cc_month" : $scope.cc_month,
+					"cc_year" : $scope.cc_year,
+					"first_name" : $scope.first_name,
+					"last_name" : $scope.last_name,
+					"security" : $scope.security_code,
+					"postal" : $scope.postal,
+					"country" : "United States"
+				}
 				$http({
-				method : "POST",
+					method : "POST",
 					url : "/addCard",
-					data: newCard
-					
+					data : newCard
 				}).then((result) => {
-					
+
 					$scope.data[1].push({
 						"card_id" : result.card_id,
-						"card_number":$scope.cc_no,
-						"exp_month":$scope.cc_month,
-						"exp_year":$scope.cc_year,
-						"first_name":$scope.first_name,
-						"last_name":$scope.last_name,
-						"cvv":$scope.security_code,
-						"postal_code":$scope.postal,
+						"card_number" : $scope.cc_no,
+						"exp_month" : $scope.cc_month,
+						"exp_year" : $scope.cc_year,
+						"first_name" : $scope.first_name,
+						"last_name" : $scope.last_name,
+						"cvv" : $scope.security_code,
+						"postal_code" : $scope.postal,
 						"country" : "United States"
-				});
+					});
 					console.log($scope.data[1]);
 
 					$("#payment_model").modal('toggle');
-					// $scope.data = result.data.room_types;
+				// $scope.data = result.data.room_types;
 				}, (error) => {
 					// $scope.room_types = [];
 				})
@@ -168,77 +166,129 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 
 			//update password
-	$scope.updatePass = function() {
+			$scope.updatePass = function() {
 
-		if ($scope.new_pass !== undefined && $scope.old_pass !== undefined
-			&& $scope.confirm_pass !== undefined && $scope.new_pass.trim().length > 0 && $scope.old_pass.trim().length > 0) {
+				if ($scope.new_pass !== undefined && $scope.old_pass !== undefined
+					&& $scope.confirm_pass !== undefined && $scope.new_pass.trim().length > 0 && $scope.old_pass.trim().length > 0) {
 					// statement
-				
-				if($scope.new_pass != $scope.confirm_pass){
-					alert("Password mismatch!");
+
+					if ($scope.new_pass != $scope.confirm_pass) {
+						alert("Password mismatch!");
+					} else {
+
+						$http({
+							method : "POST",
+							url : "/updatePassword",
+							data : {
+								"old_pass" : $scope.old_pass,
+								"new_pass" : $scope.new_pass
+							}
+						}).then((result) => {
+							alert("Success");
+						}, (error) => {
+							console.log("Error", error);
+						})
+					}
 				} else {
+					alert("please enter in all fields!");
+				}
+			}
+
+			$scope.propertyDeactivate = function(property_id) {
 
 				$http({
 					method : "POST",
-					url : "/updatePassword",
-					data:{
-						"old_pass" : $scope.old_pass,
-						"new_pass" : $scope.new_pass
+					url : "/changePropertyStatus",
+					data : {
+						"status" : "deactivate",
+						"property_id" : property_id
 					}
 				}).then((result) => {
-					alert("Success");
+					if (result.data.statusCode == 200) {
+						angular.forEach($scope.data[3], function(property, index) {
+							if (property.property_id == property_id) {
+								property.active = 0;
+							}
+							$scope.data[3].push(index, property);
+						});
+					}
+
 				}, (error) => {
-					console.log("Error", error);
+					// $scope.room_types = [];
 				})
 			}
-		}else{
-			alert("please enter in all fields!");
-		}
-	}
-	
-	$scope.details = '';
 
-	$scope.$watch('details', function() {
-		if ($scope.details !== undefined && typeof $scope.details != 'string') {
-			console.log($scope.details);
-			var length = $scope.details.address_components.length;
-			$scope.streetAddress = $scope.details.address_components[0].long_name + " " + $scope.details.address_components[1].long_name;
-			$scope.city = $scope.details.address_components[3].long_name;
-			$scope.state = $scope.details.address_components[5].long_name;
-			$scope.zip = $scope.details.address_components[7].long_name;
-		}
-	});
+			$scope.propertyActivate = function(property_id) {
+				$http({
+					method : "POST",
+					url : "/changePropertyStatus",
+					data : {
+						"status" : "activate",
+						"property_id" : property_id
+					}
+				}).then((result) => {
+					if (result.data.statusCode == 200) {
+						angular.forEach($scope.data[3], function(property, index) {
+							if (property.property_id == property_id) {
+								property.active = 1;
+							}
+							$scope.data[3].push(index, property);
+						});
+					}
 
-	$scope.updateProfile = () => {
-		
-        $http({
-            method : "POST",
-            url : "/updateProfile",
-            data:{
-                "f_name":$scope.data[0][0].f_name,
-                "l_name" : $scope.data[0][0].l_name,
-                "gender":$scope.data[0][0].gender,
-                "birth_month" : MonthNumber.getMonthFromString($scope.birth_month),
-                "birth_date" : $scope.birth_date,
-                "birth_year" : $scope.birth_year,
-                "email" : $scope.data[0][0].email,
-                "phone" : $scope.data[0][0].phone,
-                "st_address" : $scope.streetAddress,
-                "city" : $scope.city,
-                "state" : $scope.state,
-                "zip" : $scope.zip,
-                "description" : $scope.data[0][0].description
-            }
-        }).then((result) => {
-            alert('Success');
-        }, (error) => {
-        	alert('Error');
-        })
-    }
-	
-	console.log($scope.data);
-			                
-			if($scope.data[0][0].dob !== null) {
+				}, (error) => {
+					// $scope.room_types = [];
+				})
+			}
+
+			$scope.listingDeactivate = function(listing_id) {
+
+				$http({
+					method : "POST",
+					url : "/changeListingStatus",
+					data : {
+						"status" : "deactivate",
+						"listing_id" : listing_id
+					}
+				}).then((result) => {
+					if (result.data.statusCode == 200) {
+						angular.forEach($scope.data[4], function(listing, index) {
+							if (listing.listing_id == listing_id) {
+								listing.listing_active = 0;
+							}
+							$scope.data[4].push(index, listing);
+						});
+					}
+
+				}, (error) => {
+					// $scope.room_types = [];
+				})
+			}
+
+			$scope.listingActivate = function(listing_id) {
+
+				$http({
+					method : "POST",
+					url : "/changeListingStatus",
+					data : {
+						"status" : "deactivate",
+						"listing_id" : listing_id
+					}
+				}).then((result) => {
+					if (result.data.statusCode == 200) {
+						angular.forEach($scope.data[4], function(listing, index) {
+							if (listing.listing_id == listing_id) {
+								listing.listing_active = 0;
+							}
+							$scope.data[4].push(index, listing);
+						});
+					}
+
+				}, (error) => {
+					// $scope.room_types = [];
+				})
+			}
+			if ($scope.data[0][0].dob !== null) {
 				$scope.birth_month = $scope.months[new Date($scope.data[0][0].dob).getMonth()];
 				$scope.birth_year = (new Date($scope.data[0][0].dob).getFullYear()).toString();
 				console.log($scope.birth_year);
@@ -250,55 +300,261 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.birth_date = $scope.dates[0];
 			}
 		}
-		
+
+		// $scope.city
+		// console.log('$scope.city', $scope.city);
+		// // $scope.details
+		// console.log('$scope.details', $scope.details);
+
+		$scope.details = '';
+
+		$scope.$watch('details', function() {
+			if ($scope.details !== undefined && typeof $scope.details != 'string') {
+				console.log($scope.details);
+				var length = $scope.details.address_components.length;
+				$scope.streetAddress = $scope.details.address_components[0].long_name + " " + $scope.details.address_components[1].long_name;
+				$scope.city = $scope.details.address_components[3].long_name;
+				$scope.state = $scope.details.address_components[5].long_name;
+				$scope.zip = $scope.details.address_components[7].long_name;
+			}
+		});
+
+		$scope.updateProfile = () => {
+
+			$http({
+				method : "POST",
+				url : "/updateProfile",
+				data : {
+					"f_name" : $scope.data[0][0].f_name,
+					"l_name" : $scope.data[0][0].l_name,
+					"gender" : $scope.data[0][0].gender,
+					"birth_month" : MonthNumber.getMonthFromString($scope.birth_month),
+					"birth_date" : $scope.birth_date,
+					"birth_year" : $scope.birth_year,
+					"email" : $scope.data[0][0].email,
+					"phone" : $scope.data[0][0].phone,
+					"st_address" : $scope.streetAddress,
+					"city" : $scope.city,
+					"state" : $scope.state,
+					"zip" : $scope.zip,
+					"description" : $scope.data[0][0].description
+				}
+			}).then((result) => {
+				alert('Success');
+			}, (error) => {
+				alert('Error');
+			})
+		}
+
+		$scope.$watch('data[7].video', function() {
+			$scope.trustedVideo = $sce.trustAsResourceUrl(data[7].video.base64);
+		});
+
+		$scope.add_card = function() {
+			var newCard = {
+				"cc_no" : $scope.cc_no,
+				"cc_month" : $scope.cc_month,
+				"cc_year" : $scope.cc_year,
+				"first_name" : $scope.first_name,
+				"last_name" : $scope.last_name,
+				"security" : $scope.security_code,
+				"postal" : $scope.postal,
+				"country" : "United States"
+			}
+			$http({
+				method : "POST",
+				url : "/addCard",
+				data : newCard
+			}).then((result) => {
+				$scope.data[1].push({
+					"card_id" : result.card_id,
+					"card_number" : $scope.cc_no,
+					"exp_month" : $scope.cc_month,
+					"exp_year" : $scope.cc_year,
+					"first_name" : $scope.first_name,
+					"last_name" : $scope.last_name,
+					"cvv" : $scope.security_code,
+					"postal_code" : $scope.postal,
+					"country" : "United States"
+				});
+				console.log($scope.data[1]);
+
+				$("#payment_model").modal('toggle');
+			// $scope.data = result.data.room_types;
+			}, (error) => {
+				alert("error");
+			// $scope.room_types = [];
+			})
+		};
+
+		$scope.updatePass = function() {
+			if ($scope.new_pass !== undefined && $scope.old_pass !== undefined
+				&& $scope.confirm_pass !== undefined && $scope.new_pass.trim().length > 0 && $scope.old_pass.trim().length > 0) {
+				// statement
+
+				if ($scope.new_pass != $scope.confirm_pass) {
+					alert("Password mismatch!");
+				} else {
+
+					$http({
+						method : "POST",
+						url : "/updatePassword",
+						data : {
+							"old_pass" : $scope.old_pass,
+							"new_pass" : $scope.new_pass
+						}
+					}).then((result) => {
+						alert("Success");
+					}, (error) => {
+						console.log("Error", error);
+					})
+				}
+			} else {
+				alert("please enter in all fields!");
+			}
+		};
+
 		$scope.updateHostRating = function(trip, rating) {
 			$http({
 				method : "POST",
 				url : '/updateRating',
 				data : {
 					"rating" : rating,
-					"trip" : trip, 
+					"trip" : trip,
 					"is_host" : true
 				}
 			}).then((results) => {
-				if(results.data.statusCode === 200) {
+				if (results.data.statusCode === 200) {
 					console.log("Results", results);
 				}
 			}, (error) => {
 				console.log("Error", error);
 			})
 		}
-		
+
 		$scope.updateTravellerRating = function(trip, rating) {
 			$http({
 				method : "POST",
 				url : '/updateRating',
 				data : {
 					"rating" : rating,
-					"trip" : trip, 
+					"trip" : trip,
 					"is_host" : false
 				}
 			}).then((results) => {
-				if(results.data.statusCode === 200) {
+				if (results.data.statusCode === 200) {
 					console.log("Results", results);
 				}
 			}, (error) => {
 				console.log("Error", error);
 			})
 		}
-		
+
+		$scope.barcpp = true;
+		$scope.piecpp = false;
+
+		$scope.barpc = true;
+		$scope.piepc = false;
+
+		$scope.barlsa = true;
+		$scope.pielsa = false;
+
+		$scope.barpr = true;
+		$scope.piepr = false;
+
+		$scope.barug = true;
+		$scope.pieug = false;
+
+		$scope.barbi = true;
+		$scope.piebi = false;
+
+		$scope.showBarcpp = function() {
+			$scope.barcpp = true;
+			$scope.piecpp = false;
+
+		};
+
+
+		$scope.showPiecpp = function() {
+			$scope.barcpp = false;
+			$scope.piecpp = true;
+
+		};
+
+
+		$scope.showBarpc = function() {
+
+			$scope.barpc = true;
+			$scope.piepc = false;
+		};
+
+		$scope.showPiepc = function() {
+			$scope.barpc = false;
+			$scope.piepc = true;
+
+		};
+
+
+		$scope.showBarlsa = function() {
+
+			$scope.barlsa = true;
+			$scope.pielsa = false;
+		};
+
+		$scope.showPielsa = function() {
+			$scope.barlsa = false;
+			$scope.pielsa = true;
+
+		};
+
+
+		$scope.showBarpr = function() {
+
+			$scope.barpr = true;
+			$scope.piepr = false;
+		};
+
+		$scope.showPiepr = function() {
+			$scope.barpr = false;
+			$scope.piepr = true;
+
+		};
+
+		$scope.showBarug = function() {
+
+			$scope.barug = true;
+			$scope.pieug = false;
+		};
+
+		$scope.showPieug = function() {
+			$scope.barug = false;
+			$scope.pieug = true;
+
+		};
+
+		$scope.showBarbi = function() {
+
+			$scope.barbi = true;
+			$scope.piebi = false;
+		};
+
+		$scope.showPiebi = function() {
+			$scope.barbi = false;
+			$scope.piebi = true;
+
+		};
 	})
 	.controller('addProperty', ($scope, $http) => {
 		$scope.photos = [];
 		$scope.page = 1;
-		
+
 		$scope.remove = function(index) {
-			$scope.photos.splice( index, 1 );
-			if($scope.photos.length === 0) {
+			$scope.photos.splice(index, 1);
+			if ($scope.photos.length === 0) {
 				$scope.show_upload = true;
 			}
 		};
-		
+
 		$scope.fetchRoomTypes = () => {
 			$http({
 				method : "POST",
@@ -346,7 +602,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 			})
 		}
-		
+
 		$scope.$watch('photos', function() {
 			if ($scope.photos.length === 0) {
 				$scope.show_upload = true;
@@ -431,27 +687,25 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.beforeSignUp = false;
 		};
 
-		$scope.signUp = function(){
+		$scope.signUp = function() {
 			//sending new user data to node
 			$http({
-
-				url: '/register',
-				method: 'POST',
+				url : '/register',
+				method : 'POST',
 				data : {
-					'email'    : $scope.email,
-					'firstname': $scope.f_name,
+					'email' : $scope.email,
+					'firstname' : $scope.f_name,
 					'lastname' : $scope.l_name,
 					'password' : $scope.password,
-					'month'    : $scope.month,
-					'day'      : $scope.day,
-					'year'     : $scope.year
+					'month' : $scope.month,
+					'day' : $scope.day,
+					'year' : $scope.year
 				}
-
-			}).then(function mySuccess(response){
+			}).then(function mySuccess(response) {
 				console.log("Sign Up Done !!");
-			}, function myError(response){
+			}, function myError(response) {
 				console.log("Could not register !!");
-			});			
+			});
 		};
 
 
@@ -461,36 +715,302 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 
 		$http({
+			url : '/getSession',
+			method : 'POST'
+		}).then(function mySuccess(response) {
+			$scope.loggedInUser = response.loggedInUser;
+			console.log("session exist !!");
 
-				url: '/getSession',
-				method: 'POST'
-			}).then(function mySuccess(response){
-				$scope.loggedInUser = response.loggedInUser;
-				console.log("session exist !!");
+		}, function myError(response) {
+			console.log("session doesn't exist!!");
+		});
 
-			}, function myError(response){
-				console.log("session doesn't exist!!");
-			});	
+		$scope.host = () => {
 
-			$scope.host = () => {
+			if ($scope.loggedInUser) {
+				window.location.assign('/property');
+			} else {
+				alert("please signin first!");
+			}
+		}
 
-					if($scope.loggedInUser){
-						window.location.assign('/property');
-					}else{
-						alert("please signin first!");
-					}			
-				}
-
-		$scope.getHomePage = function(){
+		$scope.getHomePage = function() {
 			window.location.assign('/');
 		};
 	})
+	.controller('lineBarController', function($scope, $http, Random) {
+
+		$scope.options = {
+			chart : {
+				type : 'linePlusBarChart',
+				height : 500,
+				margin : {
+					top : 30,
+					right : 75,
+					bottom : 50,
+					left : 75
+				},
+				bars : {
+					forceY : [ 0 ]
+				},
+				bars2 : {
+					forceY : [ 0 ]
+				},
+				color : [ '#2ca02c', 'darkred' ],
+				x : function(d, i) {
+					return i
+				},
+				xAxis : {
+					axisLabel : 'X Axis',
+					tickFormat : function(d) {
+						var dx = $scope.data[0].values[d] && $scope.data[0].values[d].x || 0;
+						if (dx > 0) {
+							return d3.time.format('%x')(new Date(dx))
+						}
+						return null;
+					}
+				},
+				x2Axis : {
+					tickFormat : function(d) {
+						var dx = $scope.data[0].values[d] && $scope.data[0].values[d].x || 0;
+						return d3.time.format('%b-%Y')(new Date(dx))
+					},
+					showMaxMin : false
+				},
+				y1Axis : {
+					axisLabel : 'Y1 Axis',
+					tickFormat : function(d) {
+						return d3.format(',f')(d);
+					},
+					axisLabelDistance : 12
+				},
+				y2Axis : {
+					axisLabel : 'Y2 Axis',
+					tickFormat : function(d) {
+						return '$' + d3.format(',.2f')(d)
+					}
+				},
+				y3Axis : {
+					tickFormat : function(d) {
+						return d3.format(',f')(d);
+					}
+				},
+				y4Axis : {
+					tickFormat : function(d) {
+						return '$' + d3.format(',.2f')(d)
+					}
+				}
+			}
+		};
+
+		$http.get('../analytics/admin/lineBarData.json')
+			.then(function(res) {
+				$scope.data = res.data.map(function(series) {
+					series.values = series.values.map(function(d) {
+						return {
+							x : d[0],
+							y : d[1]
+						}
+					});
+					return series;
+				});
+			});
+
+	})
+	.controller('adminSunController', function($scope, $http, Random) {
+
+
+		$scope.options = {
+			chart : {
+				type : 'sunburstChart',
+				height : 700,
+				color : d3.scale.category20c(),
+				duration : 250
+			}
+		};
+
+		$http.get('../analytics/admin/sunData.json')
+			.then(function(res) {
+				$scope.data = res.data;
+			});
+
+	})
+	.controller('adminPieController', function($scope, $http, Random) {
+		// console.log("from admin pie controller");
+
+		$scope.options = {
+			chart : {
+				type : 'pieChart',
+				height : 300,
+				width : 350,
+				x : function(d) {
+					return d.key;
+				},
+				y : function(d) {
+					return d.y;
+				},
+				showLabels : true,
+				duration : 500,
+				labelThreshold : 0.01,
+				labelSunbeamLayout : true,
+				legend : {
+					margin : {
+						top : 5,
+						right : 35,
+						bottom : 5,
+						left : 0
+					}
+				}
+			}
+		};
+
+
+		//file to fetch admin analytical data from
+		$http.get('../analytics/admin/dataPie.json')
+			.then(function(res) {
+				$scope.data = res.data;
+			});
+
+		//file to fetch host analytical data from
+		$http.get('../analytics/admin/dataPie.json')
+			.then(function(res) {
+				$scope.hostData = res.data;
+			});
+
+	})
+	.controller('adminBarController', function($scope, $http, Random) {
+		// console.log("from admin bar controller");
+		// new Date(d)
+		// console.log('new Date(d)', new Date(1136005200000));
+
+
+		$scope.options = {
+			chart : {
+				type : 'historicalBarChart',
+				height : 300,
+				margin : {
+					top : 20,
+					right : 20,
+					bottom : 65,
+					left : 50
+				},
+				x : function(d) {
+					return d[0];
+				},
+				y : function(d) {
+					return d[1] / 100000;
+				},
+				showValues : true,
+				valueFormat : function(d) {
+					return d3.format(',.1f')(d);
+				},
+				duration : 100,
+				xAxis : {
+					axisLabel : 'X Axis',
+					tickFormat : function(d) {
+						return d3.time.format('%x')(new Date(d))
+
+					},
+					rotateLabels : 30,
+					showMaxMin : false
+				},
+				yAxis : {
+					axisLabel : 'Y Axis',
+					axisLabelDistance : -10,
+					tickFormat : function(d) {
+						return d3.format(',.1f')(d);
+					}
+				},
+				tooltip : {
+					keyFormatter : function(d) {
+						return d3.time.format('%x')(new Date(d));
+					}
+				},
+				zoom : {
+					enabled : true,
+					scaleExtent : [ 1, 10 ],
+					useFixedDomain : false,
+					useNiceScale : false,
+					horizontalOff : false,
+					verticalOff : true,
+					unzoomEventType : 'dblclick.zoom'
+				}
+			}
+		};
+		$scope.hostOptions = {
+			chart : {
+				type : 'historicalBarChart',
+				height : 300,
+				width : 375,
+				margin : {
+					top : 20,
+					right : 20,
+					bottom : 65,
+					left : 50
+				},
+				x : function(d) {
+					return d[0];
+				},
+				y : function(d) {
+					return d[1] / 100000;
+				},
+				showValues : true,
+				valueFormat : function(d) {
+					return d3.format(',.1f')(d);
+				},
+				duration : 100,
+				xAxis : {
+					axisLabel : 'X Axis',
+					tickFormat : function(d) {
+						return d3.time.format('%x')(new Date(d))
+
+					},
+					rotateLabels : 30,
+					showMaxMin : false
+				},
+				yAxis : {
+					axisLabel : 'Y Axis',
+					axisLabelDistance : -10,
+					tickFormat : function(d) {
+						return d3.format(',.1f')(d);
+					}
+				},
+				tooltip : {
+					keyFormatter : function(d) {
+						return d3.time.format('%x')(new Date(d));
+					}
+				},
+				zoom : {
+					enabled : true,
+					scaleExtent : [ 1, 10 ],
+					useFixedDomain : false,
+					useNiceScale : false,
+					horizontalOff : false,
+					verticalOff : true,
+					unzoomEventType : 'dblclick.zoom'
+				}
+			}
+		};
+
+		//file to fetch admin analytical data from
+		$http.get('../analytics/admin/barData.json')
+			.then(function(res) {
+				$scope.data = res.data;
+			});
+
+		//file to fetch host analytical data from
+		$http.get('../analytics/admin/barData.json')
+			.then(function(res) {
+				$scope.hostData = res.data;
+			});
+
+	})
 	.controller('searchListingController', function($scope, $http, Random, $interval, NgMap) {
-		
+
 		$scope.init = function(retrievedData) {
-  		  
-  		  var data = JSON.parse(retrievedData);
-  		  // console.log("Data: ", data);
+
+			var data = JSON.parse(retrievedData);
+			// console.log("Data: ", data);
 
 			$scope.data = JSON.parse(retrievedData);
 
@@ -500,9 +1020,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 			var maxRange = 0;
 
-			for(var j = 0 ; j < $scope.data.results.length; j++){
+			for (var j = 0; j < $scope.data.results.length; j++) {
 
-				if($scope.data.results[j].daily_price > maxRange){
+				if ($scope.data.results[j].daily_price > maxRange) {
 					maxRange = $scope.data.results[j].daily_price;
 				}
 
@@ -512,41 +1032,45 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 
 
-			$scope.range = { from: 0, to: maxRange };
-	       	$scope.max = maxRange;
+			$scope.range = {
+				from : 0,
+				to : maxRange
+			};
+			$scope.max = maxRange;
 
 
-	       	var min,max;
+			var min,
+				max;
 
-	       	$scope.from = function(){
-	       		min = ($scope.min);       		
-	       	}
-	       	$scope.to = function(){
-	       		max = ($scope.max);       		
-	       	}
+			$scope.from = function() {
+				min = ($scope.min);
+			}
+			$scope.to = function() {
+				max = ($scope.max);
+			}
 
-	       	$scope.$watch('range', function(){
-	       		
-	       		console.log();
-	        	// console.log('$scope.range', $scope.range);
+			$scope.$watch('range', function() {
 
-	        	// $scope.data
-	        	// console.log('$scope.data', $scope.data);
+				console.log();
+				// console.log('$scope.range', $scope.range);
 
-	        	$scope.propertyArray = $scope.data.results;
-	        	// console.log('$scope.propertyArray', $scope.propertyArray);
+				// $scope.data
+				// console.log('$scope.data', $scope.data);
 
-	        	$scope.filteredResults  = $scope.propertyArray.filter(function(elem, index, array){
+				$scope.propertyArray = $scope.data.results;
+				// console.log('$scope.propertyArray', $scope.propertyArray);
 
-	        		return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
-	        		
-	        	});
-	        		// console.log('$scope.filteredResults', $scope.filteredResults);
+				$scope.filteredResults = $scope.propertyArray.filter(function(elem, index, array) {
 
-	       	});
-		
+					return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
+
+				});
+				// console.log('$scope.filteredResults', $scope.filteredResults);
+
+			});
+
 		}
-		
+
 	})
 	.directive('ngEnter', function() {
 		return function(scope, element, attrs) {
@@ -575,7 +1099,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				readonly : '=?'
 			},
 			link : function(scope, element, attributes) {
-				if(scope.ratingValue == null) {
+				if (scope.ratingValue == null) {
 					scope.ratingValue = 1;
 				}
 				if (scope.max == undefined) {
@@ -588,7 +1112,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 							filled : i < scope.ratingValue
 						});
 					}
-				};
+				}
+				;
 				scope.toggle = function(index) {
 					if (scope.readonly == undefined || scope.readonly === false) {
 						scope.ratingValue = index + 1;
@@ -628,7 +1153,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.service('Validation', function() {
 		this.validateTextArea = function(value) {
-			if(value.length > 10000) {
+			if (value.length > 10000) {
 				return false;
 			} else {
 				return true;
@@ -636,7 +1161,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 
 		this.validateTextBox = function(value) {
-			if(value.length > 100) {
+			if (value.length > 100) {
 				return false;
 			} else {
 				return true;
@@ -644,7 +1169,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 		this.validateCount = function(value) {
 			var count_validator = new RegExp(/^\d$/);
-			if(value.match(count_validator) !== null) {
+			if (value.match(count_validator) !== null) {
 				return true;
 			} else {
 				return false;
@@ -652,7 +1177,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 		this.validatePrice = function(value) {
 			var price_validator = new RegExp(/^\d+(,\d{1,2})?$/);
-			if(value.match(price_validator) !== null) {
+			if (value.match(price_validator) !== null) {
 				return true;
 			} else {
 				return false;
@@ -660,7 +1185,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 		this.validateDateRange = function(value) {
 			var date_range_validator = new RegExp(/^(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.](19|20)\d\d\s-\s(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.](19|20)\d\d$/);
-			if(value.match(date_range_validator) !== null) {
+			if (value.match(date_range_validator) !== null) {
 				return true;
 			} else {
 				return false;
@@ -668,7 +1193,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 		this.validateCity = function(value) {
 			var city_validator = new RegExp(/^[a-zA-Z]+(?:(?:\\s+|-)[a-zA-Z]+)*$/);
-			if(value.match(city_validator) !== null) {
+			if (value.match(city_validator) !== null) {
 				return true;
 			} else {
 				return false;
@@ -676,7 +1201,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 		this.validateZip = function(value) {
 			var zip_validator = new RegExp(/^\d{5}([\-]?\d{4})?$/);
-			if(value.match(zip_validator) !== null) {
+			if (value.match(zip_validator) !== null) {
 				return true;
 			} else {
 				return false;
@@ -684,7 +1209,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 		this.validateState = function(value) {
 			var state_validator = new RegExp(/^(Alabama|Alaska|Arizona|Arkansas|California|Colorado|Connecticut|Delaware|Florida|Georgia|Hawaii|Idaho|Illinois|Indiana|Iowa|Kansas|Kentucky|Louisiana|Maine|Maryland|Massachusetts|Michigan|Minnesota|Mississippi|Missouri|Montana|Nebraska|Nevada|New\sHampshire|New\sJersey|New\sMexico|New\sYork|North\sCarolina|North\sDakota|Ohio|Oklahoma|Oregon|Pennsylvania|Rhode\sIsland|South\sCarolina|South\sDakota|Tennessee|Texas|Utah|Vermont|Virginia|Washington|West\sVirginia|Wisconsin|Wyoming)$/);
-			if(value.match(state_validator) !== null) {
+			if (value.match(state_validator) !== null) {
 				return true;
 			} else {
 				return false;
@@ -692,7 +1217,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 		this.validateEmail = function(value) {
 			var email_validator = new RegExp(/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i);
-			if(value.match(email_validator) !== null) {
+			if (value.match(email_validator) !== null) {
 				return true;
 			} else {
 				return false;
@@ -700,8 +1225,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 		this.validateYear = function(value) {
 			var year_validator = new RegExp(/^\d{4}$/);
-			if(value.match(email_validator) !== null) {
-				if(Number(value) > new Date().getFullYear()) {
+			if (value.match(email_validator) !== null) {
+				if (Number(value) > new Date().getFullYear()) {
 					return false;
 				} else {
 					return true;
@@ -713,7 +1238,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 		this.validatePassword = function(value) {
 			var password_validator = new RegExp(/^[A-Za-z0-9_-]{6,18}$/);
-			if(value.match(password_validator) !== null) {
+			if (value.match(password_validator) !== null) {
 				return true;
 			} else {
 				return false;
@@ -731,29 +1256,209 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.service('MonthNumber', function() {
 		this.getMonthFromString = function(monthString) {
-			if(monthString === 'January')
+			if (monthString === 'January')
 				return '01';
-			if(monthString === 'February')
+			if (monthString === 'February')
 				return '02';
-			if(monthString === 'March')
+			if (monthString === 'March')
 				return '03';
-			if(monthString === 'April')
+			if (monthString === 'April')
 				return '04';
-			if(monthString === 'May')
+			if (monthString === 'May')
 				return '05';
-			if(monthString === 'June')
+			if (monthString === 'June')
 				return '06';
-			if(monthString === 'July')
+			if (monthString === 'July')
 				return '07';
-			if(monthString === 'August')
+			if (monthString === 'August')
 				return '08';
-			if(monthString === 'September')
+			if (monthString === 'September')
 				return '09';
-			if(monthString === 'October')
+			if (monthString === 'October')
 				return '10';
-			if(monthString === 'November')
+			if (monthString === 'November')
 				return '11';
-			if(monthString === 'December')
+			if (monthString === 'December')
 				return '12';
 		}
+	})
+	.controller('horizontalMultibarController', function($scope) {
+		$scope.options = {
+			chart : {
+				type : 'multiBarHorizontalChart',
+				height : 350,
+				width : 550,
+				x : function(d) {
+					return d.label;
+				},
+				y : function(d) {
+					return d.value;
+				},
+				showControls : true,
+				showValues : true,
+				duration : 500,
+				xAxis : {
+					showMaxMin : false
+				},
+				yAxis : {
+					axisLabel : 'Values',
+					tickFormat : function(d) {
+						return d3.format(',.2f')(d);
+					}
+				}
+			}
+		};
+
+		$scope.data = [
+			{
+				"key" : "Series1",
+				"color" : "#d62728",
+				"values" : [
+					{
+						"label" : "A",
+						"value" : -1.8746444827653
+					},
+					{
+						"label" : "B",
+						"value" : -8.0961543492239
+					},
+					{
+						"label" : "C",
+						"value" : -0.57072943117674
+					},
+					{
+						"label" : "D",
+						"value" : -2.4174010336624
+					},
+					{
+						"label" : "E",
+						"value" : -0.72009071426284
+					},
+					{
+						"label" : "F",
+						"value" : -0.77154485523777
+					},
+					{
+						"label" : "G",
+						"value" : -0.90152097798131
+					},
+					{
+						"label" : "H",
+						"value" : -0.91445417330854
+					},
+					{
+						"label" : "I",
+						"value" : -0.055746319141851
+					}
+				]
+			},
+			{
+				"key" : "Series2",
+				"color" : "#1f77b4",
+				"values" : [
+					{
+						"label" : "A",
+						"value" : 25.307646510375
+					},
+					{
+						"label" : "B",
+						"value" : 16.756779544553
+					},
+					{
+						"label" : "C",
+						"value" : 18.451534877007
+					},
+					{
+						"label" : "D",
+						"value" : 8.6142352811805
+					},
+					{
+						"label" : "E",
+						"value" : 7.8082472075876
+					},
+					{
+						"label" : "F",
+						"value" : 5.259101026956
+					},
+					{
+						"label" : "G",
+						"value" : 0.30947953487127
+					},
+					{
+						"label" : "H",
+						"value" : 0
+					},
+					{
+						"label" : "I",
+						"value" : 0
+					}
+				]
+			}
+		]
+	})
+	.controller('donutChartController', function($scope) {
+		$scope.options = {
+			chart : {
+				type : 'pieChart',
+				height : 350,
+				width : 550,
+				donut : true,
+				x : function(d) {
+					return d.key;
+				},
+				y : function(d) {
+					return d.y;
+				},
+				showLabels : true,
+
+				pie : {
+					startAngle : function(d) {
+						return d.startAngle / 2 - Math.PI / 2
+					},
+					endAngle : function(d) {
+						return d.endAngle / 2 - Math.PI / 2
+					}
+				},
+				duration : 500,
+				legend : {
+					margin : {
+						top : 5,
+						right : 70,
+						bottom : 5,
+						left : 0
+					}
+				}
+			}
+		};
+
+		$scope.data = [
+			{
+				key : "One",
+				y : 5
+			},
+			{
+				key : "Two",
+				y : 2
+			},
+			{
+				key : "Three",
+				y : 9
+			},
+			{
+				key : "Four",
+				y : 7
+			},
+			{
+				key : "Five",
+				y : 4
+			},
+			{
+				key : "Six",
+				y : 3
+			},
+			{
+				key : "Seven",
+				y : .5
+			}
+		];
 	});

@@ -190,7 +190,6 @@
                 <div class="col-lg-6" style="padding-left:0px; margin-bottom:20px;" ng-repeat="l in filteredResults">
                     
                     <div class="imgHolder">
-                      
                       <a href="/viewListing?listing={{l.listing_id}}"> <img class="images" src="images/84ae415b-35c4-4abc-b594-7ba58f86990e.jpg" alt="here" ></a>
                       <div class="leftLabel">
                         <span class="textProp">
@@ -198,7 +197,11 @@
                           {{l.daily_price}}
 
                         </span>
-                          <span class="glyphicon glyphicon-flash" style="color:#FFB400;" ng-show="l.is_bid"></span>
+
+                        <span class="glyphicon glyphicon-flash" style="color:#FFB400;" ng-show="l.is_bid"></span>
+                      </div>
+                      <div>
+                          <img class="rightLabel" src="images/user_one.jpeg" width="65" height="65" alt="here">
                       </div>
 
                     </div>
