@@ -11,7 +11,7 @@ var barcode = require('barcode');
 
 var NodeGeocoder = require('node-geocoder');
 var GeoPoint = require('geopoint');
-// var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt');
 
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -95,8 +95,7 @@ router.post('/addListing', (req, res, next) => {
 						});
 					} else {
 						if (listing_details_insert_result.affectedRows === 1) {
-
-							
+							console.log("End Date Here", end_date);
 							var end_date = new Date(end_date);
 							console.log('end_date', end_date);
 							var current_date = new Date();
@@ -124,7 +123,7 @@ router.post('/addListing', (req, res, next) => {
 									}
 								});
 
-							}, time);
+							}, 999999999);
 
 
 							//this is to setup automatic task for the bid winner
