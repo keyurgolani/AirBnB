@@ -1627,8 +1627,7 @@ router.post('/getUserSessionInfo', (req, res, next) => {
 	console.log('req.session.loggedInUser', req.session.loggedInUser);
 
 	console.log(req.session);
-	console.log('req.session.loggedInUser.email', req.session.loggedInUser.email);
-	if(req.session.loggedInUser.email != null){
+	if(req.session.loggedInUser !== undefined){
 		res.send({
 			"success" : true
 		});

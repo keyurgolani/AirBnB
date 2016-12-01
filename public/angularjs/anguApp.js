@@ -22,7 +22,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	.controller('homepage', function() {})
 	.controller('login', function($scope, $http, Random) {
 
-		$scope.isLoggedIn = false;
+		// $scope.isLoggedIn = false;
 		$scope.login = function() {
 
 			$http({
@@ -39,26 +39,26 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			});
 
 
-			$http({
+			// $http({
 
-				url: '/getUserSessionInfo',
-				method: 'POST'
+			// 	url: '/getUserSessionInfo',
+			// 	method: 'POST'
 				
-			}).then(function mySuccess(response){
+			// }).then(function mySuccess(response){
 				
-				console.log('response', response);
-				if(response.data.success){
-					console.log('Session Initialized', "true");
-					$scope.isLoggedIn = true;
-				}else{
-					console.log('Session Initialized', "false");
-					$scope.isLoggedIn = false;
-				}
-			}, function myError(response){
+			// 	console.log('response', response);
+			// 	if(response.data.success){
+			// 		console.log('Session Initialized', "true");
+			// 		$scope.isLoggedIn = true;
+			// 	}else{
+			// 		console.log('Session Initialized', "false");
+			// 		$scope.isLoggedIn = false;
+			// 	}
+			// }, function myError(response){
 
-				// console.log('response', response);
-				console.log('Error retrieving session Info', "true");
-			});
+			// 	// console.log('response', response);
+			// 	console.log('Error retrieving session Info', "true");
+			// });
 		};
 
 
@@ -758,6 +758,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log('Session Initialized', "false");
 				$scope.isLoggedIn = false;
 			}
+			
 		}, function myError(response){
 
 			// console.log('response', response);
