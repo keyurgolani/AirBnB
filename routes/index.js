@@ -456,8 +456,10 @@ router.post('/updateProfile', (req, res, next) => {
 	}
 });
 
-
 router.post('/fetchRoomTypes', (req, res, next) => {
+
+	// >>>>>>>>
+	// req.session.loggedInUser
 	mysql.fetchData('room_type_id, room_type', 'room_types', null, (error, results) => {
 		if (error) {
 			res.send({
@@ -1691,6 +1693,33 @@ router.post('/updateRating', (req, res, next) => {
 	})
 });
 
+router.post('/getUserSessionInfo', (req, res, next) => {
+
+
+	console.log("{}{}{}{}{}{}{}{}{}");
+	console.log('req.session.loggedInUser', req.session.loggedInUser);
+
+	console.log(req.session);
+	if (req.session.loggedInUser !== undefined) {
+		res.send({
+			"success" : true
+		});
+	} else {
+		res.send({
+			"success" : false
+		});
+	}
+
+});
+
+router.post('/logout', (req, res, next) => {
+
+
+	req.session.destroy();
+	res.send();
+
+});
+
 router.post('/uploadProfilePhoto', (req, res, next) => {
 	var profile_photo_collection = req.db.get('user_photos');
 	profile_photo_collection.findOne({
@@ -1729,6 +1758,6 @@ router.post('/uploadProfileVideo', (req, res, next) => {
 			});
 		}
 	});
-})
+});
 
 module.exports = router;
