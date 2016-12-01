@@ -529,7 +529,14 @@
 											<div class="col-md-3 details-text" style="padding-left:30px;">{{hosting.no_of_guests}}</div>
 										</div>
 										<div class="row location-text" style="margin-top:15px;">Rate traveler</div>
-										<div star-rating ng-model="hosting.traveller_rating" max="5" on-rating-select="updateTravellerRating(hosting.trip_id, rating)"></div>									
+										<div star-rating ng-model="hosting.traveller_rating" max="5" on-rating-select="updateTravellerRating(hosting.trip_id, rating)"></div>
+										<div class="row location-text" style="margin-top:15px;">Review traveler</div>
+										<div class="col-md-10">
+											<input type="text" class="form-control review-box curve-border" placeholder="Review" ng-model="title">
+										</div>	
+										<div class="col-md-2">
+				  							<button class="pull-right btn btn-primary submit-button">Submit</button>
+				  						</div>								
 									</div>
 								</div>
 							</div>

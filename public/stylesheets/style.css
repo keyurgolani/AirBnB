@@ -2332,7 +2332,8 @@ label.star:before {
 	height: 63px;
 	font-size: 18px;
 	padding: 20px 36px;
-	line-height: 1
+	line-height: 1;
+	cursor: pointer;
 }
 .upload-button input.upload {
     position: absolute;
@@ -2340,7 +2341,7 @@ label.star:before {
     right: 0;
     margin: 0;
     padding: 0;
-    cursor: pointer;
+    cursor: pointer!important;
     opacity: 0;
     filter: alpha(opacity=0);
     border-color: #ff5a5f;
@@ -2350,13 +2351,14 @@ label.star:before {
 	height: 63px;
 	font-size: 18px;
 	padding: 20px 36px;
-	line-height: 1
+	line-height: 1;
 }
 
-.upload-button:hover, .upload-button:active, .upload-button:focus, .upload-button:active:focus {
+.upload-button:hover, .upload-button:active, .upload-button:focus, .upload-button:active:focus, .upload-button input.upload:hover {
 	border-color: #ff7e82;
 	background-color: #ff7e82;
 	color: #fff;
+	cursor: pointer;
 }
 
 .on-hover:hover {
@@ -2450,4 +2452,41 @@ label.star:before {
 	background-color: #fff;
 	border-color: #c4c4c4;
 	color: #484848;
+}
+
+.review-box {
+	border: 1px solid #c4c4c4 !important;
+	font-size: 18px;
+	font-weight: normal;
+	color: #484848;
+	height: 63px;
+	letter-spacing: 1px;
+	margin: 10px 0 0 0;
+	border-bottom-right-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
+.submit-button {
+	height: 63px;
+	width: 100px;
+	border-color: #ff5a5f;
+	background-color: #ff5a5f;
+	color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+	border-radius: 4px;
+	background-color: #ff5a5f;
+	color: #fff;
+	margin-top: 10px;
+	border-bottom-left-radius: 0px;
+	border-top-left-radius: 0px;
+}
+
+.submit-button:hover, .submit-button:focus, .submit-button:active, .submit-button:active:focus {
+	border-top-color: #ff5a5f;
+	border-left-color: #ff5a5f;
+	border-right-color: #ff5a5f;
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
 }
