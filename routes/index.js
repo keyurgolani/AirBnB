@@ -96,7 +96,7 @@ router.post('/addListing', (req, res, next) => {
 					} else {
 						if (listing_details_insert_result.affectedRows === 1) {
 							console.log("End Date Here", end_date);
-							var end_date = new Date(end_date);
+							end_date = new Date(end_date);
 							console.log('end_date', end_date);
 							var current_date = new Date();
 							console.log('current_date', current_date);
