@@ -32,7 +32,6 @@ CREATE TABLE `profile_details` (
   `gender` ENUM('Male', 'Female', 'Other') NULL,
   `dob` DATE NOT NULL,
   `st_address` VARCHAR(255) NOT NULL,
-  `apt` VARCHAR(20) NOT NULL,
   `city` VARCHAR(100) NOT NULL,
   `state` VARCHAR(100) NOT NULL,
   `zip` NUMERIC(5) NOT NULL,
