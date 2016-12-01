@@ -108,7 +108,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 	})
-	.controller('profile', ($scope, $http, MonthNumber) => {
+	.controller('profile', ($scope, $http, MonthNumber, $location) => {
 		$scope.init = function(profileDetails) {
 			$scope.data = JSON.parse(profileDetails);
 			$scope.active_tab = 'profile_tab';
@@ -300,11 +300,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 
-		// $scope.city
-		// console.log('$scope.city', $scope.city);
-		// // $scope.details
-		// console.log('$scope.details', $scope.details);
-
 		$scope.details = '';
 
 		$scope.$watch('details', function() {
@@ -344,47 +339,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				alert('Error');
 			})
 		}
-
-		$scope.$watch('data[7].video', function() {
-			$scope.trustedVideo = $sce.trustAsResourceUrl(data[7].video.base64);
-		});
-
-		$scope.add_card = function() {
-			var newCard = {
-				"cc_no" : $scope.cc_no,
-				"cc_month" : $scope.cc_month,
-				"cc_year" : $scope.cc_year,
-				"first_name" : $scope.first_name,
-				"last_name" : $scope.last_name,
-				"security" : $scope.security_code,
-				"postal" : $scope.postal,
-				"country" : "United States"
-			}
-			$http({
-				method : "POST",
-				url : "/addCard",
-				data : newCard
-			}).then((result) => {
-				$scope.data[1].push({
-					"card_id" : result.card_id,
-					"card_number" : $scope.cc_no,
-					"exp_month" : $scope.cc_month,
-					"exp_year" : $scope.cc_year,
-					"first_name" : $scope.first_name,
-					"last_name" : $scope.last_name,
-					"cvv" : $scope.security_code,
-					"postal_code" : $scope.postal,
-					"country" : "United States"
-				});
-				console.log($scope.data[1]);
-
-				$("#payment_model").modal('toggle');
-			// $scope.data = result.data.room_types;
-			}, (error) => {
-				alert("error");
-			// $scope.room_types = [];
-			})
-		};
 
 		$scope.updatePass = function() {
 			if ($scope.new_pass !== undefined && $scope.old_pass !== undefined
@@ -542,6 +496,44 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.piebi = true;
 
 		};
+		
+		$scope.uploadPhoto = () => {
+			if($scope.data[7]) {
+				$http({
+					method : "POST",
+					url : '/uploadProfilePhoto',
+					data : {
+						"user" : $location.search().owner,
+						"photo" : $scope.data[7]
+					}
+				}).then((results) => {
+					if (results.data.statusCode === 200) {
+						console.log("Results", results);
+					}
+				}, (error) => {
+					console.log("Error", error);
+				})
+			}
+		};
+		
+		$scope.uploadVideo = () => {
+			if($scope.data[8]) {
+				$http({
+					method : "POST",
+					url : '/uploadProfileVideo',
+					data : {
+						"user" : $location.search().owner,
+						"video" : $scope.data[8]
+					}
+				}).then((results) => {
+					if (results.data.statusCode === 200) {
+						console.log("Results", results);
+					}
+				}, (error) => {
+					console.log("Error", error);
+				})
+			}
+		}
 	})
 	.controller('addProperty', ($scope, $http) => {
 		$scope.photos = [];

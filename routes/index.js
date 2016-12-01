@@ -1200,6 +1200,28 @@ router.get('/profile', function(req, res, next) {
 					callback(null, hosting_details);
 				}
 			});
+		},
+		function(callback) {
+			req.db.get('user_photos').findOne({
+				'user_id': req.query.owner
+			}).then((photo) => {
+				if(photo) {
+					callback(null, photo.photo);
+				} else {
+					callback(null, null);
+				}
+			});
+		},
+		function(callback) {
+			req.db.get('user_videos').findOne({
+				'user_id': req.query.owner
+			}).then((video) => {
+				if(video) {
+					callback(null, video.video);
+				} else {
+					callback(null, null);
+				}
+			});
 		}
 	], function(error, results) {
 		if (error) {
@@ -1612,6 +1634,46 @@ router.post('/updateRating', (req, res, next) => {
 			}
 		}
 	})
+});
+
+router.post('/uploadProfilePhoto', (req, res, next) => {
+	var profile_photo_collection = req.db.get('user_photos');
+	profile_photo_collection.findOne({
+		'user_id': req.body.user
+	}).then((doc) => {
+		if(doc) {
+			profile_photo_collection.findOneAndUpdate({
+				'user_id': req.body.user
+			}, {
+				'photo' : req.body.photo
+			})
+		} else {
+			profile_photo_collection.insert({
+				'user_id' : req.body.user,
+				'photo' : req.body.photo
+			});
+		}
+	});
+});
+
+router.post('/uploadProfileVideo', (req, res, next) => {
+	var profile_video_collection = req.db.get('user_videos');
+	profile_video_collection.findOne({
+		'user_id': req.body.user
+	}).then((doc) => {
+		if(doc) {
+			profile_video_collection.update({
+				'user_id': req.body.user
+			}, {
+				'video' : req.body.video
+			})
+		} else {
+			profile_video_collection.insert({
+				'user_id' : req.body.user,
+				'video' : req.body.video
+			});
+		}
+	});
 })
 
 module.exports = router;
