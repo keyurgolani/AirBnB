@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'naif.base64' ])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'angularFileUpload', 'naif.base64' ])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
@@ -7,19 +7,23 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	} ])
 	.controller("searchBarController", function($scope, $http, $window) {
 		$scope.city = '';
-		$scope.options = {};
+		// console.log('$scope.city', $scope.city);
+		$scope.options = {
+			country: 'usa',
+			types  : '(cities)'
+		};
 		$scope.options.watchEnter = true;
 
 		$scope.$watch('city', function() {
-			if ($scope.city !== undefined && typeof $scope.city !== 'string') {
-				$window.location.href = '/searchListing?where=' + $scope.city.formatted_address;
+			if ($scope.city !== undefined && (typeof ($scope.city)) !== 'string') {
+				$window.location.href = '/searchListing?where='+$scope.city.formatted_address;
 			}
 		});
 	})
-	.controller('homepage', function() {})
+	.controller('homepage', function() {
+		
+	})
 	.controller('login', function($scope, $http, Random) {
-
-
 		$scope.login = function() {
 
 			$http({
@@ -52,13 +56,13 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log("Error", error);
 			})
 		};
+
 	})
 	.controller('viewListing', function($scope, $http, Random, Date) {
 		$scope.init = function(retrievedData) {
 			var data = JSON.parse(retrievedData);
 			$scope.data = JSON.parse(retrievedData);
 			console.log('$scope.data', $scope.data);
-
 		}
 
 		$scope.requestBooking = function() {
@@ -107,7 +111,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 	})
-	.controller('profile', ($scope, $http, $sce) => {
+	.controller('profile', ($scope, $http, $window) => {
 		$scope.init = function(profileDetails) {
 			$scope.data = JSON.parse(profileDetails);
 			$scope.active_tab = 'profile_tab';
@@ -306,6 +310,17 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.birth_date = $scope.dates[0];
 			}
 		}
+
+		// $scope.city
+		// console.log('$scope.city', $scope.city);
+		// // $scope.details
+		// console.log('$scope.details', $scope.details);
+
+		$scope.details = '';
+
+		$scope.$watch('details', function(){
+			console.log($scope.details);
+		});
 		
 		$scope.$watch('data[7].video', function() {
 			$scope.trustedVideo=$sce.trustAsResourceUrl(data[7].video.base64);
@@ -411,6 +426,99 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 
+		$scope.barcpp = true;
+		$scope.piecpp = false;
+
+		$scope.barpc = true;
+		$scope.piepc = false;
+
+		$scope.barlsa = true;
+		$scope.pielsa = false;
+
+		$scope.barpr = true;
+		$scope.piepr = false;
+
+		$scope.barug = true;
+		$scope.pieug = false;
+
+		$scope.barbi = true;
+		$scope.piebi = false;
+
+		$scope.showBarcpp = function(){
+			$scope.barcpp = true;
+			$scope.piecpp = false;
+
+		};
+
+
+		$scope.showPiecpp = function(){
+			$scope.barcpp = false;
+			$scope.piecpp = true;
+
+		};
+
+
+		$scope.showBarpc = function(){
+
+			$scope.barpc = true;
+			$scope.piepc = false;
+		};
+		
+		$scope.showPiepc = function(){
+			$scope.barpc = false;
+			$scope.piepc = true;
+
+		};
+
+
+		$scope.showBarlsa = function(){
+
+			$scope.barlsa = true;
+			$scope.pielsa = false;
+		};
+		
+		$scope.showPielsa = function(){
+			$scope.barlsa = false;
+			$scope.pielsa = true;
+
+		};
+
+
+		$scope.showBarpr = function(){
+
+			$scope.barpr = true;
+			$scope.piepr = false;
+		};
+		
+		$scope.showPiepr = function(){
+			$scope.barpr = false;
+			$scope.piepr = true;
+
+		};
+
+		$scope.showBarug = function(){
+
+			$scope.barug = true;
+			$scope.pieug = false;
+		};
+		
+		$scope.showPieug = function(){
+			$scope.barug = false;
+			$scope.pieug = true;
+
+		};
+
+		$scope.showBarbi = function(){
+
+			$scope.barbi = true;
+			$scope.piebi = false;
+		};
+		
+		$scope.showPiebi = function(){
+			$scope.barbi = false;
+			$scope.piebi = true;
+
+		};
 	})
 	.controller('addProperty', ($scope, $http) => {
 		$scope.photos = [];
@@ -454,12 +562,12 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					'photos' : $scope.photos,
 					'location' : {
 						'longitude' : $scope.addressDetails.geometry.location.lng(),
-						'latitude' : $scope.addressDetails.geometry.location.lat(),
-						'st_address' : $scope.addressDetails.address_components[0].long_name + ' ' + $scope.addressDetails.address_components[1].long_name,
-						'apt' : $scope.apt,
-						'city' : $scope.addressDetails.address_components[3].long_name,
-						'state' : $scope.addressDetails.address_components[5].long_name,
-						'zip' : $scope.addressDetails.address_components[7].long_name
+						'latitude'  : $scope.addressDetails.geometry.location.lat(),
+						'st_address': $scope.addressDetails.address_components[0].long_name + ' ' + $scope.addressDetails.address_components[1].long_name,
+						'apt'       : $scope.apt,
+						'city'      : $scope.addressDetails.address_components[3].long_name,
+						'state'     : $scope.addressDetails.address_components[5].long_name,
+						'zip'       : $scope.addressDetails.address_components[7].long_name
 					}
 				}
 			}).then((result) => {
@@ -605,6 +713,254 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.getHomePage = function() {
 			window.location.assign('/');
 		};
+	})
+	.controller('lineBarController', function($scope, $http, Random) {
+
+		$scope.options = {
+            chart: {
+                type: 'linePlusBarChart',
+                height: 500,
+                margin: {
+                    top: 30,
+                    right: 75,
+                    bottom: 50,
+                    left: 75
+                },
+                bars: {
+                    forceY: [0]
+                },
+                bars2: {
+                    forceY: [0]
+                },
+                color: ['#2ca02c', 'darkred'],
+                x: function(d,i) { return i },
+                xAxis: {
+                    axisLabel: 'X Axis',
+                    tickFormat: function(d) {
+                        var dx = $scope.data[0].values[d] && $scope.data[0].values[d].x || 0;
+                        if (dx > 0) {
+                            return d3.time.format('%x')(new Date(dx))
+                        }
+                        return null;
+                    }
+                },
+                x2Axis: {
+                    tickFormat: function(d) {
+                        var dx = $scope.data[0].values[d] && $scope.data[0].values[d].x || 0;
+                        return d3.time.format('%b-%Y')(new Date(dx))
+                    },
+                    showMaxMin: false
+                },
+                y1Axis: {
+                    axisLabel: 'Y1 Axis',
+                    tickFormat: function(d){
+                        return d3.format(',f')(d);
+                    },
+                    axisLabelDistance: 12
+                },
+                y2Axis: {
+                    axisLabel: 'Y2 Axis',
+                    tickFormat: function(d) {
+                        return '$' + d3.format(',.2f')(d)
+                    }
+                },
+                y3Axis: {
+                    tickFormat: function(d){
+                        return d3.format(',f')(d);
+                    }
+                },
+                y4Axis: {
+                    tickFormat: function(d) {
+                        return '$' + d3.format(',.2f')(d)
+                    }
+                }
+            }
+        };
+
+        $http.get('../analytics/admin/lineBarData.json')
+        .then(function(res){
+			$scope.data = res.data.map(function(series) {
+				series.values = series.values.map(function(d) { return {x: d[0], y: d[1] } });
+				return series;
+			});
+        });
+
+	})
+	.controller('adminSunController', function($scope, $http, Random) {
+		
+
+			$scope.options = {
+			    chart: {
+			        type: 'sunburstChart',
+			        height: 700,
+			        color: d3.scale.category20c(),
+			        duration: 250
+			    }
+			};
+
+			$http.get('../analytics/admin/sunData.json')
+	        .then(function(res){
+	          $scope.data = res.data;
+	        });
+
+	})
+	.controller('adminPieController', function($scope, $http, Random) {
+		// console.log("from admin pie controller");
+
+		$scope.options = {
+            chart: {
+                type: 'pieChart',
+                height: 300,
+                width: 350,
+                x: function(d){return d.key;},
+                y: function(d){return d.y;},
+                showLabels: true,
+                duration: 500,
+                labelThreshold: 0.01,
+                labelSunbeamLayout: true,
+                legend: {
+                    margin: {
+                        top: 5,
+                        right: 35,
+                        bottom: 5,
+                        left: 0
+                    }
+                }
+            }
+        };
+
+
+        //file to fetch admin analytical data from
+        $http.get('../analytics/admin/dataPie.json')
+        .then(function(res){
+          $scope.data = res.data;                
+        });
+
+        //file to fetch host analytical data from
+        $http.get('../analytics/admin/dataPie.json')
+        .then(function(res){
+          $scope.hostData = res.data;                
+        });
+
+	})
+	.controller('adminBarController', function($scope, $http, Random) {
+		// console.log("from admin bar controller");
+		// new Date(d)
+		// console.log('new Date(d)', new Date(1136005200000));
+
+
+		  $scope.options = {
+            chart: {
+                type: 'historicalBarChart',
+                height: 300,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 65,
+                    left: 50
+                },
+                x: function(d){return d[0];},
+                y: function(d){return d[1]/100000;},
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format(',.1f')(d);
+                },
+                duration: 100,
+                xAxis: {
+                    axisLabel: 'X Axis',
+                    tickFormat: function(d) {
+                        return d3.time.format('%x')(new Date(d))
+				
+                    },
+                    rotateLabels: 30,
+                    showMaxMin: false
+                },
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    axisLabelDistance: -10,
+                    tickFormat: function(d){
+                        return d3.format(',.1f')(d);
+                    }
+                },
+                tooltip: {
+                    keyFormatter: function(d) {
+                        return d3.time.format('%x')(new Date(d));
+                    }
+                },
+                zoom: {
+                    enabled: true,
+                    scaleExtent: [1, 10],
+                    useFixedDomain: false,
+                    useNiceScale: false,
+                    horizontalOff: false,
+                    verticalOff: true,
+                    unzoomEventType: 'dblclick.zoom'
+                }
+            }
+        };
+        $scope.hostOptions = {
+            chart: {
+                type: 'historicalBarChart',
+                height: 300,
+                width: 375,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 65,
+                    left: 50
+                },
+                x: function(d){return d[0];},
+                y: function(d){return d[1]/100000;},
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format(',.1f')(d);
+                },
+                duration: 100,
+                xAxis: {
+                    axisLabel: 'X Axis',
+                    tickFormat: function(d) {
+                        return d3.time.format('%x')(new Date(d))
+				
+                    },
+                    rotateLabels: 30,
+                    showMaxMin: false
+                },
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    axisLabelDistance: -10,
+                    tickFormat: function(d){
+                        return d3.format(',.1f')(d);
+                    }
+                },
+                tooltip: {
+                    keyFormatter: function(d) {
+                        return d3.time.format('%x')(new Date(d));
+                    }
+                },
+                zoom: {
+                    enabled: true,
+                    scaleExtent: [1, 10],
+                    useFixedDomain: false,
+                    useNiceScale: false,
+                    horizontalOff: false,
+                    verticalOff: true,
+                    unzoomEventType: 'dblclick.zoom'
+                }
+            }
+        };
+		
+		//file to fetch admin analytical data from
+        $http.get('../analytics/admin/barData.json')
+        .then(function(res){
+          $scope.data = res.data;                
+        });
+
+        //file to fetch host analytical data from
+        $http.get('../analytics/admin/barData.json')
+        .then(function(res){
+          $scope.hostData = res.data;                
+        });
+
 	})
 	.controller('searchListingController', function($scope, $http, Random, $interval, NgMap) {
 
@@ -854,4 +1210,172 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			var year = date.getFullYear();
 			return year + '-' + (month + 1) + '-' + day;
 		}
+	})
+    .controller('horizontalMultibarController', function($scope) {
+	  $scope.options = {
+	            chart: {
+					type: 'multiBarHorizontalChart',
+					height: 350,
+					width: 550,
+	                x: function(d){return d.label;},
+	                y: function(d){return d.value;},
+	                showControls: true,
+	                showValues: true,
+	                duration: 500,
+	                xAxis: {
+	                    showMaxMin: false
+	                },
+	                yAxis: {
+	                    axisLabel: 'Values',
+	                    tickFormat: function(d){
+	                        return d3.format(',.2f')(d);
+	                    }
+	                }
+	            }
+	        };
+
+	        $scope.data = [
+	            {
+	                "key": "Series1",
+	                "color": "#d62728",
+	                "values": [
+	                    {
+	                        "label" : "A" ,
+	                        "value" : -1.8746444827653
+	                    } ,
+	                    {
+	                        "label" : "B" ,
+	                        "value" : -8.0961543492239
+	                    } ,
+	                    {
+	                        "label" : "C" ,
+	                        "value" : -0.57072943117674
+	                    } ,
+	                    {
+	                        "label" : "D" ,
+	                        "value" : -2.4174010336624
+	                    } ,
+	                    {
+	                        "label" : "E" ,
+	                        "value" : -0.72009071426284
+	                    } ,
+	                    {
+	                        "label" : "F" ,
+	                        "value" : -0.77154485523777
+	                    } ,
+	                    {
+	                        "label" : "G" ,
+	                        "value" : -0.90152097798131
+	                    } ,
+	                    {
+	                        "label" : "H" ,
+	                        "value" : -0.91445417330854
+	                    } ,
+	                    {
+	                        "label" : "I" ,
+	                        "value" : -0.055746319141851
+	                    }
+	                ]
+	            },
+	            {
+	                "key": "Series2",
+	                "color": "#1f77b4",
+	                "values": [
+	                    {
+	                        "label" : "A" ,
+	                        "value" : 25.307646510375
+	                    } ,
+	                    {
+	                        "label" : "B" ,
+	                        "value" : 16.756779544553
+	                    } ,
+	                    {
+	                        "label" : "C" ,
+	                        "value" : 18.451534877007
+	                    } ,
+	                    {
+	                        "label" : "D" ,
+	                        "value" : 8.6142352811805
+	                    } ,
+	                    {
+	                        "label" : "E" ,
+	                        "value" : 7.8082472075876
+	                    } ,
+	                    {
+	                        "label" : "F" ,
+	                        "value" : 5.259101026956
+	                    } ,
+	                    {
+	                        "label" : "G" ,
+	                        "value" : 0.30947953487127
+	                    } ,
+	                    {
+	                        "label" : "H" ,
+	                        "value" : 0
+	                    } ,
+	                    {
+	                        "label" : "I" ,
+	                        "value" : 0
+	                    }
+	                ]
+	            }
+	        ]
+	})
+	.controller('donutChartController', function($scope) {
+	$scope.options = {
+	        chart: {
+	            type: 'pieChart',
+	            height: 350,
+	            width: 550,
+	            donut: true,
+	            x: function(d){return d.key;},
+	            y: function(d){return d.y;},
+	            showLabels: true,
+
+	            pie: {
+	                startAngle: function(d) { return d.startAngle/2 -Math.PI/2 },
+	                endAngle: function(d) { return d.endAngle/2 -Math.PI/2 }
+	            },
+	            duration: 500,
+	            legend: {
+	                margin: {
+	                    top: 5,
+	                    right: 70,
+	                    bottom: 5,
+	                    left: 0
+	                }
+	            }
+	        }
+	    };
+
+	    $scope.data = [
+	        {
+	            key: "One",
+	            y: 5
+	        },
+	        {
+	            key: "Two",
+	            y: 2
+	        },
+	        {
+	            key: "Three",
+	            y: 9
+	        },
+	        {
+	            key: "Four",
+	            y: 7
+	        },
+	        {
+	            key: "Five",
+	            y: 4
+	        },
+	        {
+	            key: "Six",
+	            y: 3
+	        },
+	        {
+	            key: "Seven",
+	            y: .5
+	        }
+	    ];
 	});

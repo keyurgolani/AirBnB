@@ -536,7 +536,228 @@
 						</div>
 						<div class="row item-body" ng-show="active_tab === 'host_tab'">
 							<div class="row item-head">Dashboard</div>
+
 							<div class="row item-content">
+
+								<div class="col-lg-6">
+									
+									<div class="panel panel-default">
+										
+										<div class="panel-heading text-center">
+											<span style="font-size:16px; font-color: #2A3F54;">Clicks Per Page</span>
+										</div>
+										<div class="panel-body text-center">
+
+											<div class="dropdown">
+											  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Page to check clicks per page
+											  <span class="caret"></span></button>
+											  <ul class="dropdown-menu">
+											    <li><a href="#" style="font-size: 12px;">HTML</a></li>
+											    <li><a href="#" style="font-size: 12px;">CSS</a></li>
+											    <li><a href="#" style="font-size: 12px;">JavaScript</a></li>
+											  </ul>
+											</div>
+
+											<div class="btn btn-default" ng-click="showBarcpp();">
+												BAR
+											</div>
+											<div class="btn btn-default" ng-click="showPiecpp();">
+												PIE
+											</div>
+											
+											<div class="row" ng-controller="adminPieController">
+								
+												<nvd3 options="options" data="hostData" ng-show="piecpp"></nvd3>
+
+											</div>
+
+											<div class="row" ng-controller="adminBarController">
+								
+												<nvd3 options="hostOptions" data="hostData" ng-show="barcpp"></nvd3>
+
+											</div>
+										
+										</div>
+									
+									</div>
+
+								</div>
+
+
+								<div class="col-lg-6">
+									
+									<div class="panel panel-default">
+										
+										<div class="panel-heading text-center">
+											<span style="font-size:16px; font-color: #2A3F54;">Property Clicks</span>
+										</div>
+										<div class="panel-body text-center">
+
+											<div class="btn btn-default" ng-click="showBarpc();">
+												BAR
+											</div>
+											<div class="btn btn-default" ng-click="showPiepc();">
+												PIE
+											</div>
+											
+											<div class="row" ng-controller="adminPieController">
+								
+												<nvd3 options="options" data="hostData" ng-show="piepc"></nvd3>
+
+											</div>
+
+											<div class="row" ng-controller="adminBarController">
+								
+												<nvd3 options="hostOptions" data="hostData" ng-show="barpc"></nvd3>
+
+											</div>
+										
+										</div>
+									
+									</div>
+
+								</div>
+
+								<div class="col-lg-6">
+									
+									<div class="panel panel-default">
+										
+										<div class="panel-heading text-center">
+											<span style="font-size:16px; font-color: #2A3F54;">Least Seen Areas / Properties</span>
+										</div>
+										<div class="panel-body text-center">
+
+											<div class="btn btn-default" ng-click="showBarlsa();">
+												BAR
+											</div>
+											<div class="btn btn-default" ng-click="showPielsa();">
+												PIE
+											</div>
+											
+											<div class="row" ng-controller="adminPieController">
+								
+												<nvd3 options="options" data="hostData" ng-show="pielsa"></nvd3>
+
+											</div>
+
+											<div class="row" ng-controller="adminBarController">
+								
+												<nvd3 options="hostOptions" data="hostData" ng-show="barlsa"></nvd3>
+
+											</div>
+										
+										</div>
+									
+									</div>
+
+								</div>
+
+
+								<div class="col-lg-6">
+									
+									<div class="panel panel-default">
+										
+										<div class="panel-heading text-center">
+											<span style="font-size:16px; font-color: #2A3F54;">Property Reviews</span>
+										</div>
+										<div class="panel-body text-center">
+
+											<div class="btn btn-default" ng-click="showBarpr();">
+												BAR
+											</div>
+											<div class="btn btn-default" ng-click="showPiepr();">
+												PIE
+											</div>
+											
+											<div class="row" ng-controller="adminPieController">
+								
+												<nvd3 options="options" data="hostData" ng-show="piepr"></nvd3>
+
+											</div>
+
+											<div class="row" ng-controller="adminBarController">
+								
+												<nvd3 options="hostOptions" data="hostData" ng-show="barpr"></nvd3>
+
+											</div>
+										
+										</div>
+									
+									</div>
+
+								</div>
+
+								<div class="col-lg-6">
+									
+									<div class="panel panel-default">
+										
+										<div class="panel-heading text-center">
+											<span style="font-size:16px; font-color: #2A3F54;">User Groups</span>
+										</div>
+										<div class="panel-body text-center">
+
+											<div class="btn btn-default" ng-click="showBarug();">
+												BAR
+											</div>
+											<div class="btn btn-default" ng-click="showPieug();">
+												PIE
+											</div>
+											
+											<div class="row" ng-controller="adminPieController">
+								
+												<nvd3 options="options" data="hostData" ng-show="pieug"></nvd3>
+
+											</div>
+
+											<div class="row" ng-controller="adminBarController">
+								
+												<nvd3 options="hostOptions" data="hostData" ng-show="barug"></nvd3>
+
+											</div>
+										
+										</div>
+									
+									</div>
+
+								</div>
+
+								<div class="col-lg-6">
+									
+									<div class="panel panel-default">
+										
+										<div class="panel-heading text-center">
+											<span style="font-size:16px; font-color: #2A3F54;">Bids Information</span>
+										</div>
+										<div class="panel-body text-center">
+
+											<div class="btn btn-default" ng-click="showBarbi();">
+												BAR
+											</div>
+											<div class="btn btn-default" ng-click="showPiebi();">
+												PIE
+											</div>
+											
+											<div class="row" ng-controller="adminPieController">
+								
+												<nvd3 options="options" data="hostData" ng-show="piebi"></nvd3>
+
+											</div>
+
+											<div class="row" ng-controller="adminBarController">
+								
+												<nvd3 options="hostOptions" data="hostData" ng-show="barbi"></nvd3>
+
+											</div>
+										
+										</div>
+									
+									</div>
+
+								</div>
+
+								
+	
+
 							</div>
 						</div>
 					</div>

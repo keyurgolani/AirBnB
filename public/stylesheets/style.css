@@ -162,12 +162,15 @@ body {
 		background: #fff;
 		border-top: 0;
 		font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
-		margin: 13px 0px 0px -42px;
+		margin: 0px 0px 0px -4px;
 		width: 65% !important;
 	}
 	#search-bar-placeholder .pac-container {
-		margin-left: -22px !important;
+		margin-left: -2px !important;
 		width: 75% !important;
+	}
+	#search-bar-placeholder .pac-container :hover{
+		color:  white !important;
 	}
 	.pac-item {
 		background: #fff !important;
@@ -186,6 +189,7 @@ body {
 	}
 	.pac-item:hover {
 		background-color: #FF5A5F !important;
+		color:  white !important;
 	}
 	.navbar-fixed-top {
 		background-color: white;
@@ -579,6 +583,23 @@ body {
 		border-radius: 50%;
 		padding: 0px;
 	}
+
+
+	#adminTop{
+		background-color: #03569A;
+		border-radius:  0px;
+		height: 60px;
+		font-size: 30px;
+		color: white;
+		padding: 0px;
+		padding: ;
+
+	}
+
+	.adminTopBGImage{
+		
+	}
+
 }
 
 main {
@@ -2280,6 +2301,7 @@ label.star:before {
 	content: '\f006';
 	font-family: FontAwesome;
 }
+
 
 .trash-icon {
 	width: 50px;
