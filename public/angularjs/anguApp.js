@@ -730,48 +730,31 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 	})
 	.controller('navBarController', function($scope, $http, Random) {
-
-
-		$scope.isLoggedIn = false;
-
-
-		$http({
-			url : '/getUserSessionInfo',
-			method : 'POST'
-		}).then(function mySuccess(response) {
-
-			console.log('response', response);
-			if (response.data.success) {
-				console.log('Session Initialized', "true");
-				$scope.isLoggedIn = true;
-			} else {
-				console.log('Session Initialized', "false");
-				$scope.isLoggedIn = false;
-			}
-
-		}, function myError(response) {
-
-			// console.log('response', response);
-			console.log('Error retrieving session Info', "true");
-		});
-
+		$scope.fetchLoggedInUser = () => {
+			$http({
+				url : '/getLoggedInUser',
+				method : 'POST'
+			}).then(function(result) {
+				$scope.loggedInUser = result.data.session;
+			}, function(error) {
+				console.log(error);
+			});
+		}
+		
+		$scope.fetchLoggedInUser();
 
 		$scope.logout = function() {
-
 			$http({
 				url : '/logout',
 				method : "POST"
-			}).then(function mySucces(response) {
-
-				$scope.isLoggedIn = false;
-				// window.location.assign("/");
-
-			}, function myError(response) {});
-
+			}).then(function(result) {
+				$scope.fetchLoggedInUser();
+			}, function(error) {
+				console.log(error);
+			});
 		};
 
 		$scope.host = () => {
-
 			if ($scope.loggedInUser) {
 				window.location.assign('/property');
 			} else {

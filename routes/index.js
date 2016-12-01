@@ -1087,9 +1087,16 @@ router.post('/login', function(req, res, next) {
 					'user_id' : userObject.user_id,
 					'user_agent' : req.body.user_agent.os + ' ' + req.body.user_agent.os_version + ' - ' + req.body.user_agent.browser + ' ' + req.body.user_agent.browser_version
 				}, (error, result) => {
-					req.session.loggedInUser = userObject;
-					res.send({
-						'statusCode' : 200
+					req.db.get('user_photos').findOne({
+						'user_id' : userObject.user_id
+					}).then((photo) => {
+						if (photo) {
+							userObject.photo = photo.photo;
+						}
+						req.session.loggedInUser = userObject;
+						res.send({
+							'statusCode' : 200
+						});
 					});
 				});
 			} else {
@@ -1693,28 +1700,20 @@ router.post('/updateRating', (req, res, next) => {
 	})
 });
 
-router.post('/getUserSessionInfo', (req, res, next) => {
-
-
-	console.log("{}{}{}{}{}{}{}{}{}");
-	console.log('req.session.loggedInUser', req.session.loggedInUser);
-
-	console.log(req.session);
-	if (req.session.loggedInUser !== undefined) {
+router.post('/getLoggedInUser', (req, res, next) => {
+	if (req.session !== undefined && req.session.loggedInUser !== undefined) {
 		res.send({
-			"success" : true
+			'session' : req.session.loggedInUser
 		});
 	} else {
 		res.send({
-			"success" : false
+			'session' : null
 		});
 	}
 
 });
 
 router.post('/logout', (req, res, next) => {
-
-
 	req.session.destroy();
 	res.send();
 
