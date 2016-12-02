@@ -1090,25 +1090,24 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			// console.log("Data: ", data);
 
 			$scope.data = JSON.parse(retrievedData);
-
-			// console.log(" >>><<<  >>><<<  >>><<< ");
-			// console.log('$scope.data', $scope.data);
-			// console.log('$scope.data', $scope.data.results.length);
 			
 			$window.document.title = 'Listings for ' + data.results[0].city + ', ' + data.results[0].state;
 
 			var maxRange = 0;
 
+			
+			var dateStart = (data.daterange.split("-")[0].trim());
+			
+			var dateEnd   = (data.daterange.split("-")[1].trim())
+			
 			for (var j = 0; j < $scope.data.results.length; j++) {
 
 				if ($scope.data.results[j].daily_price > maxRange) {
 					maxRange = $scope.data.results[j].daily_price;
+					console.log('maxRange', maxRange);
 				}
 
 			}
-
-			// console.log('maxRange', maxRange);
-
 
 
 			$scope.range = {
@@ -1127,25 +1126,22 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.to = function() {
 				max = ($scope.max);
 			}
+			
 
 			$scope.$watch('range', function() {
 
 				console.log();
-				// console.log('$scope.range', $scope.range);
-
-				// $scope.data
-				// console.log('$scope.data', $scope.data);
 
 				$scope.propertyArray = $scope.data.results;
-				// console.log('$scope.propertyArray', $scope.propertyArray);
 
 				$scope.filteredResults = $scope.propertyArray.filter(function(elem, index, array) {
 
-					return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
+					// return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
+					return ( (elem.daily_price) >= ($scope.range.from) && (elem.daily_price) <= ($scope.range.to) && ( (new Date(elem.start_date) - new Date(dateStart)) > 0 ) && ( (new Date(elem.end_date) - new Date(dateEnd) ) < 0 ) );
 
 				});
-				// console.log('$scope.filteredResults', $scope.filteredResults);
-
+				console.log('$scope.filteredResults', $scope.filteredResults);
+				
 			});
 
 		}

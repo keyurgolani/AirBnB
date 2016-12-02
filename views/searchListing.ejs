@@ -47,33 +47,37 @@
                 </div>
                 <div class="col-lg-6">
                   <div style="border: 1px solid #AAAAAA; height: 37px; width:90%; border-radius: 2px;">
-                	<input type="text" class="form-control date-picker search-bar-placeholder" style="height: 30px; width:90%; border:none; margin-left:10px;" placeholder="Check In			→ Check Out" name="daterange" value="">
+                	<input type="text" class="form-control date-picker search-bar-placeholder" style="height: 30px; width:90%; border:none; margin-left:10px;" placeholder="Check In			→ Check Out" name="daterange" ng-model="data.daterange">
                   </div>
                 </div>
-                <div class="col-lg-3">
-                  <div style="border: 1px solid #AAAAAA; height: 37px; width:90%; border-radius: 2px; padding-left:15px;">
-                    <select class="selectpicker guest-dropdown" style="width:100%;">
-                      <option>1 guest</option>
+                <div class="col-lg-1 text-right">
+                  <div class="text-right" style="border: 1px solid #AAAAAA; height: 37px; width:50px; border-radius: 2px; padding-left:5px;">
+                    <!-- <select class="selectpicker guest-dropdown" style="width:100%;" ng-model="data.guest">
+                      <option value="1">1 guest</option>
                       <hr class="seperator" />
-                      <option>2 guests</option>
+                      <option value="2">2 guests</option>
                       <hr class="seperator" />
-                      <option>3 guests</option>
+                      <option value="3">3 guests</option>
                       <hr class="seperator" />
-                      <option>4 guests</option>
+                      <option value="4">4 guests</option>
                       <hr class="seperator" />
-                      <option>5 guests</option>
+                      <option value="5">5 guests</option>
                       <hr class="seperator" />
-                      <option>6 guests</option>
+                      <option value="6">6 guests</option>
                       <hr class="seperator" />
-                      <option>7 guests</option>
+                      <option value="7">7 guests</option>
                       <hr class="seperator" />
-                      <option>8 guests</option>
+                      <option value="8">8 guests</option>
                       <hr class="seperator" />
-                      <option>9 guests</option>
+                      <option value="9">9 guests</option>
                       <hr class="seperator" />
-                      <option>10 guests</option>
-                    </select>
+                      <option value="10">10 guests</option>
+                    </select> -->
+                    <input type="text" ng-model="data.guest" class="form-control" style="font-size:20px; padding:4px;" size="4"> 
                   </div>                  
+                </div>
+                <div class="col-lg-2 text-left">
+                  <div  style="padding:8px 26px 8px 0px; font-size:20px;">guests</div>
                 </div>
             </div>
 
