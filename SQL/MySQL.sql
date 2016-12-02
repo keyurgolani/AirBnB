@@ -143,9 +143,9 @@ CREATE TABLE `ratings` (
   `rating_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `trip_id` INT(10) ZEROFILL NOT NULL,
   `host_rating` INT(1) NULL,
-  `host_review` INT(1) NULL,
+  `host_review` VARCHAR(255) NULL,
   `traveller_rating` INT(1) NULL,
-  `traveller_review` INT(1) NULL,
+  `traveller_review` VARCHAR(255) NULL,
   `host_rating_timestamp` TIMESTAMP(6) NOT NULL,
   `traveller_rating_timestamp` TIMESTAMP(6) NOT NULL,
   PRIMARY KEY (`rating_id`)
