@@ -133,7 +133,21 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('profile', ($scope, $http, MonthNumber, $location) => {
 		$scope.init = function(profileDetails) {
+			$scope.fetchLoggedInUser = () => {
+				$http({
+					url : '/getLoggedInUser',
+					method : 'POST'
+				}).then(function(result) {
+					$scope.loggedInUser = result.data.session;
+					$scope.isSameUser = ($scope.loggedInUser.user_id === $scope.data[0][0].user_id);
+				}, function(error) {
+					console.log(error);
+				});
+			}
+			
 			$scope.data = JSON.parse(profileDetails);
+			$scope.st_address = $scope.data[0][0].city +', '+ $scope.data[0][0].state;
+			$scope.fetchLoggedInUser();
 			$scope.active_tab = 'profile_tab';
 			$scope.genders = [ 'Male', 'Female', 'Other' ];
 			$scope.months = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
@@ -398,6 +412,42 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"rating" : rating,
 					"trip" : trip,
 					"is_host" : true
+				}
+			}).then((results) => {
+				if (results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
+		
+		$scope.updateHostReview = function(trip, review) {
+			$http({
+				method : "POST",
+				url : '/updateReview',
+				data : {
+					"review" : review,
+					"trip" : trip,
+					"is_host" : true
+				}
+			}).then((results) => {
+				if (results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
+		
+		$scope.updateTravellerReview = function(trip, review) {
+			$http({
+				method : "POST",
+				url : '/updateReview',
+				data : {
+					"review" : review,
+					"trip" : trip,
+					"is_host" : false
 				}
 			}).then((results) => {
 				if (results.data.statusCode === 200) {

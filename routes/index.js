@@ -1228,7 +1228,7 @@ router.get('/profile', function(req, res, next) {
 	//TODO naive nested query to be written to show performance increase.
 	async.parallel([
 		function(callback) {
-			mysql.executeQuery('select f_name, l_name, email, active, phone, gender, month, day, year, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner ], (error, profile_details) => {
+			mysql.executeQuery('select account_details.user_id as user_id, f_name, l_name, email, active, phone, gender, month, day, year, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner ], (error, profile_details) => {
 				if (error) {
 					throw error;
 				} else {
@@ -1273,7 +1273,7 @@ router.get('/profile', function(req, res, next) {
 			});
 		},
 		function(callback) {
-			mysql.executeQuery('select trip_details.trip_id, title, st_address, city, state, zip, longitude, latitude, checkin, checkout, trip_amount, host_rating, receipt_id from trip_details inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id left join ratings on ratings.trip_id = trip_details.trip_id left join bill_details on bill_details.trip_id = trip_details.trip_id where user_id = ?', [ req.query.owner ], (error, trip_details) => {
+			mysql.executeQuery('select trip_details.trip_id, title, st_address, city, state, zip, longitude, latitude, checkin, checkout, trip_amount, host_rating, host_review, receipt_id from trip_details inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id left join ratings on ratings.trip_id = trip_details.trip_id left join bill_details on bill_details.trip_id = trip_details.trip_id where user_id = ?', [ req.query.owner ], (error, trip_details) => {
 				if (error) {
 					throw error;
 				} else {
@@ -1282,7 +1282,7 @@ router.get('/profile', function(req, res, next) {
 			});
 		},
 		function(callback) {
-			mysql.executeQuery('select trip_details.trip_id, f_name, l_name, st_address, city, state, zip, checkin, checkout, no_of_guests, traveller_rating from account_details inner join property_details on account_details.user_id = property_details.owner_id inner join listings on listings.property_id = property_details.property_id inner join trip_details on listings.listing_id = trip_details.listing_id left join ratings on ratings.trip_id = trip_details.trip_id where account_details.user_id = ?', [ req.query.owner ], (error, hosting_details) => {
+			mysql.executeQuery('select trip_details.trip_id, f_name, l_name, st_address, city, state, zip, checkin, checkout, no_of_guests, traveller_rating, traveller_review from account_details inner join property_details on account_details.user_id = property_details.owner_id inner join listings on listings.property_id = property_details.property_id inner join trip_details on listings.listing_id = trip_details.listing_id left join ratings on ratings.trip_id = trip_details.trip_id where account_details.user_id = ?', [ req.query.owner ], (error, hosting_details) => {
 				if (error) {
 					throw error;
 				} else {
@@ -1309,6 +1309,24 @@ router.get('/profile', function(req, res, next) {
 					callback(null, video.video);
 				} else {
 					callback(null, null);
+				}
+			});
+		},
+		function(callback) {
+			mysql.executeQuery('select owner_id as user_id, avg(host_rating) as host_rating from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id where owner_id = ?', [ req.query.owner ], (error, hosting_rating_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, hosting_rating_details);
+				}
+			});
+		},
+		function(callback) {
+			mysql.executeQuery('select user_id as user_id, avg(traveller_rating) as traveller_rating from ratings right join trip_details on ratings.trip_id = trip_details.trip_id where user_id = ?', [ req.query.owner ], (error, travelling_rating_details) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, travelling_rating_details);
 				}
 			});
 		}
@@ -1700,6 +1718,108 @@ router.post('/updateRating', (req, res, next) => {
 			} else {
 				mysql.updateData('ratings', {
 					'traveller_rating' : req.body.rating
+				}, {
+					'trip_id' : req.body.trip
+				}, (error, results) => {
+					console.log(error, results);
+					if (error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if (results.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							})
+						} else {
+							res.send({
+								'statusCode' : 500
+							})
+						}
+					}
+				})
+			}
+		}
+	})
+});
+
+router.post('/updateReview', (req, res, next) => {
+	mysql.fetchData('rating_id', 'ratings', {
+		'trip_id' : req.body.trip
+	}, (error, results) => {
+		if (error || results.length === 0) {
+			if (req.body.is_host) {
+				mysql.insertData('ratings', {
+					'host_review' : req.body.review,
+					'trip_id' : req.body.trip
+				}, (error, results) => {
+					console.log(error, results);
+					if (error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if (results.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							})
+						} else {
+							res.send({
+								'statusCode' : 500
+							})
+						}
+					}
+				})
+			} else {
+				mysql.insertData('ratings', {
+					'traveller_review' : req.body.review,
+					'trip_id' : req.body.trip
+				}, (error, results) => {
+					console.log(error, results);
+					if (error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if (results.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							})
+						} else {
+							res.send({
+								'statusCode' : 500
+							})
+						}
+					}
+				})
+			}
+		} else {
+			if (req.body.is_host) {
+				mysql.updateData('ratings', {
+					'host_review' : req.body.review
+				}, {
+					'trip_id' : req.body.trip
+				}, (error, results) => {
+					console.log(error, results);
+					if (error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if (results.affectedRows === 1) {
+							res.send({
+								'statusCode' : 200
+							})
+						} else {
+							res.send({
+								'statusCode' : 500
+							})
+						}
+					}
+				})
+			} else {
+				mysql.updateData('ratings', {
+					'traveller_review' : req.body.review
 				}, {
 					'trip_id' : req.body.trip
 				}, (error, results) => {
