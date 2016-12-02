@@ -23,7 +23,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$window.document.title = 'Welcome to the World of Trips!';
 		$scope.show_guests = false;
 	})
-	.controller('login', function($scope, $http, Random, deviceDetector, $rootScope) {
+	.controller('login', function($scope, $http, Random, deviceDetector,$rootScope) {
+		$scope.global = $rootScope;
 		$scope.deviceDetector = deviceDetector;
 		$scope.login = function() {
 			$http({
@@ -35,7 +36,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"user_agent" : deviceDetector
 				}
 			}).then((results) => {
-				$rootScope.fetchLoggedInUser()
+				$rootScope.fetchLoggedInUser(function() {
+				window.location.assign('/');
+			});			
 			}, (error) => {
 				console.log("Error", error);
 			});
@@ -336,7 +339,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"birth_year" : $scope.birth_year,
 					"email" : $scope.data[0][0].email,
 					"phone" : $scope.data[0][0].phone,
-					"st_address" : $scope.streetAddress,
 					"city" : $scope.city,
 					"state" : $scope.state,
 					"zip" : $scope.zip,
@@ -553,7 +555,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					}
 				}).then((results) => {
 					if (results.data.statusCode === 200) {
-						console.log("Results", results);
+						$rootScope.fetchLoggedInUser();
 					}
 				}, (error) => {
 					console.log("Error", error);
@@ -572,6 +574,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					}
 				}).then((results) => {
 					if (results.data.statusCode === 200) {
+						$rootScope.fetchLoggedInUser();
 						console.log("Results", results);
 					}
 				}, (error) => {
@@ -634,6 +637,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				}
 			}).then((result) => {
 				if (result.data.statusCode === 200) {
+					window.location.assign('/');
 
 				}
 			}, (error) => {
@@ -778,7 +782,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				url : '/logout',
 				method : "POST"
 			}).then(function(result) {
-				$rootScope.fetchLoggedInUser();
+				$rootScope.fetchLoggedInUser(function() {
+				window.location.assign('/');
+			});			
+				
 			}, function(error) {
 				console.log(error);
 			});

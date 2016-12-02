@@ -2,7 +2,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 var LocalStrategy = require("passport-local").Strategy;
 var async = require('async');
-// var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt');
 
 var mysql = require('../utils/dao');
 var properties = require('properties-reader')('properties.properties');
