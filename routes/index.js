@@ -1153,7 +1153,7 @@ router.get('/searchListing', function(req, res, next) {
 	var daterange = req.query.daterange;
 
 	if(address === null || address === undefined || address === ""){
-		
+
 	}else{
 		
 		// console.log("<><><><><><><><>><><>><><");
@@ -1872,6 +1872,7 @@ router.post('/getLoggedInUser', (req, res, next) => {
 
 router.post('/logout', (req, res, next) => {
 	req.session.destroy();
+	window.location.assign("/");
 	res.send();
 
 });
