@@ -448,7 +448,7 @@
 							<div class="row item-content">
 								<div class="row" ng-show="isSameUser">
 									<div class="col-md-3">
-										<button class="btn btn-primary add-new-button">Post a new property</button>
+										<a ng-href="/property" target="_blank"><button class="btn btn-primary add-new-button">Post a new property</button></a>
 									</div>
 									<div class="col-md-9 no-listing-subtext">Make money by renting out your extra space on Airbnb. You'll also get to meet interesting travelers from around the world!</div>
 								</div>
@@ -467,8 +467,11 @@
 											<div class="col-md-12 location-text" style="margin-top:25px;">{{property.property_type}}</div>
 										</div>
 										<div class="row">
-											<div class="col-md-7"></div>
-											<div class="col-md-5" ng-show="isSameUser">
+											<div class="col-md-6"></div>
+											<div class="col-md-3" ng-show="isSameUser">
+												<a ng-href="/listing?property={{property.property_id}}"><button class="btn btn-primary pull-right activate-button" ng-show="property.active === 1">List This</button></a>
+											</div>
+											<div class="col-md-3" ng-show="isSameUser">
 												<button ng-click="propertyDeactivate(property.property_id)" class="btn btn-primary deactivate-button" ng-show="property.active === 1">Deactivate</button>
 												<button ng-click="propertyActivate(property.property_id)" class="btn btn-primary activate-button" ng-hide="property.active === 1">Activate</button>
 											</div>
@@ -482,7 +485,7 @@
 							<div class="row item-content">
 								<div class="row" ng-show="isSameUser">
 									<div class="col-md-3">
-										<button class="btn btn-primary add-new-button">Post a new listing</button>
+										<button class="btn btn-primary add-new-button" ng-click="active_tab = 'properties_tab'">Post a new listing</button>
 									</div>
 									<div class="col-md-9 no-listing-subtext" style="margin-left: -15px;!important">Make money by renting out your extra space on Airbnb. You'll also get to meet interesting travelers from around the world!</div>
 								</div>
