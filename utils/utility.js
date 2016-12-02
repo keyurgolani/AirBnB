@@ -48,5 +48,14 @@ module.exports = {
 	    }
 	    returnString = returnString + cardNumberString.substr(cardNumberString.length - 4);
 	    return returnString;
+	},
+	maskCard : function(cardNumber) {
+		var returnString = "";
+		var cardNumberString = String(cardNumber);
+	    for(var i = 0; i < cardNumberString.length - 4; i++) {
+	    	returnString = returnString + 'X';
+	    }
+	    returnString = returnString + cardNumberString.substr(cardNumberString.length - 4);
+	    return returnString;
 	}
 }

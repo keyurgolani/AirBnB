@@ -110,7 +110,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 	})
-	.controller('profile', ($scope, $http, $window, MonthNumber, $location) => {
+	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation) => {
 		$scope.init = function(profileDetails) {
 			$scope.fetchLoggedInUser = () => {
 				$http({
@@ -299,7 +299,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 				$scope.data[1].push({
 					"card_id" : result.card_id,
-					"card_number" : $scope.cc_no,
+					"card_number" : Validation.maskCard($scope.cc_no),
 					"exp_month" : $scope.cc_month,
 					"exp_year" : $scope.cc_year,
 					"first_name" : $scope.first_name,
@@ -1322,6 +1322,15 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			} else {
 				return false;
 			}
+		}
+		this.maskCard = function(cardNumber) {
+			var returnString = "";
+			var cardNumberString = String(cardNumber);
+		    for(var i = 0; i < cardNumberString.length - 4; i++) {
+		    	returnString = returnString + 'X';
+		    }
+		    returnString = returnString + cardNumberString.substr(cardNumberString.length - 4);
+		    return returnString;
 		}
 	})
 	.service('Date', function() {
