@@ -1069,6 +1069,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.init = function(retrievedData) {
 			$scope.data = JSON.parse(retrievedData);
 			$window.document.title = 'Listings for ' + $location.search().where;
+			var maxRange = 0;
 			if($scope.data.results.length > 0) {
 				for (var j = 0; j < $scope.data.results.length; j++) {
 					if ($scope.data.results[j].daily_price > maxRange) {
