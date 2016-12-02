@@ -605,6 +605,7 @@ body {
 		
 	}
 
+
 }
 
 main {
@@ -631,7 +632,7 @@ main {
 }
 
 .box-size {
-	height: 38px !important;
+	height: 25px !important;
 	width: 186.5px !important;
 }
 
@@ -647,6 +648,14 @@ main {
 	background-color: #fff;
 	color: #484848;
 }
+
+/* .dropdown-box>.dropdown-toggle {
+	border-radius: 2px;
+	font-size: 16px;
+	border: 1px solid red;
+	background-color: #fff;
+	color: #484848;
+} */
 
 .search-bar {
 	padding-top: 10px;

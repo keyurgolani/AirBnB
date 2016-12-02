@@ -589,6 +589,15 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		}
 	})
 	.controller('addProperty', ($scope, $http, $window) => {
+
+		$scope.room_type = "";
+
+		$scope.$watch('room_type', function(){
+			
+			console.log('$scope.room_type', $scope.room_type.room_type);
+	
+		});
+
 		$scope.photos = [];
 		$scope.page = 1;
 
@@ -623,50 +632,172 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 		$scope.addProperty = () => {
-			$http({
-				method : "POST",
-				url : "/addProperty",
-				data : {
-					'property_type' : $scope.property_type,
-					'house_rules' : $scope.house_rules,
-					'photos' : $scope.photos,
-					'location' : {
-						'longitude' : $scope.addressDetails.geometry.location.lng(),
-						'latitude' : $scope.addressDetails.geometry.location.lat(),
-						'st_address' : $scope.addressDetails.address_components[0].long_name + ' ' + $scope.addressDetails.address_components[1].long_name,
-						'apt' : $scope.apt,
-						'city' : $scope.addressDetails.address_components[3].long_name,
-						'state' : $scope.addressDetails.address_components[5].long_name,
-						'zip' : $scope.addressDetails.address_components[7].long_name
-					}
-				}
-			}).then((result) => {
-				if (result.data.statusCode === 200) {
+			
+			$scope.noroom_type               = false;
+			$scope.noGuests                  = false;
+			$scope.property_type_val         = false;
+			$scope.no_street_address         = false;
+			$scope.no_city                   = false;
+			$scope.no_apt                    = false;
+			$scope.no_state                  = false;
+			$scope.no_house_rules            = false;
+			
+			$scope.propertySuccessfullyAdded = false;
+
+				if($scope.room_type === null || $scope.room_type === undefined || $scope.room_type === ""){
+
+					$scope.page        = 1;
+					$scope.noroom_type = true;
+					$scope.noGuests    = false;
+					$scope.property_type_val = false;
+					$scope.no_street_address = false;
+					$scope.no_apt            = false;
+					$scope.no_state          = false;
+					$scope.no_house_rules    = false;				
+
+				}else if($scope.guests < 1 || $scope.guests === undefined || $scope.guests === null){
+				
+					$scope.page        = 1;
+					$scope.noroom_type = false;
+					$scope.noGuests    = true;
+					$scope.property_type_val = false;
+					$scope.no_street_address = false;
+					$scope.no_apt            = false;
+					$scope.no_state          = false;
+					$scope.no_house_rules    = false;
+
+				}else if($scope.property_type === null || $scope.property_type === undefined || $scope.property_type === ""){
+
+					$scope.page              = 2;
+					$scope.noroom_type       = false;
+					$scope.noGuests          = false;
+					$scope.property_type_val = true;
+					$scope.no_street_address = false;
+					$scope.no_apt            = false;
+					$scope.no_state          = false;
+					$scope.no_house_rules    = false;
+										$scope.no_house_rules    = false;
+				}else if($scope.city === "" || $scope.city === null || $scope.city === undefined ){
+
+					$scope.page              = 3;
+					$scope.noroom_type       = false;
+					$scope.noGuests          = false;
+					$scope.property_type_val = false;
+					$scope.no_street_address = false;
+					$scope.no_city           = true;
+					$scope.no_apt            = false;
+					$scope.no_state          = false;
+					$scope.no_house_rules    = false;
+
+				}else if($scope.apt === null || $scope.apt === undefined || $scope.apt === "" ){
+					
+					$scope.page              = 3;
+					$scope.noroom_type       = false;
+					$scope.noGuests          = false;
+					$scope.property_type_val = false;
+					$scope.no_street_address = false;
+					$scope.no_city           = false;
+					$scope.no_apt            = true;
+					$scope.no_state          = false;
+					$scope.no_house_rules    = false;
+
+				}else if($scope.state === null || $scope.state === undefined || $scope.state === "" ){
+					
+					$scope.page              = 3;
+					$scope.noroom_type       = false;
+					$scope.noGuests          = false;
+					$scope.property_type_val = false;
+					$scope.no_street_address = false;
+					$scope.no_city           = false;
+					$scope.no_apt            = false;
+					$scope.no_state          = true;
+					$scope.no_house_rules    = false;
+
+				}else if($scope.zip === null || $scope.zip === undefined || $scope.zip === "" ){
+					
+					$scope.page              = 3;
+					$scope.noroom_type       = false;
+					$scope.noGuests          = false;
+					$scope.property_type_val = false;
+					$scope.no_street_address = false;
+					$scope.no_city           = true;
+					$scope.no_apt            = false;
+					$scope.no_state          = true;
+					$scope.no_house_rules    = false;
+					
+				}else if($scope.house_rules === null || $scope.house_rules === undefined || $scope.house_rules === "" ){
+					
+					$scope.page              = 5;
+					$scope.noroom_type       = false;
+					$scope.noGuests          = false;
+					$scope.property_type_val = false;
+					$scope.no_street_address = false;
+					$scope.no_city           = false;
+					$scope.no_apt            = false;
+					$scope.no_state          = false;
+					$scope.no_house_rules    = true;
+					
+				}else{
+					
+
+					console.log('$scope.details', $scope.details);
+					$http({
+						method : "POST",
+						url : "/addProperty",
+						data : {
+							'property_type' : $scope.property_type,
+							'house_rules' : $scope.house_rules,
+							'photos' : $scope.photos,
+							'location' : {
+								'longitude' : $scope.addressDetails.geometry.location.lng(),
+								'latitude' : $scope.addressDetails.geometry.location.lat(),
+								'st_address' : $scope.addressDetails.address_components[0].long_name + ' ' + $scope.addressDetails.address_components[1].long_name,
+								'apt' : $scope.apt,
+								'city' : $scope.addressDetails.address_components[3].long_name,
+								'state' : $scope.addressDetails.address_components[5].long_name,
+								'zip' : $scope.addressDetails.address_components[7].long_name
+							}
+						}
+					
+
+					}).then((result) => {
+						if (result.data.statusCode === 200) {
+							$scope.propertySuccessfullyAdded = true;
+							$scope.page                      = 1;
+						}
+					}, (error) => {
+
+					})
 
 				}
-			}, (error) => {
 
-			})
-		}
+			// $scope.hometype="selectpicker dropdown-box listing box-size";
 
-		$scope.$watch('photos', function() {
-			if ($scope.photos.length === 0) {
-				$scope.show_upload = true;
-			} else {
-				$scope.show_upload = false;
+
+
+
+
+
 			}
-		});
 
-		$scope.$watch('addressDetails', function() {
-			if ($scope.addressDetails !== undefined && typeof $scope.addressDetails != 'string') {
-				$scope.city = $scope.addressDetails.address_components[3].long_name;
-				$scope.state = $scope.addressDetails.address_components[5].long_name;
-				$scope.zip = $scope.addressDetails.address_components[7].long_name;
-			}
-		});
+			$scope.$watch('photos', function() {
+				if ($scope.photos.length === 0) {
+					$scope.show_upload = true;
+				} else {
+					$scope.show_upload = false;
+				}
+			});
 
-		$scope.fetchPropertyTypes();
-		$scope.fetchRoomTypes();
+			$scope.$watch('addressDetails', function() {
+				if ($scope.addressDetails !== undefined && typeof $scope.addressDetails != 'string') {
+					$scope.city = $scope.addressDetails.address_components[3].long_name;
+					$scope.state = $scope.addressDetails.address_components[5].long_name;
+					$scope.zip = $scope.addressDetails.address_components[7].long_name;
+				}
+			});
+
+			$scope.fetchPropertyTypes();
+			$scope.fetchRoomTypes();
 
 	})
 	.controller('addListing', ($scope, $http, $location, Date, $window) => {
