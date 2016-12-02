@@ -2508,3 +2508,108 @@ label.star:before {
 .crossed {
 	text-decoration: line-through!important;
 }
+
+.button-radius {
+	border-radius: 0px;
+}
+
+.search-listing-box {
+	display: flex;
+	width: 186.5px;
+	height: 37px;
+	border-radius: 2px !important;
+	font-size: 16px;
+	border: 1px solid #aaa !important;
+	background-color: #fff;
+	color: #484848;
+}
+
+.search-listing-text {
+	border-right: 1px solid #dce0e0;
+	white-space: nowrap;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	height: 36px;
+	width: 119.5px;
+	font-size: 22px;
+}
+
+.homepage-box {
+	display: flex;
+	width: 160px;
+	height: 50px;
+	border-radius: 3px !important;
+	font-size: 16px;
+	background-color: #fff;
+	color: #484848;
+	border: 1px solid rgba(0, 0, 0, .15);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+	margin-top: 43px;
+}
+
+.homepage-text {
+	border-right: 1px solid #dce0e0;
+	white-space: nowrap;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	height: 48px;
+	width: 80px;
+	font-size: 22px;
+	padding-left: 3px;
+}
+
+.homepage-guest-button {
+	width: 50px;
+	border-right: 1px solid #dce0e0;
+	font-size: 30px;
+	line-height: 45px;
+	color: #82888a;
+	padding: 0px 10px 0px;
+	cursor: pointer;
+}
+
+.homepage-guest {
+	width: 150px;
+	border: none;
+	font-size: 18px;
+	letter-spacing: -0.5px;
+	color: #929292;	
+}
+
+.homepage-guest>.btn-default {
+	font-size: 19px !important;
+	letter-spacing: -0.5px;
+	padding-left: 0;
+	border-radius: 0px !important;
+	color: #929292;
+	outline: none;
+	background-color: #fff !important;
+	width: 120px;
+	text-align: left;
+}
+
+.homepage-guest>.btn-default:active, .homepage-guest>.btn-default:focus, .homepage-guest>.btn-default:active:focus {
+	border-bottom: 1px solid #008489 !important;
+	background-color: #fff !important;
+	box-shadow: none !important;
+	border-color: none!important;
+	color: #929292; 
+	outline: none;
+}
+
+.homepage-guest>.dropdown-menu {
+	margin-top: 5px;
+	padding: 0px;
+}
+
+.guest-downarrow {
+	font-size: 30px;
+    line-height: 33px;
+    height: 33.81px;
+}
+
+.guest-downarrow:hover {
+	cursor: pointer;
+}

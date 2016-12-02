@@ -30,35 +30,26 @@
 						</div>
 						<div class="col-md-4 search-box">
 							<span class="search-box-text">When</span>
-							<input type="text" class="form-control date-picker search-bar-placeholder" placeholder="Check In		→ Check Out" name="daterange" value="">
+							<input type="text" date-range-picker class="form-control date-picker search-bar-placeholder" placeholder="Check In		→ Check Out" name="daterange" ng-model="daterange">
 						</div>
 						<div class="col-md-4 search-box right-search-box">
 							<div class="col-md-7">
-								<span class="search-box-text">Guests</span>
-								<select class="selectpicker guest-dropdown" name="guest">
-								  <option value="1">1 guest</option>
-								  <hr class="seperator" />
-								  <option value="2">2 guests</option>
-								  <hr class="seperator" />
-								  <option value="3">3 guests</option>
-								  <hr class="seperator" />
-								  <option value="4">4 guests</option>
-								  <hr class="seperator" />
-								  <option value="5">5 guests</option>
-								  <hr class="seperator" />
-								  <option value="6">6 guests</option>
-								  <hr class="seperator" />
-								  <option value="7">7 guests</option>
-								  <hr class="seperator" />
-								  <option value="8">8 guests</option>
-								  <hr class="seperator" />
-								  <option value="9">9 guests</option>
-								  <hr class="seperator" />
-								  <option value="10">10 guests</option>
-								</select>
+								<span class="search-box-text pull-left">Guests</span>
+								<div class="btn-group homepage-guest">
+								  <input type="text" class="btn btn-default homepage-guest" placeholder="Guests" ng-click="show_guests = !show_guests" readonly="readonly" ng-model="item.item_count">
+								  </input>
+								  <span class="pull-right guest-downarrow" ng-click="show_guests = !show_guests">⌄</span>
+								  <div ng-show="show_guests" style="border-radius: 4px;">
+								    <div class="homepage-box">
+							    		<div class="homepage-text"><input type="text" class="form-control homepage-text" placeholder="Guests" ng-model="item.item_count"/></div>
+										<span ng-click="item.item_count = item.item_count - 1" class="homepage-guest-button btn button-radius">-</span>
+										<span ng-click="item.item_count = item.item_count + 1" class="homepage-guest-button btn button-radius" style="border-right:none;">+</span>
+									</div>
+								  </div>
+								</div>
 							</div>
 							<div class="col-md-5" style="height:56px; padding:5px;">
-								<input type="submit" class="form-control btn btn-primary search-button" value="Search">
+								<input type="submit" class="form-control btn btn-primary search-button" value="Search" focus-if="!show_guests">
 							</div>
 						</div>
 					</form>
@@ -592,15 +583,6 @@
 			    $('#SJC').carousel({
 			        interval: 0
 			    })
-			});
-			$(function() {
-    			$('input[name="daterange"]').daterangepicker({
-    				autoApply: true,
-    				linkedCalendars: true,
-    				isCustomDate: function() {
-    					return 'customDates';
-    				}
-    			}).val('');
 			});
 		</script>
 	</main>
