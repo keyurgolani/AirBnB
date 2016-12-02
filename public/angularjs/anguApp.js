@@ -1065,58 +1065,25 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			});
 
 	})
-	.controller('searchListingController', function($scope, $http, Random, $interval, NgMap, $window) {
-
-		$http({
-			url : '/getUserSessionInfo',
-			method : 'POST'
-		}).then(function mySuccess(response) {
-
-			console.log('response', response);
-			if (response.data.success) {
-				console.log('Session Initialized', "true");
-			} else {
-				console.log('Session Initialized', "false");
-			}
-		}, function myError(response) {
-
-			// console.log('response', response);
-			console.log('Error retrieving session Info', "true");
-		});
-
+	.controller('searchListingController', function($scope, $location, $http, Random, $interval, NgMap, $window) {
 		$scope.init = function(retrievedData) {
-
-			var data = JSON.parse(retrievedData);
-			// console.log("Data: ", data);
-
 			$scope.data = JSON.parse(retrievedData);
-
-			// console.log(" >>><<<  >>><<<  >>><<< ");
-			// console.log('$scope.data', $scope.data);
-			// console.log('$scope.data', $scope.data.results.length);
-			
-			$window.document.title = 'Listings for ' + data.results[0].city + ', ' + data.results[0].state;
-
-			var maxRange = 0;
-
-			for (var j = 0; j < $scope.data.results.length; j++) {
-
-				if ($scope.data.results[j].daily_price > maxRange) {
-					maxRange = $scope.data.results[j].daily_price;
+			$window.document.title = 'Listings for ' + $location.search().where;
+			if($scope.data.results.length > 0) {
+				for (var j = 0; j < $scope.data.results.length; j++) {
+					if ($scope.data.results[j].daily_price > maxRange) {
+						maxRange = $scope.data.results[j].daily_price;
+					}
 				}
-
+			} else {
+				maxRange = 500;
 			}
-
-			// console.log('maxRange', maxRange);
-
-
 
 			$scope.range = {
 				from : 0,
 				to : maxRange
 			};
 			$scope.max = maxRange;
-
 
 			var min,
 				max;
@@ -1129,22 +1096,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 
 			$scope.$watch('range', function() {
-
-				console.log();
-				// console.log('$scope.range', $scope.range);
-
-				// $scope.data
-				// console.log('$scope.data', $scope.data);
-
 				$scope.propertyArray = $scope.data.results;
-				// console.log('$scope.propertyArray', $scope.propertyArray);
-
 				$scope.filteredResults = $scope.propertyArray.filter(function(elem, index, array) {
-
 					return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
-
 				});
-				// console.log('$scope.filteredResults', $scope.filteredResults);
 
 			});
 

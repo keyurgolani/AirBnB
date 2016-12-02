@@ -1201,21 +1201,21 @@ router.get('/searchListing', function(req, res, next) {
 			};
 			console.log(error, results);
 			if (error) {
-				res.send({
-					'statusCode' : 500
+				res.render('searchListing', {
+					data : JSON.stringify({
+						centerLatLng : centerLatLng
+					})
 				});
 			} else {
 				if (results && results.length > 0) {
-					// console.log(results);
-					// res.render('searchListing', {data: JSON.stringify(data)});// 							
 					res.render('searchListing', {
 						data : JSON.stringify(data)
-					}); // 							
-					console.log(">>>>>>>>>>>>>><<<<<<<<<<<<<<<<<");
-					console.log(data.results);
+					}); 							
 				} else {
-					res.send({
-						'statusCode' : 204
+					res.render('searchListing', {
+						data : JSON.stringify({
+							centerLatLng : centerLatLng
+						})
 					});
 				}
 			}
