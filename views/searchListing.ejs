@@ -45,35 +45,17 @@
                 <div class="col-lg-3" style="padding-left:0px; padding-top:7px;">
                     Dates
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" style="width:48%;">
                   <div style="border: 1px solid #AAAAAA; height: 37px; width:90%; border-radius: 2px;">
                 	<input type="text" class="form-control date-picker search-bar-placeholder" style="height: 30px; width:90%; border:none; margin-left:10px;" placeholder="Check In			→ Check Out" name="daterange" value="">
                   </div>
                 </div>
                 <div class="col-lg-3">
-                  <div style="border: 1px solid #AAAAAA; height: 37px; width:90%; border-radius: 2px; padding-left:15px;">
-                    <select class="selectpicker guest-dropdown" style="width:100%;">
-                      <option>1 guest</option>
-                      <hr class="seperator" />
-                      <option>2 guests</option>
-                      <hr class="seperator" />
-                      <option>3 guests</option>
-                      <hr class="seperator" />
-                      <option>4 guests</option>
-                      <hr class="seperator" />
-                      <option>5 guests</option>
-                      <hr class="seperator" />
-                      <option>6 guests</option>
-                      <hr class="seperator" />
-                      <option>7 guests</option>
-                      <hr class="seperator" />
-                      <option>8 guests</option>
-                      <hr class="seperator" />
-                      <option>9 guests</option>
-                      <hr class="seperator" />
-                      <option>10 guests</option>
-                    </select>
-                  </div>                  
+                  	<div class="address-box search-listing-box">
+			    		<div class="search-listing-text"><input type="text" class="form-control search-listing-text" placeholder="Guests" ng-model="item.item_count"/></div>
+						<span ng-click="item.item_count = item.item_count - 1" class="count-main-button btn button-radius">-</span>
+						<span ng-click="item.item_count = item.item_count + 1" class="count-main-button btn button-radius" style="border-right:none;">+</span>
+					</div>                  
                 </div>
             </div>
 
