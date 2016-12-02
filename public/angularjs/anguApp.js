@@ -22,7 +22,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	.controller('homepage', function($window) {
 		$window.document.title = 'Welcome to the World of Trips!'
 	})
-	.controller('login', function($scope, $http, Random, deviceDetector) {
+	.controller('login', function($scope, $http, Random, deviceDetector, $rootScope) {
 		$scope.deviceDetector = deviceDetector;
 		$scope.login = function() {
 			$http({
@@ -34,7 +34,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"user_agent" : deviceDetector
 				}
 			}).then((results) => {
-				console.log("Results", results);
+				$rootScope.fetchLoggedInUser()
 			}, (error) => {
 				console.log("Error", error);
 			});
@@ -110,24 +110,15 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 	})
-	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation) => {
+	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope) => {
+		
 		$scope.init = function(profileDetails) {
-			$scope.fetchLoggedInUser = () => {
-				$http({
-					url : '/getLoggedInUser',
-					method : 'POST'
-				}).then(function(result) {
-					$scope.loggedInUser = result.data.session;
-					$scope.isSameUser = ($scope.loggedInUser.user_id === $scope.data[0][0].user_id);
-				}, function(error) {
-					console.log(error);
-				});
-			}
-			
 			$scope.data = JSON.parse(profileDetails);
 			$window.document.title = $scope.data[0][0].f_name + ' ' + $scope.data[0][0].l_name + ' | Profile';
 			$scope.st_address = $scope.data[0][0].city +', '+ $scope.data[0][0].state;
-			$scope.fetchLoggedInUser();
+			$rootScope.fetchLoggedInUser(function() {
+				$scope.isSameUser = ($rootScope.loggedInUser.user_id === $scope.data[0][0].user_id);
+			});
 			$scope.active_tab = 'profile_tab';
 			$scope.genders = [ 'Male', 'Female', 'Other' ];
 			$scope.months = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
@@ -763,26 +754,30 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 
 	})
-	.controller('navBarController', function($scope, $http, Random) {
-		$scope.fetchLoggedInUser = () => {
+	.controller('navBarController', function($scope, $http, Random, $rootScope) {
+		
+		$scope.global = $rootScope;
+		
+		$rootScope.fetchLoggedInUser = (callback) => {
 			$http({
 				url : '/getLoggedInUser',
 				method : 'POST'
 			}).then(function(result) {
-				$scope.loggedInUser = result.data.session;
+				$rootScope.loggedInUser = result.data.session;
+				callback();
 			}, function(error) {
 				console.log(error);
 			});
 		}
 		
-		$scope.fetchLoggedInUser();
+		$rootScope.fetchLoggedInUser();
 
 		$scope.logout = function() {
 			$http({
 				url : '/logout',
 				method : "POST"
 			}).then(function(result) {
-				$scope.fetchLoggedInUser();
+				$rootScope.fetchLoggedInUser();
 			}, function(error) {
 				console.log(error);
 			});
