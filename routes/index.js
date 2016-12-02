@@ -821,17 +821,11 @@ router.post('/fetchUserHostings', (req, res, next) => {
 router.get('/viewListing', function(req, res, next) {
 
 	var listing_id = req.query.listing;
-	// var listing_id = '0000000011';
 
-
-	//log for listing click
 	//TODO
 	// var user_id = req.session.loggedInUser.user_id;
 	var user_id = 1;
 	logger.pageClickLogger(listing_id, user_id);
-
-
-	// logger.log("hi");
 
 	var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
 	var parameters = [ listing_id, listing_id ];
@@ -846,9 +840,15 @@ router.get('/viewListing', function(req, res, next) {
 			if (results && results.length > 0) {
 				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
 				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
-				res.render('viewListing', {
-					data : JSON.stringify(results[0])
-				});
+				req.db.get('property_photos').find({
+					'property_id' : results[0].property_id
+				}).then((docs) => {
+					results[0].photos = docs;
+					res.render('viewListing', {
+						data : JSON.stringify(results[0])
+					});
+				})
+				
 			} else {
 				res.render('error', {
 					'statusCode' : 204,

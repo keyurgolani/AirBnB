@@ -506,11 +506,14 @@
 										<div class="row from-to-row">From - To</div>
 										<div class="row">
 											<div class="col-md-7 details-text">{{listing.start_date | date:'MM/dd/yyyy'}} - {{listing.end_date | date:'MM/dd/yyyy'}}</div>
-											<div class="col-md-5" ng-show="isSameUser">
+										</div>
+										<div class="row">
+											<div class="col-md-6 pull-right" ng-show="isSameUser">
 												<button class="btn btn-primary deactivate-button" ng-click="listingDeactivate(listing.listing_id)" ng-show="listing.listing_active === 1 && listing.property_active === 1">Deactivate</button>
+												<a ng-href="/viewListing?listing={{listing.listing_id}}" target="_blank"><button class="btn btn-primary activate-button" ng-show="listing.listing_active === 1 && listing.property_active === 1" style="margin-right: 20px;">View Listing</button></a>
 												<div class="row inactive-text" ng-click="listingActivate(listing.listing_id)" ng-hide="listing.listing_active === 1 && listing.property_active === 1">Inactive</div>
 											</div>
-											<div class="col-md-5" ng-hide="isSameUser">
+											<div class="col-md-6 pull-right" ng-hide="isSameUser">
 												<a ng-href="/viewListing?listing={{listing.listing_id}}" target="_blank"><button class="btn btn-primary activate-button" ng-show="listing.listing_active === 1 && listing.property_active === 1">Book Here</button></a>
 												<div class="row inactive-text" ng-click="listingActivate(listing.listing_id)" ng-hide="listing.listing_active === 1 && listing.property_active === 1">Inactive</div>
 											</div>
