@@ -32,9 +32,9 @@ CREATE TABLE `profile_details` (
   `month` INT(2) NOT NULL,
   `day` INT(2) NOT NULL,
   `year` INT(4) NOT NULL,
-  `city` VARCHAR(100) NOT NULL,
-  `state` VARCHAR(100) NOT NULL,
-  `zip` NUMERIC(5) NOT NULL,
+  `city` VARCHAR(100) NULL,
+  `state` VARCHAR(100) NULL,
+  `zip` NUMERIC(5) NULL,
   `description` VARCHAR(10000) DEFAULT NULL,
   PRIMARY KEY (`profile_id`)
 );
