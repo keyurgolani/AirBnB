@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector' ])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector', 'ui.utils.masks' ])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
@@ -19,7 +19,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 		});
 	})
-	.controller('homepage', function() {})
+	.controller('homepage', function($window) {
+		$window.document.title = 'Welcome to the World of Trips!'
+	})
 	.controller('login', function($scope, $http, Random, deviceDetector) {
 		$scope.deviceDetector = deviceDetector;
 		$scope.login = function() {
@@ -36,33 +38,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}, (error) => {
 				console.log("Error", error);
 			});
-
-
-			// $http({
-
-			// 	url: '/getUserSessionInfo',
-			// 	method: 'POST'
-
-			// }).then(function mySuccess(response){
-
-			// 	console.log('response', response);
-			// 	if(response.data.success){
-			// 		console.log('Session Initialized', "true");
-			// 		$scope.isLoggedIn = true;
-			// 	}else{
-			// 		console.log('Session Initialized', "false");
-			// 		$scope.isLoggedIn = false;
-			// 	}
-			// }, function myError(response){
-
-		// 	// console.log('response', response);
-		// 	console.log('Error retrieving session Info', "true");
-		// });
 		};
 
 
 		$scope.host = function() {
-
 			$http({
 				method : "POST",
 				url : '/login',
@@ -78,12 +57,12 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 
 	})
-	.controller('viewListing', function($scope, $http, Random, Date) {
+	.controller('viewListing', function($scope, $http, $window, Random, Date) {
 		$scope.init = function(retrievedData) {
 			var data = JSON.parse(retrievedData);
 			$scope.data = JSON.parse(retrievedData);
-			console.log('$scope.data', $scope.data);
 		}
+		$window.document.title = data.title + ' | House Rentals in ' + data.city;
 
 		$scope.requestBooking = function() {
 			$http({
@@ -131,9 +110,24 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 	})
-	.controller('profile', ($scope, $http, MonthNumber, $location) => {
+	.controller('profile', ($scope, $http, $window, MonthNumber, $location) => {
 		$scope.init = function(profileDetails) {
+			$scope.fetchLoggedInUser = () => {
+				$http({
+					url : '/getLoggedInUser',
+					method : 'POST'
+				}).then(function(result) {
+					$scope.loggedInUser = result.data.session;
+					$scope.isSameUser = ($scope.loggedInUser.user_id === $scope.data[0][0].user_id);
+				}, function(error) {
+					console.log(error);
+				});
+			}
+			
 			$scope.data = JSON.parse(profileDetails);
+			$window.document.title = $scope.data[0][0].f_name + ' ' + $scope.data[0][0].l_name + ' | Profile';
+			$scope.st_address = $scope.data[0][0].city +', '+ $scope.data[0][0].state;
+			$scope.fetchLoggedInUser();
 			$scope.active_tab = 'profile_tab';
 			$scope.genders = [ 'Male', 'Female', 'Other' ];
 			$scope.months = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
@@ -407,6 +401,42 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log("Error", error);
 			})
 		}
+		
+		$scope.updateHostReview = function(trip, review) {
+			$http({
+				method : "POST",
+				url : '/updateReview',
+				data : {
+					"review" : review,
+					"trip" : trip,
+					"is_host" : true
+				}
+			}).then((results) => {
+				if (results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
+		
+		$scope.updateTravellerReview = function(trip, review) {
+			$http({
+				method : "POST",
+				url : '/updateReview',
+				data : {
+					"review" : review,
+					"trip" : trip,
+					"is_host" : false
+				}
+			}).then((results) => {
+				if (results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
 
 		$scope.updateTravellerRating = function(trip, rating) {
 			$http({
@@ -558,7 +588,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 		}
 	})
-	.controller('addProperty', ($scope, $http) => {
+	.controller('addProperty', ($scope, $http, $window) => {
 		$scope.photos = [];
 		$scope.page = 1;
 
@@ -568,6 +598,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.show_upload = true;
 			}
 		};
+		
+		$window.document.title = 'Become a host | Add a new Property';
 
 		$scope.fetchRoomTypes = () => {
 			$http({
@@ -637,7 +669,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.fetchRoomTypes();
 
 	})
-	.controller('addListing', ($scope, $http, $location, Date) => {
+	.controller('addListing', ($scope, $http, $location, Date, $window) => {
 		$scope.page = 1;
 		$scope.fetchAmenities = () => {
 			$http({
@@ -649,6 +681,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.amenities = [];
 			})
 		}
+		
+		$window.document.title = 'Become a host | List a property';
 
 		$scope.fetchRoomTypes = () => {
 			$http({
@@ -846,8 +880,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 	})
 	.controller('adminSunController', function($scope, $http, Random) {
-
-
 		$scope.options = {
 			chart : {
 				type : 'sunburstChart',
@@ -1033,7 +1065,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			});
 
 	})
-	.controller('searchListingController', function($scope, $http, Random, $interval, NgMap) {
+	.controller('searchListingController', function($scope, $http, Random, $interval, NgMap, $window) {
 
 		$http({
 			url : '/getUserSessionInfo',
@@ -1062,6 +1094,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			// console.log(" >>><<<  >>><<<  >>><<< ");
 			// console.log('$scope.data', $scope.data);
 			// console.log('$scope.data', $scope.data.results.length);
+			
+			$window.document.title = 'Listings for ' + data.results[0].city + ', ' + data.results[0].state;
 
 			var maxRange = 0;
 

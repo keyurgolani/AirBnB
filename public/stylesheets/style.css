@@ -2490,3 +2490,7 @@ label.star:before {
 	background-color: #ff7e82;
 	color: #fff;
 }
+
+.crossed {
+	text-decoration: line-through!important;
+}
