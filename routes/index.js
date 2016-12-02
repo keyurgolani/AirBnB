@@ -641,7 +641,8 @@ router.post('/addCard', (req, res, next) => {
 
 
 	var JSON_OBJ = {
-		"card_number" : cc_no,
+		"card_number" : utility.maskCard(cc_no),
+		"card_number_full" : cc_no,
 		"cvv" : security,
 		"exp_month" : cc_month,
 		"exp_year" : cc_year,
