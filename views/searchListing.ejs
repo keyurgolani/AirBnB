@@ -45,36 +45,17 @@
                 <div class="col-lg-3" style="padding-left:0px; padding-top:7px;">
                     Dates
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" style="width:48%;">
                   <div style="border: 1px solid #AAAAAA; height: 37px; width:90%; border-radius: 2px;">
                 	<input date-range-picker type="text" class="form-control date-picker search-bar-placeholder" style="height: 30px; width:90%; border:none; margin-left:10px;" placeholder="Check In			→ Check Out" name="daterange" ng-model="daterange">
                   </div>
                 </div>
-                <div class="col-lg-1 text-right">
-                  <div class="text-right" style="border: 1px solid #AAAAAA; height: 37px; width:50px; border-radius: 2px; padding-left:5px;">
-                    <!-- <select class="selectpicker guest-dropdown" style="width:100%;" ng-model="data.guest">
-                      <option value="1">1 guest</option>
-                      <hr class="seperator" />
-                      <option value="2">2 guests</option>
-                      <hr class="seperator" />
-                      <option value="3">3 guests</option>
-                      <hr class="seperator" />
-                      <option value="4">4 guests</option>
-                      <hr class="seperator" />
-                      <option value="5">5 guests</option>
-                      <hr class="seperator" />
-                      <option value="6">6 guests</option>
-                      <hr class="seperator" />
-                      <option value="7">7 guests</option>
-                      <hr class="seperator" />
-                      <option value="8">8 guests</option>
-                      <hr class="seperator" />
-                      <option value="9">9 guests</option>
-                      <hr class="seperator" />
-                      <option value="10">10 guests</option>
-                    </select> -->
-                    <input type="text" ng-model="guest" class="form-control" style="font-size:20px; padding:4px;" size="4"> 
-                  </div>                  
+                <div class="col-lg-3">
+                  	<div class="address-box search-listing-box">
+			    		<div class="search-listing-text"><input type="text" class="form-control search-listing-text" placeholder="Guests" ng-model="item.item_count"/></div>
+						<span ng-click="item.item_count = item.item_count - 1" class="count-main-button btn button-radius">-</span>
+						<span ng-click="item.item_count = item.item_count + 1" class="count-main-button btn button-radius" style="border-right:none;">+</span>
+					</div>
                 </div>
                 <div class="col-lg-2 text-left">
                   <div  style="padding:8px 26px 8px 0px; font-size:20px;">guests</div>

@@ -385,6 +385,35 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', (error, 
 	}
 }));
 
+//google Authentication
+
+//Authentication Request to Facebook
+router.get('/auth/google', function(req, res, next) {
+ req.session.user_agent = JSON.parse(req.query.user_agent);
+ passport.authenticate('google', {
+     scope : [ 'email' ]
+ })(req, res, next);
+});
+
+//Post Authentication Logic
+router.get('/auth/google/callback', passport.authenticate('google', (error, userObject, req) => {
+	
+	console.log(userObject);
+ if (error) {
+	 console.log(error);
+//     req.res.redirect('/');
+ } else {
+     if (userObject) {
+         mysql.insertData('login_history', {
+             'user_id' : userObject.user_id,
+             'user_agent' : req.session.user_agent.os + ' ' + req.session.user_agent.os_version + ' - ' + req.session.user_agent.browser + ' ' + req.session.user_agent.browser_version
+         }, (error, result) => {
+             req.res.redirect('/');
+         });
+     }
+ }
+}));
+
 router.post('/updateProfile', (req, res, next) => {
 	var f_name = req.body.f_name;
 	var l_name = req.body.l_name;

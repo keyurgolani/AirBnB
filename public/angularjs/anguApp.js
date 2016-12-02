@@ -19,8 +19,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 		});
 	})
-	.controller('homepage', function($window) {
-		$window.document.title = 'Welcome to the World of Trips!'
+	.controller('homepage', function($scope, $window) {
+		$window.document.title = 'Welcome to the World of Trips!';
+		$scope.show_guests = false;
 	})
 	.controller('login', function($scope, $http, Random, deviceDetector, $rootScope) {
 		$scope.deviceDetector = deviceDetector;
