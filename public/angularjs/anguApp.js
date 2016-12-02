@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector', 'ui.utils.masks' ])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector', 'ui.utils.masks', 'angular-carousel'])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
