@@ -11,7 +11,7 @@ var barcode = require('barcode');
 
 var NodeGeocoder = require('node-geocoder');
 var GeoPoint = require('geopoint');
-var bcrypt = require('bcrypt');
+//var bcrypt = require('bcrypt');
 
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -824,14 +824,14 @@ router.get('/viewListing', function(req, res, next) {
 	var listing_id = req.query.listing;
 
 	//TODO
-	// var user_id = req.session.loggedInUser.user_id;
-	var user_id = 1;
+	 var user_id = req.session.loggedInUser.user_id;
+//	var user_id = 1;
 	logger.pageClickLogger(listing_id, user_id);
 
 	var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
 	var parameters = [ listing_id, listing_id ];
 	mysql.executeQuery(query, parameters, function(error, results) {
-		console.log('error, results', error, results);
+//		console.log('error, results', error, results);
 		if (error) {
 			res.render('error', {
 				'statusCode' : 500,
@@ -841,10 +841,54 @@ router.get('/viewListing', function(req, res, next) {
 			if (results && results.length > 0) {
 				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
 				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
+				
+				var query1 = "select trip_id from trip_details where trip_details.listing_id = ?";
+				var parameters1 = [ listing_id ];
+				mysql.executeQuery(query1, parameters1, function(error, results1) {
+					if (error) {
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if (results1 && results1.length > 0) {
+							var ids = [];
+							for(var i = 0; i < results1.length; i++) {
+								ids.push(results1[i].trip_id);
+							}	
+							
+							var query2 = "select * from ratings where trip_id IN (" + ids + ")";
+							
+							mysql.executeQuery(query2, function(error, results2) {
+								console.log('error, results', error, results2);
+								if (error) {
+									res.send({
+										'statusCode' : 500
+									});
+								} else {
+									if (results2 && results2.length > 0) {
+										results[0].ratings = results2;
+										
+									} else {
+										results[0].ratings = [];
+									}
+								}
+							});
+						} else {
+							results[0].ratings = [];
+						}
+					}
+				});
+				
 				req.db.get('property_photos').find({
 					'property_id' : results[0].property_id
 				}).then((docs) => {
 					results[0].photos = docs;
+				})
+				
+				req.db.get('user_photos').find({
+					'user_id' : user_id
+				}).then((docs) => {
+					results[0].profilePic = docs;
 					res.render('viewListing', {
 						data : JSON.stringify(results[0])
 					});
@@ -947,8 +991,8 @@ router.post('/instantBook', function(req, res, next) {
 	var trip_amount = req.body.trip_amount;
 
 	//TODO Get user Id from session
-	//var userId = req.session.user.userId;
-	var userId = 1;
+	var userId = req.session.loggedInUser.user_id;
+//	var userId = 1;
 
 	mysql.fetchData('*', 'trip_details', {
 		'listing_id' : listing_id
@@ -969,10 +1013,6 @@ router.post('/instantBook', function(req, res, next) {
 						|| checkoutDate.getTime() < checkinDateDB.getTime())) {
 						isValid = false;
 					}
-				/*if((checkinDate.getTime() < checkinDateDB.getTime() 
-						&& checkoutDate.getTime() < checkoutDateDB.getTime())
-						|| (checkinDate.getTime() < checkinDateDB.getTime() 
-								&& checkoutDate.getTime() < checkoutDateDB.getTime()))*/
 				}
 				if (isValid) {
 					mysql.insertData('trip_details', {
@@ -991,8 +1031,8 @@ router.post('/instantBook', function(req, res, next) {
 								'statusCode' : 500
 							});
 						} else {
-							var receipt_id = uuid.v1();
-							//							var receipt_id = utility.generateReceiptNo();
+//							var receipt_id = uuid.v1();
+							var receipt_id = utility.generateReceiptNo(10);
 
 							//TODO
 							var cc_id = 1;
@@ -1036,8 +1076,9 @@ router.post('/instantBook', function(req, res, next) {
 							'statusCode' : 500
 						});
 					} else {
-						var receipt_id = uuid.v1();
-
+//						var receipt_id = uuid.v1();
+						var receipt_id = utility.generateReceiptNo(10);
+						console.log("???????????????? : " + receipt_id);
 						//TODO
 						var cc_id = 1;
 						//generate bill
@@ -1046,6 +1087,7 @@ router.post('/instantBook', function(req, res, next) {
 							'receipt_id' : receipt_id,
 							'cc_id' : cc_id
 						}, (error, results) => {
+							console.log(error, results);
 							if (error) {
 								res.send({
 									'statusCode' : 500
@@ -1118,6 +1160,7 @@ router.post('/login', function(req, res, next) {
 							userObject.photo = results[0];
 							userObject.video = results[1];
 							req.session.loggedInUser = userObject;
+							console.log(req.session.loggedInUser);
 							res.send({
 								'statusCode' : 200
 							});

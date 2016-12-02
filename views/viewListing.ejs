@@ -398,7 +398,7 @@
 							<span>&nbsp</span>
 						</div>
 						<div class="review-seperator"></div>
-						<div class="row text-margin-bottom">
+						<div class="row text-margin-bottom" ng-repeat = "rating in data.ratings">
 							<div class="col-md-2">
 								<div class="photo-round"><a href=""><img src="../images/SFO/b.jpg"></a></div>
 							</div>
@@ -412,25 +412,9 @@
 							</div>
 						</div>
 						<div class="row">
-							<span class="description-text">Kalgi's place is perfectly located for exploring San Francisco. Brenda and Matt made be feel most welcome.</span>
+							<span class="description-text">{{rating.host_review}}</span>
 						</div>
 						<div class="seperator"></div>
-						<div class="row text-margin-bottom">
-							<div class="col-md-2">
-								<div class="photo-round"><a href=""><img src="../images/SFO/b.jpg"></a></div>
-							</div>
-							<div class="col-md-10">
-								<div class="row">
-									<div class="left-column-text" style="margin-top:10px;">Keyur</div>
-								</div>
-								<div class="row">
-									<div class="review-subtitle-text">November 2016</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<span class="description-text">Kalgi's place is perfectly located for exploring San Francisco. Brenda and Matt made be feel most welcome.</span>
-						</div>
 					</div>
 					<div class="col-md-5">
 						<div class="row book_it_container">
