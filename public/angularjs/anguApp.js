@@ -1067,6 +1067,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('searchListingController', function($scope, $http, Random, $interval, NgMap, $window) {
 
+
+		$scope.inSession = false;
+
 		$http({
 			url : '/getUserSessionInfo',
 			method : 'POST'
@@ -1075,73 +1078,178 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			console.log('response', response);
 			if (response.data.success) {
 				console.log('Session Initialized', "true");
+				$scope.inSession = true;
 			} else {
 				console.log('Session Initialized', "false");
+				$scope.inSession = false;
 			}
+
 		}, function myError(response) {
 
 			// console.log('response', response);
+			$scope.inSession = false;
 			console.log('Error retrieving session Info', "true");
 		});
 
 		$scope.init = function(retrievedData) {
+			
+			// console.log(">>L>>L>>L>>L>>L>>L>>L>>L>>L>>L");
+			// console.log('retrievedData', retrievedData);
 
+
+			$scope.noProperties = false;
+
+			//retrieved data from getrequest, no angular involved
 			var data = JSON.parse(retrievedData);
 			// console.log("Data: ", data);
 
+			//storing the data in angular scope fro this controller			
 			$scope.data = JSON.parse(retrievedData);
-			
-			$window.document.title = 'Listings for ' + data.results[0].city + ', ' + data.results[0].state;
+			console.log('$scope.data', $scope.data);
 
-			var maxRange = 0;
+			if($scope.data === null || $scope.data === undefined || $scope.data === ""){
 
-			var dateStart = (data.daterange.split("-")[0].trim());
-			
-			var dateEnd   = (data.daterange.split("-")[1].trim())
-			
-			for (var j = 0; j < $scope.data.results.length; j++) {
+				console.log("000000000000000000000000000000000");
+				
+				
+	
+					$scope.noProperties = true;
+					console.log("222222222222222222222222222222222");
+					$scope.range = {
+						from: 0,
+						to  : 500
+					};
+				
 
-				if ($scope.data.results[j].daily_price > maxRange) {
-					maxRange = $scope.data.results[j].daily_price;
-					console.log('maxRange', maxRange);
+			}else{
+
+
+
+
+
+				if(data.daterange === null || data.daterange === undefined || data.daterange === ""){
+
+					console.log("111111111111111111111111111111111");
+
+
+					$scope.noProperties = false;
+
+					$window.document.title = 'Listings for ' + data.results[0].city + ', ' + data.results[0].state;
+
+					var maxRange = 0;
+
+					// var dateStart = (data.daterange.split("-")[0].trim());
+					
+					// var dateEnd   = (data.daterange.split("-")[1].trim())
+					
+					for (var j = 0; j < $scope.data.results.length; j++) {
+
+						if ($scope.data.results[j].daily_price > maxRange) {
+							maxRange = $scope.data.results[j].daily_price;
+							console.log('maxRange', maxRange);
+						}
+
+					}
+
+
+					$scope.range = {
+						from : 0,
+						to : maxRange
+					};
+					$scope.max = maxRange;
+
+
+					var min,
+						max;
+
+					$scope.from = function() {
+						min = ($scope.min);
+					}
+					$scope.to = function() {
+						max = ($scope.max);
+					}
+					
+
+					$scope.$watchCollection('range', function() {
+
+						console.log();
+
+						$scope.propertyArray = $scope.data.results;
+
+						$scope.filteredResults = $scope.propertyArray.filter(function(elem, index, array) {
+
+							return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
+							// return ( (elem.daily_price) >= ($scope.range.from) && (elem.daily_price) <= ($scope.range.to) && ( (new Date(elem.start_date) - new Date(dateStart)) > 0 ) && ( (new Date(elem.end_date) - new Date(dateEnd) ) < 0 ) );
+
+						});
+						console.log('$scope.filteredResults', $scope.filteredResults);
+						
+					});
+
+				}else{
+
+
+
+					$scope.noProperties = false;
+
+					$window.document.title = 'Listings for ' + data.results[0].city + ', ' + data.results[0].state;
+
+					var maxRange = 0;
+
+					var dateStart = (data.daterange.split("-")[0].trim());
+					
+					var dateEnd   = (data.daterange.split("-")[1].trim())
+					
+					for (var j = 0; j < $scope.data.results.length; j++) {
+
+						if ($scope.data.results[j].daily_price > maxRange) {
+							maxRange = $scope.data.results[j].daily_price;
+							console.log('maxRange', maxRange);
+						}
+
+					}
+
+
+					$scope.range = {
+						from : 0,
+						to : maxRange
+					};
+					$scope.max = maxRange;
+
+
+					var min,
+						max;
+
+					$scope.from = function() {
+						min = ($scope.min);
+					}
+					$scope.to = function() {
+						max = ($scope.max);
+					}
+					
+
+					$scope.$watchCollection('range', function() {
+
+						console.log();
+
+						$scope.propertyArray = $scope.data.results;
+
+						$scope.filteredResults = $scope.propertyArray.filter(function(elem, index, array) {
+
+							// return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
+							return ( (elem.daily_price) >= ($scope.range.from) && (elem.daily_price) <= ($scope.range.to) && ( (new Date(elem.start_date) - new Date(dateStart)) > 0 ) && ( (new Date(elem.end_date) - new Date(dateEnd) ) < 0 ) );
+
+						});
+						console.log('$scope.filteredResults', $scope.filteredResults);
+						
+					});
+
+
 				}
 
-			}
 
-
-			$scope.range = {
-				from : 0,
-				to : maxRange
-			};
-			$scope.max = maxRange;
-
-
-			var min,
-				max;
-
-			$scope.from = function() {
-				min = ($scope.min);
-			}
-			$scope.to = function() {
-				max = ($scope.max);
 			}
 			
-
-			$scope.$watchCollection('range', function() {
-
-				console.log();
-
-				$scope.propertyArray = $scope.data.results;
-
-				$scope.filteredResults = $scope.propertyArray.filter(function(elem, index, array) {
-
-					// return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
-					return ( (elem.daily_price) >= ($scope.range.from) && (elem.daily_price) <= ($scope.range.to) && ( (new Date(elem.start_date) - new Date(dateStart)) > 0 ) && ( (new Date(elem.end_date) - new Date(dateEnd) ) < 0 ) );
-
-				});
-				console.log('$scope.filteredResults', $scope.filteredResults);
-				
-			});
 
 		}
 
