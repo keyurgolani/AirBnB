@@ -30,7 +30,7 @@
 						</div>
 						<div class="col-md-4 search-box">
 							<span class="search-box-text">When</span>
-							<input type="text" class="form-control date-picker search-bar-placeholder" placeholder="Check In		→ Check Out" name="daterange" value="">
+							<input type="text" date-range-picker class="form-control date-picker search-bar-placeholder" placeholder="Check In		→ Check Out" name="daterange" ng-model="daterange">
 						</div>
 						<div class="col-md-4 search-box right-search-box">
 							<div class="col-md-7">
@@ -583,15 +583,6 @@
 			    $('#SJC').carousel({
 			        interval: 0
 			    })
-			});
-			$(function() {
-    			$('input[name="daterange"]').daterangepicker({
-    				autoApply: true,
-    				linkedCalendars: true,
-    				isCustomDate: function() {
-    					return 'customDates';
-    				}
-    			}).val('');
 			});
 		</script>
 	</main>

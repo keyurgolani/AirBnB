@@ -158,7 +158,7 @@ router.post('/addListing', (req, res, next) => {
 													if (error) {
 														console.log(error);
 													} else {
-														var receipt_id = uuid.v1();
+														var receipt_id = utility.generateReceiptNo();
 
 														//TODO
 														var cc_id = 1;
@@ -1180,6 +1180,8 @@ router.get('/searchListing', function(req, res, next) {
 	var address = req.query.where;
 	var guest = req.query.guest;
 	var daterange = req.query.daterange;
+	// console.log("<><><><><><><><>><><>><><");
+	// console.log('daterange', daterange);
 
 	//TODO
 	// var user_id = req.session.loggedInUser.user_id;
@@ -1225,8 +1227,10 @@ router.get('/searchListing', function(req, res, next) {
 
 		mysql.executeQuery(query, parameters, function(error, results) {
 			var data = {
-				results : results,
-				centerLatLng : centerLatLng
+				results     : results,
+				centerLatLng: centerLatLng,
+				guest       : guest,
+				daterange   : daterange
 			};
 			console.log(error, results);
 			if (error) {

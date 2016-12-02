@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector', 'ui.utils.masks', 'angular-carousel'])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector', 'ui.utils.masks', 'daterangepicker' ])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
@@ -1066,46 +1066,84 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			});
 
 	})
-	.controller('searchListingController', function($scope, $location, $http, Random, $interval, NgMap, $window) {
+	.controller('searchListingController', function($scope, $http, $location, Random, $interval, NgMap, $window) {
+
 		$scope.init = function(retrievedData) {
 			$scope.data = JSON.parse(retrievedData);
+			
 			$window.document.title = 'Listings for ' + $location.search().where;
-			var maxRange = 0;
-			if($scope.data.results.length > 0) {
-				for (var j = 0; j < $scope.data.results.length; j++) {
-					if ($scope.data.results[j].daily_price > maxRange) {
-						maxRange = $scope.data.results[j].daily_price;
+			
+			if($location.search().daterange) {
+				$scope.daterange = $location.search().daterange;
+			}
+			
+			if($location.search().guest) {
+				$scope.guest = $location.search().guest
+			}
+			
+			$scope.entire_home = false;
+			$scope.private_room = false;
+			$scope.shared_room = false;
+			$scope.min_price = 0;
+			$scope.max_price = 500;
+			$scope.range = {
+					from: 0,
+					to: 500
+			};
+			$scope.instant_book = false;
+		}
+		
+		$scope.updateFilters = (when, guests, entire_home, private_room, shared_room, min_price, max_price, instant_book) => {
+			$scope.filteredResults = $scope.data.results.filter(function(elem, index, array) {
+				var whenValid = true;
+				var guestsValid = true;
+				var room_type_valid = true;
+				var price_range_valid = true;
+				var instant_book_valid = true;
+				if(when) {
+					if(typeof when === 'string') {
+						var filter_start = new Date(when.split(' - ')[0]);
+						var filter_end = new Date(when.split(' - ')[1]);
+						var start_date = new Date(elem.start_date);
+						var end_date = new Date(elem.end_date);
+						if(start_date.getTime() > filter_end.getTime() || 
+								end_date.getTime() > filter_end.getTime() || 
+								start_date.getTime() < filter_start.getTime() || 
+								end_date.getTime() < filter_start.getTime()) {
+							whenValid = false;
+						}
+					} else {
+						var start_date = new Date(elem.start_date);
+						var end_date = new Date(elem.end_date);
+						if(start_date.getTime() > when.endDate._d.getTime() || 
+								end_date.getTime() > when.endDate._d.getTime() || 
+								start_date.getTime() < when.startDate._d.getTime() || 
+								end_date.getTime() < when.startDate._d.getTime()) {
+							whenValid = false;
+						}
 					}
 				}
-			} else {
-				maxRange = 500;
-			}
-
-			$scope.range = {
-				from : 0,
-				to : maxRange
-			};
-			$scope.max = maxRange;
-
-			var min,
-				max;
-
-			$scope.from = function() {
-				min = ($scope.min);
-			}
-			$scope.to = function() {
-				max = ($scope.max);
-			}
-
-			$scope.$watch('range', function() {
-				$scope.propertyArray = $scope.data.results;
-				$scope.filteredResults = $scope.propertyArray.filter(function(elem, index, array) {
-					return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
-				});
-
+				if(guests) {
+					if(guests > elem.accommodations) {
+						guestsValid = false;
+					}
+				}
+				if((elem.room_type === 'Private room' && !private_room) || (elem.room_type === 'Shared room' && !shared_room) || (elem.room_type === 'Entire home/apt' && !entire_home)) {
+					room_type_valid = false;
+				}
+				if(elem.daily_price > max_price || elem.daily_price < min_price) {
+					price_range_valid = false;
+				}
+				if(!instant_book && !elem.is_bid) {
+					instant_book_valid = false;
+				}
+				return whenValid && guestsValid && room_type_valid && price_range_valid && instant_book_valid;
 			});
-
-		}
+		};
+		
+		$scope.$watchCollection('[daterange, guest, entire_home, private_room, shared_room, min_price, max_price, range, instant_book]', function() {
+			$scope.updateFilters($scope.daterange, $scope.guest, $scope.entire_home, $scope.private_room, $scope.shared_room, $scope.range.from, $scope.range.to, $scope.instant_book);
+		});
 
 	})
 	.directive('ngEnter', function() {
