@@ -23,7 +23,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$window.document.title = 'Welcome to the World of Trips!';
 		$scope.show_guests = false;
 	})
-	.controller('login', function($scope, $http, Random, deviceDetector) {
+	.controller('login', function($scope, $http, Random, deviceDetector,$rootScope) {
+		$scope.global = $rootScope;
 		$scope.deviceDetector = deviceDetector;
 		$scope.login = function() {
 			$http({

@@ -304,14 +304,15 @@ router.post('/register', function(req, res, next) {
 				});
 			} else {
 				if (!results || results.length === 0) {
+
 					mysql.insertData('account_details', {
 						'email' : email,
 						'f_name' : first_name,
 						'l_name' : last_name,
 						'secret' : bcrypt.hashSync(secret, salt),
-						'salt' : salt,
-						'last_login' : require('fecha').format(Date.now(), 'YYYY-MM-DD HH:mm:ss')
+						'salt' : salt						
 					}, (error, account_result) => {
+						console.log('error, account_result', error, account_result);
 						if (error) {
 							res.send({
 								'statusCode' : 500
@@ -324,6 +325,7 @@ router.post('/register', function(req, res, next) {
 									'day' : req.body.day,
 									'year' : req.body.year
 								}, (error, profile_result) => {
+									console.log('error, profile_result', error, profile_result);
 									if (error) {
 										res.send({
 											'statusCode' : 500
@@ -334,6 +336,7 @@ router.post('/register', function(req, res, next) {
 												'user_id' : account_result.insertId,
 												'user_agent' : req.body.user_agent.os + ' ' + req.body.user_agent.os_version + ' - ' + req.body.user_agent.browser + ' ' + req.body.user_agent.browser_version
 											}, (error, result) => {
+												console.log('error, result', error, result);
 												res.send({
 													'statusCode' : 200
 												});
@@ -1880,7 +1883,9 @@ router.post('/updateReview', (req, res, next) => {
 });
 
 router.post('/getLoggedInUser', (req, res, next) => {
+	console.log("in session");
 	if (req.session !== undefined && req.session.loggedInUser !== undefined) {
+			console.log('req.session.loggedInUser', req.session.loggedInUser);
 		res.send({
 			'session' : req.session.loggedInUser
 		});
