@@ -158,7 +158,7 @@ router.post('/addListing', (req, res, next) => {
 													if (error) {
 														console.log(error);
 													} else {
-														var receipt_id = uuid.v1();
+														var receipt_id = utility.generateReceiptNo();
 
 														//TODO
 														var cc_id = 1;
