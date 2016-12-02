@@ -40,7 +40,7 @@
 					<div class="col-md-1"></div>
 					<div class="col-md-10 profile-body">
 						<div class="row item-body" ng-show="active_tab === 'profile_tab'">
-							<div class="row item-head">Required</div>
+							<div class="row item-head">Profile Details</div>
 							<div class="row item-content" style="padding:20px;">
 								<div class="row profile-bottom-space">
 
@@ -100,7 +100,7 @@
 										<span class="profile-left-text">Phone Number</span>
 									</div>
 									<div class="col-md-9">
-										<input type="text" class="profile-large-box" ng-model="data[0][0].phone">
+										<input type="text" class="profile-large-box" ng-model="data[0][0].phone" ui-us-phone-number>
 										<div class="profile-info">This is only shared once you have a confirmed booking with another Airbnb user. This is how we can all get in touch.</div>
 									</div>
 								</div>
@@ -133,7 +133,7 @@
 										<span class="profile-left-text">Average Host Ratings</span>
 									</div>
 									<div class="col-md-9">
-										<div star-rating ng-model="data[9][0].host_rating" max="5" disabled class="profile-large-box" style="border: none"></div>
+										<div star-rating ng-model="data[9][0].host_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
 									</div>
 								</div>
 								<div class="row profile-bottom-space" ng-hide="isSameUser">
@@ -141,7 +141,7 @@
 										<span class="profile-left-text">Average Travelling Ratings</span>
 									</div>
 									<div class="col-md-9">
-										<div star-rating ng-model="data[10][0].traveller_rating" max="5" disabled class="profile-large-box" style="border: none"></div>
+										<div star-rating ng-model="data[10][0].traveller_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
 									</div>
 								</div>
 								<div class="row" ng-show="isSameUser">
@@ -469,7 +469,7 @@
 										<div class="row">
 											<div class="col-md-6"></div>
 											<div class="col-md-3" ng-show="isSameUser">
-												<a ng-href="/listing?property={{property.property_id}}"><button class="btn btn-primary pull-right activate-button" ng-show="property.active === 1">List This</button></a>
+												<a ng-href="/listing?property={{property.property_id}}" target="_blank"><button class="btn btn-primary pull-right activate-button" ng-show="property.active === 1">List This</button></a>
 											</div>
 											<div class="col-md-3" ng-show="isSameUser">
 												<button ng-click="propertyDeactivate(property.property_id)" class="btn btn-primary deactivate-button" ng-show="property.active === 1">Deactivate</button>
