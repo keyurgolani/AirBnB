@@ -13,6 +13,8 @@
     <link href='css/custom-marker.css' rel='stylesheet' type='text/css' />
     <link href="css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="modules/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+    <script src="modules/bootstrap-daterangepicker/moment.js"></script>
+<script src="modules/bootstrap-daterangepicker/daterangepicker.js"></script>
 
     <style>
       .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
@@ -43,14 +45,9 @@
                 <div class="col-lg-3" style="padding-left:0px; padding-top:7px;">
                     Dates
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-6">
                   <div style="border: 1px solid #AAAAAA; height: 37px; width:90%; border-radius: 2px;">
-                    <input type="text" placeholder="Check In" id="checkInPlaceholder" style="height: 35px; width:80%; border:none; margin-left:10px;">
-                  </div>
-                </div>
-                <div class="col-lg-3">
-                  <div style="border: 1px solid #AAAAAA; height: 37px; width:90%; border-radius: 2px;">
-                    <input type="text" placeholder="Check Out" id="checkInPlaceholder" style="height: 35px; width:80%; border:none; margin-left:10px;">
+                	<input type="text" class="form-control date-picker search-bar-placeholder" style="height: 30px; width:90%; border:none; margin-left:10px;" placeholder="Check In			→ Check Out" name="daterange" value="">
                   </div>
                 </div>
                 <div class="col-lg-3">
@@ -257,6 +254,18 @@
         </div>
 
       </div>
-  </body>
+      
+	 	<script>
+			$(function() {
+    			$('input[name="daterange"]').daterangepicker({
+    				autoApply: true,
+    				linkedCalendars: true,
+    				isCustomDate: function() {
+    					return 'customDates';
+    				}
+    			}).val('');
+			});
+		</script>
+  	</body>
 
 </html>
