@@ -1095,7 +1095,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 			var maxRange = 0;
 
-			
 			var dateStart = (data.daterange.split("-")[0].trim());
 			
 			var dateEnd   = (data.daterange.split("-")[1].trim())
@@ -1128,7 +1127,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 			
 
-			$scope.$watch('range', function() {
+			$scope.$watchCollection('range', function() {
 
 				console.log();
 
