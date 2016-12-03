@@ -11,7 +11,15 @@
 	<main ng-controller="viewListing" ng-init="init('<%= data %>')">
 		<div class="row cover-image-container cover-image-margin-top">
 			<div class="col-md-12">
-				<div style="background-image: url('../images/SFO/b.jpg');" class="cover-image">
+				<div class="row">
+					<div class="col-md-12">
+		                <div ng-repeat="photo in data.photos">
+		                	<div class="row">
+		                		<div style="background-image: url(data:{{photo.photos.filetype}};base64,{{photo.photos.base64}});" class="cover-image">
+		                	</div>
+		                </div>
+		            </div>
+				</div>
 			</div>
 		</div>
 		<div class="row">
@@ -486,8 +494,11 @@
 	<script>
 
 	var data = <%- data %>;
-	console.log('start_date', data.start_date);
-	
+	$(document).ready(function() {
+			    $('#property_photos').carousel({
+			        interval: 0
+			    });
+			});
 	$(function() {
 			$('input[name="daterange"]').daterangepicker({
 				autoApply: true,
