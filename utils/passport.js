@@ -55,7 +55,6 @@ module.exports = function(passport) {
 		passReqToCallback : true
 	}, function(req, token, refreshToken, profile, done) {
 		process.nextTick(function() {
-
 			/*{ id: '1476505045714689',
 				  username: undefined,
 				  displayName: 'Keyur Golani',

@@ -186,7 +186,7 @@ router.post('/addListing', (req, res, next) => {
 										}
 									})
 
-								}, 60000);
+								}, properties.get('project.bidTimeOut'));
 							}
 
 
@@ -216,62 +216,60 @@ router.post('/addListing', (req, res, next) => {
 });
 
 router.post('/addProperty', (req, res, next) => {
-	//	if(req.session.loggedInUser) {
-	//		var owner_id = req.session.loggedInUser.user_id;
-	var owner_id = 1;
-	var property_type_id = req.body.property_type.property_type_id;
-	var house_rules = req.body.house_rules;
-	var longitude = req.body.location.longitude;
-	var latitude = req.body.location.latitude;
-	var st_address = req.body.location.st_address;
-	var apt = req.body.location.apt;
-	var city = req.body.location.city;
-	var state = req.body.location.state;
-	var zip = req.body.location.zip;
-	var photos = req.body.photos;
-	var active = true; //Default value at the time of adding new property.
+	if (req.session.loggedInUser) {
+		var owner_id = req.session.loggedInUser.user_id;
+		var property_type_id = req.body.property_type.property_type_id;
+		var house_rules = req.body.house_rules;
+		var longitude = req.body.location.longitude;
+		var latitude = req.body.location.latitude;
+		var st_address = req.body.location.st_address;
+		var apt = req.body.location.apt;
+		var city = req.body.location.city;
+		var state = req.body.location.state;
+		var zip = req.body.location.zip;
+		var photos = req.body.photos;
+		var active = true; //Default value at the time of adding new property.
 
-	mysql.insertData('property_details', {
-		'owner_id' : owner_id,
-		'property_type_id' : property_type_id,
-		'house_rules' : house_rules,
-		'longitude' : longitude,
-		'latitude' : latitude,
-		'st_address' : st_address,
-		'apt' : apt,
-		'city' : city,
-		'state' : state,
-		'zip' : zip,
-		'active' : active
-	}, function(error, result) {
-		if (error) {
-			res.send({
-				'statusCode' : 500
-			});
-		} else {
-			if (result.affectedRows === 1) {
-				for (var i = 0; i < photos.length; i++) {
-					req.db.get('property_photos').insert({
-						'property_id' : result.insertId,
-						'photos' : photos[i]
-					});
-				}
-				res.send({
-					'statusCode' : 200
-				});
-			} else {
+		mysql.insertData('property_details', {
+			'owner_id' : owner_id,
+			'property_type_id' : property_type_id,
+			'house_rules' : house_rules,
+			'longitude' : longitude,
+			'latitude' : latitude,
+			'st_address' : st_address,
+			'apt' : apt,
+			'city' : city,
+			'state' : state,
+			'zip' : zip,
+			'active' : active
+		}, function(error, result) {
+			if (error) {
 				res.send({
 					'statusCode' : 500
 				});
+			} else {
+				if (result.affectedRows === 1) {
+					for (var i = 0; i < photos.length; i++) {
+						req.db.get('property_photos').insert({
+							'property_id' : result.insertId,
+							'photos' : photos[i]
+						});
+					}
+					res.send({
+						'statusCode' : 200
+					});
+				} else {
+					res.send({
+						'statusCode' : 500
+					});
+				}
 			}
-		}
-	});
-
-//	} else {
-//		res.send({
-//			'status_code'	:	401
-//		})
-//	}
+		});
+	} else {
+		res.send({
+			'status_code' : 401
+		})
+	}
 });
 
 router.post('/register', function(req, res, next) {
@@ -310,7 +308,7 @@ router.post('/register', function(req, res, next) {
 						'f_name' : first_name,
 						'l_name' : last_name,
 						'secret' : bcrypt.hashSync(secret, salt),
-						'salt' : salt						
+						'salt' : salt
 					}, (error, account_result) => {
 						console.log('error, account_result', error, account_result);
 						if (error) {
@@ -375,7 +373,39 @@ router.get('/auth/facebook', function(req, res, next) {
 // Post Authentication Logic
 router.get('/auth/facebook/callback', passport.authenticate('facebook', (error, userObject, req) => {
 	if (error) {
+		console.log("Redirecting to homepage!");
 		req.res.redirect('/');
+	} else {
+		if (userObject) {
+			mysql.insertData('login_history', {
+				'user_id' : userObject.user_id,
+				'user_agent' : req.session.user_agent.os + ' ' + req.session.user_agent.os_version + ' - ' + req.session.user_agent.browser + ' ' + req.session.user_agent.browser_version
+			}, (error, result) => {
+				console.log('error, result', error, result);
+				console.log("Redirecting to homepage!");
+				req.res.redirect('/');
+			});
+		}
+	}
+}));
+
+//google Authentication
+
+//Authentication Request to Facebook
+router.get('/auth/google', function(req, res, next) {
+	req.session.user_agent = JSON.parse(req.query.user_agent);
+	passport.authenticate('google', {
+		scope : [ 'email' ]
+	})(req, res, next);
+});
+
+//Post Authentication Logic
+router.get('/auth/google/callback', passport.authenticate('google', (error, userObject, req) => {
+
+	console.log(userObject);
+	if (error) {
+		console.log(error);
+	//     req.res.redirect('/');
 	} else {
 		if (userObject) {
 			mysql.insertData('login_history', {
@@ -388,35 +418,6 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', (error, 
 	}
 }));
 
-//google Authentication
-
-//Authentication Request to Facebook
-router.get('/auth/google', function(req, res, next) {
- req.session.user_agent = JSON.parse(req.query.user_agent);
- passport.authenticate('google', {
-     scope : [ 'email' ]
- })(req, res, next);
-});
-
-//Post Authentication Logic
-router.get('/auth/google/callback', passport.authenticate('google', (error, userObject, req) => {
-	
-	console.log(userObject);
- if (error) {
-	 console.log(error);
-//     req.res.redirect('/');
- } else {
-     if (userObject) {
-         mysql.insertData('login_history', {
-             'user_id' : userObject.user_id,
-             'user_agent' : req.session.user_agent.os + ' ' + req.session.user_agent.os_version + ' - ' + req.session.user_agent.browser + ' ' + req.session.user_agent.browser_version
-         }, (error, result) => {
-             req.res.redirect('/');
-         });
-     }
- }
-}));
-
 router.post('/updateProfile', (req, res, next) => {
 	var f_name = req.body.f_name;
 	var l_name = req.body.l_name;
@@ -426,32 +427,18 @@ router.post('/updateProfile', (req, res, next) => {
 	var birth_year = req.body.birth_year;
 	var email = req.body.email;
 	var phone = req.body.phone;
-	// var st_address = req.body.st_address;
 	var city = req.body.city;
 	var state = req.body.state;
-	var zip = req.body.zip;
 	var description = req.body.description;
 
-	console.log("inside");
-
-	console.log(f_name,l_name,gender,birth_month,birth_date,birth_year,email,phone,city,state,zip,description);
-
 	if (f_name === null || l_name === null || birth_month === null || birth_date === null || birth_year === null
-		|| email === null || city === null || state === null || zip === null
+		|| email === null || city === null || state === null
 		|| f_name === undefined || l_name === undefined || birth_month === undefined || birth_date === undefined || birth_year === undefined
-		|| email === undefined || city === undefined || state === undefined || zip === undefined) {
-
-		console.log("bad form entry");
+		|| email === undefined || city === undefined || state === undefined) {
 		res.send({
-			'statusCode' : 500
+			'statusCode' : 400
 		});
 	} else {
-
-		console.log("inside");
-
-		var dob = birth_year + '-' + birth_month + '-' + birth_date;
-		var user_id = 1;
-
 		async.parallel([
 			function(callback) {
 				mysql.updateData('account_details', {
@@ -459,9 +446,8 @@ router.post('/updateProfile', (req, res, next) => {
 					"f_name" : f_name,
 					"l_name" : l_name,
 				}, {
-					"user_id" : user_id
+					"user_id" : req.session.loggedInUser.user_id
 				}, (error, result) => {
-					console.log('error, result', error, result);
 					if (error) {
 						throw error;
 					} else {
@@ -474,14 +460,14 @@ router.post('/updateProfile', (req, res, next) => {
 					"gender" : gender,
 					"phone" : phone,
 					"description" : description,
-					"dob" : dob,
+					"day" : birth_date,
+					"month" : birth_month,
+					"year" : birth_year,
 					"city" : city,
-					"state" : state,
-					"zip" : zip
+					"state" : state
 				}, {
-					"user_id" : user_id
+					"user_id" : req.session.loggedInUser.user_id
 				}, (error, result2) => {
-					console.log('error, result2', error, result2);
 					if (error) {
 						throw error;
 					} else {
@@ -489,7 +475,17 @@ router.post('/updateProfile', (req, res, next) => {
 					}
 				});
 			}
-		]);
+		], function(error, results) {
+			if (results[0] !== null && results[1] !== null) {
+				res.send({
+					'statusCode' : 200
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		});
 	}
 });
 
@@ -591,9 +587,9 @@ router.post('/changeListingStatus', (req, res, next) => {
 });
 
 router.post('/updatePassword', (req, res, next) => {
-	
+
 	var user_id = req.session.loggedInUser.user_id;
-	
+
 
 	var password = req.body.old_pass;
 	var new_pass = req.body.new_pass;
@@ -674,7 +670,7 @@ router.post('/addCard', (req, res, next) => {
 	var country = req.body.country;
 
 	var user_id = req.session.loggedInUser.user_id;
-	
+
 
 	var JSON_OBJ = {
 		"card_number" : utility.maskCard(cc_no),
@@ -856,18 +852,14 @@ router.post('/fetchUserHostings', (req, res, next) => {
 });
 
 router.get('/viewListing', function(req, res, next) {
-
 	var listing_id = req.query.listing;
-
-	//TODO
-	// var user_id = req.session.loggedInUser.user_id;
-	var user_id = 1;
-	logger.pageClickLogger(listing_id, user_id);
-
+	if(req.session && req.session.loggedInUser) {
+		var user_id = req.session.loggedInUser.user_id;
+		logger.pageClickLogger(listing_id, user_id);
+	}
 	var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
 	var parameters = [ listing_id, listing_id ];
 	mysql.executeQuery(query, parameters, function(error, results) {
-		console.log('error, results', error, results);
 		if (error) {
 			res.render('error', {
 				'statusCode' : 500,
@@ -878,14 +870,14 @@ router.get('/viewListing', function(req, res, next) {
 				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
 				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
 				req.db.get('property_photos').find({
-					'property_id' : results[0].property_id
+					'property_id' : Number(results[0].property_id)
 				}).then((docs) => {
 					results[0].photos = docs;
 					res.render('viewListing', {
 						data : JSON.stringify(results[0])
 					});
 				})
-				
+
 			} else {
 				res.render('error', {
 					'statusCode' : 204,
@@ -1124,29 +1116,29 @@ router.post('/login', function(req, res, next) {
 					'user_id' : userObject.user_id,
 					'user_agent' : req.body.user_agent.os + ' ' + req.body.user_agent.os_version + ' - ' + req.body.user_agent.browser + ' ' + req.body.user_agent.browser_version
 				}, (error, result) => {
-					async.parallel([function(callback) {
+					async.parallel([ function(callback) {
 						req.db.get('user_photos').findOne({
 							'user_id' : userObject.user_id
 						}).then((photo) => {
-							if(photo) {
+							if (photo) {
 								callback(null, photo.photo);
 							} else {
 								callback(null, null);
 							}
 						});
 					},
-					function(callback) {
-						req.db.get('user_videos').findOne({
-							'user_id' : userObject.user_id
-						}).then((video) => {
-							if(video) {
-								callback(null, video.video);
-							} else {
-								callback(null, null);
-							}
-						});
-					}], function(error, results) {
-						if(error) {
+						function(callback) {
+							req.db.get('user_videos').findOne({
+								'user_id' : userObject.user_id
+							}).then((video) => {
+								if (video) {
+									callback(null, video.video);
+								} else {
+									callback(null, null);
+								}
+							});
+						} ], function(error, results) {
+						if (error) {
 							res.send({
 								'statusCode' : 500
 							});
@@ -1159,7 +1151,7 @@ router.post('/login', function(req, res, next) {
 							});
 						}
 					})
-					
+
 				});
 			} else {
 				res.send({
@@ -1234,10 +1226,10 @@ router.get('/searchListing', function(req, res, next) {
 
 		mysql.executeQuery(query, parameters, function(error, results) {
 			var data = {
-				results     : results,
-				centerLatLng: centerLatLng,
-				guest       : guest,
-				daterange   : daterange
+				results : results,
+				centerLatLng : centerLatLng,
+				guest : guest,
+				daterange : daterange
 			};
 			console.log(error, results);
 			if (error) {
@@ -1250,7 +1242,7 @@ router.get('/searchListing', function(req, res, next) {
 				if (results && results.length > 0) {
 					res.render('searchListing', {
 						data : JSON.stringify(data)
-					}); 							
+					});
 				} else {
 					res.render('searchListing', {
 						data : JSON.stringify({
@@ -1269,7 +1261,7 @@ router.get('/profile', function(req, res, next) {
 	//TODO naive nested query to be written to show performance increase.
 	async.parallel([
 		function(callback) {
-			mysql.executeQuery('select account_details.user_id as user_id, f_name, l_name, email, active, phone, gender, month, day, year, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner], (error, profile_details) => {
+			mysql.executeQuery('select account_details.user_id as user_id, f_name, l_name, email, active, phone, gender, month, day, year, city, state, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner ], (error, profile_details) => {
 				if (error) {
 					throw error;
 				} else {
@@ -1298,10 +1290,16 @@ router.get('/profile', function(req, res, next) {
 		},
 		function(callback) {
 			mysql.executeQuery('select property_id, house_rules, longitude, latitude, st_address, apt, city, state, zip, active, property_type from property_details inner join property_types on property_details.property_type_id = property_types.property_type_id where owner_id = ?', [ req.query.owner ], (error, property_details) => {
-					console.log('property_details', property_details);
 				if (error) {
 					throw error;
 				} else {
+					property_details.forEach(function(item, index, array) {
+						req.db.get('property_photos').find({
+							'property_id' : item.property_id
+						}).then((photos) => {
+							property_details[index].photos = photos;
+						});
+					});
 					callback(null, property_details);
 				}
 			});
@@ -1891,7 +1889,7 @@ router.post('/updateReview', (req, res, next) => {
 router.post('/getLoggedInUser', (req, res, next) => {
 	console.log("in session");
 	if (req.session !== undefined && req.session.loggedInUser !== undefined) {
-			
+
 		res.send({
 			'session' : req.session.loggedInUser
 		});
@@ -1949,7 +1947,7 @@ router.post('/uploadProfileVideo', (req, res, next) => {
 				'user_id' : req.body.user
 			}, {
 				'video' : req.body.video
-			},(doc) => {
+			}, (doc) => {
 				req.session.loggedInUser.video = req.body.video;
 				res.send({
 					'statusCode' : 200
@@ -1959,14 +1957,14 @@ router.post('/uploadProfileVideo', (req, res, next) => {
 			profile_video_collection.insert({
 				'user_id' : req.body.user,
 				'video' : req.body.video
-			},(doc) => {
+			}, (doc) => {
 				req.session.loggedInUser.video = req.body.video;
 				res.send({
 					'statusCode' : 200
 				})
 			});
 		}
-		
+
 	});
 });
 
