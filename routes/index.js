@@ -41,6 +41,8 @@ router.post('/addListing', (req, res, next) => {
 	//		var owner_id = req.session.loggedInUser.user_id;
 
 	// Listings Table Fields
+
+	if(req.session.loggedInUser){
 	var property_id = req.body.property_id;
 	var room_type_id = req.body.room_type.room_type_id;
 	var title = req.body.title;
@@ -208,11 +210,9 @@ router.post('/addListing', (req, res, next) => {
 		}
 	});
 
-//	} else {
-//		res.send({
-//			'status_code'	:	401
-//		})
-//	}
+	} else {
+		res.redirect('/');
+	}
 });
 
 router.post('/addProperty', (req, res, next) => {
@@ -266,9 +266,11 @@ router.post('/addProperty', (req, res, next) => {
 			}
 		});
 	} else {
-		res.send({
+		/*res.send({
 			'status_code' : 401
-		})
+		})*/
+
+		res.redirect('/');
 	}
 });
 
@@ -1163,7 +1165,12 @@ router.post('/login', function(req, res, next) {
 });
 
 router.get('/property', function(req, res, next) {
+	if(req.session.loggedInUser){
 	res.render('property');
+	}else{
+		console.log("in else");
+		res.redirect('/');
+	}
 });
 
 router.get('/admin_fTYcN2a', function(req, res, next) {
@@ -1171,7 +1178,11 @@ router.get('/admin_fTYcN2a', function(req, res, next) {
 });
 
 router.get('/listing', function(req, res, next) {
-	res.render('listing');
+	if(req.session.loggedInUser){
+		res.render('listing');
+	}else{
+		res.redirect('/');
+	}
 });
 
 router.get('/searchListing', function(req, res, next) {
