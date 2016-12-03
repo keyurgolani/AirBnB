@@ -122,45 +122,103 @@ module.exports = function(passport) {
 					} else {
 						var f_name = profile.displayName.split(' ')[0];
 						var l_name = profile.displayName.split(' ')[1];
-						mysql.insertData('account_details', {
-							'email' : profile.emails[0].value,
-							'f_name' : f_name,
-							'l_name' : l_name
-						}, (error, insert_results) => {
-							if (error) {
-								throw error;
-							} else {
-								if (insert_results.affectedRows === 1) {
-									async.parallel([
-										function(callback) {
-											mysql.insertData('external_authentication', {
-												'external_id' : profile.id,
-												'user_id' : insert_results.insertId,
-												'website' : 'facebook'
-											}, (error, results) => {
-												callback(results);
-											});
-										},
-										function(callback) {
-											mysql.insertData('profile_details', {
-												'user_id' : insert_results.insertId
-											}, (error, results) => {
-												callback(results);
-											});
-										} ], function(error, results) {
-										return done(null, {
-											'user_id' : insert_results.insertId,
-											'email' : profile.emails[0].value,
-											'f_name' : f_name,
-											'l_name' : l_name
-										}, req);
-									})
 
-								} else {
-									throw new Error('Internal Error');
-								}
-							}
-						})
+						mysql.fetchData('user_id', 'account_details', {
+									'email' : profile.emails[0].value
+									
+								}, (error, account_details) => {
+									if (error) {
+										throw error;
+									} else {
+										if (account_details && account_details.length > 0) {
+											
+											async.parallel([
+												function(callback) {
+													mysql.insertData('external_authentication', {
+														'external_id' : profile.id,
+														'user_id' : account_details[0].user_id,
+														'website' : 'facebook'
+													}, (error, results) => {
+														callback(results);
+													});
+												},
+												function(callback) {
+													mysql.insertData('profile_details', {
+														'user_id' : account_details[0].user_id
+													}, (error, results) => {
+														callback(results);
+													});
+												} ], function(error, results) {
+
+													req.session.loggedInUser = {
+														'user_id' : account_details[0].user_id,
+														'email' : account_details[0].email,
+														'f_name' : account_details[0].f_name,
+														'l_name' : account_details[0].l_name,
+													}
+
+												return done(null, {
+													'user_id' : account_details[0].user_id,
+													'email' : profile.emails[0].value,
+													'f_name' : f_name,
+													'l_name' : l_name
+												}, req);
+											})
+											
+										}else{
+
+												mysql.insertData('account_details', {
+													'email' : profile.emails[0].value,
+													'f_name' : f_name,
+													'l_name' : l_name
+												}, (error, insert_results) => {
+													if (error) {
+														throw error;
+													} else {
+														if (insert_results.affectedRows === 1) {
+															async.parallel([
+																function(callback) {
+																	mysql.insertData('external_authentication', {
+																		'external_id' : profile.id,
+																		'user_id' : insert_results.insertId,
+																		'website' : 'facebook'
+																	}, (error, results) => {
+																		callback(results);
+																	});
+																},
+																function(callback) {
+																	mysql.insertData('profile_details', {
+																		'user_id' : insert_results.insertId
+																	}, (error, results) => {
+																		callback(results);
+																	});
+																} ], function(error, results) {
+
+																	req.session.loggedInUser = {
+																		'user_id' : account_details[0].user_id,
+																		'email' : account_details[0].email,
+																		'f_name' : account_details[0].f_name,
+																		'l_name' : account_details[0].l_name,
+																	}
+
+
+																return done(null, {
+																	'user_id' : insert_results.insertId,
+																	'email' : profile.emails[0].value,
+																	'f_name' : f_name,
+																	'l_name' : l_name
+																}, req);
+															})
+
+														} else {
+															throw new Error('Internal Error');
+														}
+													}
+												})
+										}
+									}
+								})					
+					
 					}
 				}
 			});
@@ -223,13 +281,22 @@ module.exports = function(passport) {
 										throw error;
 									} else {
 										if (account_details && account_details.length > 0 && account_details[0].active) {
+
+											if(account_details[0].f_name){
 											req.session.loggedInUser = {
 												'user_id' : account_details[0].user_id,
 												'email' : account_details[0].email,
 												'f_name' : account_details[0].f_name,
-												'l_name' : account_details[0].l_name,
+												'l_name' : account_details[0].l_name
 											}
+											}else{
+											req.session.loggedInUser = {
+												'user_id' : account_details[0].user_id,
+												'email' : account_details[0].email												
+											}
+										}
 											return done(null, account_details[0], req);
+										
 										}
 									}
 								})
@@ -242,11 +309,18 @@ module.exports = function(passport) {
 									throw error;
 								} else {
 									if (account_details && account_details.length > 0 && account_details[0].active) {
-										req.session.loggedInUser = {
-											'user_id' : account_details[0].user_id,
-											'email' : account_details[0].email,
-											'f_name' : account_details[0].f_name,
-											'l_name' : account_details[0].l_name,
+										if(account_details[0].f_name){
+											req.session.loggedInUser = {
+												'user_id' : account_details[0].user_id,
+												'email' : account_details[0].email,
+												'f_name' : account_details[0].f_name,
+												'l_name' : account_details[0].l_name
+											}
+										}else{
+											req.session.loggedInUser = {
+												'user_id' : account_details[0].user_id,
+												'email' : account_details[0].email												
+											}
 										}
 										return done(null, account_details[0], req);
 									}
@@ -256,47 +330,112 @@ module.exports = function(passport) {
 					} else {
 						console.log("here");
 						console.log(profile);
-						var f_name = profile.displayName.split(' ')[0];
-						var l_name = profile.displayName.split(' ')[1];
-						mysql.insertData('account_details', {
-							'email' : profile.emails[0].value,
-							'f_name' : f_name,
-							'l_name' : l_name
-						}, (error, insert_results) => {
-							if (error) {
-								throw error;
-							} else {
-								if (insert_results.affectedRows === 1) {
-									async.parallel([
-										function(callback) {
-											mysql.insertData('external_authentication', {
-												'external_id' : profile.id,
-												'user_id' : insert_results.insertId,
-												'website' : 'google'
-											}, (error, results) => {
-												callback(results);
-											});
-										},
-										function(callback) {
-											mysql.insertData('profile_details', {
-												'user_id' : insert_results.insertId
-											}, (error, results) => {
-												callback(results);
-											});
-										} ], function(error, results) {
-										return done(null, {
-											'user_id' : insert_results.insertId,
-											'email' : profile.emails[0].value,
-											'f_name' : f_name,
-											'l_name' : l_name
-										}, req);
-									})
+						if (profile.displayName) {
+							var f_name = profile.displayName.split(' ')[0];
+							var l_name = profile.displayName.split(' ')[1];
+						}else{
+							var f_name = profile.emails[0].value;
+							var l_name = ' ';
+						}
+						
+						mysql.fetchData('user_id', 'account_details', {
+									'email' : profile.emails[0].value
+									
+								}, (error, account_details) => {
+									if (error) {
+										throw error;
+									} else {
+										if (account_details && account_details.length > 0) {
+											
+											async.parallel([
+												function(callback) {
+													mysql.insertData('external_authentication', {
+														'external_id' : profile.id,
+														'user_id' : account_details[0].user_id,
+														'website' : 'facebook'
+													}, (error, results) => {
+														callback(results);
+													});
+												},
+												function(callback) {
+													mysql.insertData('profile_details', {
+														'user_id' : account_details[0].user_id
+													}, (error, results) => {
+														callback(results);
+													});
+												} ], function(error, results) {
 
-								} else {
-									throw new Error('Internal Error');
-								}
-							}
-						})
+														req.session.loggedInUser = {
+															'user_id' : account_details[0].user_id,
+															'email' : account_details[0].email,
+															'f_name' : account_details[0].f_name,
+															'l_name' : account_details[0].l_name
+														}
+
+
+												return done(null, {
+													'user_id' : account_details[0].user_id,
+													'email' : profile.emails[0].value,
+													'f_name' : f_name,
+													'l_name' : l_name
+												}, req);
+											})
+											
+										}else{
+
+												mysql.insertData('account_details', {
+													'email' : profile.emails[0].value,
+													'f_name' : f_name,
+													'l_name' : l_name
+												}, (error, insert_results) => {
+													if (error) {
+														throw error;
+													} else {
+														if (insert_results.affectedRows === 1) {
+															async.parallel([
+																function(callback) {
+																	mysql.insertData('external_authentication', {
+																		'external_id' : profile.id,
+																		'user_id' : insert_results.insertId,
+																		'website' : 'facebook'
+																	}, (error, results) => {
+																		callback(results);
+																	});
+																},
+																function(callback) {
+																	mysql.insertData('profile_details', {
+																		'user_id' : insert_results.insertId
+																	}, (error, results) => {
+																		callback(results);
+																	});
+																} ], function(error, results) {
+
+																		req.session.loggedInUser = {
+																			'user_id' : account_details[0].user_id,
+																			'email' : account_details[0].email,
+																			'f_name' : account_details[0].f_name,
+																			'l_name' : account_details[0].l_name
+																		}
+
+																return done(null, {
+																	'user_id' : insert_results.insertId,
+																	'email' : profile.emails[0].value,
+																	'f_name' : f_name,
+																	'l_name' : l_name
+																}, req);
+															})
+
+														} else {
+															throw new Error('Internal Error');
+														}
+													}
+												})
+										}
+									}
+								})
+
+
+
 					}
 				}
 			});
