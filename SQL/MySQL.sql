@@ -29,12 +29,11 @@ CREATE TABLE `profile_details` (
   `user_id` INT(10) ZEROFILL NOT NULL,
   `phone` NUMERIC(12) NULL,
   `gender` ENUM('Male', 'Female', 'Other') NULL,
-  `month` INT(2) NOT NULL,
-  `day` INT(2) NOT NULL,
-  `year` INT(4) NOT NULL,
+  `month` INT(2) NULL,
+  `day` INT(2) NULL,
+  `year` INT(4) NULL,
   `city` VARCHAR(100) NULL,
   `state` VARCHAR(100) NULL,
-  `zip` NUMERIC(5) NULL,
   `description` VARCHAR(10000) DEFAULT NULL,
   PRIMARY KEY (`profile_id`)
 );
