@@ -1086,9 +1086,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.guest = $location.search().guest
 			}
 			
-			$scope.entire_home = false;
-			$scope.private_room = false;
-			$scope.shared_room = false;
+			$scope.entire_home = true;
+			$scope.private_room = true;
+			$scope.shared_room = true;
 			$scope.min_price = 0;
 			$scope.max_price = 500;
 			$scope.range = {
