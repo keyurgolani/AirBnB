@@ -149,7 +149,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row item-body" ng-show="active_tab === 'media_tab'">
+						<div class="row item-body" ng-show="active_tab === 'media_tab'">cancel 
 							<div class="row item-head">Profile Photo</div>
 							<div class="row item-content" style="padding:20px;">
 								<div class="row" ng-show="isSameUser">
@@ -369,7 +369,7 @@
 						<div class="row item-body" ng-show="active_tab === 'account_tab'">
 							<div class="row item-head">Cancel Account</div>
 							<div class="row item-content" style="padding:20px;">
-								<button class="btn btn-primary password-button">Cancel my account</button>
+								<button class="btn btn-primary password-button" ng-click="deactivateUserAccount()">Cancel my account</button>
 							</div>
 						</div>
 						<div class="row item-body" ng-show="active_tab === 'security_tab'">
