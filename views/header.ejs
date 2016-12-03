@@ -111,26 +111,22 @@
 		 						</div>
 		 					
 		 				</li>
-		 				<li  class="ul_Ten">
-		 					<div  class="ul_Eleven">
-		 						<div  class="col-lg-12 ul_Nine" data-toggle="modal" data-target=".signin-modal-md" ng-hide="global.loggedInUser">
-		 							<a style="text-decoration:none;" href="#" class="ul_Nine">Log In</a>
-		 						</div>
-		 						<div  class="col-lg-12 ul_Nine dropdown">
-		 							<a style="text-decoration:none;" href="#" class="ul_Nine" ng-show="global.loggedInUser" data-toggle="dropdown" class="dropdown-toggle">
-		 								<img ng-show="global.loggedInUser.photo" style="border-radius:50%; margin-top:-8px; border: 2px solid grey;" data-ng-src="data:{{global.loggedInUser.photo.filetype}};base64,{{global.loggedInUser.photo.base64}}" width="35" height="35">
-		 								<div class="profile-photo glyphicon glyphicon-user no-profile" ng-hide="global.loggedInUser.photo" style="height: 35px; width: 35px; font-size: 20px; padding: 5px;"></div>
-		 							</a>
-										<ul class="dropdown-menu" id="menu1">
-										
-										
-										<li><a ng-href="/profile?owner={{global.loggedInUser.user_id}}">Edit Profile</a></li>
-										<li><a href="#">Something else here</a></li>
-										<li class="divider"></li>
-										<li ng-click="logout();"><a href="#">Log Out</a></li>
-										</ul>
-		 						</div>
-		 					</div>
+		 				<li  class="ul_Seven">
+	 						<div  class="col-lg-12 ul_eight ul_Nine" data-toggle="modal" data-target=".signin-modal-md" ng-hide="global.loggedInUser">
+	 							<a style="text-decoration:none;" href="#" class="ul_Nine">Log In</a>
+	 						</div>
+	 						<div  class="col-lg-12 ul_eight ul_Nine dropdown">
+	 							<a style="text-decoration:none;" href="#" class="ul_Nine" ng-show="global.loggedInUser" data-toggle="dropdown" class="dropdown-toggle">
+		 							<img ng-show="global.loggedInUser.photo" style="border-radius:50%; margin-top:-8px; border: 2px solid grey;" data-ng-src="data:{{global.loggedInUser.photo.filetype}};base64,{{global.loggedInUser.photo.base64}}" width="35" height="35">
+		 							<div class="profile-photo glyphicon glyphicon-user no-profile" ng-hide="global.loggedInUser.photo" style="height: 35px; width: 35px; font-size: 20px; padding: 5px;"></div>
+		 						</a>
+								<ul class="dropdown-menu" id="menu1">
+									<li><a ng-href="/profile?owner={{global.loggedInUser.user_id}}">Edit Profile</a></li>
+									<li><a href="#">Something else here</a></li>
+									<li class="divider"></li>
+									<li ng-click="logout();"><a href="#">Log Out</a></li>
+								</ul>
+	 						</div>
 		 				</li>
 		 			</ul>
 		 		</div>
@@ -433,7 +429,7 @@
 							    </div>
 							</div>
 							<div class="row text-justify" style="margin-top:10px;">
-								<input type="checkbox" value="" style="margin-left:5px;"><span style="margin-left:10px;">Remember Password</span>
+								<input type="checkbox" class="logIn-checkbox" value="" style="margin-left:5px;"><span style="margin-left:10px;">Remember Password</span>
 							</div>
 				    		<div class="text-center">
 								<div class="signUpWithEmailbutton on-hover button-effect" ng-controller="login" style="width:386px;height:64px;" ng-click="login()">
