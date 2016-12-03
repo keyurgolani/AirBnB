@@ -186,7 +186,7 @@ router.post('/addListing', (req, res, next) => {
 										}
 									})
 
-								}, 60000);
+								}, properties.get('project.bidTimeOut'));
 							}
 
 
