@@ -176,7 +176,11 @@
                 <div class="col-lg-6" style="padding-left:0px; margin-bottom:20px;" ng-repeat="l in filteredResults">
                     
                     <div class="imgHolder">
-                      <a href="/viewListing?listing={{l.listing_id}}"> <img class="images" src="images/84ae415b-35c4-4abc-b594-7ba58f86990e.jpg" alt="here" ></a>
+                      	<div class="row">
+	                		<img class="images" data-ng-src="data:{{l.photos[l.currentPhoto].photos.filetype}};base64,{{l.photos[l.currentPhoto].photos.base64}}" alt="No Property Image">
+	                		<span class="chevronLabelLeft glyphicon glyphicon-chevron-left" ng-click="previousPhoto($index, l.currentPhoto)"></span>
+                    		<span class="chevronLabelRight glyphicon glyphicon-chevron-right" ng-click="nextPhoto($index, l.currentPhoto)"></span>
+	                	</div>
                       <div class="leftLabel">
                         <span class="textProp">
                           <span class=" glyphicon glyphicon-usd" style="font-size:14px;"></span>
@@ -187,17 +191,19 @@
                         <span class="glyphicon glyphicon-flash" style="color:#FFB400;" ng-show="l.is_bid"></span>
                       </div>
                       <div>
-                          <img class="rightLabel" src="images/user_one.jpeg" width="65" height="65" alt="here">
+                          <img class="rightLabel" data-ng-src="data:{{l.profile_photo[0].photo.filetype}};base64,{{l.profile_photo[0].photo.base64}}" width="65" height="65" alt="here">
                       </div>
 
                     </div>
 
                     <div>
-                      <span style="margin-left:10px; font-size:16px; font-weight: 400;">{{l.title}}</span><br>
+                      <a href="/viewListing?listing={{l.listing_id}}"><span style="margin-left:10px; font-size:16px; font-weight: 400;">{{l.title}}</span><br></a>
                       <span style="margin-left:10px; font-size:12px; color:#898989;">{{l.room_type}}</span>&nbsp;&nbsp;&nbsp;&nbsp;.    
                       <span style="margin-left:10px; font-size:12px; color:#898989;">{{l.accommodations}} guest(s)</span>
-                      <span style="margin-left:10px; font-size:12px; color:#008489;"><span class="fa fa-star"></span> <span class="fa fa-star"></span> <span class="fa fa-star"></span> <span class="fa fa-star"></span> <span class="fa fa-star"></span></span>
-                      <span style="margin-left:10px; font-size:12px; color:#898989;">23 reviews</span>
+                      <span style="margin-left:10px; font-size:12px; color:#008489;">
+					  	<div star-rating ng-model="l.rating[0].host_rating" max="5" readonly="true"></div>
+					  </span>
+                      <span style="margin-left:10px; font-size:12px; color:#898989;">{{l.rating[0].number_of_ratings}} reviews</span>
 
 
                     </div>
