@@ -9,8 +9,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.city = '';
 		// console.log('$scope.city', $scope.city);
 		$scope.options = {
-			country : 'usa',
-			types : '(cities)'
+			country : 'usa'
+			// types : '(cities)'
 		};
 		$scope.options.watchEnter = true;
 		$scope.$watch('city', function() {
@@ -115,6 +115,20 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		}
 	})
 	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope) => {
+
+		$scope.address = '';
+		// console.log('$scope.address', $scope.address);
+		$scope.options = {
+			country : 'usa',
+			types : '(cities)'
+		};
+		$scope.options.watchEnter = true;
+		$scope.$watch('address', function() {
+			if ($scope.address !== undefined && (typeof ($scope.address)) !== 'string') {
+				// $window.location.href = '/searchListing?where=' + $scope.address.formatted_address;
+				console.log("No Response");
+			}
+		});
 		
 		$scope.init = function(profileDetails) {
 			$scope.data = JSON.parse(profileDetails);
