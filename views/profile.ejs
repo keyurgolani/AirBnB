@@ -111,7 +111,7 @@
 									</div>
 									<div class="col-md-9">
 										<input ng-show="isSameUser" type="text" class="profile-large-box" placeholder="" ng-click="selectCity" ng-autocomplete="address" ng-model="st_address" details="details" options="options">
-										<label ng-hide="isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].city}}, {{data[0][0].state}}</label>
+										<label ng-hide="isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].city}} {{data[0][0].state}}</label>
 									</div>
 								</div>
 								<div class="row profile-bottom-space">
@@ -196,7 +196,7 @@
 											</div>
 										</div>
 										<div class="row" ng-show="data[8]">
-											<video controls src="data:{{data[8].filetype}};base64,{{data[8].base64}}" width="400px" style=""> 
+											<video controls src="data:{{data[8].filetype}};base64,{{data[8].base64}}" width="400px" style="margin:auto; display:inherit;align-content: center;"> 
 											</video>
 										</div>
 									</div>
@@ -564,40 +564,40 @@
 						</div>
 						<div class="row item-body" ng-show="active_tab === 'hostings_tab'">
 							<div class="row item-head">Your hostings</div>
-							<div class="row item-content" ng-repeat="hosting in data[6]">
-								<div class="row no-listing">You don't have any hostings!</div>
-								<div class="row listing-activated-body well">
-									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
-									</div>
-									<div class="col-md-1"></div>
-									<div class="col-md-8 listing-details">
-										<div class="row location-text">{{hosting.f_name}} {{hosting.l_name}} @</div>
-										<div class="row">
-											<div class="col-md-12 details-text">{{hosting.st_address}}, {{hosting.city}}, {{hosting.state}} {{hosting.zip}}</div>
+								<div ng-show = "data[6].length === 0" class="row no-listing">You don't have any hostings!</div>
+								<div class="row item-content" ng-repeat="hosting in data[6]">
+									<div class="row listing-activated-body well">
+										<div class="col-md-3">
+											<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
 										</div>
-										<div class="row" style="margin-top:20px;">
-											<div class="col-md-9 location-text">Check In - Check Out</div>
-											<div class="col-md-3 location-text" style="padding-left:30px;">Guests</div>
+										<div class="col-md-1"></div>
+										<div class="col-md-8 listing-details">
+											<div class="row location-text">{{hosting.f_name}} {{hosting.l_name}} @</div>
+											<div class="row">
+												<div class="col-md-12 details-text">{{hosting.st_address}}, {{hosting.city}}, {{hosting.state}} {{hosting.zip}}</div>
+											</div>
+											<div class="row" style="margin-top:20px;">
+												<div class="col-md-9 location-text">Check In - Check Out</div>
+												<div class="col-md-3 location-text" style="padding-left:30px;">Guests</div>
+											</div>
+											<div class="row">
+												<div class="col-md-9 details-text">{{hosting.checkin | date:'MM/dd/yyyy HH:mm'}} - {{hosting.checkout | date:'MM/dd/yyyy HH:mm'}}</div>
+												<div class="col-md-3 details-text" style="padding-left:30px;">{{hosting.no_of_guests}}</div>
+											</div>
+											<div class="row location-text" style="margin-top:15px;">Rate traveler</div>
+											<div star-rating ng-model="hosting.traveller_rating" max="5" on-rating-select="updateTravellerRating(hosting.trip_id, rating)"></div>
+											<div class="row location-text" style="margin-top:15px;">Review traveler</div>
+											<div class="row">
+												<div class="col-md-10">
+													<input type="text" class="form-control review-box curve-border" placeholder="Review" ng-model="hosting.traveller_review">
+												</div>	
+												<div class="col-md-2">
+						  							<button class="pull-right btn btn-primary submit-button" ng-click="updateTravellerReview(hosting.trip_id, hosting.traveller_review)">Submit</button>
+						  						</div>	
+											</div>							
 										</div>
-										<div class="row">
-											<div class="col-md-9 details-text">{{hosting.checkin | date:'MM/dd/yyyy HH:mm'}} - {{hosting.checkout | date:'MM/dd/yyyy HH:mm'}}</div>
-											<div class="col-md-3 details-text" style="padding-left:30px;">{{hosting.no_of_guests}}</div>
-										</div>
-										<div class="row location-text" style="margin-top:15px;">Rate traveler</div>
-										<div star-rating ng-model="hosting.traveller_rating" max="5" on-rating-select="updateTravellerRating(hosting.trip_id, rating)"></div>
-										<div class="row location-text" style="margin-top:15px;">Review traveler</div>
-										<div class="row">
-											<div class="col-md-10">
-												<input type="text" class="form-control review-box curve-border" placeholder="Review" ng-model="hosting.traveller_review">
-											</div>	
-											<div class="col-md-2">
-					  							<button class="pull-right btn btn-primary submit-button" ng-click="updateTravellerReview(hosting.trip_id, hosting.traveller_review)">Submit</button>
-					  						</div>	
-										</div>							
 									</div>
 								</div>
-							</div>
 						</div>
 						<div class="row item-body" ng-show="active_tab === 'host_tab'">
 							<div class="row item-head">Dashboard</div>

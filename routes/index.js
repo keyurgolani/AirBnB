@@ -304,14 +304,15 @@ router.post('/register', function(req, res, next) {
 				});
 			} else {
 				if (!results || results.length === 0) {
+
 					mysql.insertData('account_details', {
 						'email' : email,
 						'f_name' : first_name,
 						'l_name' : last_name,
 						'secret' : bcrypt.hashSync(secret, salt),
-						'salt' : salt,
-						'last_login' : require('fecha').format(Date.now(), 'YYYY-MM-DD HH:mm:ss')
+						'salt' : salt						
 					}, (error, account_result) => {
+						console.log('error, account_result', error, account_result);
 						if (error) {
 							res.send({
 								'statusCode' : 500
@@ -324,6 +325,7 @@ router.post('/register', function(req, res, next) {
 									'day' : req.body.day,
 									'year' : req.body.year
 								}, (error, profile_result) => {
+									console.log('error, profile_result', error, profile_result);
 									if (error) {
 										res.send({
 											'statusCode' : 500
@@ -334,6 +336,7 @@ router.post('/register', function(req, res, next) {
 												'user_id' : account_result.insertId,
 												'user_agent' : req.body.user_agent.os + ' ' + req.body.user_agent.os_version + ' - ' + req.body.user_agent.browser + ' ' + req.body.user_agent.browser_version
 											}, (error, result) => {
+												console.log('error, result', error, result);
 												res.send({
 													'statusCode' : 200
 												});
@@ -423,7 +426,7 @@ router.post('/updateProfile', (req, res, next) => {
 	var birth_year = req.body.birth_year;
 	var email = req.body.email;
 	var phone = req.body.phone;
-	var st_address = req.body.st_address;
+	// var st_address = req.body.st_address;
 	var city = req.body.city;
 	var state = req.body.state;
 	var zip = req.body.zip;
@@ -431,10 +434,14 @@ router.post('/updateProfile', (req, res, next) => {
 
 	console.log("inside");
 
+	console.log(f_name,l_name,gender,birth_month,birth_date,birth_year,email,phone,city,state,zip,description);
+
 	if (f_name === null || l_name === null || birth_month === null || birth_date === null || birth_year === null
-		|| email === null || st_address === null || city === null || state === null || zip === null
+		|| email === null || city === null || state === null || zip === null
 		|| f_name === undefined || l_name === undefined || birth_month === undefined || birth_date === undefined || birth_year === undefined
-		|| email === undefined || st_address === undefined || city === undefined || state === undefined || zip === undefined) {
+		|| email === undefined || city === undefined || state === undefined || zip === undefined) {
+
+		console.log("bad form entry");
 		res.send({
 			'statusCode' : 500
 		});
@@ -454,6 +461,7 @@ router.post('/updateProfile', (req, res, next) => {
 				}, {
 					"user_id" : user_id
 				}, (error, result) => {
+					console.log('error, result', error, result);
 					if (error) {
 						throw error;
 					} else {
@@ -465,7 +473,6 @@ router.post('/updateProfile', (req, res, next) => {
 				mysql.updateData('profile_details', {
 					"gender" : gender,
 					"phone" : phone,
-					"st_address" : st_address,
 					"description" : description,
 					"dob" : dob,
 					"city" : city,
@@ -474,6 +481,7 @@ router.post('/updateProfile', (req, res, next) => {
 				}, {
 					"user_id" : user_id
 				}, (error, result2) => {
+					console.log('error, result2', error, result2);
 					if (error) {
 						throw error;
 					} else {
@@ -583,15 +591,16 @@ router.post('/changeListingStatus', (req, res, next) => {
 });
 
 router.post('/updatePassword', (req, res, next) => {
-	//TODO
-	//var user_id = req.session.loggedInUser.user_id;
-	var user_id = 1;
+	
+	var user_id = req.session.loggedInUser.user_id;
+	
 
 	var password = req.body.old_pass;
 	var new_pass = req.body.new_pass;
-	mysql.fetchData('secret, salt', 'account_details', {
+	mysql.fetchData('secret, salt, active', 'account_details', {
 		"user_id" : user_id
 	}, (error, results) => {
+		console.log('error, results', error, results);
 		if (error) {
 			res.send({
 				'statusCode' : 500
@@ -610,7 +619,7 @@ router.post('/updatePassword', (req, res, next) => {
 
 						mysql.updateData('account_details', {
 							"secret" : new_secret,
-							"salt" : new_salt
+							"salt" : salt
 						}, {
 							"user_id" : user_id
 						}, (error, results) => {
@@ -664,10 +673,8 @@ router.post('/addCard', (req, res, next) => {
 	var postal = req.body.postal;
 	var country = req.body.country;
 
-	//TODO
-	// var user_id = req.session.loggedInUser.user_id;
-	var user_id = 1;
-
+	var user_id = req.session.loggedInUser.user_id;
+	
 
 	var JSON_OBJ = {
 		"card_number" : utility.maskCard(cc_no),
@@ -1269,10 +1276,11 @@ router.get('/profile', function(req, res, next) {
 	//TODO naive nested query to be written to show performance increase.
 	async.parallel([
 		function(callback) {
-			mysql.executeQuery('select account_details.user_id as user_id, f_name, l_name, email, active, phone, gender, month, day, year, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner ], (error, profile_details) => {
+			mysql.executeQuery('select account_details.user_id as user_id, f_name, l_name, email, active, phone, gender, month, day, year, city, state, zip, description from account_details left join profile_details on account_details.user_id = profile_details.user_id where account_details.user_id = ?', [ req.query.owner], (error, profile_details) => {
 				if (error) {
 					throw error;
 				} else {
+					console.log('profile_details', profile_details);
 					callback(null, profile_details);
 				}
 			});
@@ -1297,6 +1305,7 @@ router.get('/profile', function(req, res, next) {
 		},
 		function(callback) {
 			mysql.executeQuery('select property_id, house_rules, longitude, latitude, st_address, apt, city, state, zip, active, property_type from property_details inner join property_types on property_details.property_type_id = property_types.property_type_id where owner_id = ?', [ req.query.owner ], (error, property_details) => {
+					console.log('property_details', property_details);
 				if (error) {
 					throw error;
 				} else {
@@ -1887,7 +1896,9 @@ router.post('/updateReview', (req, res, next) => {
 });
 
 router.post('/getLoggedInUser', (req, res, next) => {
+	console.log("in session");
 	if (req.session !== undefined && req.session.loggedInUser !== undefined) {
+			
 		res.send({
 			'session' : req.session.loggedInUser
 		});
@@ -1916,11 +1927,21 @@ router.post('/uploadProfilePhoto', (req, res, next) => {
 				'user_id' : req.body.user
 			}, {
 				'photo' : req.body.photo
+			}, (doc) => {
+				req.session.loggedInUser.photo = req.body.photo;
+				res.send({
+					'statusCode' : 200
+				});
 			})
 		} else {
 			profile_photo_collection.insert({
 				'user_id' : req.body.user,
 				'photo' : req.body.photo
+			}, (doc) => {
+				req.session.loggedInUser.photo = req.body.photo;
+				res.send({
+					'statusCode' : 200
+				})
 			});
 		}
 	});
@@ -1936,13 +1957,24 @@ router.post('/uploadProfileVideo', (req, res, next) => {
 				'user_id' : req.body.user
 			}, {
 				'video' : req.body.video
+			},(doc) => {
+				req.session.loggedInUser.video = req.body.video;
+				res.send({
+					'statusCode' : 200
+				});
 			})
 		} else {
 			profile_video_collection.insert({
 				'user_id' : req.body.user,
 				'video' : req.body.video
+			},(doc) => {
+				req.session.loggedInUser.video = req.body.video;
+				res.send({
+					'statusCode' : 200
+				})
 			});
 		}
+		
 	});
 });
 
