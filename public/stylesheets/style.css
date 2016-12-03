@@ -549,7 +549,7 @@ body {
 	#signUpPlaceHolder { /* Chrome */
 		margin-top: 3px;
 	}
-	input[type=checkbox] {
+	.searchListing > input[type=checkbox] {
 		display: inline-block;
 		width: 15px;
 		height: 15px;
@@ -562,7 +562,23 @@ body {
 		cursor: pointer;
 		background: white;
 	}
-	input[type=checkbox]:checked {
+	.searchListing > input[type=checkbox]:checked {
+		background-position: left -15px;
+	}
+	.logIn-checkbox > input[type=checkbox] {
+		display: inline-block;
+		width: 0px!important;
+		height: 15px;
+		padding-left: 40px;
+		margin-left: 10px;
+		padding-top: 5px;
+		/* background-position: 0 0;
+	    background-repeat: no-repeat;*/
+		line-height: 32px;
+		cursor: pointer;
+		background: white;
+	}
+	.logIn-checkbox > input[type=checkbox]:checked {
 		background-position: left -15px;
 	}
 	.imgHolder {
