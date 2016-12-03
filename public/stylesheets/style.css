@@ -2736,3 +2736,7 @@ input[type=range]:focus::-ms-fill-lower, input[type=range]:active::-ms-fill-lowe
 input[type=range]:focus::-ms-fill-upper, input[type=range]:active::-ms-fill-upper, input[type=range]:focus:active::-ms-fill-upper {
   background-color: #00a699!important;
 }
+.modal-content {
+  
+  overflow-y:auto !important;
+}
