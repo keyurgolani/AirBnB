@@ -22,12 +22,19 @@
 					<span class="h3 que_1">What kind of place do you have?</span>
 				</div>
 				<div class="row" style="display:flex;">
+
 					<div><select class="selectpicker dropdown-box listing box-size" ng-model="room_type" ng-options="room.room_type for room in room_types"></select></div>
 					<div class="address-box increment-main-box">
 				    	<div class="count-main-text"><input type="text" class="form-control count-main-text" placeholder="Guests" ng-model="guests"/></div>
 						<span ng-click="guests = guests - 1" class="count-main-button btn button-radius">-</span>
 						<span ng-click="guests = guests + 1" class="count-main-button btn button-radius" style="border-right:none;">+</span>
 					</div>
+				</div>
+				<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_room_type">
+					Please select your type of accomodation !
+				</div>
+				<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_guests">
+					Please enter the number of guests !
 				</div>
 				<div class="row que_1">
 					<input type="text" class="form-control search-bar listing" placeholder="e.g. San Fransisco" ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="city" details="details" options="options">
@@ -83,6 +90,9 @@
 							<span ng-click="number_of_bedrooms = number_of_bedrooms + 1" class="count-button btn button-radius" style="border-right:none;">+</span>
 						</div>
 					</div>
+					<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_number_of_bedrooms">
+						Please enter the number of bedrooms !
+					</div>
 				</div>
 				<div class="row que_1" style="margin-top: 30px;>
 					<span class="h3 que_1">How many beds will you provide?</span>
@@ -93,6 +103,9 @@
 						<span ng-click="number_of_beds = number_of_beds - 1" class="count-button btn button-radius">-</span>
 						<span ng-click="number_of_beds = number_of_beds + 1" class="count-button btn button-radius" style="border-right:none;">+</span>
 					</div>
+					<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_number_of_beds">
+						Please enter the number of beds !
+					</div>
 				</div>
 				<div class="row" style="margin-top: 30px; margin-bottom: 20px;">
 					<span class="h3 que_1">How many guests can stay?</span>
@@ -101,6 +114,9 @@
 			    	<div class="count-text"><input type="text" class="form-control count-text" style="padding-left:0px;" placeholder="Number of guests" ng-model="number_of_guests"/></div>
 					<div ng-click="number_of_guests = number_of_guests - 1" class="count-button btn button-radius">-</div>
 					<div ng-click="number_of_guests = number_of_guests + 1" class="count-button btn button-radius" style="border-right:none;">+</div>
+				</div>
+				<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_number_of_beds">
+					Please enter the number of guests !
 				</div>
 				<div class="row que_1" style="margin-top: 30px; margin-bottom: 20px;">
 					<span class="h3 que_1">How many bathrooms will you provide?</span>
@@ -112,6 +128,9 @@
 							<span ng-click="number_of_bathrooms = number_of_bathrooms - 1" class="count-button btn button-radius">-</span>
 							<span ng-click="number_of_bathrooms = number_of_bathrooms + 1" class="count-button btn button-radius" style="border-right:none;">+</span>
 						</div>
+					</div>
+					<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_number_of_beds">
+						Please enter the number of guests !
 					</div>
 				</div>
 				<div class="row" style="margin-top: 30px;">

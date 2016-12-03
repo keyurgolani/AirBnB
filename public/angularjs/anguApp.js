@@ -826,27 +826,196 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 		$scope.addListing = () => {
 
+
+			$scope.no_room_type           = false;
+			$scope.no_guests              = false;
+			$scope.no_number_of_bedrooms  = false;
+			$scope.no_number_of_beds      = false;
+			$scope.no_number_of_guests    = false;
+			$scope.no_number_of_bathrooms = false;
+			$scope.no_title               = false;
+			$scope.no_description         = false;
+			$scope.no_dates               = false;
+			$scope.no_price               = false;
+			$scope.sale_type              = false;
+
+
 			if($scope.room_type === null || $scope.room_type === "" || $scope.room_type === undefined){
 
-			}else if($scope.guests < 1){
+				$scope.page = 1;
+
+				$scope.no_room_type           = true;
+				$scope.no_guests              = false;
+				$scope.no_number_of_bedrooms  = false;
+				$scope.no_number_of_beds      = false;
+				$scope.no_number_of_guests    = false;
+				$scope.no_number_of_bathrooms = false;
+				$scope.no_title               = false;
+				$scope.no_description         = false;
+				$scope.no_dates               = false;
+				$scope.no_price               = false;
+				$scope.sale_type              = false;
+
+
+			}else if($scope.guests < 1 || $scope.guests === null || $scope.guests === undefined){
+
+				$scope.page = 1;
+
+				$scope.no_room_type           = false;
+				$scope.no_guests              = true;
+				$scope.no_number_of_bedrooms  = false;
+				$scope.no_number_of_beds      = false;
+				$scope.no_number_of_guests    = false;
+				$scope.no_number_of_bathrooms = false;
+				$scope.no_title               = false;
+				$scope.no_description         = false;
+				$scope.no_dates               = false;
+				$scope.no_price               = false;				
+				$scope.sale_type              = false;
 
 			}else if($scope.number_of_bedrooms < 1){
 
+				$scope.page = 3;
+
+				$scope.no_room_type           = false;
+				$scope.no_guests              = false;
+				$scope.no_number_of_bedrooms  = true;
+				$scope.no_number_of_beds      = false;
+				$scope.no_number_of_guests    = false;
+				$scope.no_number_of_bathrooms = false;
+				$scope.no_title               = false;
+				$scope.no_description         = false;
+				$scope.no_dates               = false;
+				$scope.no_price               = false;
+				$scope.sale_type              = false;
+
 			}else if($scope.number_of_beds < 1){
+
+				$scope.page = 3;
+
+				$scope.no_room_type           = false;
+				$scope.no_guests              = false;
+				$scope.no_number_of_bedrooms  = false;
+				$scope.no_number_of_beds      = true;
+				$scope.no_number_of_guests    = false;
+				$scope.no_number_of_bathrooms = false;
+				$scope.no_title               = false;
+				$scope.no_description         = false;
+				$scope.no_dates               = false;
+				$scope.no_price               = false;
+				$scope.sale_type              = false;
 
 			}else if($scope.number_of_guests < 1){
 
+				$scope.page = 3;
+
+				$scope.no_room_type           = false;
+				$scope.no_guests              = false;
+				$scope.no_number_of_bedrooms  = false;
+				$scope.no_number_of_beds      = false;
+				$scope.no_number_of_guests    = true;
+				$scope.no_number_of_bathrooms = false;
+				$scope.no_title               = false;
+				$scope.no_description         = false;
+				$scope.no_dates               = false;
+				$scope.no_price               = false;
+				$scope.sale_type              = false;
+
 			}else if($scope.number_of_bathrooms < 1){
+
+				$scope.page = 3;
+
+				$scope.no_room_type           = false;
+				$scope.no_guests              = false;
+				$scope.no_number_of_bedrooms  = false;
+				$scope.no_number_of_beds      = false;
+				$scope.no_number_of_guests    = false;
+				$scope.no_number_of_bathrooms = true;
+				$scope.no_title               = false;
+				$scope.no_description         = false;
+				$scope.no_dates               = false;
+				$scope.no_price               = false;
+				$scope.sale_type              = false;
 
 			}else if($scope.title < 1){
 
+				$scope.page = 5;
+
+				$scope.no_room_type           = false;
+				$scope.no_guests              = false;
+				$scope.no_number_of_bedrooms  = false;
+				$scope.no_number_of_beds      = false;
+				$scope.no_number_of_guests    = false;
+				$scope.no_number_of_bathrooms = false;
+				$scope.no_title               = true;
+				$scope.no_description         = false;
+				$scope.no_dates               = false;
+				$scope.no_price               = false;
+				$scope.sale_type              = false;
+
 			}else if($scope.description < 1){
+
+				$scope.page = 5;
+
+				$scope.no_room_type           = false;
+				$scope.no_guests              = false;
+				$scope.no_number_of_bedrooms  = false;
+				$scope.no_number_of_beds      = false;
+				$scope.no_number_of_guests    = false;
+				$scope.no_number_of_bathrooms = false;
+				$scope.no_title               = false;
+				$scope.no_description         = true;
+				$scope.no_dates               = false;
+				$scope.no_price               = false;
+				$scope.sale_type              = false;
 
 			}else if($scope.dates < 1){
 
-			}else if($scope.is_fixed_price < 1){
+				$scope.page = 5;
 
-			}else if($scope.is_bid < 1){
+				$scope.no_room_type           = false;
+				$scope.no_guests              = false;
+				$scope.no_number_of_bedrooms  = false;
+				$scope.no_number_of_beds      = false;
+				$scope.no_number_of_guests    = false;
+				$scope.no_number_of_bathrooms = false;
+				$scope.no_title               = false;
+				$scope.no_description         = false;
+				$scope.no_dates               = true;
+				$scope.no_price               = false;
+				$scope.sale_type              = false;
+
+			}else if($scope.is_fixed_price === false && $scope.is_bid === false){
+
+				$scope.page = 6;
+
+				$scope.no_room_type           = false;
+				$scope.no_guests              = false;
+				$scope.no_number_of_bedrooms  = false;
+				$scope.no_number_of_beds      = false;
+				$scope.no_number_of_guests    = false;
+				$scope.no_number_of_bathrooms = false;
+				$scope.no_title               = false;
+				$scope.no_description         = false;
+				$scope.no_dates               = false;
+				$scope.no_price               = false;
+				$scope.sale_type              = true;
+
+			}else if($scope.price === 0 || $scope.price === null || $scope.price === undefined || $scope.price === " "){
+
+				$scope.page = 6;
+
+				$scope.no_room_type           = false;
+				$scope.no_guests              = false;
+				$scope.no_number_of_bedrooms  = false;
+				$scope.no_number_of_beds      = false;
+				$scope.no_number_of_guests    = false;
+				$scope.no_number_of_bathrooms = false;
+				$scope.no_title               = false;
+				$scope.no_description         = false;
+				$scope.no_dates               = false;
+				$scope.no_price               = true;
+				$scope.sale_type              = false;
 
 			}else{
 
