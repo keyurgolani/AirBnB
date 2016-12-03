@@ -231,17 +231,17 @@ router.post('/addProperty', (req, res, next) => {
 		var active = true; //Default value at the time of adding new property.
 
 		mysql.insertData('property_details', {
-			'owner_id' : owner_id,
-			'property_type_id' : property_type_id,
-			'house_rules' : house_rules,
-			'longitude' : longitude,
-			'latitude' : latitude,
-			'st_address' : st_address,
-			'apt' : apt,
-			'city' : city,
-			'state' : state,
-			'zip' : zip,
-			'active' : active
+			'owner_id'        : owner_id,
+			'property_type_id': property_type_id,
+			'house_rules'     : house_rules,
+			'longitude'       : longitude,
+			'latitude'        : latitude,
+			'st_address'      : st_address,
+			'apt'             : apt,
+			'city'            : city,
+			'state'           : state,
+			'zip'             : zip,
+			'active'          : active
 		}, function(error, result) {
 			if (error) {
 				res.send({

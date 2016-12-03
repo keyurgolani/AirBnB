@@ -605,6 +605,23 @@ body {
 		padding: 0px;
 	}
 
+	.chevronLabelLeft {
+		position: absolute;
+		left: 5%;
+		top: 82.5%;
+		border: 1px solid white;
+		border-radius: 50%;
+		padding: 5px;
+	}
+	.chevronLabelRight {
+		position: absolute;
+		right: 5%;
+		top: 82.5%;
+		border: 1px solid white;
+		border-radius: 50%;
+		padding: 5px;
+	}
+
 
 	#adminTop{
 		background-color: #03569A;
