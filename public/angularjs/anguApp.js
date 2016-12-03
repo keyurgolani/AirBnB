@@ -1104,9 +1104,28 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.guest = $location.search().guest
 			}
 			
+			$scope.entire_home = true;
+			$scope.private_room = true;
+			$scope.shared_room = true;
+			$scope.min_price = 0;
+			$scope.max_price = 100;
+			$scope.instant_book = false;
+			
 			for(var i = 0; i < $scope.data.results.length; i++) {
 				$scope.data.results[i].currentPhoto = 0
+				if($scope.data.results[i].daily_price >= $scope.max_price) {
+					$scope.max_price = $scope.data.results[i].daily_price;
+				}
+				if($scope.data.results[i].daily_price <= $scope.max_price) {
+					$scope.min_price = $scope.data.results[i].daily_price;
+				}
+				
 			}
+			
+			$scope.range = {
+					from: $scope.min_price,
+					to: $scope.max_price
+			};
 			
 			$scope.nextPhoto = function(index, currentPhoto) {
 				if(currentPhoto === $scope.data.results[index].photos.length - 1) {
@@ -1123,17 +1142,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					$scope.data.results[index].currentPhoto = $scope.data.results[index].currentPhoto - 1;
 				}
 			}
-			
-			$scope.entire_home = true;
-			$scope.private_room = true;
-			$scope.shared_room = true;
-			$scope.min_price = 0;
-			$scope.max_price = 500;
-			$scope.range = {
-					from: 0,
-					to: 500
-			};
-			$scope.instant_book = false;
 		}
 		
 		$scope.updateFilters = (when, guests, entire_home, private_room, shared_room, min_price, max_price, instant_book) => {
