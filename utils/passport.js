@@ -1,4 +1,5 @@
 var FacebookStrategy = require('passport-facebook').Strategy;
+var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 var LocalStrategy = require("passport-local").Strategy;
 var async = require('async');
 var bcrypt = require('bcrypt');
@@ -54,7 +55,6 @@ module.exports = function(passport) {
 		passReqToCallback : true
 	}, function(req, token, refreshToken, profile, done) {
 		process.nextTick(function() {
-
 			/*{ id: '1476505045714689',
 				  username: undefined,
 				  displayName: 'Keyur Golani',
@@ -167,4 +167,140 @@ module.exports = function(passport) {
 
 	}));
 
+
+	//google stretegy
+	passport.use(new GoogleStrategy({
+
+		clientID : properties.get('passport.googleAuth.clientID'),
+		clientSecret : properties.get('passport.googleAuth.clientSecret'),
+		callbackURL : properties.get('passport.googleAuth.callbackURL'),
+//		 profileFields : [ 'id', 'displayName', 'emails' ],
+		passReqToCallback : true
+
+        // clientID        : configAuth.googleAuth.clientID,
+        // clientSecret    : configAuth.googleAuth.clientSecret,
+        // callbackURL     : configAuth.googleAuth.callbackURL,
+        // passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
+    },  
+
+      function(req, token, refreshToken, profile, done) {
+    	
+    	process.nextTick(function() {
+    		
+    		console.log(profile);
+
+			/*{ id: '1476505045714689',
+				  username: undefined,
+				  displayName: 'Keyur Golani',
+				  name:
+				   { familyName: undefined,
+				     givenName: undefined,
+				     middleName: undefined },
+				  gender: undefined,
+				  profileUrl: undefined,
+				  emails: [ { value: 'keyurgolani@yahoo.com' } ],
+				  provider: 'facebook',
+				  _raw: '{"id":"1476505045714689","name":"Keyur Golani","email":"keyurgolani\\u0040yahoo.com"}',
+				  _json:
+				   { id: '1476505045714689',
+				     name: 'Keyur Golani',
+				     email: 'keyurgolani@yahoo.com' } }*/
+
+			mysql.fetchData('external_id, user_id', 'external_authentication', {
+				'external_id' : profile.id
+			}, (error, external_details) => {
+				if (error) {
+					throw error;
+				} else {
+					if (external_details && external_details.length > 0) {
+						if (req.session.loggedInUser) {
+							req.session.destroy((error) => {
+								mysql.fetchData('user_id, email, f_name, l_name, active', 'account_details', {
+									'user_id' : external_details[0].user_id
+								}, (error, account_details) => {
+									if (error) {
+										throw error;
+									} else {
+										if (account_details && account_details.length > 0 && account_details[0].active) {
+											req.session.loggedInUser = {
+												'user_id' : account_details[0].user_id,
+												'email' : account_details[0].email,
+												'f_name' : account_details[0].f_name,
+												'l_name' : account_details[0].l_name,
+											}
+											return done(null, account_details[0], req);
+										}
+									}
+								})
+							});
+						} else {
+							mysql.fetchData('user_id, email, f_name, l_name, active', 'account_details', {
+								'user_id' : external_details[0].user_id
+							}, (error, account_details) => {
+								if (error) {
+									throw error;
+								} else {
+									if (account_details && account_details.length > 0 && account_details[0].active) {
+										req.session.loggedInUser = {
+											'user_id' : account_details[0].user_id,
+											'email' : account_details[0].email,
+											'f_name' : account_details[0].f_name,
+											'l_name' : account_details[0].l_name,
+										}
+										return done(null, account_details[0], req);
+									}
+								}
+							})
+						}
+					} else {
+						console.log("here");
+						console.log(profile);
+						var f_name = profile.displayName.split(' ')[0];
+						var l_name = profile.displayName.split(' ')[1];
+						mysql.insertData('account_details', {
+							'email' : profile.emails[0].value,
+							'f_name' : f_name,
+							'l_name' : l_name
+						}, (error, insert_results) => {
+							if (error) {
+								throw error;
+							} else {
+								if (insert_results.affectedRows === 1) {
+									async.parallel([
+										function(callback) {
+											mysql.insertData('external_authentication', {
+												'external_id' : profile.id,
+												'user_id' : insert_results.insertId,
+												'website' : 'google'
+											}, (error, results) => {
+												callback(results);
+											});
+										},
+										function(callback) {
+											mysql.insertData('profile_details', {
+												'user_id' : insert_results.insertId
+											}, (error, results) => {
+												callback(results);
+											});
+										} ], function(error, results) {
+										return done(null, {
+											'user_id' : insert_results.insertId,
+											'email' : profile.emails[0].value,
+											'f_name' : f_name,
+											'l_name' : l_name
+										}, req);
+									})
+
+								} else {
+									throw new Error('Internal Error');
+								}
+							}
+						})
+					}
+				}
+			});
+		});
+
+	}));
+	
 };

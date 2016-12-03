@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector', 'ui.utils.masks', 'angular-carousel'])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector', 'ui.utils.masks', 'daterangepicker', 'angular-carousel' ])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
@@ -19,12 +19,14 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 		});
 	})
-	.controller('homepage', function($window) {
-		$window.document.title = 'Welcome to the World of Trips!'
+	.controller('homepage', function($scope, $window) {
+		$window.document.title = 'Welcome to the World of Trips!';
+		$scope.show_guests = false;
+		$scope.today = new Date();
 	})
-	.controller('login', function($scope, $http, Random, deviceDetector, $rootScope) {
+	.controller('login', function($scope, $http, Random, deviceDetector,$rootScope) {
+		$scope.global = $rootScope;
 		$scope.deviceDetector = deviceDetector;
-		
 		$scope.login = function() {
 			$http({
 				method : "POST",
@@ -35,8 +37,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"user_agent" : deviceDetector
 				}
 			}).then((results) => {
-				$rootScope.fetchLoggedInUser();
-				console.log("Results", results);
+				$rootScope.fetchLoggedInUser(function() {
+				window.location.assign('/');
+			});			
 			}, (error) => {
 				console.log("Error", error);
 			});
@@ -113,20 +116,14 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		}
 	})
 	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope) => {
+		
 		$scope.init = function(profileDetails) {
-			$scope.fetchLoggedInUser(function() {
-				$scope.isSameUser = ($rootScope.loggedInUser.user_id === $scope.data[0][0].user_id);
-			});
-			
-			$rootScope.$watch('loggedInUser', function() {
-				if($rootScope.loggedInUser) {
-					$scope.isSameUser = ($rootScope.loggedInUser.user_id === $scope.data[0][0].user_id);
-				}
-			})
-			
 			$scope.data = JSON.parse(profileDetails);
 			$window.document.title = $scope.data[0][0].f_name + ' ' + $scope.data[0][0].l_name + ' | Profile';
 			$scope.st_address = $scope.data[0][0].city +', '+ $scope.data[0][0].state;
+			$rootScope.fetchLoggedInUser(function() {
+				$scope.isSameUser = ($rootScope.loggedInUser.user_id === $scope.data[0][0].user_id);
+			});
 			$scope.active_tab = 'profile_tab';
 			$scope.genders = [ 'Male', 'Female', 'Other' ];
 			$scope.months = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
@@ -142,12 +139,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.get_year = [ '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027',
 				'2028', '2029', '2030', '2031', '2032' ];
 
-			if ($scope.data[0][0].dob !== null) {
-				$scope.birth_month = $scope.months[new Date($scope.data[0][0].dob).getMonth()];
-				$scope.birth_year = (new Date($scope.data[0][0].dob).getFullYear()).toString();
-				console.log($scope.birth_year);
-				$scope.birth_date = (new Date($scope.data[0][0].dob).getDate()).toString();
-				console.log($scope.birth_date);
+			if ($scope.data[0][0].month !== null && $scope.data[0][0].year && $scope.data[0][0].day) {
+				$scope.birth_month = $scope.months[new Date($scope.data[0][0].month)];
+				$scope.birth_year = $scope.data[0][0].year;
+				$scope.birth_date = $scope.data[0][0].day;
 			} else {
 				$scope.birth_month = $scope.months[0];
 				$scope.birth_year = $scope.years[0];
@@ -320,12 +315,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 		$scope.$watch('details', function() {
 			if ($scope.details !== undefined && typeof $scope.details != 'string') {
-				console.log($scope.details);
-				var length = $scope.details.address_components.length;
-				$scope.streetAddress = $scope.details.address_components[0].long_name + " " + $scope.details.address_components[1].long_name;
-				$scope.city = $scope.details.address_components[3].long_name;
-				$scope.state = $scope.details.address_components[5].long_name;
-				$scope.zip = $scope.details.address_components[7].long_name;
+				$scope.city = $scope.details.address_components[0].long_name;
+				$scope.state = $scope.details.address_components[2].short_name;
 			}
 		});
 
@@ -343,10 +334,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"birth_year" : $scope.birth_year,
 					"email" : $scope.data[0][0].email,
 					"phone" : $scope.data[0][0].phone,
-					"st_address" : $scope.streetAddress,
 					"city" : $scope.city,
 					"state" : $scope.state,
-					"zip" : $scope.zip,
 					"description" : $scope.data[0][0].description
 				}
 			}).then((result) => {
@@ -560,7 +549,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					}
 				}).then((results) => {
 					if (results.data.statusCode === 200) {
-						console.log("Results", results);
+						$rootScope.fetchLoggedInUser(function() {
+							
+						});
 					}
 				}, (error) => {
 					console.log("Error", error);
@@ -579,7 +570,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					}
 				}).then((results) => {
 					if (results.data.statusCode === 200) {
-						console.log("Results", results);
+						$rootScope.fetchLoggedInUser(function() {
+							
+						});
 					}
 				}, (error) => {
 					console.log("Error", error);
@@ -595,6 +588,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.photos.splice(index, 1);
 			if ($scope.photos.length === 0) {
 				$scope.show_upload = true;
+				angular.element("input[type='file']").val(null);
 			}
 		};
 		
@@ -621,6 +615,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.property_types = [];
 			})
 		}
+		
 		$scope.addProperty = () => {
 			$http({
 				method : "POST",
@@ -641,6 +636,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				}
 			}).then((result) => {
 				if (result.data.statusCode === 200) {
+					window.location.assign('/');
 
 				}
 			}, (error) => {
@@ -763,6 +759,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 	})
 	.controller('navBarController', function($scope, $http, Random, $rootScope) {
+		
 		$scope.global = $rootScope;
 		
 		$rootScope.fetchLoggedInUser = (callback) => {
@@ -771,18 +768,27 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				method : 'POST'
 			}).then(function(result) {
 				$rootScope.loggedInUser = result.data.session;
-				callback();
+				if(callback) {
+					callback();
+				}
 			}, function(error) {
 				console.log(error);
 			});
 		}
 		
+		$rootScope.fetchLoggedInUser(function() {
+			
+		});
+
 		$scope.logout = function() {
 			$http({
 				url : '/logout',
 				method : "POST"
 			}).then(function(result) {
-				$rootScope.fetchLoggedInUser();
+				$rootScope.fetchLoggedInUser(function() {
+				window.location.assign('/');
+			});			
+				
 			}, function(error) {
 				console.log(error);
 			});
@@ -1065,46 +1071,84 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			});
 
 	})
-	.controller('searchListingController', function($scope, $location, $http, Random, $interval, NgMap, $window) {
+	.controller('searchListingController', function($scope, $http, $location, Random, $interval, NgMap, $window) {
+
 		$scope.init = function(retrievedData) {
 			$scope.data = JSON.parse(retrievedData);
+			
 			$window.document.title = 'Listings for ' + $location.search().where;
-			var maxRange = 0;
-			if($scope.data.results.length > 0) {
-				for (var j = 0; j < $scope.data.results.length; j++) {
-					if ($scope.data.results[j].daily_price > maxRange) {
-						maxRange = $scope.data.results[j].daily_price;
+			
+			if($location.search().daterange) {
+				$scope.daterange = $location.search().daterange;
+			}
+			
+			if($location.search().guest) {
+				$scope.guest = $location.search().guest
+			}
+			
+			$scope.entire_home = true;
+			$scope.private_room = true;
+			$scope.shared_room = true;
+			$scope.min_price = 0;
+			$scope.max_price = 500;
+			$scope.range = {
+					from: 0,
+					to: 500
+			};
+			$scope.instant_book = false;
+		}
+		
+		$scope.updateFilters = (when, guests, entire_home, private_room, shared_room, min_price, max_price, instant_book) => {
+			$scope.filteredResults = $scope.data.results.filter(function(elem, index, array) {
+				var whenValid = true;
+				var guestsValid = true;
+				var room_type_valid = true;
+				var price_range_valid = true;
+				var instant_book_valid = true;
+				if(when) {
+					if(typeof when === 'string') {
+						var filter_start = new Date(when.split(' - ')[0]);
+						var filter_end = new Date(when.split(' - ')[1]);
+						var start_date = new Date(elem.start_date);
+						var end_date = new Date(elem.end_date);
+						if(start_date.getTime() > filter_end.getTime() || 
+								end_date.getTime() > filter_end.getTime() || 
+								start_date.getTime() < filter_start.getTime() || 
+								end_date.getTime() < filter_start.getTime()) {
+							whenValid = false;
+						}
+					} else {
+						var start_date = new Date(elem.start_date);
+						var end_date = new Date(elem.end_date);
+						if(start_date.getTime() > when.endDate._d.getTime() || 
+								end_date.getTime() > when.endDate._d.getTime() || 
+								start_date.getTime() < when.startDate._d.getTime() || 
+								end_date.getTime() < when.startDate._d.getTime()) {
+							whenValid = false;
+						}
 					}
 				}
-			} else {
-				maxRange = 500;
-			}
-
-			$scope.range = {
-				from : 0,
-				to : maxRange
-			};
-			$scope.max = maxRange;
-
-			var min,
-				max;
-
-			$scope.from = function() {
-				min = ($scope.min);
-			}
-			$scope.to = function() {
-				max = ($scope.max);
-			}
-
-			$scope.$watch('range', function() {
-				$scope.propertyArray = $scope.data.results;
-				$scope.filteredResults = $scope.propertyArray.filter(function(elem, index, array) {
-					return (elem.daily_price >= $scope.range.from && elem.daily_price <= $scope.range.to);
-				});
-
+				if(guests) {
+					if(guests > elem.accommodations) {
+						guestsValid = false;
+					}
+				}
+				if((elem.room_type === 'Private room' && !private_room) || (elem.room_type === 'Shared room' && !shared_room) || (elem.room_type === 'Entire home/apt' && !entire_home)) {
+					room_type_valid = false;
+				}
+				if(elem.daily_price > max_price || elem.daily_price < min_price) {
+					price_range_valid = false;
+				}
+				if(!instant_book && !elem.is_bid) {
+					instant_book_valid = false;
+				}
+				return whenValid && guestsValid && room_type_valid && price_range_valid && instant_book_valid;
 			});
-
-		}
+		};
+		
+		$scope.$watchCollection('[daterange, guest, entire_home, private_room, shared_room, min_price, max_price, range, instant_book]', function() {
+			$scope.updateFilters($scope.daterange, $scope.guest, $scope.entire_home, $scope.private_room, $scope.shared_room, $scope.range.from, $scope.range.to, $scope.instant_book);
+		});
 
 	})
 	.directive('ngEnter', function() {
