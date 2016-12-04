@@ -437,17 +437,6 @@ router.post('/updateProfile', (req, res, next) => {
 	var state = req.body.state;
 	var description = req.body.description;
 
-
-	console.log(city,state);
-
-	if (f_name === null || l_name === null || birth_month === null || birth_date === null || birth_year === null
-		|| email === null || city === null || state === null
-		|| f_name === undefined || l_name === undefined || birth_month === undefined || birth_date === undefined || birth_year === undefined
-		|| email === undefined || city === undefined || state === undefined) {
-		res.send({
-			'statusCode' : 400
-		});
-	} else {
 		async.parallel([
 			function(callback) {
 				mysql.updateData('account_details', {
@@ -487,17 +476,16 @@ router.post('/updateProfile', (req, res, next) => {
 				});
 			}
 		], function(error, results) {
-			if (results[0] !== null && results[1] !== null) {
-				res.send({
-					'statusCode' : 200
-				});
-			} else {
+			if (error) {
 				res.send({
 					'statusCode' : 500
 				});
+			} else {
+				res.send({
+					'statusCode' : 200
+				});
 			}
 		});
-	}
 });
 
 router.post('/fetchRoomTypes', (req, res, next) => {

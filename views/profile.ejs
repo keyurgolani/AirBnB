@@ -69,7 +69,7 @@
 										<span class="profile-left-text" ng-hide="isSameUser">Gender</span>
 									</div>
 									<div class="col-md-9">
-										<select class="gender-box" ng-if="isSameUser" ng-options="gender for gender in genders" ng-model="data[0][0].gender" ng-init="data[0][0].gender = genders[0]"></select>
+										<select class="gender-box" ng-if="isSameUser" ng-options="gender for gender in genders" ng-model="data[0][0].gender" ></select>
 										<label ng-if="!isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].gender !== null ? data[0][0].gender : 'Unknown'}}</label>
 										<div class="profile-info">We use this data for analysis and never share it with other users.</div>
 									</div>
@@ -79,9 +79,9 @@
 										<span class="profile-left-text">Birth Date</span>
 									</div>
 									<div class="col-md-9">
-										<select class="month-box" ng-options="month for month in months" ng-model="birth_month"></select>
-										<select class="date-box" ng-options="date for date in dates" ng-model="birth_date"></select>
-										<select class="year-box" ng-options="year for year in years" ng-model="birth_year"></select>
+										<select class="month-box" ng-options="month for month in months" data-ng-model="birth_month"></select>
+										<select class="date-box" ng-options="date for date in dates" data-ng-model="birth_date"></select>
+										<select class="year-box" ng-options="year for year in years" data-ng-model="birth_year"></select>
 										<div class="profile-info">The magical day you were dropped from the sky by a stork. We use this data for analysis and never share it with other users.</div>
 
 									</div>
@@ -104,9 +104,18 @@
 										<div class="profile-info">This is only shared once you have a confirmed booking with another Airbnb user. This is how we can all get in touch.</div>
 									</div>
 								</div>
+								<div class="row profile-bottom-space" ng-show="isSameUser">
+									<div class="col-md-3">
+										<span class="profile-left-text">Address</span>
+									</div>
+										<div class="col-md-9">
+										<label readonly class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].city}}, {{data[0][0].state}}</label>
+									</div>
+									</div>
+								</div>
 								<div class="row profile-bottom-space">
 									<div class="col-md-3">
-										<span class="profile-left-text" ng-show="isSameUser">Where You Live</span>
+										<span class="profile-left-text" ng-show="isSameUser">New Address</span>
 										<span class="profile-left-text" ng-hide="isSameUser">From</span>
 									</div>
 									<div class="col-md-9">
