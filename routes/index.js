@@ -188,7 +188,7 @@ router.post('/addListing', (req, res, next) => {
 										}
 									})
 
-								}, 60000);
+								}, properties.get('project.bidTimeOut'));
 							}
 
 
@@ -879,7 +879,7 @@ router.post('/deactivateUserAccount', (req, res, next) => {
 
 router.get('/viewListing', function(req, res, next) {
 	var listing_id = req.query.listing;
-	if(req.session && req.session.loggedInUser) {
+	if (req.session && req.session.loggedInUser) {
 		var user_id = req.session.loggedInUser.user_id;
 		logger.pageClickLogger(listing_id, user_id);
 	}
@@ -1284,8 +1284,6 @@ router.get('/searchListing', function(req, res, next) {
 	var address = req.query.where;
 	var guest = req.query.guest;
 	var daterange = req.query.daterange;
-	// console.log("<><><><><><><><>><><>><><");
-	// console.log('daterange', daterange);
 
 	//TODO
 	// var user_id = req.session.loggedInUser.user_id;
@@ -1330,32 +1328,58 @@ router.get('/searchListing', function(req, res, next) {
 		};
 
 		mysql.executeQuery(query, parameters, function(error, results) {
-			var data = {
-				results : results,
-				centerLatLng : centerLatLng,
-				guest : guest,
-				daterange : daterange
-			};
-			console.log(error, results);
-			if (error) {
-				res.render('searchListing', {
-					data : JSON.stringify({
-						centerLatLng : centerLatLng
-					})
+			results.forEach(function(item, index, array) {
+				async.parallel([ function(callback) {
+					req.db.get('property_photos').find({
+						'property_id' : Number(item.property_id)
+					}).then((photos) => {
+						results[index].photos = photos;
+						callback();
+					});
+				}, function(callback) {
+					req.db.get('user_photos').find({
+						'user_id' : item.owner_id
+					}).then((profile_photo) => {
+						console.log(profile_photo);
+						results[index].profile_photo = profile_photo;
+						callback();
+					});
+				}, function(callback) {
+					mysql.executeQuery('select count(host_rating) as number_of_ratings, avg(host_rating) as host_rating from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id where owner_id = ?', [ item.owner_id ], (error, hosting_rating_details) => {
+						if (error) {
+							throw error;
+						} else {
+							results[index].rating = hosting_rating_details
+							callback();
+						}
+					});
+				} ], function(error, finalResults) {
+					if (error) {
+						res.render('searchListing', {
+							data : JSON.stringify({
+								centerLatLng : centerLatLng
+							})
+						});
+					} else {
+						if (results && results.length > 0) {
+							res.render('searchListing', {
+								data : JSON.stringify({
+									results : results,
+									centerLatLng : centerLatLng,
+									guest : guest,
+									daterange : daterange
+								})
+							});
+						} else {
+							res.render('searchListing', {
+								data : JSON.stringify({
+									centerLatLng : centerLatLng
+								})
+							});
+						}
+					}
 				});
-			} else {
-				if (results && results.length > 0) {
-					res.render('searchListing', {
-						data : JSON.stringify(data)
-					});
-				} else {
-					res.render('searchListing', {
-						data : JSON.stringify({
-							centerLatLng : centerLatLng
-						})
-					});
-				}
-			}
+			});
 		});
 	});
 });
