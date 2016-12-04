@@ -33,15 +33,10 @@ var mySQL = require(properties.get('paths.daoPath'));
 var routes = require('./routes/index');
 
 var session = require('express-session');
-var mongoSessionConnectURL = properties.get('paths.mongoDBHosting');
 
 var mongoStore             = require("connect-mongo")(session);
 
 var app = express();
-
-
-// var mongoSessionConnectURL = "mongodb://localhost:27017/LoginApp_MongoDB";
-// var mongoStore = require("connect-mongo")(session);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -68,7 +63,7 @@ app.use(session({
 	duration         : 30 * 60 * 1000,    
 	activeDuration   : 5 * 60 * 1000,
 	store            : new mongoStore({
-		url: mongoSessionConnectURL
+		url: properties.get('paths.mongoDBHosting')
 	})
 }));
 
