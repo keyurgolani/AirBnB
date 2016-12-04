@@ -2528,6 +2528,42 @@ label.star:before {
 	border-top-right-radius: 0px;
 }
 
+.review-photo-button {
+	position: relative;
+	overflow: hidden;
+	height: 64px;
+	width: 545px;
+	border-color: #ff5a5f;
+	background-color: #ff5a5f;
+	color: #fff;
+	font-size: 18px;
+	padding: 20px 36px;
+	line-height: 1;
+	cursor: pointer;
+	margin-top:50px;
+}
+
+.review-photo-button input.review-photo {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	height: 64px;
+	width: 545px;
+}
+
+.review-photo-button:hover, .review-photo-button:active,
+	.review-photo-button:focus, .review-photo-button:active:focus {
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	cursor: pointer;
+}
+
 .submit-button {
 	height: 63px;
 	width: 100px;
