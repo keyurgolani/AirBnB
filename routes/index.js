@@ -905,90 +905,58 @@ router.get('/viewListing', function(req, res, next) {
 				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
 				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
 				
-				var query1 = "select trip_id,user_id from trip_details where trip_details.listing_id = ?";
-				var parameters1 = [ listing_id ];
-				mysql.executeQuery(query1, parameters1, function(error, results1) {
-					console.log('error, results1', error, results1);
-					if (error) {
-						res.send({
-							'statusCode' : 500
-						});
-					} else {
-						if (results1 && results1.length > 0) {
-							var ids = [];
-							for(var i = 0; i < results1.length; i++) {
-								ids.push(results1[i].trip_id);
-							}
-							var query2 = "select * from ratings where trip_id IN (" + ids + ")";
-							mysql.executeQuery(query2, function(error, results2) {
-								if (error) {
-									console.log('error', error);
-									res.send({
-										'statusCode' : 500
-									});
-								} else {
-									if (results2 && results2.length > 0) {
-										results[0].ratings = results2;
-										var avg_rating;
-										var sum = 0;
-										for(var i = 0; i < results[0].ratings.length; i++) {
-											sum = sum + results[0].ratings[i].host_rating;
-											results[0].ratings[i].host_rating_timestamp = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
-										}
-										avg_rating = sum/results[0].ratings.length;
-										results[0].avg_rating = avg_rating;
-										console.log("avg_rating : " + results[0].avg_rating);
-										
-										var user_ids = [];
-										for(var i = 0; i < results1.length; i++) {
-											user_ids.push(Number(results1[i].user_id));
-										}
-										var query3 = "select f_name, l_name from account_details where user_id IN (" + user_ids + ")";
-										
-										mysql.executeQuery(query3, function(error, results3) {
-											console.log("error, results3", error, results3);
-											if (error) {
-												res.send({
-													'statusCode' : 500
-												});
-											} else {
-													results[0].users = results3;
-											}
-										})
-										
-										req.db.get('user_photos').find({
-											'user_id' : { $in: user_ids }
-										}).then((docs) => {
-											results[0].user_pics = docs;
-										})
-										
-									} else {
-										results[0].ratings = [];
-									}
-								}
+				async.parallel([function(callback) {
+					mysql.executeQuery('select trip_details.user_id as traveller_id, host_review, host_rating, host_rating_timestamp, f_name, l_name from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join account_details on trip_details.user_id = account_details.user_id where listings.listing_id = ?', [listing_id], function(error, ratings) {
+						if(error) {
+							res.send({
+								'statusCode' : 500
 							});
 						} else {
-							console.log("In else");
-							results[0].ratings = [];
+							var itemsProcessed = 0;
+							ratings.forEach(function(item, index, array) {
+								req.db.get('user_photos').find({
+									'user_id' : item.traveller_id
+								}).then((docs) => {
+									itemsProcessed++;
+									ratings[index].profilePic = docs;
+									if(itemsProcessed === array.length) {
+										results[0].ratings = ratings;
+										callback();
+									}
+								});
+							});
 						}
-					}
-				});
-				
-				req.db.get('property_photos').find({
-					'property_id' : Number(results[0].property_id)
-				}).then((docs) => {
-					results[0].photos = docs;
-				})
-				
-				req.db.get('user_photos').find({
-					'user_id' : results[0].owner_id
-				}).then((docs) => {
-					results[0].profilePic = docs;
+					});
+				}, function(callback) {
+					mysql.executeQuery('select avg(host_rating) as average_rating from ratings right join trip_details on ratings.trip_id = trip_details.trip_id where trip_details.listing_id = ?', [listing_id], function(error, average_rating) {
+						if(error) {
+							res.send({
+								'statusCode' : 500
+							});
+						} else {
+							results[0].avg_rating = average_rating;
+							callback();
+						}
+					});
+				}, function(callback) {
+					req.db.get('property_photos').find({
+						'property_id' : Number(results[0].property_id)
+					}).then((docs) => {
+						results[0].photos = docs;
+						callback();
+					})
+				}, function(callback) {
+					req.db.get('user_photos').find({
+						'user_id' : results[0].owner_id
+					}).then((docs) => {
+						results[0].owner_photo = docs;
+						callback();
+					})
+				}], function(error, finalResults) {
 					res.render('viewListing', {
 						data : JSON.stringify(results[0])
 					});
-				})
-
+				});
 			} else {
 				res.render('error', {
 					'statusCode' : 204,
