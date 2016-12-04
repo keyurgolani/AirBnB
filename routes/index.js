@@ -492,6 +492,56 @@ router.post('/updateProfile', (req, res, next) => {
 		});
 });
 
+router.post('/getPendingHostApprovals', (req, res, next) => {
+
+	mysql.fetchData('*', 'account_details', {'is_host' : 0}, (error, results) => {
+		console.log("error, results", error, results);
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (results && results.length > 0) {
+				res.send({
+					'statusCode' : 200,
+					'users' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
+router.post('/approveHost', (req, res, next) => {
+	var user_id = req.body.user_id;
+
+	mysql.updateData('account_details', {
+		"is_host" : 1
+	}, {
+		"user_id" : user_id
+	}, (error, results) => {
+		console.log("error, results", error, results);
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (results) {
+				res.send({
+					'statusCode' : 200
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
 router.post('/fetchRoomTypes', (req, res, next) => {
 
 	// >>>>>>>>
@@ -878,6 +928,37 @@ router.post('/deactivateUserAccount', (req, res, next) => {
 	}
 });
 
+router.post('/adminLogin', (req, res, next) => {
+	var email = req.body.email;
+	var password = req.body.password;
+	console.log("Here");
+	var query = "select * from admin_user where username = ? AND password = ?";
+	var parameters = [email, password];
+		mysql.executeQuery(query, parameters, function(error, results) {
+			console.log("error, results", error, results);
+			if (error) {
+				res.send({
+					'statusCode' : 500
+				});
+			} else {
+				if(results && results.length > 0) {
+					req.session.loggedInUser = {
+							'user_id' : results[0].user_id,
+							'email' : results[0].username,
+							'f_name' : 'admin'
+						}
+					res.send({
+						'statusCode' : 200
+					});
+				} else {
+					res.send({
+						'statusCode' : 500
+					});
+				}
+			}
+		})
+});
+
 router.get('/viewListing', function(req, res, next) {
 	var listing_id = req.query.listing;
 	if (req.session && req.session.loggedInUser) {
@@ -1252,7 +1333,11 @@ router.get('/property', function(req, res, next) {
 });
 
 router.get('/admin_fTYcN2a', function(req, res, next) {
-	res.render('administrator');
+	if(req.session && req.session.loggedInUser) {
+		res.render('administrator');
+	} else {
+		res.redirect('/');
+	}
 });
 
 router.get('/listing', function(req, res, next) {

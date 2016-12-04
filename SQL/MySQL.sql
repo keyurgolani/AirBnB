@@ -183,6 +183,15 @@ CREATE TABLE `external_authentication` (
   PRIMARY KEY (`external_id`)
 );
 
+DROP TABLE IF EXISTS `admin_user`;
+CREATE TABLE `airbnb`.`admin_user` (
+  `user_id` INT NOT NULL,
+  `username` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`user_id`)
+);
+
+
 INSERT INTO `property_types` SET `property_type` = 'House';
 INSERT INTO `property_types` SET `property_type` = 'Apartment';
 INSERT INTO `property_types` SET `property_type` = 'Bed & Breakfast';
@@ -260,3 +269,5 @@ INSERT INTO `amenities` SET `amenity` = 'First aid kit';
 INSERT INTO `amenities` SET `amenity` = 'Safety card';
 INSERT INTO `amenities` SET `amenity` = 'Fire extinguisher';
 INSERT INTO `amenities` SET `amenity` = 'Lock on bedroom door';
+
+INSERT INTO `admin_user` (`user_id`, `username`, `password`) VALUES ('0000000001', 'admin', 'admin');
