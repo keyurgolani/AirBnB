@@ -436,8 +436,8 @@
 										<span class="per-night-text pull-right">Per Night</span>
 									</div>
 								</div>
-								<div class="row price-bottom">
-									<div class="row">
+								<div class="row price-bottom" >
+									<div class="row" ng-hide="global.loggedInUser.user_id === data.owner_id">
 										<div class="row">
 											<label class="price-date-label">Check In ⟶ Check Out</label>
 										</div>
@@ -459,10 +459,10 @@
 											<input type="text" class="form-control price-guest-text"  ng-model="bid_amount" style="width:100%;" placeholder="Minimum Bid"/>
 										</div>
 										<div class="row" ng-show="data.is_bid == 1" data-toggle="modal" data-target=".Payment-modal-md">
-											<button class="btn btn-primary book-button"  ng-click="requestBooking()">Request to Book</button>
+											<button class="btn btn-primary book-button">Request to Book</button>
 										</div>
 										<div class="row" ng-hide="data.is_bid == 1" data-toggle="modal" data-target=".Payment-modal-md">
-											<button class="btn btn-primary book-button"  ng-click="instantBooking()">Instant Book</button>
+											<button class="btn btn-primary book-button" ng-hide="global.loggedInUser.user_id === data.owner_id">Instant Book</button>
 										</div>
 										<div class="row text-center">
 											<span class="charged-text ">You won't be charged yet</span>
