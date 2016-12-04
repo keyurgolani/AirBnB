@@ -174,7 +174,6 @@
             <div class="row-fluid" style="padding-bottom:60px; margin-top:20px; margin-bottom:40px;position">
               
                 <div class="col-lg-6" style="padding-left:0px; margin-bottom:20px;" ng-repeat="l in filteredResults">
-                  <a href="/viewListing?listing={{l.listing_id}}" target="_blank"> 
                     <div class="imgHolder">
                       	<div class="row">
 	                		<img class="images" data-ng-src="data:{{l.photos[l.currentPhoto].photos.filetype}};base64,{{l.photos[l.currentPhoto].photos.base64}}" height="200px" width="100%" alt="No Property Image">
@@ -197,7 +196,7 @@
                     </div>
 
                     <div>
-                      <a href="/viewListing?listing={{l.listing_id}}"><span style="margin-left:10px; font-size:16px; font-weight: 400;">{{l.title}}</span><br></a>
+                      <a href="/viewListing?listing={{l.listing_id}}" target="_blank"><span style="margin-left:10px; font-size:16px; font-weight: 400;">{{l.title}}</span><br></a>
                       <span style="margin-left:10px; font-size:12px; color:#898989;">{{l.room_type}}</span>&nbsp;&nbsp;&nbsp;&nbsp;.    
                       <span style="margin-left:10px; font-size:12px; color:#898989;">{{l.accommodations}} guest(s)</span>
                       <span style="margin-left:10px; font-size:12px; color:#008489;">
@@ -207,7 +206,6 @@
 
 
                     </div>
-                  </a>
                 </div>
                 <div class="row-fluid no-listing" style="margin: auto; display: inherit" ng-show="filteredResults.length === 0">
                 	No listings found. Please consider widening your filter criteria!
