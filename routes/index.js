@@ -995,28 +995,7 @@ router.get('/viewListing', function(req, res, next) {
 		} else {
 			if (results && results.length > 0) {
 				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
-				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
-				
-				mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = 0000000013', (error, card_details) => {
-					if (error) {
-						throw error;
-					} else {
-						console.log('card_details', card_details);	
-
-						results[0].card = card_details;				
-
-						req.db.get('property_photos').find({
-						'property_id' : Number(results[0].property_id)
-						}).then((docs) => {
-							results[0].photos = docs;
-
-
-							res.render('viewListing', {
-								data : JSON.stringify(results[0])
-							});
-						})
-					}
-				});				
+				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');				
 
 				async.parallel([
 				function(callback) {
@@ -1073,6 +1052,15 @@ router.get('/viewListing', function(req, res, next) {
 					}).then(function(docs) {
 						results[0].owner_photo = docs;
 						callback(null, null);
+					});
+				}, function(callback) {
+					mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = 0000000013', (error, card_details) => {
+						if (error) {
+							throw error;
+						} else {
+							results[0].card = card_details;
+							callback(null, null);
+						}
 					});
 				}], function(error, finalResults) {
 					res.render('viewListing', {
@@ -1528,60 +1516,68 @@ router.get('/searchListing', function(req, res, next) {
 			};
 
 			mysql.executeQuery(query, parameters, function(error, results) {
-				results.forEach(function(item, index, array) {
-					async.parallel([ function(callback) {
-						req.db.get('property_photos').find({
-							'property_id' : Number(item.property_id)
-						}).then((photos) => {
-							results[index].photos = photos;
-							callback(null, null);
-						});
-					}, function(callback) {
-						req.db.get('user_photos').find({
-							'user_id' : item.owner_id
-						}).then((profile_photo) => {
-							console.log(profile_photo);
-							results[index].profile_photo = profile_photo;
-							callback(null, null);
-						});
-					}, function(callback) {
-						mysql.executeQuery('select count(host_rating) as number_of_ratings, avg(host_rating) as host_rating from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id where owner_id = ?', [ item.owner_id ], (error, hosting_rating_details) => {
-							if (error) {
-								throw error;
-							} else {
-								results[index].rating = hosting_rating_details
+				if(results.length === 0) {
+					res.render('searchListing', {
+						data : JSON.stringify({
+							centerLatLng : centerLatLng
+						})
+					});
+				} else {
+					results.forEach(function(item, index, array) {
+						async.parallel([ function(callback) {
+							req.db.get('property_photos').find({
+								'property_id' : Number(item.property_id)
+							}).then((photos) => {
+								results[index].photos = photos;
 								callback(null, null);
-							}
-						});
-					} ], function(error, finalResults) {
-						if(index === array.length - 1) {
-							if (error) {
-								res.render('searchListing', {
-									data : JSON.stringify({
-										centerLatLng : centerLatLng
-									})
-								});
-							} else {
-								if (results && results.length > 0) {
-									res.render('searchListing', {
-										data : JSON.stringify({
-											results : results,
-											centerLatLng : centerLatLng,
-											guest : guest,
-											daterange : daterange
-										})
-									});
+							});
+						}, function(callback) {
+							req.db.get('user_photos').find({
+								'user_id' : item.owner_id
+							}).then((profile_photo) => {
+								console.log(profile_photo);
+								results[index].profile_photo = profile_photo;
+								callback(null, null);
+							});
+						}, function(callback) {
+							mysql.executeQuery('select count(host_rating) as number_of_ratings, avg(host_rating) as host_rating from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id where owner_id = ?', [ item.owner_id ], (error, hosting_rating_details) => {
+								if (error) {
+									throw error;
 								} else {
+									results[index].rating = hosting_rating_details
+									callback(null, null);
+								}
+							});
+						} ], function(error, finalResults) {
+							if(index === array.length - 1) {
+								if (error) {
 									res.render('searchListing', {
 										data : JSON.stringify({
 											centerLatLng : centerLatLng
 										})
 									});
+								} else {
+									if (results && results.length > 0) {
+										res.render('searchListing', {
+											data : JSON.stringify({
+												results : results,
+												centerLatLng : centerLatLng,
+												guest : guest,
+												daterange : daterange
+											})
+										});
+									} else {
+										res.render('searchListing', {
+											data : JSON.stringify({
+												centerLatLng : centerLatLng
+											})
+										});
+									}
 								}
 							}
-						}
+						});
 					});
-				});
+				}
 			});
 		});
 	}
