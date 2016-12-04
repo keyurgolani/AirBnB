@@ -109,7 +109,7 @@
 		</div>
 
 
-		<div ng-hide="showPendingApprovals">
+		<div ng-hide="showPendingApprovals" ng-controller="parentController" ng-init="init('<%= data %>')">
 
 			<div class="container" style="margin-bottom: 0px;">
 	
@@ -121,7 +121,7 @@
 								<span style="font-size:20px; font-color: #2A3F54;">Top 10 properties in a year</span>
 							</div>
 							<div class="panel-body">
-								<div class="row" ng-controller="adminBarController">
+								<div class="row" ng-controller="adminBarController"  ng-init="init('<%= data %>')">
 									
 									<nvd3 options="options" data="data"></nvd3>
 	
@@ -157,7 +157,7 @@
 								<span style="font-size:20px; font-color: #2A3F54;">City wise revenue in a year</span>
 							</div>
 							<div class="panel-body">
-								<div class="row" ng-controller="adminBarController">
+								<div class="row" ng-controller="cityWiseBarController" ng-init="init('<%= data %>')">
 									
 									<nvd3 options="options" data="data"></nvd3>
 	
@@ -172,7 +172,7 @@
 								<span style="font-size:20px; font-color: #2A3F54;">City wise revenue: Sale Weightage</span>
 							</div>
 							<div class="panel-body">
-								<div class="row" ng-controller="adminPieController">
+								<div class="row" ng-controller="cityWisePieController">
 									
 									<nvd3 options="options" data="data"></nvd3>
 	
@@ -190,10 +190,10 @@
 					<div class="col-lg-8" >
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<span style="font-size:20px; font-color: #2A3F54;">Top 10 Sellers in 30 days</span>
+								<span style="font-size:20px; font-color: #2A3F54;">Top Sellers in 30 days</span>
 							</div>
 							<div class="panel-body">
-								<div class="row" ng-controller="adminBarController">
+								<div class="row" ng-controller="TopTenMonthBarController" ng-init="init('<%= data %>')">
 									
 									<nvd3 options="options" data="data"></nvd3>
 	
@@ -205,10 +205,10 @@
 					<div class="col-lg-4">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<span style="font-size:20px; font-color: #2A3F54;">Top 10 Sellers in 30 days: Sale Weightage</span>
+								<span style="font-size:20px; font-color: #2A3F54;">Top Sellers in 30 days: Sale Weightage</span>
 							</div>
 							<div class="panel-body">
-								<div class="row" ng-controller="adminPieController">
+								<div class="row" ng-controller="TopTenMonthPieController">
 									
 									<nvd3 options="options" data="data"></nvd3>
 	
