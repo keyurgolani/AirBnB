@@ -1299,7 +1299,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 						'property_id' : $location.search().property,
 						'room_type' : $scope.room_type,
 						'title' : $scope.title,
-						'is_bid' : Boolean($scope.is_bid),
+						'is_bid' : $scope.is_bid,
 						'start_date' : Date.formatToSQLWorthy($scope.dates.split("-")[0].trim()),
 						'end_date' : Date.formatToSQLWorthy($scope.dates.split("-")[1].trim()),
 						'daily_price' : $scope.price,

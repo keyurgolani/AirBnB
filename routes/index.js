@@ -67,11 +67,7 @@ router.post('/addListing', (req, res, next) => {
 	var checkin = req.body.checkin;
 	var checkout = req.body.checkout;
 
-
-
-	//TODO Get user Id from session
-	//var userId = req.session.user.userId;
-	var userId = 1;
+	var userId = req.session.user.userId;
 
 	mysql.insertData('listings', {
 		'property_id' : property_id,
