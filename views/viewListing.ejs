@@ -419,6 +419,9 @@
 							<div class="row">
 								<span class="description-text">{{rating.host_review}}</span>
 							</div>
+							<div ng-repeat="photo in rating.review_photos" class="col-md-4" style="padding: 10px;">
+						        <img data-ng-src="data:{{photo.filetype}};base64,{{photo.base64}}" style="height: 180px; width: 100%; border-radius: 4px;"/>
+						    </div>
 						</div>
 						<div class="seperator"></div>
 					</div>

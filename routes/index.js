@@ -496,6 +496,56 @@ router.post('/updateProfile', (req, res, next) => {
 		});
 });
 
+router.post('/getPendingHostApprovals', (req, res, next) => {
+
+	mysql.fetchData('*', 'account_details', {'is_host' : 0}, (error, results) => {
+		console.log("error, results", error, results);
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (results && results.length > 0) {
+				res.send({
+					'statusCode' : 200,
+					'users' : results
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
+router.post('/approveHost', (req, res, next) => {
+	var user_id = req.body.user_id;
+
+	mysql.updateData('account_details', {
+		"is_host" : 1
+	}, {
+		"user_id" : user_id
+	}, (error, results) => {
+		console.log("error, results", error, results);
+		if (error) {
+			res.send({
+				'statusCode' : 500
+			});
+		} else {
+			if (results) {
+				res.send({
+					'statusCode' : 200
+				});
+			} else {
+				res.send({
+					'statusCode' : 500
+				});
+			}
+		}
+	})
+});
+
 router.post('/fetchRoomTypes', (req, res, next) => {
 
 	// >>>>>>>>
@@ -882,6 +932,37 @@ router.post('/deactivateUserAccount', (req, res, next) => {
 	}
 });
 
+router.post('/adminLogin', (req, res, next) => {
+	var email = req.body.email;
+	var password = req.body.password;
+	console.log("Here");
+	var query = "select * from admin_user where username = ? AND password = ?";
+	var parameters = [email, password];
+		mysql.executeQuery(query, parameters, function(error, results) {
+			console.log("error, results", error, results);
+			if (error) {
+				res.send({
+					'statusCode' : 500
+				});
+			} else {
+				if(results && results.length > 0) {
+					req.session.loggedInUser = {
+							'user_id' : results[0].user_id,
+							'email' : results[0].username,
+							'f_name' : 'admin'
+						}
+					res.send({
+						'statusCode' : 200
+					});
+				} else {
+					res.send({
+						'statusCode' : 500
+					});
+				}
+			}
+		})
+});
+
 router.get('/viewListing', function(req, res, next) {
 	var listing_id = req.query.listing;
 	if (req.session && req.session.loggedInUser) {
@@ -903,7 +984,7 @@ router.get('/viewListing', function(req, res, next) {
 				
 				async.parallel([
 				function(callback) {
-					mysql.executeQuery('select trip_details.user_id as traveller_id, host_review, host_rating, host_rating_timestamp, f_name, l_name from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join account_details on trip_details.user_id = account_details.user_id where listings.listing_id = ?', [listing_id], function(error, ratings) {
+					mysql.executeQuery('select trip_details.user_id as traveller_id, trip_details.trip_id as trip_id, host_review, host_rating, host_rating_timestamp, f_name, l_name from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join account_details on trip_details.user_id = account_details.user_id where listings.listing_id = ?', [listing_id], function(error, ratings) {
 						if(error) {
 							res.send({
 								'statusCode' : 500
@@ -914,20 +995,22 @@ router.get('/viewListing', function(req, res, next) {
 								results[0].ratings = ratings;
 								callback(null, null);
 							}
-							ratings.forEach(function(item, index, array) {
-								console.log(item.traveller_id);
+							for(var i = 0; i < ratings.length; i++) {
 								req.db.get('user_photos').find({
-									'user_id' : item.traveller_id
+									'user_id' : ratings[i].traveller_id
 								}).then((docs) => {
-									itemsProcessed++;
-									ratings[index].profilePic = docs;
-									console.log(itemsProcessed, array.length);
-									if(itemsProcessed === array.length) {
-										results[0].ratings = ratings;
-										callback(null, null);
+									ratings[i].profilePic = docs;
+								});
+								req.db.get('host_review_photos').find({
+									'trip_id' : ratings[i].trip_id
+								}).then((docs) => {
+									if(docs && docs.length > 0) {
+										ratings[i].review_photos = docs[0].photos;
 									}
 								});
-							});
+							}
+							results[0].ratings = ratings
+							callback();
 						}
 					});
 				}, function(callback) {
@@ -1254,7 +1337,11 @@ router.get('/property', function(req, res, next) {
 });
 
 router.get('/admin_fTYcN2a', function(req, res, next) {
-	res.render('administrator');
+	if(req.session && req.session.loggedInUser) {
+		res.render('administrator');
+	} else {
+		res.redirect('/');
+	}
 });
 
 router.get('/listing', function(req, res, next) {
@@ -1347,28 +1434,30 @@ router.get('/searchListing', function(req, res, next) {
 							}
 						});
 					} ], function(error, finalResults) {
-						if (error) {
-							res.render('searchListing', {
-								data : JSON.stringify({
-									centerLatLng : centerLatLng
-								})
-							});
-						} else {
-							if (results && results.length > 0) {
-								res.render('searchListing', {
-									data : JSON.stringify({
-										results : results,
-										centerLatLng : centerLatLng,
-										guest : guest,
-										daterange : daterange
-									})
-								});
-							} else {
+						if(index === array.length - 1) {
+							if (error) {
 								res.render('searchListing', {
 									data : JSON.stringify({
 										centerLatLng : centerLatLng
 									})
 								});
+							} else {
+								if (results && results.length > 0) {
+									res.render('searchListing', {
+										data : JSON.stringify({
+											results : results,
+											centerLatLng : centerLatLng,
+											guest : guest,
+											daterange : daterange
+										})
+									});
+								} else {
+									res.render('searchListing', {
+										data : JSON.stringify({
+											centerLatLng : centerLatLng
+										})
+									});
+								}
 							}
 						}
 					});
@@ -1442,7 +1531,21 @@ router.get('/profile', function(req, res, next) {
 				if (error) {
 					throw error;
 				} else {
-					callback(null, trip_details);
+					if(trip_details.length === 0) {
+						callback(null, trip_details);
+					}
+					trip_details.forEach(function(item, index, array) {
+						req.db.get('host_review_photos').find({
+							'trip_id' : item.trip_id
+						}).then(function(docs) {
+							if(docs && docs.length > 0) {
+								trip_details[index].review_photos = docs[0].photos;
+							}
+							if(trip_details.length == index + 1) {
+								callback(null, trip_details);
+							}
+						})
+					});
 				}
 			});
 		},
@@ -1451,7 +1554,19 @@ router.get('/profile', function(req, res, next) {
 				if (error) {
 					throw error;
 				} else {
-					callback(null, hosting_details);
+					if(hosting_details.length === 0) {
+						callback(null, hosting_details);
+					}
+					hosting_details.forEach(function(item, index, array) {
+						req.db.get('traveller_review_photos').find({
+							'trip_id' : item.trip_id
+						}).then(function(docs) {
+							hosting_details[index].review_photos = docs.photos
+							if(hosting_details.length == index + 1) {
+								callback(null, hosting_details);
+							}
+						})
+					});
 				}
 			});
 		},
@@ -1918,16 +2033,20 @@ router.post('/updateReview', (req, res, next) => {
 					'host_review' : req.body.review,
 					'trip_id' : req.body.trip
 				}, (error, results) => {
-					console.log(error, results);
 					if (error) {
 						res.send({
 							'statusCode' : 500
 						});
 					} else {
 						if (results.affectedRows === 1) {
-							res.send({
-								'statusCode' : 200
-							})
+							req.db.get('host_review_photos').insert({
+								'trip_id' : req.body.trip,
+								'photos' : req.body.photos
+							}).then(function(docs) {
+								res.send({
+									'statusCode' : 200
+								});
+							});
 						} else {
 							res.send({
 								'statusCode' : 500
@@ -1947,9 +2066,14 @@ router.post('/updateReview', (req, res, next) => {
 						});
 					} else {
 						if (results.affectedRows === 1) {
-							res.send({
-								'statusCode' : 200
-							})
+							req.db.get('traveller_review_photos').insert({
+								'trip_id' : req.body.trip,
+								'photos' : req.body.photos
+							}).then(function(docs) {
+								res.send({
+									'statusCode' : 200
+								});
+							});
 						} else {
 							res.send({
 								'statusCode' : 500
@@ -1965,15 +2089,24 @@ router.post('/updateReview', (req, res, next) => {
 				}, {
 					'trip_id' : req.body.trip
 				}, (error, results) => {
-					console.log(error, results);
+					console.log("Here", error, results);
 					if (error) {
 						res.send({
 							'statusCode' : 500
 						});
 					} else {
 						if (results.affectedRows === 1) {
-							res.send({
-								'statusCode' : 200
+							req.db.get('host_review_photos').remove({
+								'rating_id' : 1
+							}).then(function(docs) {
+								req.db.get('host_review_photos').insert({
+									'trip_id' : req.body.trip,
+									'photos' : req.body.photos
+								}, function(docs) {
+									res.send({
+										'statusCode' : 200
+									});
+								});
 							})
 						} else {
 							res.send({
@@ -1995,8 +2128,17 @@ router.post('/updateReview', (req, res, next) => {
 						});
 					} else {
 						if (results.affectedRows === 1) {
-							res.send({
-								'statusCode' : 200
+							req.db.get('host_review_photos').remove({
+								'rating_id' : 1
+							}).then(function(docs) {
+								req.db.get('traveller_review_photos').insert({
+									'trip_id' : req.body.trip,
+									'photos' : req.body.photos
+								}, function(docs) {
+									res.send({
+										'statusCode' : 200
+									});
+								});
 							})
 						} else {
 							res.send({
