@@ -983,29 +983,50 @@ router.post('/instantBook', function(req, res, next) {
 	var active = 1;
 	var trip_amount = req.body.trip_amount;
 
-	//TODO Get user Id from session
-	//var userId = req.session.user.userId;
-	var userId = 1;
+	
+	var userId = req.session.loggedInUser.user_id;
 
 	mysql.fetchData('*', 'trip_details', {
 		'listing_id' : listing_id
 	}, (error, results) => {
+		console.log('error, results', error, results);
 		if (error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
 			if (results && results.length > 0) {
-				var isValid = true;
+				console.log("in this one!");
+				var isValid;
 				for (var i = 0; i < results.length; i++) {
+
+					isValid = true;
 					var checkinDate = new Date(checkin);
-					var checkinDateDB = new Date(results[i].checkin);
+					checkinDate = checkinDate.getDate();
+					console.log('checkinDate', checkinDate);
+					
 					var checkoutDate = new Date(checkout);
+					checkoutDate = checkoutDate.getDate();
+					console.log('checkoutDate', checkoutDate);
+					
+					var checkinDateDB = new Date(results[i].checkin);
+					checkinDateDB = checkinDateDB.getDate();
+					console.log('checkinDateDB', checkinDateDB);
+					
 					var checkoutDateDB = new Date(results[i].checkout);
-					if (!(checkinDate.getTime() > checkoutDateDB.getTime()
-						|| checkoutDate.getTime() < checkinDateDB.getTime())) {
+					checkoutDateDB = checkoutDateDB.getDate();
+					console.log('checkoutDateDB', checkoutDateDB);
+					
+
+					if (!((checkinDate > checkoutDateDB
+						&& checkoutDate > checkoutDateDB) ||(checkinDate < checkinDateDB
+						&& checkoutDate < checkinDateDB) )) {
 						isValid = false;
+						break;
+
 					}
+
+					console.log(isValid);
 				/*if((checkinDate.getTime() < checkinDateDB.getTime() 
 						&& checkoutDate.getTime() < checkoutDateDB.getTime())
 						|| (checkinDate.getTime() < checkinDateDB.getTime() 
@@ -1022,14 +1043,15 @@ router.post('/instantBook', function(req, res, next) {
 						'active' : active,
 						'trip_amount' : trip_amount
 					}, (error, trip) => {
+						console.log('error, trip', error, trip);
 
 						if (error) {
 							res.send({
 								'statusCode' : 500
 							});
 						} else {
-							var receipt_id = uuid.v1();
-							//							var receipt_id = utility.generateReceiptNo();
+							// var receipt_id = uuid.v1();
+														var receipt_id = utility.generateReceiptNo();
 
 							//TODO
 							var cc_id = 1;
@@ -1053,6 +1075,8 @@ router.post('/instantBook', function(req, res, next) {
 						}
 					})
 				} else {
+
+					//inform user to book for another date!!
 					res.send({
 						'statusCode' : 500
 					});
@@ -1068,6 +1092,7 @@ router.post('/instantBook', function(req, res, next) {
 					'active' : active,
 					'trip_amount' : trip_amount
 				}, (error, trip) => {
+					console.log('error, trip', error, trip);
 					if (error) {
 						res.send({
 							'statusCode' : 500
@@ -1083,6 +1108,7 @@ router.post('/instantBook', function(req, res, next) {
 							'receipt_id' : receipt_id,
 							'cc_id' : cc_id
 						}, (error, results) => {
+							console.log('error, results', error, results);
 							if (error) {
 								res.send({
 									'statusCode' : 500

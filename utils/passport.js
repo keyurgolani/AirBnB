@@ -351,7 +351,7 @@ module.exports = function(passport) {
 													mysql.insertData('external_authentication', {
 														'external_id' : profile.id,
 														'user_id' : account_details[0].user_id,
-														'website' : 'facebook'
+														'website' : 'google'
 													}, (error, results) => {
 														callback(results);
 													});
@@ -409,12 +409,12 @@ module.exports = function(passport) {
 																	});
 																} ], function(error, results) {
 
-																		req.session.loggedInUser = {
-																			'user_id' : account_details[0].user_id,
-																			'email' : account_details[0].email,
-																			'f_name' : account_details[0].f_name,
-																			'l_name' : account_details[0].l_name
-																		}
+																req.session.loggedInUser = {
+																	'user_id' : insert_results.insertId,
+																	'email' : profile.emails[0].value,
+																	'f_name' : f_name,
+																	'l_name' : l_name
+																}
 
 																return done(null, {
 																	'user_id' : insert_results.insertId,
