@@ -79,7 +79,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				if($scope.currentIndex === 1) {
 					$scope.currentIndex = $scope.data.photos.length;
 				} else {
-					$scope.currentIndex = $scope.currentIndex + 1;
+					$scope.currentIndex = $scope.currentIndex - 1;
 				}
 				$scope.currentPhoto = $scope.data.photos[$scope.currentIndex - 1];
 			};

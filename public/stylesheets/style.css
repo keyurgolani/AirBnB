@@ -2736,6 +2736,9 @@ input[type=range]:focus::-ms-fill-upper, input[type=range]:active::-ms-fill-uppe
 	padding: 5px;
 	font-size: 200%;
 	transition: all 0.2s ease;
+	color: #FFFFFF;
+	background-color: #000000;
+	opacity: 0.5;
 }
 
 .chevronLabelLeft:hover {
@@ -2753,6 +2756,9 @@ input[type=range]:focus::-ms-fill-upper, input[type=range]:active::-ms-fill-uppe
 	padding: 5px;
 	font-size: 200%;
 	transition: all 0.2s ease;
+	color: #FFFFFF;
+	background-color: #000000;
+	opacity: 0.5;
 }
 
 .chevronLabelRight:hover {
