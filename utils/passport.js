@@ -325,8 +325,6 @@ module.exports = function(passport) {
 								})
 							}
 						} else {
-							console.log("here");
-							console.log(profile);
 							if (profile.displayName) {
 								var f_name = profile.displayName.split(' ')[0];
 								var l_name = profile.displayName.split(' ')[1];
@@ -411,7 +409,6 @@ module.exports = function(passport) {
 															'f_name' : f_name,
 															'l_name' : l_name
 														}
-
 														return done(null, {
 															'user_id' : insert_results.insertId,
 															'email' : profile.emails[0].value,
@@ -428,9 +425,6 @@ module.exports = function(passport) {
 									}
 								}
 							})
-
-
-
 						}
 					}
 				});

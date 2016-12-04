@@ -1,5 +1,3 @@
-//Status code 401 : User Session not present
-
 var express       = require('express');
 var router        = express.Router();
 var mysql         = require('../utils/dao');
@@ -10,6 +8,8 @@ var pdf           = require('html-pdf');
 var utility       = require('../utils/utility');
 var async         = require("async");
 var barcode       = require('barcode');
+
+var check		  = require('./cc_check');
 
 var NodeGeocoder  = require('node-geocoder');
 var GeoPoint      = require('geopoint');
@@ -742,25 +742,42 @@ router.post('/addCard', (req, res, next) => {
 		"user_id" : user_id
 	}
 
-	mysql.insertData('card_details', JSON_OBJ, (error, results) => {
-		console.log('error, results', error, results);
-		if (error) {
-			res.send({
-				'statusCode' : 500
+
+	check.Tocheck(cc_no,cc_month, cc_year,security,function(answer,message){
+        // logger.log('info','credit card validation is successful!');
+
+        if(answer){
+        	console.log("cc is a valid card");
+        	mysql.insertData('card_details', JSON_OBJ, (error, results) => {
+				console.log('error, results', error, results);
+				if (error) {
+					res.send({
+						'statusCode' : 500
+					});
+				} else {
+					if (results && results.length > 0) {
+						res.send({
+							'statusCode' : 200,
+							"card_id" : results.insertId
+						});
+					} else {
+						res.send({
+							'statusCode' : 500
+						});
+					}
+				}
+			})
+        }else{
+        	console.log(message);
+        	res.send({
+				'statusCode' : 409,
+				'message' : message
 			});
-		} else {
-			if (results && results.length > 0) {
-				res.send({
-					'statusCode' : 200,
-					"card_id" : results.insertId
-				});
-			} else {
-				res.send({
-					'statusCode' : 500
-				});
-			}
-		}
-	})
+        }    
+    
+ });         // if(answer){
+
+	
 });
 
 
@@ -970,7 +987,7 @@ router.get('/viewListing', function(req, res, next) {
 		logger.pageClickLogger(listing_id, user_id);
 	}
 	var query = "select * from property_details,property_types,room_types,listing_details,listings,account_details WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id AND property_details.owner_id = account_details.user_id";
-	var parameters = [ listing_id, listing_id ];
+	var parameters = [ listing_id, listing_id];
 	mysql.executeQuery(query, parameters, function(error, results) {
 		if (error) {
 			res.render('error', {
@@ -982,6 +999,27 @@ router.get('/viewListing', function(req, res, next) {
 				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
 				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
 				
+				mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = 0000000013', (error, card_details) => {
+					if (error) {
+						throw error;
+					} else {
+						console.log('card_details', card_details);	
+
+						results[0].card = card_details;				
+
+						req.db.get('property_photos').find({
+						'property_id' : Number(results[0].property_id)
+						}).then((docs) => {
+							results[0].photos = docs;
+
+
+							res.render('viewListing', {
+								data : JSON.stringify(results[0])
+							});
+						})
+					}
+				});				
+
 				async.parallel([
 				function(callback) {
 					mysql.executeQuery('select trip_details.user_id as traveller_id, trip_details.trip_id as trip_id, host_review, host_rating, host_rating_timestamp, f_name, l_name from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join account_details on trip_details.user_id = account_details.user_id where listings.listing_id = ?', [listing_id], function(error, ratings) {
@@ -1138,32 +1176,52 @@ router.post('/instantBook', function(req, res, next) {
 	var no_of_guests = req.body.guests;
 	var active = 1;
 	var trip_amount = req.body.trip_amount;
+	var cc_id = req.body.cc_id;
 
-	//TODO Get user Id from session
 	var userId = req.session.loggedInUser.user_id;
-//	var userId = 1;
 
 	mysql.fetchData('*', 'trip_details', {
 		'listing_id' : listing_id
 	}, (error, results) => {
+		console.log('error, results', error, results);
 		if (error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
 			if (results && results.length > 0) {
-				var isValid = true;
+				console.log("in this one!");
+				var isValid;
 				for (var i = 0; i < results.length; i++) {
+
+					isValid = true;
 					var checkinDate = new Date(checkin);
-					var checkinDateDB = new Date(results[i].checkin);
+					checkinDate = checkinDate.getDate();
+					console.log('checkinDate', checkinDate);
+					
 					var checkoutDate = new Date(checkout);
+					checkoutDate = checkoutDate.getDate();
+					console.log('checkoutDate', checkoutDate);
+					
+					var checkinDateDB = new Date(results[i].checkin);
+					checkinDateDB = checkinDateDB.getDate();
+					console.log('checkinDateDB', checkinDateDB);
+					
 					var checkoutDateDB = new Date(results[i].checkout);
-					if (!(checkinDate.getTime() > checkoutDateDB.getTime()
-						|| checkoutDate.getTime() < checkinDateDB.getTime())) {
+					checkoutDateDB = checkoutDateDB.getDate();
+					console.log('checkoutDateDB', checkoutDateDB);
+					
+
+					if (!((checkinDate > checkoutDateDB
+						&& checkoutDate > checkoutDateDB) ||(checkinDate < checkinDateDB
+						&& checkoutDate < checkinDateDB) )) {
 						isValid = false;
+						break;
+
 					}
 				}
 				if (isValid) {
+					console.log("valid dates are choosen");
 					mysql.insertData('trip_details', {
 						'listing_id' : listing_id,
 						'checkin' : checkin,
@@ -1174,18 +1232,15 @@ router.post('/instantBook', function(req, res, next) {
 						'active' : active,
 						'trip_amount' : trip_amount
 					}, (error, trip) => {
+						console.log('error, trip', error, trip);
 
 						if (error) {
 							res.send({
 								'statusCode' : 500
 							});
 						} else {
-//							var receipt_id = uuid.v1();
 							var receipt_id = utility.generateReceiptNo(10);
 
-							//TODO
-							var cc_id = 1;
-							//generate bill
 							mysql.insertData('bill_details', {
 								'trip_id' : trip.insertId,
 								'receipt_id' : receipt_id,
@@ -1205,11 +1260,15 @@ router.post('/instantBook', function(req, res, next) {
 						}
 					})
 				} else {
+
+					//inform user to book for another date!!
 					res.send({
 						'statusCode' : 500
 					});
 				}
 			} else {
+
+				console.log("in this one");
 				mysql.insertData('trip_details', {
 					'listing_id' : listing_id,
 					'checkin' : checkin,
@@ -1220,17 +1279,13 @@ router.post('/instantBook', function(req, res, next) {
 					'active' : active,
 					'trip_amount' : trip_amount
 				}, (error, trip) => {
+					console.log('error, trip', error, trip);
 					if (error) {
 						res.send({
 							'statusCode' : 500
 						});
 					} else {
-//						var receipt_id = uuid.v1();
 						var receipt_id = utility.generateReceiptNo(10);
-						console.log("???????????????? : " + receipt_id);
-						//TODO
-						var cc_id = 1;
-						//generate bill
 						mysql.insertData('bill_details', {
 							'trip_id' : trip.insertId,
 							'receipt_id' : receipt_id,
@@ -1329,9 +1384,43 @@ router.post('/login', function(req, res, next) {
 
 router.get('/property', function(req, res, next) {
 	if(req.session.loggedInUser){
-	res.render('property');
+		
+		res.render('property');
 	}else{
 		console.log("in else");
+		res.redirect('/');
+	}
+});
+
+
+router.post('/check_host', function(req, res, next) {
+	if(req.session.loggedInUser){
+
+		mysql.fetchData('is_host', 'account_details', {'user_id' : req.session.loggedInUser.user_id} , (error, results) => {
+			if (error) {
+				res.send({
+					'statusCode' : 500
+				});
+			} else {
+				if (results && results.length > 0) {
+
+						console.log('results[0].is_host', results[0].is_host);
+					if(results[0].is_host == 1){						
+
+						res.send({
+							'statusCode' : 200
+						});
+				} else {
+
+					res.send({
+						'statusCode' : 500
+					});
+				}
+			}
+		}
+		})	
+	}else{
+		console.log("not loggedin!");
 		res.redirect('/');
 	}
 });
@@ -1350,6 +1439,38 @@ router.get('/listing', function(req, res, next) {
 	}else{
 		res.redirect('/');
 	}
+});
+
+router.get('/adminDashboard', function(req, res, next) {
+	async.parallel([function(callback) {
+		mysql.executeQuery("select property_details.property_id, sum(trip_details.trip_amount) as revenue from property_details left join listings on property_details.property_id = listings.property_id left join trip_details on listings.listing_id = trip_details.listing_id where trip_details.checkout between '2017-01-01' and '2017-12-31' group by property_details.property_id order by revenue DESC limit 10", [], function(error, results) {
+			if(error) {
+				callback(error, null);
+			} else {
+				callback(null, results);
+			}
+		});
+	}, function(callback) {
+		mysql.executeQuery("select property_details.city, sum(trip_details.trip_amount) as revenue from property_details left join listings on property_details.property_id = listings.property_id left join trip_details on listings.listing_id = trip_details.listing_id where trip_details.checkout between '2016-01-01' and '2016-12-31' group by property_details.city order by revenue DESC ", [], function(error, results) {
+			if(error) {
+				callback(error, null);
+			} else {
+				callback(null, results);
+			}
+		});
+	}, function(callback) {
+		mysql.executeQuery("select property_details.owner_id, count(trip_details.trip_id) as tripCount, sum(trip_details.trip_amount) as revenue from property_details left join listings on property_details.property_id = listings.property_id left join trip_details on listings.listing_id = trip_details.listing_id where trip_details.checkout between '2016-12-01' and '2016-12-31' group by property_details.owner_id order by tripCount DESC limit 10", [], function(error, results) {
+			if(error) {
+				callback(error, null);
+			} else {
+				callback(null, results);
+			}
+		});
+	}], function(error, results) {
+		res.render('administrator', {
+			data : JSON.stringify(results)
+		});
+	});
 });
 
 router.get('/searchListing', function(req, res, next) {

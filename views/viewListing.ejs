@@ -477,7 +477,8 @@
 									<div class="row item-head">Payment Methods<button data-dismiss="modal" class="remove-icon pull-right"><i class="fa fa-remove"></i></button></div>
 									<div class="row item-content" style="background-color:#f5f5f5;">
 										<div class="row">
-											<div class="col-md-4 added-card-box" ng-repeat="card in data[1]">
+											<div class="col-md-4 added-card-box" ng-repeat="card in data.card">
+												<button ng-click="instantBooking(card.card_id)" class="btn btn-primary add-card-button">
 												<div class="row">
 													<div class="added-card-text">{{card.card_number}}</div>
 													<div class="added-card-text">{{card.exp}}</div>
@@ -490,7 +491,9 @@
 														<img src="../images/cards/mastercard.jpg" class="added-card-image">
 													</div>
 												</div>
+												</button>
 											</div>
+											<button type="submit" ng-click="addcard()">
 											<div class="col-md-4 second-box" data-toggle="modal" data-target=".addPayment-modal-md">
 												<div class="row text-center">
 													<i class="material-icons add-icon">add</i>

@@ -585,8 +585,8 @@ body {
 	}
 	.imgHolder .leftLabel {
 		position: absolute;
-		left: -5px;
-	    top: 200px;
+		left: -15px;
+	    top: 220px;
 	    border: 0px solid green;
 	    /* background-color: rgba(0, 0, 0, 0.7); */
 	    padding: 10px;
@@ -623,8 +623,7 @@ body {
 		padding: 5px;
 	}
 
-
-	#adminTop{
+	#adminTop {
 		background-color: #03569A;
 		border-radius: 0px;
 		height: 60px;
@@ -682,14 +681,6 @@ main {
     margin-top: 14px;
     margin-left: 0px;
 }
-
-/* .dropdown-box>.dropdown-toggle {
-	border-radius: 2px;
-	font-size: 16px;
-	border: 1px solid red;
-	background-color: #fff;
-	color: #484848;
-} */
 
 .search-bar {
 	padding-top: 10px;
