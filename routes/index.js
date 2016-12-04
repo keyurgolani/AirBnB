@@ -1440,6 +1440,7 @@ router.get('/listing', function(req, res, next) {
 	}
 });
 
+
 router.get('/adminDashboard', function(req, res, next) {
 	async.parallel([function(callback) {
 		mysql.executeQuery("select property_details.property_id, sum(trip_details.trip_amount) as revenue from property_details left join listings on property_details.property_id = listings.property_id left join trip_details on listings.listing_id = trip_details.listing_id where trip_details.checkout between '2017-01-01' and '2017-12-31' group by property_details.property_id order by revenue DESC limit 10", [], function(error, results) {
@@ -1471,6 +1472,7 @@ router.get('/adminDashboard', function(req, res, next) {
 		});
 	});
 });
+
 
 router.get('/searchListing', function(req, res, next) {
 

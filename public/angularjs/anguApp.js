@@ -106,12 +106,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 
 	})
-	.controller('viewListing', function($scope, $http, $window, Random, Date,$rootScope) {
-		
-		$scope.global = $rootScope;
+	.controller('viewListing', function($scope, $http, $window, Random, Date) {
 		$scope.init = function(retrievedData) {
 			$scope.data = JSON.parse(retrievedData);
-			console.log('$scope.data', $scope.data);
 
 			$scope.nextPhoto = function() {
 				if ($scope.currentIndex === $scope.data.photos.length) {
@@ -133,68 +130,57 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 			$scope.currentIndex = 1;
 			$scope.currentPhoto = $scope.data.photos[$scope.currentIndex - 1];
-
 		}
 		$window.document.title = data.title + ' | House Rentals in ' + data.city;
 
-		$scope.addcard = function() {
-
-			$rootScope.fetchLoggedInUser(function() {
-				window.location.assign('/profile?owner='+$rootScope.loggedInUser.user_id);
-			});	
-			window.location.assign('/profile');
+		$scope.requestBooking = function() {
+			$http({
+				method : "POST",
+				url : '/placeBidOnListing',
+				data : {
+					"checkin" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[0].trim()),
+					"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()),
+					"bid_amount" : $scope.bid_amount,
+					"listing_id" : $scope.data.listing_id,
+					"userId" : 1,
+					"guests" : $scope.noOfGuests,
+					"daily_price" : $scope.data.daily_price,
+					"accommodations" : $scope.data.accommodations
+				}
+			}).then((results) => {
+				if (results.data.statusCode === 200) {
+					$scope.data.daily_price = results.data.updated_base_price;
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
 		}
 
-		$scope.instantBooking = function(x) {
-			console.log(x);
-
-			if($scope.data.is_bid === 1){
-
-				$http({
-						method : "POST",
-						url : '/placeBidOnListing',
-						data : {
-							"checkin" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[0].trim()),
-							"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()),
-							"bid_amount" : $scope.bid_amount,
-							"listing_id" : $scope.data.listing_id,
-							"userId" : 1,
-							"guests" : $scope.noOfGuests,
-							"daily_price" : $scope.data.daily_price,
-							"accommodations" : $scope.data.accommodations,
-							"cc_id" : x
-						}
-					}).then((results) => {
-						if (results.data.statusCode === 200) {
-							$scope.data.daily_price = results.data.updated_base_price;
-						}
-					}, (error) => {
-						console.log("Error", error);
-					})
-			}else{
-					$http({
-						method : "POST",
-						url : '/instantBook',
-						data : {
-							"checkin" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[0].trim()),
-							"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()),
-							"listing_id" : $scope.data.listing_id,
-							"userId" : 1,
-							"guests" : $scope.noOfGuests,
-							"trip_amount" : $scope.data.daily_price,
-							"cc_id" : x
-						}
-					}).then((results) => {
-						if (results.data.statusCode === 200) {
-							console.log("Results", results);
-						}
-					}, (error) => {
-						console.log("Error", error);
-					})
+		$scope.instantBooking = function() {
+			$http({
+				method : "POST",
+				url : '/instantBook',
+				data : {
+					"checkin" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[0].trim()),
+					"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()),
+					"listing_id" : $scope.data.listing_id,
+					"userId" : 1,
+					"guests" : $scope.noOfGuests,
+					"trip_amount" : $scope.data.daily_price
 				}
-			}
+			}).then((results) => {
+				if (results.data.statusCode === 200) {
+					console.log("Results", results);
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
 	})
 	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope) => {
+
+
+
 
 		$scope.address = '';
 
@@ -256,7 +242,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					alert("Your account has been deactivated!!");
 					$http({
 						method : "POST",
-						url : "/logout",
+						url : "/logout"
 					}).then((result) => {
 						alert("Logged out after account deactivation!!");
 						window.location.assign('/');
@@ -503,6 +489,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 			} else {
 
+
+
 				var newCard = {
 					"cc_no" : $scope.cc_no,
 					"cc_month" : $scope.cc_month,
@@ -519,26 +507,23 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					data : newCard
 				}).then((result) => {
 
-					if(result.data.statusCode === 200){
-						$scope.data[1].push({
-							"card_id" : result.card_id,
-							"card_number" : Validation.maskCard($scope.cc_no),
-							"exp_month" : $scope.cc_month,
-							"exp_year" : $scope.cc_year,
-							"first_name" : $scope.first_name,
-							"last_name" : $scope.last_name,
-							"security" : $scope.security_code,
-							"postal" : $scope.postal,
-							"country" : "United States"
-						});
+					$scope.data[1].push({
+						"card_id" : result.card_id,
+						"card_number" : Validation.maskCard($scope.cc_no),
+						"exp_month" : $scope.cc_month,
+						"exp_year" : $scope.cc_year,
+						"first_name" : $scope.first_name,
+						"last_name" : $scope.last_name,
+						"cvv" : $scope.security_code,
+						"postal_code" : $scope.postal,
+						"country" : "United States"
+					});
+					// console.log($scope.data[1]);
 
-						$("#payment_model").modal('toggle');
-						$scope.card_success = true;
-					} else if (result.data.statusCode === 409) {
+					$("#payment_model").modal('toggle');
+					$scope.card_success = true;
 
-						alert(result.data.message);
-					}
-
+				// $scope.data = result.data.room_types;
 				}, (error) => {
 					// $scope.room_types = [];
 				})
@@ -831,9 +816,15 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 		}
 	})
-	.controller('addProperty', ($scope, $http, $window,$rootScope) => {
-		
-		$scope.global = $rootScope;
+	.controller('addProperty', ($scope, $http, $window) => {
+
+		$scope.room_type = "";
+
+		$scope.$watch('room_type', function() {
+
+			console.log('$scope.room_type', $scope.room_type.room_type);
+
+		});
 
 		$scope.photos = [];
 		$scope.page = 1;
@@ -1535,27 +1526,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 		$scope.host = () => {
 			if ($scope.loggedInUser) {
-
-				$http({
-					url : '/check_host',
-					method : "POST"
-				}).then(function(result) {
-						
-					if (result.data.statusCode === 200) {
-						window.location.assign('/property');
-					}else{
-						alert('you are yet not approved as a host!');
-						
-					}
-					/*$rootScope.fetchLoggedInUser(function() {
-					window.location.assign('/');
-				});	*/				
-				}, function(error) {
-
-					console.log("some error");
-					
-				});
-				
+				window.location.assign('/property');
 			} else {
 				alert("please signin first!");
 			}
@@ -1921,8 +1892,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 			}
 
-			$scope.max_price = $scope.max_price + 1;
-			
 			$scope.range = {
 				from : $scope.min_price,
 				to : $scope.max_price
@@ -2402,6 +2371,14 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('adminPageController', function($scope, $http) {
 
+
+		
+		$scope.init = function(retrievedData) {
+		
+			$scope.data = JSON.parse(retrievedData);
+			console.log('$scope.data', $scope.data);
+
+		};
 
 		$scope.topTen = false;
 		$scope.cityWise = false;
