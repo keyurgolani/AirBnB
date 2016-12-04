@@ -745,7 +745,6 @@ router.post('/addCard', (req, res, next) => {
         // logger.log('info','credit card validation is successful!');
 
         if(answer){
-        	console.log("cc is a valid card");
         	mysql.insertData('card_details', JSON_OBJ, (error, results) => {
 				console.log('error, results', error, results);
 				if (error) {
