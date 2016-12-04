@@ -235,17 +235,17 @@ router.post('/addProperty', (req, res, next) => {
 		var active = true; //Default value at the time of adding new property.
 
 		mysql.insertData('property_details', {
-			'owner_id' : owner_id,
-			'property_type_id' : property_type_id,
-			'house_rules' : house_rules,
-			'longitude' : longitude,
-			'latitude' : latitude,
-			'st_address' : st_address,
-			'apt' : apt,
-			'city' : city,
-			'state' : state,
-			'zip' : zip,
-			'active' : active
+			'owner_id'        : owner_id,
+			'property_type_id': property_type_id,
+			'house_rules'     : house_rules,
+			'longitude'       : longitude,
+			'latitude'        : latitude,
+			'st_address'      : st_address,
+			'apt'             : apt,
+			'city'            : city,
+			'state'           : state,
+			'zip'             : zip,
+			'active'          : active
 		}, function(error, result) {
 			if (error) {
 				res.send({
@@ -280,18 +280,21 @@ router.post('/addProperty', (req, res, next) => {
 
 router.post('/register', function(req, res, next) {
 	var first_name = req.body.firstname;
-	var last_name = req.body.lastname;
-	var email = req.body.email;
-	var secret = req.body.password;
-	var month = req.body.month;
-	var day = req.body.day;
-	var year = req.body.year;
+	var last_name  = req.body.lastname;
+	var email      = req.body.email;
+	var secret     = req.body.password;
+	var month      = req.body.month;
+	var day        = req.body.day;
+	var year       = req.body.year;
 
 	if (req.body.password === null || req.body.password === undefined) {
 		res.send({
 			'statusCode' : 400
 		});
 	}
+
+
+	
 
 	var salt = bcrypt.genSaltSync(10);
 	mysql.fetchData('user_id, email', 'account_details', {
@@ -303,6 +306,7 @@ router.post('/register', function(req, res, next) {
 			});
 		} else {
 			if (results && results.length > 0) {
+
 				res.send({
 					'statusCode' : 409
 				});
@@ -1208,6 +1212,7 @@ router.post('/login', function(req, res, next) {
 								'statusCode' : 500
 							});
 						} else {
+							console.log("<><><><><><><><><><><><><>");
 							userObject.photo = results[0];
 							userObject.video = results[1];
 							req.session.loggedInUser = userObject;
@@ -1255,103 +1260,112 @@ router.get('/searchListing', function(req, res, next) {
 	var guest = req.query.guest;
 	var daterange = req.query.daterange;
 
-	//TODO
-	// var user_id = req.session.loggedInUser.user_id;
-	var user_id = 1;
+	if(address === null || address === undefined || address === ""){
 
-	//area seen logging
-	logger.areaLogger(address, user_id);
+	}else{
+		
+		// console.log("<><><><><><><><>><><>><><");
+		// console.log('daterange', daterange);
 
-	var options = {
-		provider : 'google',
-		// Optional depending on the providers 
-		httpAdapter : 'https', // Default 
-		apiKey : 'AIzaSyA67uROXPqm2Nnfg5HOTHttn2C7QRn1zIo', // for Mapquest, OpenCage, Google Premier 
-		formatter : null // 'gpx', 'string', ... 
-	};
+		//TODO
+		// var user_id = req.session.loggedInUser.user_id;
+		var user_id = 1;
 
-	var geocoder = NodeGeocoder(options);
+		//area seen logging
+		logger.areaLogger(address, user_id);
 
-	// Using callback 
-	geocoder.geocode(address, function(err, georesult) {
-
-		var longitude = Number((georesult[0].longitude) * Math.PI / 180);
-		var latitude = Number((georesult[0].latitude) * Math.PI / 180);
-
-		center_lat = georesult[0].latitude;
-		center_lng = georesult[0].longitude;
-
-		var locat = new GeoPoint(georesult[0].latitude, georesult[0].longitude);
-		var bouningcoordinates = locat.boundingCoordinates(10);
-
-		var longitude_lower = bouningcoordinates[0]._degLon;
-		var longitude_upper = bouningcoordinates[1]._degLon;
-		var latitude_lower = bouningcoordinates[0]._degLat;
-		var latitude_upper = bouningcoordinates[1]._degLat;
-
-		var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=? AND listings.active != 0 AND property_details.active != 0";
-		var parameters = [ longitude_upper, longitude_lower, latitude_upper, latitude_lower ];
-
-		var centerLatLng = {
-			center_lat : center_lat,
-			center_lng : center_lng
+		var options = {
+			provider : 'google',
+			// Optional depending on the providers 
+			httpAdapter : 'https', // Default 
+			apiKey : 'AIzaSyA67uROXPqm2Nnfg5HOTHttn2C7QRn1zIo', // for Mapquest, OpenCage, Google Premier 
+			formatter : null // 'gpx', 'string', ... 
 		};
 
-		mysql.executeQuery(query, parameters, function(error, results) {
-			results.forEach(function(item, index, array) {
-				async.parallel([ function(callback) {
-					req.db.get('property_photos').find({
-						'property_id' : Number(item.property_id)
-					}).then((photos) => {
-						results[index].photos = photos;
-						callback();
-					});
-				}, function(callback) {
-					req.db.get('user_photos').find({
-						'user_id' : item.owner_id
-					}).then((profile_photo) => {
-						console.log(profile_photo);
-						results[index].profile_photo = profile_photo;
-						callback();
-					});
-				}, function(callback) {
-					mysql.executeQuery('select count(host_rating) as number_of_ratings, avg(host_rating) as host_rating from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id where owner_id = ?', [ item.owner_id ], (error, hosting_rating_details) => {
-						if (error) {
-							throw error;
-						} else {
-							results[index].rating = hosting_rating_details
+		var geocoder = NodeGeocoder(options);
+
+		// Using callback 
+		geocoder.geocode(address, function(err, georesult) {
+
+			var longitude = Number((georesult[0].longitude) * Math.PI / 180);
+			var latitude = Number((georesult[0].latitude) * Math.PI / 180);
+
+			center_lat = georesult[0].latitude;
+			center_lng = georesult[0].longitude;
+
+			var locat = new GeoPoint(georesult[0].latitude, georesult[0].longitude);
+			var bouningcoordinates = locat.boundingCoordinates(10);
+
+			var longitude_lower = bouningcoordinates[0]._degLon;
+			var longitude_upper = bouningcoordinates[1]._degLon;
+			var latitude_lower  = bouningcoordinates[0]._degLat;
+			var latitude_upper  = bouningcoordinates[1]._degLat;
+
+			var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=? AND listings.active != 0 AND property_details.active != 0";
+			var parameters = [ longitude_upper, longitude_lower, latitude_upper, latitude_lower ];
+
+			var centerLatLng = {
+				center_lat : center_lat,
+				center_lng : center_lng
+			};
+
+			mysql.executeQuery(query, parameters, function(error, results) {
+				results.forEach(function(item, index, array) {
+					async.parallel([ function(callback) {
+						req.db.get('property_photos').find({
+							'property_id' : Number(item.property_id)
+						}).then((photos) => {
+							results[index].photos = photos;
 							callback();
-						}
-					});
-				} ], function(error, finalResults) {
-					if (error) {
-						res.render('searchListing', {
-							data : JSON.stringify({
-								centerLatLng : centerLatLng
-							})
 						});
-					} else {
-						if (results && results.length > 0) {
-							res.render('searchListing', {
-								data : JSON.stringify({
-									results : results,
-									centerLatLng : centerLatLng,
-									guest : guest,
-									daterange : daterange
-								})
-							});
-						} else {
+					}, function(callback) {
+						req.db.get('user_photos').find({
+							'user_id' : item.owner_id
+						}).then((profile_photo) => {
+							console.log(profile_photo);
+							results[index].profile_photo = profile_photo;
+							callback();
+						});
+					}, function(callback) {
+						mysql.executeQuery('select count(host_rating) as number_of_ratings, avg(host_rating) as host_rating from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id where owner_id = ?', [ item.owner_id ], (error, hosting_rating_details) => {
+							if (error) {
+								throw error;
+							} else {
+								results[index].rating = hosting_rating_details
+								callback();
+							}
+						});
+					} ], function(error, finalResults) {
+						if (error) {
 							res.render('searchListing', {
 								data : JSON.stringify({
 									centerLatLng : centerLatLng
 								})
 							});
+						} else {
+							if (results && results.length > 0) {
+								res.render('searchListing', {
+									data : JSON.stringify({
+										results : results,
+										centerLatLng : centerLatLng,
+										guest : guest,
+										daterange : daterange
+									})
+								});
+							} else {
+								res.render('searchListing', {
+									data : JSON.stringify({
+										centerLatLng : centerLatLng
+									})
+								});
+							}
 						}
-					}
+					});
 				});
 			});
 		});
-	});
+	}
+
 });
 
 router.get('/profile', function(req, res, next) {
@@ -2002,7 +2016,10 @@ router.post('/getLoggedInUser', (req, res, next) => {
 
 router.post('/logout', (req, res, next) => {
 	req.session.destroy();
-	res.send();
+	window.location.assign("/");
+	res.send({
+		'statusCode' : 200
+	});
 
 });
 
