@@ -256,7 +256,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					alert("Your account has been deactivated!!");
 					$http({
 						method : "POST",
-						url : "/logout",
+						url : "/logout"
 					}).then((result) => {
 						alert("Logged out after account deactivation!!");
 						window.location.assign('/');
@@ -2403,6 +2403,13 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	.controller('adminPageController', function($scope, $http) {
 
 
+		$scope.init = function(receivedData){
+
+			$scope.data = JSON.parse(receivedData);
+			console.log('$scope.data', $scope.data);
+
+		};
+
 		$scope.topTen = false;
 		$scope.cityWise = false;
 
@@ -2472,7 +2479,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log(error);
 			});
 		}
-
+		
 		$scope.logoutAdmin = function() {
 			$http({
 				method : "POST",
