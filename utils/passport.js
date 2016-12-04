@@ -378,7 +378,6 @@ module.exports = function(passport) {
 										})
 
 									} else {
-<<<<<<< HEAD
 										if (account_details && account_details.length > 0) {
 											
 											async.parallel([
@@ -398,34 +397,6 @@ module.exports = function(passport) {
 														callback(results);
 													});
 												} ], function(error, results) {
-=======
-										mysql.insertData('account_details', {
-											'email' : profile.emails[0].value,
-											'f_name' : f_name,
-											'l_name' : l_name
-										}, (error, insert_results) => {
-											if (error) {
-												throw error;
-											} else {
-												if (insert_results.affectedRows === 1) {
-													async.parallel([
-														function(callback) {
-															mysql.insertData('external_authentication', {
-																'external_id' : profile.id,
-																'user_id' : insert_results.insertId,
-																'website' : 'facebook'
-															}, (error, results) => {
-																callback(results);
-															});
-														},
-														function(callback) {
-															mysql.insertData('profile_details', {
-																'user_id' : insert_results.insertId
-															}, (error, results) => {
-																callback(results);
-															});
-														} ], function(error, results) {
->>>>>>> 5cebff127a82e747919297c4f96506080cd96ffb
 
 														req.session.loggedInUser = {
 															'user_id' : insert_results.insertId,
@@ -434,7 +405,6 @@ module.exports = function(passport) {
 															'l_name' : l_name
 														}
 
-<<<<<<< HEAD
 
 												return done(null, {
 													'user_id' : account_details[0].user_id,
@@ -494,21 +464,6 @@ module.exports = function(passport) {
 													}
 												})
 										}
-=======
-														return done(null, {
-															'user_id' : insert_results.insertId,
-															'email' : profile.emails[0].value,
-															'f_name' : f_name,
-															'l_name' : l_name
-														}, req);
-													})
-
-												} else {
-													throw new Error('Internal Error');
-												}
-											}
-										})
->>>>>>> 5cebff127a82e747919297c4f96506080cd96ffb
 									}
 								}
 							})

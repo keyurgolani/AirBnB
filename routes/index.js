@@ -997,7 +997,6 @@ router.get('/viewListing', function(req, res, next) {
 				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
 				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
 				
-<<<<<<< HEAD
 				mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = 0000000013', (error, card_details) => {
 					if (error) {
 						throw error;
@@ -1019,7 +1018,6 @@ router.get('/viewListing', function(req, res, next) {
 					}
 				});				
 
-=======
 				async.parallel([
 				function(callback) {
 					mysql.executeQuery('select trip_details.user_id as traveller_id, trip_details.trip_id as trip_id, host_review, host_rating, host_rating_timestamp, f_name, l_name from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join account_details on trip_details.user_id = account_details.user_id where listings.listing_id = ?', [listing_id], function(error, ratings) {
@@ -1081,7 +1079,6 @@ router.get('/viewListing', function(req, res, next) {
 						data : JSON.stringify(results[0])
 					});
 				});
->>>>>>> 5cebff127a82e747919297c4f96506080cd96ffb
 			} else {
 				res.render('error', {
 					'statusCode' : 204,
@@ -1180,14 +1177,7 @@ router.post('/instantBook', function(req, res, next) {
 	var cc_id = req.body.cc_id;
 	console.log('cc_id in beg!', cc_id);
 
-<<<<<<< HEAD
-	
 	var userId = req.session.loggedInUser.user_id;
-=======
-	//TODO Get user Id from session
-	var userId = req.session.loggedInUser.user_id;
-//	var userId = 1;
->>>>>>> 5cebff127a82e747919297c4f96506080cd96ffb
 
 	mysql.fetchData('*', 'trip_details', {
 		'listing_id' : listing_id
@@ -1228,15 +1218,6 @@ router.post('/instantBook', function(req, res, next) {
 						break;
 
 					}
-<<<<<<< HEAD
-
-					console.log(isValid);
-				/*if((checkinDate.getTime() < checkinDateDB.getTime() 
-						&& checkoutDate.getTime() < checkoutDateDB.getTime())
-						|| (checkinDate.getTime() < checkinDateDB.getTime() 
-								&& checkoutDate.getTime() < checkoutDateDB.getTime()))*/
-=======
->>>>>>> 5cebff127a82e747919297c4f96506080cd96ffb
 				}
 				if (isValid) {
 					console.log("valid dates are choosen");
@@ -1257,20 +1238,8 @@ router.post('/instantBook', function(req, res, next) {
 								'statusCode' : 500
 							});
 						} else {
-<<<<<<< HEAD
-							// var receipt_id = uuid.v1();
 							var receipt_id = utility.generateReceiptNo(10);
-							console.log('receipt_id', receipt_id);
-								console.log('cc_id', cc_id);
-								console.log('receipt_id', receipt_id);
-=======
-//							var receipt_id = uuid.v1();
-							var receipt_id = utility.generateReceiptNo(10);
->>>>>>> 5cebff127a82e747919297c4f96506080cd96ffb
 
-							//TODO
-							// var cc_id = 1;
-							//generate bill
 							mysql.insertData('bill_details', {
 								'trip_id' : trip.insertId,
 								'receipt_id' : receipt_id,
@@ -1315,28 +1284,12 @@ router.post('/instantBook', function(req, res, next) {
 							'statusCode' : 500
 						});
 					} else {
-<<<<<<< HEAD
 						var receipt_id = utility.generateReceiptNo(10);
-
-						
-=======
-//						var receipt_id = uuid.v1();
-						var receipt_id = utility.generateReceiptNo(10);
-						console.log("???????????????? : " + receipt_id);
-						//TODO
-						var cc_id = 1;
-						//generate bill
->>>>>>> 5cebff127a82e747919297c4f96506080cd96ffb
 						mysql.insertData('bill_details', {
 							'trip_id' : trip.insertId,
 							'receipt_id' : receipt_id,
 							'cc_id' : cc_id
 						}, (error, results) => {
-<<<<<<< HEAD
-							console.log('error, results', error, results);
-=======
-							console.log(error, results);
->>>>>>> 5cebff127a82e747919297c4f96506080cd96ffb
 							if (error) {
 								res.send({
 									'statusCode' : 500
