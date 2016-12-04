@@ -33,7 +33,7 @@ var mySQL = require(properties.get('paths.daoPath'));
 var routes = require('./routes/index');
 
 var session = require('express-session');
-var mongoSessionConnectURL = properties.get('paths.mongoDBHosting');
+var mongoSessionConnectURL = 'mongodb://'+properties.get('paths.mongoDBHosting');
 
 var mongoStore             = require("connect-mongo")(session);
 
