@@ -22,14 +22,14 @@ module.exports = {
 		return require('fecha').format(new Date(date), 'ddd, MMMM DD, YYYY HH:mm A');
 	},
 	getCardDetails : function(cardNumber) {
-		var returnString = "";
-		var cardNumberString = String(cardNumber);
-		var visaElectronCardRE = new RegExp("^(?:(?:2131|1800|35\d{3})\d{11})$");
+		var returnString          = "";
+		var cardNumberString      = String(cardNumber);
+		var visaElectronCardRE    = new RegExp("^(?:(?:2131|1800|35\d{3})\d{11})$");
 		var americanExpressCardRE = new RegExp("^(?:3[47][0-9]{13})$");
-		var dinersCardRE = new RegExp("^(?:3(?:0[0-5]|[68][0-9])[0-9]{11})$");
-		var visaCardRE = new RegExp("^(?:4[0-9]{12}(?:[0-9]{3})?)$");
-	    var masterCardRE = new RegExp("^(?:5[1-5][0-9]{14})$");
-	    var discoverCardRE = new RegExp("^(?:6(?:011|5[0-9][0-9])[0-9]{12})$");
+		var dinersCardRE          = new RegExp("^(?:3(?:0[0-5]|[68][0-9])[0-9]{11})$");
+		var visaCardRE            = new RegExp("^(?:4[0-9]{12}(?:[0-9]{3})?)$");
+		var masterCardRE          = new RegExp("^(?:5[1-5][0-9]{14})$");
+		var discoverCardRE        = new RegExp("^(?:6(?:011|5[0-9][0-9])[0-9]{12})$");
 	    if(cardNumberString.match(visaElectronCardRE) !== null) {
 	    	returnString = returnString + "Visa Electron Card ";
 	    } else if(cardNumberString.match(americanExpressCardRE) !== null) {
