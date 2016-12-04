@@ -1199,9 +1199,44 @@ router.post('/login', function(req, res, next) {
 
 router.get('/property', function(req, res, next) {
 	if(req.session.loggedInUser){
-	res.render('property');
+		
+		res.render('property');
 	}else{
 		console.log("in else");
+		res.redirect('/');
+	}
+});
+
+
+router.post('/check_host', function(req, res, next) {
+	if(req.session.loggedInUser){
+
+		mysql.fetchData('is_host', 'account_details', {'user_id' : req.session.loggedInUser.user_id} , (error, results) => {
+			if (error) {
+				res.send({
+					'statusCode' : 500
+				});
+			} else {
+				if (results && results.length > 0) {
+
+						console.log('results[0].is_host', results[0].is_host);
+					if(results[0].is_host == 1){
+
+
+						res.send({
+							'statusCode' : 200
+						});
+				} else {
+
+					res.send({
+						'statusCode' : 500
+					});
+				}
+			}
+		}
+		})	
+	}else{
+		console.log("not loggedin!");
 		res.redirect('/');
 	}
 });

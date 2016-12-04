@@ -595,7 +595,13 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 		}
 	})
-	.controller('addProperty', ($scope, $http, $window) => {
+	.controller('addProperty', ($scope, $http, $window,$rootScope) => {
+		
+		$scope.global = $rootScope;
+		console.log('$scope.global', $scope.global.loggedInUser);
+
+
+
 		$scope.photos = [];
 		$scope.page = 1;
 
@@ -811,7 +817,27 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 		$scope.host = () => {
 			if ($scope.loggedInUser) {
-				window.location.assign('/property');
+
+				$http({
+					url : '/check_host',
+					method : "POST"
+				}).then(function(result) {
+						
+					if (result.data.statusCode === 200) {
+						window.location.assign('/property');
+					}else{
+						alert('you are yet not approved as a host!');
+						
+					}
+					/*$rootScope.fetchLoggedInUser(function() {
+					window.location.assign('/');
+				});	*/				
+				}, function(error) {
+
+					console.log("some error");
+					
+				});
+				
 			} else {
 				alert("please signin first!");
 			}
