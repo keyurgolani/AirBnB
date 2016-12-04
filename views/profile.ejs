@@ -582,11 +582,11 @@
 											<div class="col-md-6"><a href="/getBill?receipt={{trip.receipt_id}}"><button class="btn btn-primary deactivate-button" style="margin-top: -5px;">View bill</button></a></div>
 										</div>
 										<div class="row location-text" style="margin-top:15px;">Review host</div>
-										<div class="row">
-											<div class="col-md-12">
-					  							<button class="pull-right btn btn-primary submit-button">Upload Images</button>
-					  							<input type="file" ng-model="trip.review_photos" class="upload" name="photos" base-sixty-four-input multiple accept="image/*" minsize="500" required minnum="1">
-					  						</div>
+										<div class="row" style="margin-top:15px;">
+					  						<div class="btn btn-primary review-photo-button" style="margin-top: 0px;">
+												<span style="font-weight:bold;">Upload images</span>
+												<input type="file" ng-model="trip.review_photos" class="review-photo" name="photos" base-sixty-four-input multiple accept="image/*" minsize="500" required minnum="1">
+											</div>
 										</div>
 										<div class="row" ng-hide="trip.review_photos.length === 0">
 									      	<div ng-repeat="photo in trip.review_photos" class="col-md-4" style="padding: 10px;">
@@ -630,11 +630,11 @@
 											<div class="row location-text" style="margin-top:15px;">Rate traveler</div>
 											<div star-rating ng-model="hosting.traveller_rating" max="5" on-rating-select="updateTravellerRating(hosting.trip_id, rating)"></div>
 											<div class="row location-text" style="margin-top:15px;">Review traveler</div>
-											<div class="row">
-												<div class="col-md-12">
-						  							<button class="pull-right btn btn-primary submit-button">Upload Images</button>
-						  							<input type="file" ng-model="hosting.review_photos" class="upload" name="photos" base-sixty-four-input multiple accept="image/*" minsize="500" required minnum="1">
-						  						</div>
+											<div class="row" style="margin-top:15px;">
+					  							<div class="btn btn-primary review-photo-button" style="margin-top: 0px;">
+													<span style="font-weight:bold;">Upload images</span>
+													<input type="file" class="review-photo" ng-model="hosting.review_photos" name="photos" base-sixty-four-input multiple accept="image/*" minsize="500" required minnum="1">
+												</div>
 											</div>
 											<div class="row" ng-hide="hosting.review_photos.length === 0">
 										      	<div ng-repeat="photo in hosting.review_photos[0].photo" class="col-md-4" style="padding: 10px;">

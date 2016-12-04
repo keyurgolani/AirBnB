@@ -51,7 +51,6 @@
 				<div class="row" style="display:flex;">
 					<div><select class="dropdown-box listing box-size" placeholder="Room type" ng-model="room_type" ng-options="room.room_type for room in room_types"></select></div>
 					<div class="address-box increment-main-box">
-
 				    	<div class="count-main-text"><input type="text" class="form-control count-main-text" placeholder="Guests" ng-model="guests"/></div>
 						<span ng-click="guests = guests - 1" class="count-main-button">-</span>
 						<span ng-click="guests = guests + 1" class="count-main-button" style="border-right:none;">+</span>
@@ -172,12 +171,6 @@
 				    	<input type="text" class="form-control address-box curve-border" id="zipcode" ng-model="zip" placeholder="e.g. 94103">
 					</div>
 
-					<div style="border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_city">
-						
-						Please select a recognizable place.<br>
-						Places having a zip code are acceptable.
-
-					</div>
 					<div style="border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_state">
 						
 						Please select a recognizable place.<br>

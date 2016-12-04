@@ -43,8 +43,8 @@
 								</div>
 							</div>
 							<div class="col-md-4 text-center">
-								<img class="photo-round" data-ng-src="data:{{data.owner_photo[0].photo.filetype}};base64,{{data.owner_photo[0].photo.base64}}">
-								<div class="title-location-text" style="margin-top: 10px;">{{data.f_name}}</div>
+								<a ng-href="/profile?owner={{data.owner_id}}"><img class="photo-round" data-ng-src="data:{{data.owner_photo[0].photo.filetype}};base64,{{data.owner_photo[0].photo.base64}}">
+								<div class="title-location-text" style="margin-top: 10px;">{{data.f_name}}</div></a>
 							</div>
 						</div>
 						<div class="seperator"></div>

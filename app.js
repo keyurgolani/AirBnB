@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var responseTime = require('response-time');
 var mongo = require('mongodb');
-
+var ejs          = require('ejs');
 
 //Reference for monk usage and documentation: https://automattic.github.io/monk/
 var monk = require('monk');
@@ -32,12 +32,11 @@ var mySQL = require(properties.get('paths.daoPath'));
 // Routing
 var routes = require('./routes/index');
 
-var app = express();
-
 var session = require('express-session');
 
-// var mongoSessionConnectURL = "mongodb://localhost:27017/LoginApp_MongoDB";
-// var mongoStore = require("connect-mongo")(session);
+var mongoStore             = require("connect-mongo")(session);
+
+var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -60,7 +59,12 @@ app.use('/ngjs', express.static(path.join(__dirname, 'public/angularjs')));
 app.use(session({
 	secret: 'r5XiEloJ0Vfb5R26285fQm5z6FeOrHuYYHk5nUcfuFa6aCvZKU',
 	resave: false,
-	saveUninitialized: true
+	saveUninitialized: true,
+	duration         : 30 * 60 * 1000,    
+	activeDuration   : 5 * 60 * 1000,
+	store            : new mongoStore({
+		url: properties.get('paths.mongoDBHosting')
+	})
 }));
 
 app.use(function(req, res, next) {

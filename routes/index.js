@@ -43,178 +43,162 @@ router.get('/sample', (req, res, next) => {
 });
 
 router.post('/addListing', (req, res, next) => {
-	//	if(req.session.loggedInUser) {
-	//		var owner_id = req.session.loggedInUser.user_id;
 
 	// Listings Table Fields
 
 	if(req.session.loggedInUser){
-	var property_id = req.body.property_id;
-	var room_type_id = req.body.room_type.room_type_id;
-	var title = req.body.title;
-	var is_bid = req.body.is_bid;
-	var start_date = req.body.start_date;
-	var end_date = req.body.end_date;
-	var daily_price = req.body.daily_price;
-	var bedrooms = req.body.bedrooms;
-	var accommodations = req.body.accommodations;
-	var active = 1; //A listing is active by default at the time of adding new listing
-
-	// Listing Details Table Fields
-	var description = req.body.description;
-	var bathrooms = req.body.bathrooms;
-	var beds = req.body.beds;
-	var checkin = req.body.checkin;
-	var checkout = req.body.checkout;
-
-
-
-	//TODO Get user Id from session
-	//var userId = req.session.user.userId;
-	var userId = 1;
-
-	mysql.insertData('listings', {
-		'property_id' : property_id,
-		'room_type_id' : room_type_id,
-		'title' : title,
-		'is_bid' : is_bid,
-		'start_date' : start_date,
-		'end_date' : end_date,
-		'daily_price' : daily_price,
-		'bedrooms' : bedrooms,
-		'accommodations' : accommodations,
-		'active' : active
-	}, (error, listing_insert_result) => {
-		if (error) {
-			res.send({
-				'statusCode' : 500
-			});
-		} else {
-			if (listing_insert_result.affectedRows === 1) {
-				mysql.insertData('listing_details', {
-					'listing_id' : listing_insert_result.insertId,
-					'description' : description,
-					'bathrooms' : bathrooms,
-					'beds' : beds,
-					'checkin' : checkin,
-					'checkout' : checkout
-				}, (error, listing_details_insert_result) => {
-					if (error) {
-						res.send({
-							'statusCode' : 500
-						});
-					} else {
-						if (listing_details_insert_result.affectedRows === 1) {
-							console.log("End Date Here", end_date);
-							end_date = new Date(end_date);
-							console.log('end_date', end_date);
-							var current_date = new Date();
-							console.log('current_date', current_date);
-
-							var time = end_date.getTime() - current_date.getTime();
-							console.log('time', time);
-
-							//automate task to inactivate the listing after end date!
-							setTimeout(function() {
-
-								mysql.updateData('listings', {
-									'active' : 0
-								}, {
-									'listing_id' : listing_insert_result.insertId
-								}, function(error, result) {
-									if (error) {
-										console.log("error in update of listing!");
-
-									} else {
-										if (result.affectedRows === 1) {
-											console.log("success in update of listing!")
-										} else {
-											console.log("error in update of listing!");
-										}
-									}
-								});
-
-							}, time);
-
-
-							//this is to setup automatic task for the bid winner
-							if (is_bid) {
-								console.log('is_bid', is_bid);
-
-								setTimeout(function() {
-									var query = "select * from bid_details WHERE listing_id = ? AND bid_amount = (SELECT MAX(bid_amount) FROM bid_details WHERE listing_id = ?)";
-									var parameters = [ listing_insert_result.insertId, listing_insert_result.insertId ];
-
-									mysql.executeQuery(query, parameters, function(error, winner) {
-										if (error) {
-											console.log('error', error);
-										} else {
-											if (winner && winner.length > 0) {
-
-												console.log("highest bidder is selected");
-
-												//update trip_details and bid_details
-
-												mysql.insertData('trip_details', {
-													'listing_id' : listing_insert_result.insertId,
-													'checkin' : start_date,
-													'checkout' : end_date,
-													'deposit' : 100,
-													'no_of_guests' : winner[0].no_of_guests,
-													'user_id' : userId,
-													'active' : 1,
-													'trip_amount' : winner[0].bid_amount
-												}, (error, trip) => {
-
-													if (error) {
-														console.log(error);
-													} else {
-														var receipt_id = utility.generateReceiptNo(10);												
-														
-														//generate bill
-														mysql.insertData('bill_details', {
-															'trip_id' : trip.insertId,
-															'receipt_id' : receipt_id,
-															'cc_id' : winner[0].cc_id
-														}, (error, results) => {
-															console.log('error, results', error, results);
-															if (error) {
-																console.log(error);
-															} else {
-																console.log("highest bidder is selected and got the property to stay.");
-															}
-														})
-													}
-												})
-											} else {
-												console.log("No bidder is awarded for the selected property");											
-											}
-										}
-									})
-
-								}, properties.get('project.bidTimeOut'));
-							}
-
-
-							res.send({
-								'statusCode' : 200
-							});
-
-							// res.redirect('/');
-						} else {
-							res.send({
-								'statusCode' : 500
-							});
-						}
-					}
-				});
-			} else {
+		var user_id = req.session.loggedInUser.user_id;
+		var property_id = req.body.property_id;
+		var room_type_id = req.body.room_type.room_type_id;
+		var title = req.body.title;
+		var is_bid = req.body.is_bid;
+		var start_date = req.body.start_date;
+		var end_date = req.body.end_date;
+		var daily_price = req.body.daily_price;
+		var bedrooms = req.body.bedrooms;
+		var accommodations = req.body.accommodations;
+		var active = 1; //A listing is active by default at the time of adding new listing
+	
+		// Listing Details Table Fields
+		var description = req.body.description;
+		var bathrooms = req.body.bathrooms;
+		var beds = req.body.beds;
+		var checkin = req.body.checkin;
+		var checkout = req.body.checkout;
+		
+		mysql.insertData('listings', {
+			'property_id' : property_id,
+			'room_type_id' : room_type_id,
+			'title' : title,
+			'is_bid' : is_bid,
+			'start_date' : start_date,
+			'end_date' : end_date,
+			'daily_price' : daily_price,
+			'bedrooms' : bedrooms,
+			'accommodations' : accommodations,
+			'active' : active
+		}, (error, listing_insert_result) => {
+			if (error) {
 				res.send({
 					'statusCode' : 500
 				});
+			} else {
+				if (listing_insert_result.affectedRows === 1) {
+					mysql.insertData('listing_details', {
+						'listing_id' : listing_insert_result.insertId,
+						'description' : description,
+						'bathrooms' : bathrooms,
+						'beds' : beds,
+						'checkin' : checkin,
+						'checkout' : checkout
+					}, (error, listing_details_insert_result) => {
+						if (error) {
+							res.send({
+								'statusCode' : 500
+							});
+						} else {
+							if (listing_details_insert_result.affectedRows === 1) {
+	
+								//automate task to inactivate the listing after end date!
+								setTimeout(function() {
+	
+									mysql.updateData('listings', {
+										'active' : 0
+									}, {
+										'listing_id' : listing_insert_result.insertId
+									}, function(error, result) {
+										if (error) {
+											console.log("error in update of listing!");
+	
+										} else {
+											if (result.affectedRows === 1) {
+												console.log("success in update of listing!")
+											} else {
+												console.log("error in update of listing!");
+											}
+										}
+									});
+	
+								}, 345600000);
+	
+	
+								//this is to setup automatic task for the bid winner
+								if (is_bid === 1) {
+	
+									setTimeout(function() {
+										var query = "select * from bid_details WHERE listing_id = ? AND bid_amount = (SELECT MAX(bid_amount) FROM bid_details WHERE listing_id = ?)";
+										var parameters = [ listing_insert_result.insertId, listing_insert_result.insertId ];
+	
+										mysql.executeQuery(query, parameters, function(error, winner) {
+											if (error) {
+												console.log('error', error);
+											} else {
+												if (winner && winner.length > 0) {
+	
+													console.log("highest bidder is selected");
+	
+													//update trip_details and bid_details
+	
+													mysql.insertData('trip_details', {
+														'listing_id' : listing_insert_result.insertId,
+														'checkin' : start_date,
+														'checkout' : end_date,
+														'deposit' : 100,
+														'no_of_guests' : winner[0].no_of_guests,
+														'user_id' : userId,
+														'active' : 1,
+														'trip_amount' : winner[0].bid_amount
+													}, (error, trip) => {
+	
+														if (error) {
+															console.log(error);
+														} else {
+															var receipt_id = utility.generateReceiptNo(10);												
+															
+															//generate bill
+															mysql.insertData('bill_details', {
+																'trip_id' : trip.insertId,
+																'receipt_id' : receipt_id,
+																'cc_id' : winner[0].cc_id
+															}, (error, results) => {
+																console.log('error, results', error, results);
+																if (error) {
+																	console.log(error);
+																} else {
+																	console.log("highest bidder is selected and got the property to stay.");
+																}
+															})
+														}
+													})
+												} else {
+													console.log("No bidder is awarded for the selected property");											
+												}
+											}
+										})
+	
+									}, properties.get('project.bidTimeOut'));
+								}
+	
+	
+								res.send({
+									'statusCode' : 200
+								});
+	
+								// res.redirect('/');
+							} else {
+								res.send({
+									'statusCode' : 500
+								});
+							}
+						}
+					});
+				} else {
+					res.send({
+						'statusCode' : 500
+					});
+				}
 			}
-		}
-	});
+		});
 
 	} else {
 		res.redirect('/');
@@ -745,7 +729,6 @@ router.post('/addCard', (req, res, next) => {
         // logger.log('info','credit card validation is successful!');
 
         if(answer){
-        	console.log("cc is a valid card");
         	mysql.insertData('card_details', JSON_OBJ, (error, results) => {
 				console.log('error, results', error, results);
 				if (error) {
@@ -753,7 +736,7 @@ router.post('/addCard', (req, res, next) => {
 						'statusCode' : 500
 					});
 				} else {
-					if (results && results.length > 0) {
+					if (results && results.affectedRows > 0) {
 						res.send({
 							'statusCode' : 200,
 							"card_id" : results.insertId
@@ -995,28 +978,7 @@ router.get('/viewListing', function(req, res, next) {
 		} else {
 			if (results && results.length > 0) {
 				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
-				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
-				
-				mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = 0000000013', (error, card_details) => {
-					if (error) {
-						throw error;
-					} else {
-						console.log('card_details', card_details);	
-
-						results[0].card = card_details;				
-
-						req.db.get('property_photos').find({
-						'property_id' : Number(results[0].property_id)
-						}).then((docs) => {
-							results[0].photos = docs;
-
-
-							res.render('viewListing', {
-								data : JSON.stringify(results[0])
-							});
-						})
-					}
-				});				
+				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');				
 
 				async.parallel([
 				function(callback) {
@@ -1073,6 +1035,15 @@ router.get('/viewListing', function(req, res, next) {
 					}).then(function(docs) {
 						results[0].owner_photo = docs;
 						callback(null, null);
+					});
+				}, function(callback) {
+					mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = 0000000013', (error, card_details) => {
+						if (error) {
+							throw error;
+						} else {
+							results[0].card = card_details;
+							callback(null, null);
+						}
 					});
 				}], function(error, finalResults) {
 					res.render('viewListing', {
@@ -1531,15 +1502,15 @@ router.get('/searchListing', function(req, res, next) {
 			};
 
 			mysql.executeQuery(query, parameters, function(error, results) {
-				console.log('error, results', error, results);
 
-				if (results.length === 0) {
+				if(results.length === 0) {
 					res.render('searchListing', {
 						data : JSON.stringify({
 							centerLatLng : centerLatLng
 						})
 					});
-				}else{
+				} else {
+
 					results.forEach(function(item, index, array) {
 						async.parallel([ function(callback) {
 							req.db.get('property_photos').find({
@@ -1549,7 +1520,6 @@ router.get('/searchListing', function(req, res, next) {
 								callback(null, null);
 							});
 						}, function(callback) {
-							console.log("++++++++++++++++++++++++++++++++++++");
 							req.db.get('user_photos').find({
 								'user_id' : item.owner_id
 							}).then((profile_photo) => {
@@ -2372,60 +2342,44 @@ router.post('/uploadProfileVideo', (req, res, next) => {
 });
 
 
+router.post('/uploadProfileVideo', (req, res, next) => {
+	var profile_video_collection = req.db.get('user_videos');
+	profile_video_collection.findOne({
+		'user_id' : req.body.user
+	}).then((doc) => {
+		if (doc) {
+			profile_video_collection.update({
+				'user_id' : req.body.user
+			}, {
+				'video' : req.body.video
+			}, (doc) => {
+				req.session.loggedInUser.video = req.body.video;
+				res.send({
+					'statusCode' : 200
+				});
+			})
+		} else {
+			profile_video_collection.insert({
+				'user_id' : req.body.user,
+				'video' : req.body.video
+			}, (doc) => {
+				req.session.loggedInUser.video = req.body.video;
+				res.send({
+					'statusCode' : 200
+				})
+			});
+		}
+
+	});
+});
+
+
 router.post('/fetchTopTenProperties', (req, res, next) => {
-
 	
-	// define grok pattern string
-	var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
-	// define test input string
-	// var str = '203.35.135.165 [2016-03-15T12:42:04+11:00] "GET memz.co/cloud/" 304 962 0 - 0.003 [MISS] "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"';
-
-	// // asynchronously load default grop patterns 
-	// grok.loadDefault(function (patterns, dummy) {
-	// 	// console.log('dummy', dummy);
-	// 	// console.log('patterns', patterns);
-	//     // create new anonymous grok pattern
-	//     var pattern = dummy.createPattern(p);
-	//     // parse test string
-	//     // pattern.parse(str, function (err, obj) {
-	//     //     // output result object
-	//     //     console.log(obj);
-	//     // });
-
-	//     lineReader.eachLine('../analytics/admin/log.txt', function(line, isLast) {
-	// 	   console.log(pattern.parseSync(line));
-	// 	   if (isLast) {
-	// 	      console.log('All done!');
-	// 	   }
-	// 	});
-
-	// });
-
-
-	// var patterns = grok.loadDefaultSync();
-	// var pattern = patterns.createPattern(p);
-	// // read file line by line
-	// console.log("<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>");
-	// console.log(lineReader);
-	// lineReader.eachLine('../log.txt', function(line, isLast) {
-	// 	console.log("<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>");
-	//    console.log(pattern.parseSync(line));
-	//    if (isLast) {
-	//       console.log('All done!');
-	//    }
-	// });
-
 
 	var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
-	// define test input string
-	// var str = '203.35.135.165 [2016-03-15T12:42:04+11:00] "GET memz.co/cloud/" 304 962 0 - 0.003 [MISS] "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"';
-	 
-	// synchronously load patterns, create new anonymous grok pattern and parse string
 	var patterns = grok.loadDefaultSync();
 	var pattern = patterns.createPattern(p);
-	// console.log(pattern.parseSync(str));
-
-	console.log("<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>");
 
 	lineReader.eachLine('./public/analytics/admin/log.txt', function(line, isLast, cb) {
 	   console.log(pattern.parseSync(line));
