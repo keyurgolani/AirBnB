@@ -608,13 +608,14 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 		
-		$scope.updateHostReview = function(trip, review) {
+		$scope.updateHostReview = function(trip, review, photos) {
 			$http({
 				method : "POST",
 				url : '/updateReview',
 				data : {
 					"review" : review,
 					"trip" : trip,
+					"photos" : photos,
 					"is_host" : true
 				}
 			}).then((results) => {
@@ -626,13 +627,14 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 		
-		$scope.updateTravellerReview = function(trip, review) {
+		$scope.updateTravellerReview = function(trip, review, photos) {
 			$http({
 				method : "POST",
 				url : '/updateReview',
 				data : {
 					"review" : review,
 					"trip" : trip,
+					"photos" : photos,
 					"is_host" : false
 				}
 			}).then((results) => {

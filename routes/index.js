@@ -1438,7 +1438,21 @@ router.get('/profile', function(req, res, next) {
 				if (error) {
 					throw error;
 				} else {
-					callback(null, trip_details);
+					if(trip_details.length === 0) {
+						callback(null, trip_details);
+					}
+					trip_details.forEach(function(item, index, array) {
+						req.db.get('host_review_photos').find({
+							'trip_id' : item.trip_id
+						}).then(function(docs) {
+							if(docs && docs.length > 0) {
+								trip_details[index].review_photos = docs[0].photos;
+							}
+							if(trip_details.length == index + 1) {
+								callback(null, trip_details);
+							}
+						})
+					});
 				}
 			});
 		},
@@ -1447,7 +1461,19 @@ router.get('/profile', function(req, res, next) {
 				if (error) {
 					throw error;
 				} else {
-					callback(null, hosting_details);
+					if(hosting_details.length === 0) {
+						callback(null, hosting_details);
+					}
+					hosting_details.forEach(function(item, index, array) {
+						req.db.get('traveller_review_photos').find({
+							'trip_id' : item.trip_id
+						}).then(function(docs) {
+							hosting_details[index].review_photos = docs.photos
+							if(hosting_details.length == index + 1) {
+								callback(null, hosting_details);
+							}
+						})
+					});
 				}
 			});
 		},
@@ -1914,16 +1940,20 @@ router.post('/updateReview', (req, res, next) => {
 					'host_review' : req.body.review,
 					'trip_id' : req.body.trip
 				}, (error, results) => {
-					console.log(error, results);
 					if (error) {
 						res.send({
 							'statusCode' : 500
 						});
 					} else {
 						if (results.affectedRows === 1) {
-							res.send({
-								'statusCode' : 200
-							})
+							req.db.get('host_review_photos').insert({
+								'trip_id' : req.body.trip,
+								'photos' : req.body.photos
+							}).then(function(docs) {
+								res.send({
+									'statusCode' : 200
+								});
+							});
 						} else {
 							res.send({
 								'statusCode' : 500
@@ -1943,9 +1973,14 @@ router.post('/updateReview', (req, res, next) => {
 						});
 					} else {
 						if (results.affectedRows === 1) {
-							res.send({
-								'statusCode' : 200
-							})
+							req.db.get('traveller_review_photos').insert({
+								'trip_id' : req.body.trip,
+								'photos' : req.body.photos
+							}).then(function(docs) {
+								res.send({
+									'statusCode' : 200
+								});
+							});
 						} else {
 							res.send({
 								'statusCode' : 500
@@ -1961,15 +1996,24 @@ router.post('/updateReview', (req, res, next) => {
 				}, {
 					'trip_id' : req.body.trip
 				}, (error, results) => {
-					console.log(error, results);
+					console.log("Here", error, results);
 					if (error) {
 						res.send({
 							'statusCode' : 500
 						});
 					} else {
 						if (results.affectedRows === 1) {
-							res.send({
-								'statusCode' : 200
+							req.db.get('host_review_photos').remove({
+								'rating_id' : 1
+							}).then(function(docs) {
+								req.db.get('host_review_photos').insert({
+									'trip_id' : req.body.trip,
+									'photos' : req.body.photos
+								}, function(docs) {
+									res.send({
+										'statusCode' : 200
+									});
+								});
 							})
 						} else {
 							res.send({
@@ -1991,8 +2035,17 @@ router.post('/updateReview', (req, res, next) => {
 						});
 					} else {
 						if (results.affectedRows === 1) {
-							res.send({
-								'statusCode' : 200
+							req.db.get('host_review_photos').remove({
+								'rating_id' : 1
+							}).then(function(docs) {
+								req.db.get('traveller_review_photos').insert({
+									'trip_id' : req.body.trip,
+									'photos' : req.body.photos
+								}, function(docs) {
+									res.send({
+										'statusCode' : 200
+									});
+								});
 							})
 						} else {
 							res.send({
