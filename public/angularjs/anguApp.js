@@ -25,9 +25,32 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		$scope.today = new Date();
 	})
 	.controller('login', function($scope, $http, Random, deviceDetector,$rootScope) {
+//		$scope.checkIsAdmin = false;
 		$scope.global = $rootScope;
 		$scope.deviceDetector = deviceDetector;
+		
 		$scope.login = function() {
+			if ($scope.checkIsAdmin) {
+
+				$http({
+					method : "POST",
+					url : '/adminLogin',
+					data : {
+						"email" : $scope.email,
+						"password" : $scope.password
+					}
+				}).then((results) => {
+					if(results.data.statusCode === 200) {
+						window.location.assign('/admin_fTYcN2a');
+					} else {
+						window.location.assign('/');
+					}
+				}, (error) => {
+					console.log("Error", error);
+				});
+				
+			} else {
+            
 			$http({
 				method : "POST",
 				url : '/login',
@@ -43,6 +66,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}, (error) => {
 				console.log("Error", error);
 			});
+			}
 		};
 
 
@@ -1638,4 +1662,93 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				y : .5
 			}
 		];
-	});
+	})
+	.controller('adminPageController', function($scope, $http) {
+		
+		
+		$scope.topTen = false;
+		$scope.cityWise = false;
+		
+		$scope.getTopTen = function(){
+			$scope.topTen = true;
+			$scope.cityWise = false;
+			$scope.showPendingApprovals = false;
+		};
+		
+		$scope.getCityWise = function(){
+			$scope.cityWise = true;
+			$scope.topTen = false;
+			$scope.showPendingApprovals = false;
+		};
+        
+        $scope.showPendingApprovals = false;
+
+        $scope.getPendingApprovals = function(){
+            
+            $scope.showPendingApprovals = true;
+        
+        };
+
+        $scope.closePendingApprovals = function(){
+            
+            $scope.showPendingApprovals = false;
+        
+        };
+        
+        $http({
+        
+        	url : "/getPendingHostApprovals",
+        	method : "POST"
+        }).then(function mySuccess(result){
+        	if(result.data.statusCode === 200) {
+        		$scope.users = result.data.users;
+        	}
+        }, function myError(error){
+        	console.log(error);
+        });
+        
+        
+        $scope.approveHost = function(user_id) {
+        	$http({
+                
+            	url : "/approveHost",
+            	method : "POST",
+            	data : {
+            		"user_id" : user_id
+            	}
+            }).then(function mySuccess(result){
+            	if(result.data.statusCode === 200) {
+//            		alert("approved");
+//            		$scope.users = result.data.users;
+//            		$scope.approved = true;
+            		
+            		$http({
+            	        
+                    	url : "/getPendingHostApprovals",
+                    	method : "POST"
+                    }).then(function mySuccess(result){
+                    	if(result.data.statusCode === 200) {
+                    		$scope.users = result.data.users;
+                    	}
+                    }, function myError(error){
+                    	console.log(error);
+                    });
+            	}
+            }, function myError(error){
+            	console.log(error);
+            });
+        }
+        
+        $scope.logoutAdmin = function() {
+        	$http({
+				method : "POST",
+				url : "/logout",
+			}).then((result) => {
+				alert("Admin Logged out!!");
+				window.location.assign('/');
+			}, (error) => {
+				console.log("Error", error);
+			})
+        }
+
+    });
