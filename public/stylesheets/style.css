@@ -585,11 +585,13 @@ body {
 	}
 	.imgHolder .leftLabel {
 		position: absolute;
-		left: 5px;
-		top: 170px;
-		border: 0px solid green;
-		background-color: rgba(0, 0, 0, 0.7);
-		padding: 10px;
+		left: -5px;
+	    top: 200px;
+	    border: 0px solid green;
+	    /* background-color: rgba(0, 0, 0, 0.7); */
+	    padding: 10px;
+	    background-color: rgba(45,45,45,0.9);
+	    font-weight: bold;
 	}
 	.imgHolder .leftLabel .textProp {
 		color: white;
@@ -599,11 +601,30 @@ body {
 		position: absolute;
 		right: 5%;
 		top: 85%;
-		border: 2px solid white;
+		border: 2px solid black;
 		border-radius: 50%;
 		padding: 0px;
 	}
-	#adminTop {
+
+	.chevronLabelLeft {
+		position: absolute;
+		left: 5%;
+		top: 82.5%;
+		border: 1px solid white;
+		border-radius: 50%;
+		padding: 5px;
+	}
+	.chevronLabelRight {
+		position: absolute;
+		right: 5%;
+		top: 82.5%;
+		border: 1px solid white;
+		border-radius: 50%;
+		padding: 5px;
+	}
+
+
+	#adminTop{
 		background-color: #03569A;
 		border-radius: 0px;
 		height: 60px;
@@ -615,6 +636,7 @@ body {
 	.adminTopBGImage {
 		
 	}
+
 }
 
 main {
@@ -641,22 +663,33 @@ main {
 }
 
 .box-size {
+	height: 34px !important;
+	width: 186.5px !important;
+	border: 0;
+    outline: 1px solid #aaa;
+    background-color: white;
+    margin-right: 5px;
+	margin-top: 16px;
+	margin-left: 2px;
+}
+
+.box-size:focus {
 	height: 38px !important;
 	width: 186.5px !important;
+	border: 0;
+    outline: 1px solid #aaa;
+    background-color: white;
+    margin-top: 14px;
+    margin-left: 0px;
 }
 
-.dropdown-box {
-	margin-right: 5px;
-	margin-top: 15px;
-}
-
-.dropdown-box>.dropdown-toggle {
+/* .dropdown-box>.dropdown-toggle {
 	border-radius: 2px;
 	font-size: 16px;
-	border: 1px solid #aaa;
+	border: 1px solid red;
 	background-color: #fff;
 	color: #484848;
-}
+} */
 
 .search-bar {
 	padding-top: 10px;
@@ -837,7 +870,7 @@ code {
 }
 /*********************************************************
 	*********************************************************/
-}
+
 .curve-border>.dropdown-toggle {
 	border-radius: 4px !important;
 }
@@ -876,10 +909,6 @@ input[type='radio'] {
 }
 
 .property-box {
-	width: 100% !important;
-}
-
-.property-box>.dropdown-toggle {
 	font-size: 18px;
 	font-weight: normal;
 	color: #383838;
@@ -889,6 +918,9 @@ input[type='radio'] {
 	margin: 0 0 0 0;
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
+	border: 0;
+    outline: 1px solid #aaa;
+    background-color: white;
 }
 
 .address-box {
@@ -1236,7 +1268,6 @@ input[type='checkbox'] {
 	display: inline-block;
 	vertical-align: bottom;
 	overflow: hidden;
-	background-color: #bbb;
 	border-radius: 50%;
 	border: 2px solid #fff;
 	height: 75px;
@@ -1858,11 +1889,13 @@ input[type='checkbox'] {
 
 .expiry-box {
 	width: 101.25px;
-	height: 38px;
+	height: 35px;
 	border-radius: 2px !important;
-	border: 1px solid #aaaaaa;
 	padding-left: 10px;
 	background-color: #fff;
+	border: 0;
+    outline: 1px solid #aaa;
+    margin-top:2px;
 }
 
 .medium-box {
@@ -1872,6 +1905,17 @@ input[type='checkbox'] {
 	border: 1px solid #aaaaaa;
 	padding-left: 10px;
 	background-color: #fff;
+}
+
+.country-box {
+	border: 0;
+    outline: 1px solid #aaa;
+    width: 227.5px;
+	height: 36px;
+	border-radius: 2px;
+	padding-left: 10px;
+	background-color: #fff;
+	margin-top: 1px;
 }
 
 .payment-footer {
@@ -2008,40 +2052,50 @@ input[type='checkbox'] {
 
 .gender-box {
 	width: 101.25px;
-	height: 36px;
+	height: 34px;
 	border-radius: 2px !important;
-	border: 1px solid #aaaaaa;
 	padding-left: 10px;
 	background-color: #fff;
 	margin-left: 20px;
+	border: 0;
+    outline: 1px solid #aaa;
+}
+
+.gender-box:focus, .month-box:focus, .date-box:focus, .year-focus {
+	height: 40px!important;
 }
 
 .month-box {
 	width: 110px;
-	height: 36px;
+	height: 34px;
 	border-radius: 2px !important;
-	border: 1px solid #aaaaaa;
 	padding-left: 10px;
 	background-color: #fff;
 	margin-left: 20px;
+	border: 0;
+    outline: 1px solid #aaa;
 }
 
 .date-box {
 	width: 58px;
-	height: 38px;
+	height: 34px;
 	border-radius: 2px !important;
-	border: 1px solid #aaaaaa;
 	padding-left: 10px;
 	background-color: #fff;
+	border: 0;
+    outline: 1px solid #aaa;
+    margin-left: 5px;
 }
 
 .year-box {
+	margin-left: 5px;
 	width: 73px;
-	height: 38px;
+	height: 34px;
 	border-radius: 2px !important;
-	border: 1px solid #aaaaaa;
 	padding-left: 10px;
 	background-color: #fff;
+	border: 0;
+    outline: 1px solid #aaa;
 }
 
 .profile-describe-box {
@@ -2534,7 +2588,7 @@ label.star:before {
 	overflow: hidden;
 	-o-text-overflow: ellipsis;
 	text-overflow: ellipsis;
-	height: 36px;
+	height: 35px;
 	width: 119.5px;
 	font-size: 22px;
 }
@@ -2729,7 +2783,7 @@ input[type=range]:focus::-ms-fill-upper, input[type=range]:active::-ms-fill-uppe
 
 .chevronLabelLeft {
 	position: absolute;
-	left: 5%;
+	left:0px;
 	top: 40%;
 	border: 1px solid white;
 	border-radius: 50%;
@@ -2765,4 +2819,11 @@ input[type=range]:focus::-ms-fill-upper, input[type=range]:active::-ms-fill-uppe
 	box-shadow: 5px 5px 3px #888888;
 	font-size: 220%;
 	cursor: pointer;
+}
+
+.remove-icon {
+	border: 0px;
+    background-color: #edefed;
+    margin-right: 10px;
+    font-size: 20px!important;
 }
