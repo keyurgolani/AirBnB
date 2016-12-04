@@ -910,7 +910,6 @@ router.get('/viewListing', function(req, res, next) {
 				mysql.executeQuery(query1, parameters1, function(error, results1) {
 					console.log('error, results1', error, results1);
 					if (error) {
-						console.log('error', error);
 						res.send({
 							'statusCode' : 500
 						});
@@ -919,12 +918,9 @@ router.get('/viewListing', function(req, res, next) {
 							var ids = [];
 							for(var i = 0; i < results1.length; i++) {
 								ids.push(results1[i].trip_id);
-							}	
-							
+							}
 							var query2 = "select * from ratings where trip_id IN (" + ids + ")";
-							
 							mysql.executeQuery(query2, function(error, results2) {
-								console.log('error, results2', error, results2);
 								if (error) {
 									console.log('error', error);
 									res.send({
