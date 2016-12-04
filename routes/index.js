@@ -43,6 +43,8 @@ router.post('/addListing', (req, res, next) => {
 	//		var owner_id = req.session.loggedInUser.user_id;
 
 	// Listings Table Fields
+
+	if(req.session.loggedInUser){
 	var property_id = req.body.property_id;
 	var room_type_id = req.body.room_type.room_type_id;
 	var title = req.body.title;
@@ -103,7 +105,7 @@ router.post('/addListing', (req, res, next) => {
 							var current_date = new Date();
 							console.log('current_date', current_date);
 
-							var time = end_date.getTime() - current_date.getTime()
+							var time = end_date.getTime() - current_date.getTime();
 
 							//automate task to inactivate the listing after end date!
 							setTimeout(function() {
@@ -195,6 +197,8 @@ router.post('/addListing', (req, res, next) => {
 							res.send({
 								'statusCode' : 200
 							});
+
+							// res.redirect('/');
 						} else {
 							res.send({
 								'statusCode' : 500
@@ -210,11 +214,9 @@ router.post('/addListing', (req, res, next) => {
 		}
 	});
 
-//	} else {
-//		res.send({
-//			'status_code'	:	401
-//		})
-//	}
+	} else {
+		res.redirect('/');
+	}
 });
 
 router.post('/addProperty', (req, res, next) => {
@@ -271,6 +273,8 @@ router.post('/addProperty', (req, res, next) => {
 		res.send({
 			'status_code' : 401
 		})
+
+		// res.redirect('/');
 	}
 });
 
@@ -433,6 +437,9 @@ router.post('/updateProfile', (req, res, next) => {
 	var state = req.body.state;
 	var description = req.body.description;
 
+
+	console.log(city,state);
+
 	if (f_name === null || l_name === null || birth_month === null || birth_date === null || birth_year === null
 		|| email === null || city === null || state === null
 		|| f_name === undefined || l_name === undefined || birth_month === undefined || birth_date === undefined || birth_year === undefined
@@ -450,6 +457,7 @@ router.post('/updateProfile', (req, res, next) => {
 				}, {
 					"user_id" : req.session.loggedInUser.user_id
 				}, (error, result) => {
+					console.log('error, result', error, result);
 					if (error) {
 						throw error;
 					} else {
@@ -470,6 +478,7 @@ router.post('/updateProfile', (req, res, next) => {
 				}, {
 					"user_id" : req.session.loggedInUser.user_id
 				}, (error, result2) => {
+					console.log('error, result2', error, result2);
 					if (error) {
 						throw error;
 					} else {
@@ -883,7 +892,7 @@ router.get('/viewListing', function(req, res, next) {
 		var user_id = req.session.loggedInUser.user_id;
 		logger.pageClickLogger(listing_id, user_id);
 	}
-	var query = "select * from property_details,property_types,room_types,listing_details,listings WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id";
+	var query = "select * from property_details,property_types,room_types,listing_details,listings,account_details WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id AND property_details.owner_id = account_details.user_id";
 	var parameters = [ listing_id, listing_id ];
 	mysql.executeQuery(query, parameters, function(error, results) {
 		if (error) {
@@ -1268,7 +1277,12 @@ router.post('/login', function(req, res, next) {
 });
 
 router.get('/property', function(req, res, next) {
+	if(req.session.loggedInUser){
 	res.render('property');
+	}else{
+		console.log("in else");
+		res.redirect('/');
+	}
 });
 
 router.get('/admin_fTYcN2a', function(req, res, next) {
@@ -1276,7 +1290,11 @@ router.get('/admin_fTYcN2a', function(req, res, next) {
 });
 
 router.get('/listing', function(req, res, next) {
-	res.render('listing');
+	if(req.session.loggedInUser){
+		res.render('listing');
+	}else{
+		res.redirect('/');
+	}
 });
 
 router.get('/searchListing', function(req, res, next) {

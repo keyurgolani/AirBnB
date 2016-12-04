@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var responseTime = require('response-time');
 var mongo = require('mongodb');
+
+
 //Reference for monk usage and documentation: https://automattic.github.io/monk/
 var monk = require('monk');
 
@@ -33,6 +35,9 @@ var routes = require('./routes/index');
 var app = express();
 
 var session = require('express-session');
+
+// var mongoSessionConnectURL = "mongodb://localhost:27017/LoginApp_MongoDB";
+// var mongoStore = require("connect-mongo")(session);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

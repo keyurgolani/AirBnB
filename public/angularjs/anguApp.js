@@ -134,6 +134,20 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		}
 	})
 	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope) => {
+
+		$scope.address = '';
+        // console.log('$scope.address', $scope.address);
+        $scope.options = {
+            country : 'usa',
+            types : '(cities)'
+        };
+        $scope.options.watchEnter = true;
+        $scope.$watch('address', function() {
+            if ($scope.address !== undefined && (typeof ($scope.address)) !== 'string') {
+                // $window.location.href = '/searchListing?where=' + $scope.address.formatted_address;
+                console.log("No Response");
+            }
+        });
 		
 		$scope.init = function(profileDetails) {
 			$scope.data = JSON.parse(profileDetails);
@@ -743,7 +757,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					'property_id' : $location.search().property,
 					'room_type' : $scope.room_type,
 					'title' : $scope.title,
-					'is_bid' : Boolean($scope.is_bid),
+					'is_bid' : $scope.is_bid,
 					'start_date' : Date.formatToSQLWorthy($scope.dates.split("-")[0].trim()),
 					'end_date' : Date.formatToSQLWorthy($scope.dates.split("-")[1].trim()),
 					'daily_price' : $scope.price,
@@ -757,10 +771,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				}
 			}).then((result) => {
 				if (result.data.statusCode === 200) {
-
+					window.location.assign('/');
 				}
 			}, (error) => {
-
+				console.log("some error");
 			})
 		}
 

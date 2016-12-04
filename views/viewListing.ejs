@@ -33,7 +33,7 @@
 									<span class="title-text">{{data.title}}</span>
 								</div>
 								<div class="row">
-									<span class="title-location-text">San Francisco, CA, United States</span>
+									<span class="title-location-text">{{data.city}},{{data.state}}, United States</span>
 								</div>
 								<div class="row">
 									<div star-rating ng-model="data.avg_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
@@ -43,7 +43,7 @@
 							</div>
 							<div class="col-md-4 text-center">
 								<img class="photo-round" data-ng-src="data:{{data.profilePic[0].photo.filetype}};base64,{{data.profilePic[0].photo.base64}}"></div>
-								<div class="title-location-text" style="margin-top: 10px;">Kalgi</div>
+								<div class="title-location-text" style="margin-top: 10px;">{{data.f_name}}</div>
 							</div>
 						</div>
 						<div class="seperator"></div>
@@ -54,7 +54,7 @@
 							</div>
 							<div class="col-md-3 text-center icons">
 								<div><i class="fa fa-users" aria-hidden="true"></i></div>
-								<div class="title-location-text"><span>1 Guest</span></div>
+								<div class="title-location-text"><span>{{data.accommodations}} Guest</span></div>
 							</div>
 							<div class="col-md-3 text-center icons">
 								<div><span class="glyphicon glyphicon-bed"></span></div>
