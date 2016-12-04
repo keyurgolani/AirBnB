@@ -1,3 +1,5 @@
+//Status code 401 : User Session not present
+
 var express = require('express');
 var router = express.Router();
 var mysql = require('../utils/dao');
@@ -11,7 +13,7 @@ var barcode = require('barcode');
 
 var NodeGeocoder = require('node-geocoder');
 var GeoPoint = require('geopoint');
-var bcrypt = require('bcrypt');
+//var bcrypt = require('bcrypt');
 
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -860,6 +862,30 @@ router.post('/fetchUserHostings', (req, res, next) => {
 	})
 });
 
+router.post('/deactivateUserAccount', (req, res, next) => {
+	if(req.session && req.session.loggedInUser) {
+		var user_id = req.session.loggedInUser.user_id;
+		console.log("user_id", user_id);
+		
+		mysql.updateData('account_details', {'active' : 0}, {'user_id' : user_id}, function(error, results) {
+			console.log("error, results", error, results);
+			if (error) {
+				res.send({
+					'statusCode' : 500
+				});
+			} else {
+					res.send({
+						'statusCode' : 200
+					});
+			}
+		})
+	} else {
+		res.send({
+			'statusCode' : 401
+		});
+	}
+});
+
 router.get('/viewListing', function(req, res, next) {
 	var listing_id = req.query.listing;
 	if (req.session && req.session.loggedInUser) {
@@ -878,10 +904,90 @@ router.get('/viewListing', function(req, res, next) {
 			if (results && results.length > 0) {
 				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
 				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
+				
+				var query1 = "select trip_id,user_id from trip_details where trip_details.listing_id = ?";
+				var parameters1 = [ listing_id ];
+				mysql.executeQuery(query1, parameters1, function(error, results1) {
+					console.log('error, results1', error, results1);
+					if (error) {
+						console.log('error', error);
+						res.send({
+							'statusCode' : 500
+						});
+					} else {
+						if (results1 && results1.length > 0) {
+							var ids = [];
+							for(var i = 0; i < results1.length; i++) {
+								ids.push(results1[i].trip_id);
+							}	
+							
+							var query2 = "select * from ratings where trip_id IN (" + ids + ")";
+							
+							mysql.executeQuery(query2, function(error, results2) {
+								console.log('error, results2', error, results2);
+								if (error) {
+									console.log('error', error);
+									res.send({
+										'statusCode' : 500
+									});
+								} else {
+									if (results2 && results2.length > 0) {
+										results[0].ratings = results2;
+										var avg_rating;
+										var sum = 0;
+										for(var i = 0; i < results[0].ratings.length; i++) {
+											sum = sum + results[0].ratings[i].host_rating;
+											results[0].ratings[i].host_rating_timestamp = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
+										}
+										avg_rating = sum/results[0].ratings.length;
+										results[0].avg_rating = avg_rating;
+										console.log("avg_rating : " + results[0].avg_rating);
+										
+										var user_ids = [];
+										for(var i = 0; i < results1.length; i++) {
+											user_ids.push(Number(results1[i].user_id));
+										}
+										var query3 = "select f_name, l_name from account_details where user_id IN (" + user_ids + ")";
+										
+										mysql.executeQuery(query3, function(error, results3) {
+											console.log("error, results3", error, results3);
+											if (error) {
+												res.send({
+													'statusCode' : 500
+												});
+											} else {
+													results[0].users = results3;
+											}
+										})
+										
+										req.db.get('user_photos').find({
+											'user_id' : { $in: user_ids }
+										}).then((docs) => {
+											results[0].user_pics = docs;
+										})
+										
+									} else {
+										results[0].ratings = [];
+									}
+								}
+							});
+						} else {
+							console.log("In else");
+							results[0].ratings = [];
+						}
+					}
+				});
+				
 				req.db.get('property_photos').find({
 					'property_id' : Number(results[0].property_id)
 				}).then((docs) => {
 					results[0].photos = docs;
+				})
+				
+				req.db.get('user_photos').find({
+					'user_id' : results[0].owner_id
+				}).then((docs) => {
+					results[0].profilePic = docs;
 					res.render('viewListing', {
 						data : JSON.stringify(results[0])
 					});
@@ -894,7 +1000,7 @@ router.get('/viewListing', function(req, res, next) {
 				});
 			}
 		}
-	});
+	})
 });
 
 router.post('/placeBidOnListing', function(req, res, next) {
@@ -984,8 +1090,8 @@ router.post('/instantBook', function(req, res, next) {
 	var trip_amount = req.body.trip_amount;
 
 	//TODO Get user Id from session
-	//var userId = req.session.user.userId;
-	var userId = 1;
+	var userId = req.session.loggedInUser.user_id;
+//	var userId = 1;
 
 	mysql.fetchData('*', 'trip_details', {
 		'listing_id' : listing_id
@@ -1006,10 +1112,6 @@ router.post('/instantBook', function(req, res, next) {
 						|| checkoutDate.getTime() < checkinDateDB.getTime())) {
 						isValid = false;
 					}
-				/*if((checkinDate.getTime() < checkinDateDB.getTime() 
-						&& checkoutDate.getTime() < checkoutDateDB.getTime())
-						|| (checkinDate.getTime() < checkinDateDB.getTime() 
-								&& checkoutDate.getTime() < checkoutDateDB.getTime()))*/
 				}
 				if (isValid) {
 					mysql.insertData('trip_details', {
@@ -1028,8 +1130,8 @@ router.post('/instantBook', function(req, res, next) {
 								'statusCode' : 500
 							});
 						} else {
-							var receipt_id = uuid.v1();
-							//							var receipt_id = utility.generateReceiptNo();
+//							var receipt_id = uuid.v1();
+							var receipt_id = utility.generateReceiptNo(10);
 
 							//TODO
 							var cc_id = 1;
@@ -1073,8 +1175,9 @@ router.post('/instantBook', function(req, res, next) {
 							'statusCode' : 500
 						});
 					} else {
-						var receipt_id = uuid.v1();
-
+//						var receipt_id = uuid.v1();
+						var receipt_id = utility.generateReceiptNo(10);
+						console.log("???????????????? : " + receipt_id);
 						//TODO
 						var cc_id = 1;
 						//generate bill
@@ -1083,6 +1186,7 @@ router.post('/instantBook', function(req, res, next) {
 							'receipt_id' : receipt_id,
 							'cc_id' : cc_id
 						}, (error, results) => {
+							console.log(error, results);
 							if (error) {
 								res.send({
 									'statusCode' : 500
@@ -1155,6 +1259,7 @@ router.post('/login', function(req, res, next) {
 							userObject.photo = results[0];
 							userObject.video = results[1];
 							req.session.loggedInUser = userObject;
+							console.log(req.session.loggedInUser);
 							res.send({
 								'statusCode' : 200
 							});

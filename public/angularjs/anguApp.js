@@ -181,6 +181,31 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.birth_date = $scope.dates[0];
 			}
 		}
+		
+		$scope.deactivateUserAccount = function() {
+			$http({
+				method : "POST",
+				url : '/deactivateUserAccount'
+			}).then((results) => {
+				if (results.data.statusCode === 200) {
+					alert("Your account has been deactivated!!");
+					$http({
+						method : "POST",
+						url : "/logout",
+					}).then((result) => {
+						alert("Logged out after account deactivation!!");
+						window.location.assign('/');
+					}, (error) => {
+						console.log("Error", error);
+					})
+				}
+				if (results.data.statusCode === 401) {
+					alert("Please login first!");
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
 
 		$scope.updatePass = function() {
 
@@ -698,6 +723,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('addListing', ($scope, $http, $location, Date, $window) => {
 		$scope.page = 1;
+		
+//		$scope.is_bid = 'true';
 		$scope.fetchAmenities = () => {
 			$http({
 				method : "POST",
