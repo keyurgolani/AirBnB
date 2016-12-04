@@ -62,13 +62,22 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 
 	})
-	.controller('viewListing', function($scope, $http, $window, Random, Date) {
+	.controller('viewListing', function($scope, $http, $window, Random, Date,$rootScope) {
 		$scope.init = function(retrievedData) {
 			var data = JSON.parse(retrievedData);
 			$scope.data = JSON.parse(retrievedData);
 			console.log('$scope.data', $scope.data);
+			console.log('card' , $scope.data.card)
 		}
 		$window.document.title = data.title + ' | House Rentals in ' + data.city;
+
+		$scope.addcard = function() {
+
+			$rootScope.fetchLoggedInUser(function() {
+				window.location.assign('/profile?owner='+$rootScope.loggedInUser.user_id);
+			});	
+			window.location.assign('/profile');
+		}
 
 		$scope.requestBooking = function() {
 			$http({
@@ -95,7 +104,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 
-		$scope.instantBooking = function() {
+		
+
+		$scope.instantBooking = function(x) {
+			console.log(x);
 			$http({
 				method : "POST",
 				url : '/instantBook',
@@ -105,7 +117,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"listing_id" : $scope.data.listing_id,
 					"userId" : 1,
 					"guests" : $scope.noOfGuests,
-					"trip_amount" : $scope.data.daily_price
+					"trip_amount" : $scope.data.daily_price,
+					"cc_id" : x
 				}
 			}).then((results) => {
 				if (results.data.statusCode === 200) {
@@ -306,6 +319,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				data : newCard
 			}).then((result) => {
 
+				if(result.data.statusCode === 200){
+
 				$scope.data[1].push({
 					"card_id" : result.card_id,
 					"card_number" : Validation.maskCard($scope.cc_no),
@@ -317,9 +332,15 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"postal_code" : $scope.postal,
 					"country" : "United States"
 				});
-				console.log($scope.data[1]);
+				// console.log($scope.data[1]);
 
 				$("#payment_model").modal('toggle');
+				$scope.card_success = true;
+
+			} else if (result.data.statusCode === 409) {
+
+				alert(result.data.message);
+			}
 			// $scope.data = result.data.room_types;
 			}, (error) => {
 				// $scope.room_types = [];

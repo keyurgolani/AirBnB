@@ -9,6 +9,8 @@ var utility = require('../utils/utility');
 var async = require("async");
 var barcode = require('barcode');
 
+var check = require('./cc_check');
+
 var NodeGeocoder = require('node-geocoder');
 var GeoPoint = require('geopoint');
 var bcrypt = require('bcrypt');
@@ -694,25 +696,42 @@ router.post('/addCard', (req, res, next) => {
 		"user_id" : user_id
 	}
 
-	mysql.insertData('card_details', JSON_OBJ, (error, results) => {
-		console.log('error, results', error, results);
-		if (error) {
-			res.send({
-				'statusCode' : 500
+
+	check.Tocheck(cc_no,cc_month, cc_year,security,function(answer,message){
+        // logger.log('info','credit card validation is successful!');
+
+        if(answer){
+        	console.log("cc is a valid card");
+        	mysql.insertData('card_details', JSON_OBJ, (error, results) => {
+				console.log('error, results', error, results);
+				if (error) {
+					res.send({
+						'statusCode' : 500
+					});
+				} else {
+					if (results && results.length > 0) {
+						res.send({
+							'statusCode' : 200,
+							"card_id" : results.insertId
+						});
+					} else {
+						res.send({
+							'statusCode' : 500
+						});
+					}
+				}
+			})
+        }else{
+        	console.log(message);
+        	res.send({
+				'statusCode' : 409,
+				'message' : message
 			});
-		} else {
-			if (results && results.length > 0) {
-				res.send({
-					'statusCode' : 200,
-					"card_id" : results.insertId
-				});
-			} else {
-				res.send({
-					'statusCode' : 500
-				});
-			}
-		}
-	})
+        }    
+    
+ });         // if(answer){
+
+	
 });
 
 
@@ -867,7 +886,7 @@ router.get('/viewListing', function(req, res, next) {
 		logger.pageClickLogger(listing_id, user_id);
 	}
 	var query = "select * from property_details,property_types,room_types,listing_details,listings,account_details WHERE  listings.listing_id = ? AND listing_details.listing_id = ? AND listings.room_type_id = room_types.room_type_id AND listings.property_id = property_types.property_type_id AND listings.property_id = property_details.property_id AND property_details.owner_id = account_details.user_id";
-	var parameters = [ listing_id, listing_id ];
+	var parameters = [ listing_id, listing_id];
 	mysql.executeQuery(query, parameters, function(error, results) {
 		if (error) {
 			res.render('error', {
@@ -878,14 +897,27 @@ router.get('/viewListing', function(req, res, next) {
 			if (results && results.length > 0) {
 				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
 				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
-				req.db.get('property_photos').find({
-					'property_id' : Number(results[0].property_id)
-				}).then((docs) => {
-					results[0].photos = docs;
-					res.render('viewListing', {
-						data : JSON.stringify(results[0])
-					});
-				})
+				
+				mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = 0000000013', (error, card_details) => {
+					if (error) {
+						throw error;
+					} else {
+						console.log('card_details', card_details);	
+
+						results[0].card = card_details;				
+
+						req.db.get('property_photos').find({
+						'property_id' : Number(results[0].property_id)
+						}).then((docs) => {
+							results[0].photos = docs;
+
+
+							res.render('viewListing', {
+								data : JSON.stringify(results[0])
+							});
+						})
+					}
+				});				
 
 			} else {
 				res.render('error', {
@@ -982,6 +1014,8 @@ router.post('/instantBook', function(req, res, next) {
 	var no_of_guests = req.body.guests;
 	var active = 1;
 	var trip_amount = req.body.trip_amount;
+	var cc_id = req.body.cc_id;
+	console.log('cc_id in beg!', cc_id);
 
 	
 	var userId = req.session.loggedInUser.user_id;
@@ -1033,6 +1067,7 @@ router.post('/instantBook', function(req, res, next) {
 								&& checkoutDate.getTime() < checkoutDateDB.getTime()))*/
 				}
 				if (isValid) {
+					console.log("valid dates are choosen");
 					mysql.insertData('trip_details', {
 						'listing_id' : listing_id,
 						'checkin' : checkin,
@@ -1051,10 +1086,13 @@ router.post('/instantBook', function(req, res, next) {
 							});
 						} else {
 							// var receipt_id = uuid.v1();
-														var receipt_id = utility.generateReceiptNo();
+							var receipt_id = utility.generateReceiptNo(10);
+							console.log('receipt_id', receipt_id);
+								console.log('cc_id', cc_id);
+								console.log('receipt_id', receipt_id);
 
 							//TODO
-							var cc_id = 1;
+							// var cc_id = 1;
 							//generate bill
 							mysql.insertData('bill_details', {
 								'trip_id' : trip.insertId,
@@ -1082,6 +1120,8 @@ router.post('/instantBook', function(req, res, next) {
 					});
 				}
 			} else {
+
+				console.log("in this one");
 				mysql.insertData('trip_details', {
 					'listing_id' : listing_id,
 					'checkin' : checkin,
@@ -1098,11 +1138,9 @@ router.post('/instantBook', function(req, res, next) {
 							'statusCode' : 500
 						});
 					} else {
-						var receipt_id = uuid.v1();
+						var receipt_id = utility.generateReceiptNo(10);
 
-						//TODO
-						var cc_id = 1;
-						//generate bill
+						
 						mysql.insertData('bill_details', {
 							'trip_id' : trip.insertId,
 							'receipt_id' : receipt_id,
@@ -1220,8 +1258,7 @@ router.post('/check_host', function(req, res, next) {
 				if (results && results.length > 0) {
 
 						console.log('results[0].is_host', results[0].is_host);
-					if(results[0].is_host == 1){
-
+					if(results[0].is_host == 1){						
 
 						res.send({
 							'statusCode' : 200
