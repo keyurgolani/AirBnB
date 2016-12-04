@@ -179,6 +179,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		
 		$scope.init = function(profileDetails) {
 			$scope.data = JSON.parse(profileDetails);
+			console.log("Profile : ", $scope.data);
 			$window.document.title = $scope.data[0][0].f_name + ' ' + $scope.data[0][0].l_name + ' | Profile';
 			$scope.st_address = $scope.data[0][0].city +', '+ $scope.data[0][0].state;
 			$rootScope.fetchLoggedInUser(function() {
@@ -199,12 +200,11 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.get_year = [ '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027',
 				'2028', '2029', '2030', '2031', '2032' ];
 
-			if ($scope.data[0][0].dob !== null) {
-				$scope.birth_month = $scope.months[new Date($scope.data[0][0].dob).getMonth()];
-				$scope.birth_year = (new Date($scope.data[0][0].dob).getFullYear()).toString();
-				console.log($scope.birth_year);
-				$scope.birth_date = (new Date($scope.data[0][0].dob).getDate()).toString();
-				console.log($scope.birth_date);
+			if ($scope.data[0][0].month !== null && $scope.data[0][0].year && $scope.data[0][0].day) {
+				$scope.birth_month = $scope.months[$scope.data[0][0].month - 1];
+				var index = $scope.years.indexOf($scope.data[0][0].year.toString());
+				$scope.birth_year = $scope.years[index];
+				$scope.birth_date = $scope.dates[$scope.data[0][0].day - 1];
 			} else {
 				$scope.birth_month = $scope.months[0];
 				$scope.birth_year = $scope.years[0];
