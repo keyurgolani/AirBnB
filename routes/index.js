@@ -2238,60 +2238,44 @@ router.post('/uploadProfileVideo', (req, res, next) => {
 });
 
 
+router.post('/uploadProfileVideo', (req, res, next) => {
+	var profile_video_collection = req.db.get('user_videos');
+	profile_video_collection.findOne({
+		'user_id' : req.body.user
+	}).then((doc) => {
+		if (doc) {
+			profile_video_collection.update({
+				'user_id' : req.body.user
+			}, {
+				'video' : req.body.video
+			}, (doc) => {
+				req.session.loggedInUser.video = req.body.video;
+				res.send({
+					'statusCode' : 200
+				});
+			})
+		} else {
+			profile_video_collection.insert({
+				'user_id' : req.body.user,
+				'video' : req.body.video
+			}, (doc) => {
+				req.session.loggedInUser.video = req.body.video;
+				res.send({
+					'statusCode' : 200
+				})
+			});
+		}
+
+	});
+});
+
+
 router.post('/fetchTopTenProperties', (req, res, next) => {
-
 	
-	// define grok pattern string
-	var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
-	// define test input string
-	// var str = '203.35.135.165 [2016-03-15T12:42:04+11:00] "GET memz.co/cloud/" 304 962 0 - 0.003 [MISS] "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"';
-
-	// // asynchronously load default grop patterns 
-	// grok.loadDefault(function (patterns, dummy) {
-	// 	// console.log('dummy', dummy);
-	// 	// console.log('patterns', patterns);
-	//     // create new anonymous grok pattern
-	//     var pattern = dummy.createPattern(p);
-	//     // parse test string
-	//     // pattern.parse(str, function (err, obj) {
-	//     //     // output result object
-	//     //     console.log(obj);
-	//     // });
-
-	//     lineReader.eachLine('../analytics/admin/log.txt', function(line, isLast) {
-	// 	   console.log(pattern.parseSync(line));
-	// 	   if (isLast) {
-	// 	      console.log('All done!');
-	// 	   }
-	// 	});
-
-	// });
-
-
-	// var patterns = grok.loadDefaultSync();
-	// var pattern = patterns.createPattern(p);
-	// // read file line by line
-	// console.log("<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>");
-	// console.log(lineReader);
-	// lineReader.eachLine('../log.txt', function(line, isLast) {
-	// 	console.log("<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>");
-	//    console.log(pattern.parseSync(line));
-	//    if (isLast) {
-	//       console.log('All done!');
-	//    }
-	// });
-
 
 	var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
-	// define test input string
-	// var str = '203.35.135.165 [2016-03-15T12:42:04+11:00] "GET memz.co/cloud/" 304 962 0 - 0.003 [MISS] "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"';
-	 
-	// synchronously load patterns, create new anonymous grok pattern and parse string
 	var patterns = grok.loadDefaultSync();
 	var pattern = patterns.createPattern(p);
-	// console.log(pattern.parseSync(str));
-
-	console.log("<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>+<>");
 
 	lineReader.eachLine('./public/analytics/admin/log.txt', function(line, isLast, cb) {
 	   console.log(pattern.parseSync(line));

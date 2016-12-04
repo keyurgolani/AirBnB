@@ -2441,7 +2441,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log(error);
 			});
 		}
-
+		
 		$scope.logoutAdmin = function() {
 			$http({
 				method : "POST",
