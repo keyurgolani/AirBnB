@@ -58,7 +58,7 @@ router.post('/addListing', (req, res, next) => {
 	var daily_price = req.body.daily_price;
 	var bedrooms = req.body.bedrooms;
 	var accommodations = req.body.accommodations;
-	var active = true; //A listing is active by default at the time of adding new listing
+	var active = 1; //A listing is active by default at the time of adding new listing
 
 	// Listing Details Table Fields
 	var description = req.body.description;
@@ -66,6 +66,8 @@ router.post('/addListing', (req, res, next) => {
 	var beds = req.body.beds;
 	var checkin = req.body.checkin;
 	var checkout = req.body.checkout;
+
+
 
 	//TODO Get user Id from session
 	//var userId = req.session.user.userId;
@@ -110,6 +112,7 @@ router.post('/addListing', (req, res, next) => {
 							console.log('current_date', current_date);
 
 							var time = end_date.getTime() - current_date.getTime();
+							console.log('time', time);
 
 							//automate task to inactivate the listing after end date!
 							setTimeout(function() {
@@ -131,7 +134,7 @@ router.post('/addListing', (req, res, next) => {
 									}
 								});
 
-							}, 999999999);
+							}, time);
 
 
 							//this is to setup automatic task for the bid winner
@@ -166,15 +169,13 @@ router.post('/addListing', (req, res, next) => {
 													if (error) {
 														console.log(error);
 													} else {
-														var receipt_id = utility.generateReceiptNo();
-
-														//TODO
-														var cc_id = 1;
+														var receipt_id = utility.generateReceiptNo(10);												
+														
 														//generate bill
 														mysql.insertData('bill_details', {
 															'trip_id' : trip.insertId,
 															'receipt_id' : receipt_id,
-															'cc_id' : cc_id
+															'cc_id' : winner[0].cc_id
 														}, (error, results) => {
 															console.log('error, results', error, results);
 															if (error) {
@@ -186,10 +187,7 @@ router.post('/addListing', (req, res, next) => {
 													}
 												})
 											} else {
-												console.log("No bidder is awarded for the selected property");
-											/*res.send({
-												'statusCode' : 500
-											});*/
+												console.log("No bidder is awarded for the selected property");											
 											}
 										}
 									})
@@ -1102,6 +1100,7 @@ router.post('/placeBidOnListing', function(req, res, next) {
 	console.log('accommodations', accommodations);
 	var base_price = req.body.daily_price;
 	console.log('base_price', base_price);
+	var cc_id = req.body.cc_id;
 	//TODO Get user Id from session
 	//var userId = req.session.user.userId;
 	var userId = 1;
@@ -1134,7 +1133,8 @@ router.post('/placeBidOnListing', function(req, res, next) {
 					'checkout' : checkout,
 					'bid_amount' : bid_amount,
 					'bidder_id' : userId,
-					'no_of_guests' : no_of_guests
+					'no_of_guests' : no_of_guests,
+					'cc_id':cc_id
 				}, (error, results) => {
 					console.log('error, results', error, results);
 					if (error) {
@@ -1177,38 +1177,37 @@ router.post('/instantBook', function(req, res, next) {
 	var active = 1;
 	var trip_amount = req.body.trip_amount;
 	var cc_id = req.body.cc_id;
+	console.log('cc_id first', cc_id);
 
 	var userId = req.session.loggedInUser.user_id;
 
 	mysql.fetchData('*', 'trip_details', {
 		'listing_id' : listing_id
 	}, (error, results) => {
-		console.log('error, results', error, results);
 		if (error) {
 			res.send({
 				'statusCode' : 500
 			});
 		} else {
 			if (results && results.length > 0) {
-				console.log("in this one!");
 				var isValid;
 				for (var i = 0; i < results.length; i++) {
 
 					isValid = true;
 					var checkinDate = new Date(checkin);
-					checkinDate = checkinDate.getDate();
+					// checkinDate = checkinDate.getDate();
 					console.log('checkinDate', checkinDate);
 					
 					var checkoutDate = new Date(checkout);
-					checkoutDate = checkoutDate.getDate();
+					// checkoutDate = checkoutDate.getDate();
 					console.log('checkoutDate', checkoutDate);
 					
 					var checkinDateDB = new Date(results[i].checkin);
-					checkinDateDB = checkinDateDB.getDate();
+					// checkinDateDB = checkinDateDB.getDate();
 					console.log('checkinDateDB', checkinDateDB);
 					
 					var checkoutDateDB = new Date(results[i].checkout);
-					checkoutDateDB = checkoutDateDB.getDate();
+					// checkoutDateDB = checkoutDateDB.getDate();
 					console.log('checkoutDateDB', checkoutDateDB);
 					
 
@@ -1217,9 +1216,9 @@ router.post('/instantBook', function(req, res, next) {
 						&& checkoutDate < checkinDateDB) )) {
 						isValid = false;
 						break;
-
 					}
 				}
+				console.log(isValid);
 				if (isValid) {
 					console.log("valid dates are choosen");
 					mysql.insertData('trip_details', {
@@ -1268,7 +1267,7 @@ router.post('/instantBook', function(req, res, next) {
 				}
 			} else {
 
-				console.log("in this one");
+				console.log("in else!!");
 				mysql.insertData('trip_details', {
 					'listing_id' : listing_id,
 					'checkin' : checkin,
@@ -2290,7 +2289,7 @@ router.post('/getLoggedInUser', (req, res, next) => {
 
 router.post('/logout', (req, res, next) => {
 	req.session.destroy();
-	window.location.assign("/");
+	res.redirect('/');
 	res.send({
 		'statusCode' : 200
 	});
