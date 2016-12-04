@@ -1334,6 +1334,38 @@ router.get('/listing', function(req, res, next) {
 	}
 });
 
+router.get('/adminDashboard', function(req, res, next) {
+	async.parallel([function(callback) {
+		mysql.executeQuery("select property_details.property_id, sum(trip_details.trip_amount) as revenue from property_details left join listings on property_details.property_id = listings.property_id left join trip_details on listings.listing_id = trip_details.listing_id where trip_details.checkout between '2017-01-01' and '2017-12-31' group by property_details.property_id order by revenue DESC limit 10", [], function(error, results) {
+			if(error) {
+				callback(error, null);
+			} else {
+				callback(null, results);
+			}
+		});
+	}, function(callback) {
+		mysql.executeQuery("select property_details.city, sum(trip_details.trip_amount) as revenue from property_details left join listings on property_details.property_id = listings.property_id left join trip_details on listings.listing_id = trip_details.listing_id where trip_details.checkout between '2016-01-01' and '2016-12-31' group by property_details.city order by revenue DESC ", [], function(error, results) {
+			if(error) {
+				callback(error, null);
+			} else {
+				callback(null, results);
+			}
+		});
+	}, function(callback) {
+		mysql.executeQuery("select property_details.owner_id, count(trip_details.trip_id) as tripCount, sum(trip_details.trip_amount) as revenue from property_details left join listings on property_details.property_id = listings.property_id left join trip_details on listings.listing_id = trip_details.listing_id where trip_details.checkout between '2016-12-01' and '2016-12-31' group by property_details.owner_id order by tripCount DESC limit 10", [], function(error, results) {
+			if(error) {
+				callback(error, null);
+			} else {
+				callback(null, results);
+			}
+		});
+	}], function(error, results) {
+		res.render('administrator', {
+			data : JSON.stringify(results)
+		});
+	});
+});
+
 router.get('/searchListing', function(req, res, next) {
 
 	var address = req.query.where;
