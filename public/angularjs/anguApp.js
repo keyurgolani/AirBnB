@@ -224,7 +224,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					alert("Your account has been deactivated!!");
 					$http({
 						method : "POST",
-						url : "/logout",
+						url : "/logout"
 					}).then((result) => {
 						alert("Logged out after account deactivation!!");
 						window.location.assign('/');
