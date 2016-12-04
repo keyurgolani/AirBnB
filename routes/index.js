@@ -1430,28 +1430,30 @@ router.get('/searchListing', function(req, res, next) {
 							}
 						});
 					} ], function(error, finalResults) {
-						if (error) {
-							res.render('searchListing', {
-								data : JSON.stringify({
-									centerLatLng : centerLatLng
-								})
-							});
-						} else {
-							if (results && results.length > 0) {
-								res.render('searchListing', {
-									data : JSON.stringify({
-										results : results,
-										centerLatLng : centerLatLng,
-										guest : guest,
-										daterange : daterange
-									})
-								});
-							} else {
+						if(index === array.length - 1) {
+							if (error) {
 								res.render('searchListing', {
 									data : JSON.stringify({
 										centerLatLng : centerLatLng
 									})
 								});
+							} else {
+								if (results && results.length > 0) {
+									res.render('searchListing', {
+										data : JSON.stringify({
+											results : results,
+											centerLatLng : centerLatLng,
+											guest : guest,
+											daterange : daterange
+										})
+									});
+								} else {
+									res.render('searchListing', {
+										data : JSON.stringify({
+											centerLatLng : centerLatLng
+										})
+									});
+								}
 							}
 						}
 					});
