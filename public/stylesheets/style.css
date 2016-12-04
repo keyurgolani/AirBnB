@@ -585,8 +585,13 @@ body {
 	}
 	.imgHolder .leftLabel {
 		position: absolute;
+<<<<<<< HEAD
 		left: -15px;
 	    top: 220px;
+=======
+		left: -5px;
+	    top: 200px;
+>>>>>>> 5cebff127a82e747919297c4f96506080cd96ffb
 	    border: 0px solid green;
 	    /* background-color: rgba(0, 0, 0, 0.7); */
 	    padding: 10px;
@@ -601,11 +606,34 @@ body {
 		position: absolute;
 		right: 5%;
 		top: 85%;
-		border: 2px solid white;
+		border: 2px solid black;
 		border-radius: 50%;
 		padding: 0px;
 	}
+<<<<<<< HEAD
 	#adminTop {
+=======
+
+	.chevronLabelLeft {
+		position: absolute;
+		left: 5%;
+		top: 82.5%;
+		border: 1px solid white;
+		border-radius: 50%;
+		padding: 5px;
+	}
+	.chevronLabelRight {
+		position: absolute;
+		right: 5%;
+		top: 82.5%;
+		border: 1px solid white;
+		border-radius: 50%;
+		padding: 5px;
+	}
+
+
+	#adminTop{
+>>>>>>> 5cebff127a82e747919297c4f96506080cd96ffb
 		background-color: #03569A;
 		border-radius: 0px;
 		height: 60px;
@@ -662,6 +690,17 @@ main {
     margin-top: 14px;
     margin-left: 0px;
 }
+<<<<<<< HEAD
+=======
+
+/* .dropdown-box>.dropdown-toggle {
+	border-radius: 2px;
+	font-size: 16px;
+	border: 1px solid red;
+	background-color: #fff;
+	color: #484848;
+} */
+>>>>>>> 5cebff127a82e747919297c4f96506080cd96ffb
 
 .search-bar {
 	padding-top: 10px;
@@ -842,7 +881,7 @@ code {
 }
 /*********************************************************
 	*********************************************************/
-}
+
 .curve-border>.dropdown-toggle {
 	border-radius: 4px !important;
 }

@@ -1,6 +1,6 @@
 <style>
 	.sidebar-nav {
-	    padding: 9px 0;
+	    padding: 0px 0;
 	}
 
 	.dropdown-menu .sub-menu {
@@ -8,7 +8,7 @@
 	    position: absolute;
 	    top: 0;
 	    visibility: hidden;
-	    margin-top: 100px;
+	    margin-top: 0px;
 	}
 
 
@@ -34,8 +34,8 @@
 	    border-left: none;
 	    border-right: 7px solid rgba(0, 0, 0, 0.2);
 	    border-top: 7px solid transparent;
-	    left: -7px;
-	    top: 10px;
+	    left: 0px;
+	    top: 0px;
 	}
 	.navbar .sub-menu:after {
 	    border-top: 6px solid transparent;
@@ -110,6 +110,7 @@
 		 						</div>
 		 					
 		 				</li>
+
 		 				<li  class="ul_Seven">
 	 						<div  class="col-lg-12 ul_eight ul_Nine" data-toggle="modal" data-target=".signin-modal-md" ng-hide="global.loggedInUser">
 	 							<a style="text-decoration:none;" href="#" class="ul_Nine">Log In</a>
@@ -124,6 +125,7 @@
 									<li ng-click="logout();"><a href="#" style="font-size: 14px;">Log Out</a></li>
 								</ul>
 	 						</div>
+
 		 				</li>
 		 			</ul>
 		 		</div>
@@ -133,13 +135,13 @@
 </div>
 
 <!-- SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP  -->
-	<div ng-controller="signUpController">
+	<div ng-controller="signUpController" style="">
 
 		<!-- BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP -->
-		<div id="signup" class="modal container fade signup-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div id="signup" class="modal container fade signup-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="">
 		  
 		  <div class="modal-dialog container modal-md" role="document" style="border-radius:0px;">
-		  	<div class="row" style="margin-top:20px;">
+		  	<div class="row" style="margin-top:0px;">
 		    	<div class="col-lg-1 col-sm-0">
 		    		
 		    	</div>
@@ -175,7 +177,8 @@
 								<div></div>
 							</div>
 			    		</div>
-			    		
+
+				    		
 			    		<div>
 			    			<a href="" style="text-decoration:none;">	
 							<div class="signUpWithEmailbutton on-hover button-effect" ng-click="signUpWithEmail();">
@@ -227,24 +230,28 @@
 						      <i class="fa fa-user-o"></i>
 						      <input type="text" class="form-control" style="" ng-model="f_name" placeholder="First Name" id="signUpPlaceHolder"/>
 						    </div>
+						    <div ng-show="no_f_name" style="color: red; font-size: 11px;">Your first name is required for sign up !</div>
 						</div>
 						<div class="row">
 				    		<div class="inner-addon right-addon" id="signUpInputProps" style="">
 						      <i class="fa fa-user-o"></i>
 						      <input type="text" class="form-control" ng-model="l_name" placeholder="Last Name" id="signUpPlaceHolder"/>
 						    </div>
+						    <div ng-show="no_l_name"  style="color: red; font-size: 11px;">Your last name is required for sign up !</div>
 						</div>
 						<div class="row">
 				    		<div class="inner-addon right-addon" id="signUpInputProps" style="">
 						      <i class="fa fa-envelope-o"></i>
 						      <input type="text" class="form-control" ng-model="email" placeholder="Email Address" id="signUpPlaceHolder"/>
 						    </div>
+						    <div ng-show="no_email" style="color: red; font-size: 11px;">Your first name is required for sign up !</div>
 						</div>
 						<div class="row">
 				    		<div class="inner-addon right-addon" id="signUpInputProps" style="font-size:19px;">
 						      <i class="fa fa-lock" style="margin-top:-2px;"></i>
 						      <input type="password" ng-model="password" class="form-control" placeholder="Create a Password" id="signUpPlaceHolder"/>
 						    </div>
+						    <div ng-show="no_password" style="color: red; font-size: 11px;">Please choose a password for your account !</div>
 						</div>
 						<div class="row" style="margin-top:20px;">
 				    		<!-- <div class="inner-addon right-addon" id="signUpInputProps" style="font-size:19px;"> -->
@@ -272,6 +279,8 @@
 						        <option value="12">December</option>
 						      </select>
 							</div>
+						    
+						    
 
 							<div class="form-group col-lg-1" style="">
 							  
@@ -313,6 +322,7 @@
 						        <option value="31">31</option>
 						      </select>
 							</div>
+						    
 							<div class="form-group col-lg-1" style="">
 							  
 							</div>
@@ -320,6 +330,34 @@
 							<div class="form-group col-lg-3" style="border: 1px solid #dce0e0; border-radius:2px;">
 							 	<input type="number" class="form-control" ng-model="year" placeholder="Year"/>
 							</div>
+							<div ng-show="no_month" style="color: red; font-size: 11px;">Please choose the month of your birth !</div>
+							<div ng-show="no_year" style="color: red; font-size: 11px;">Please choose the year of your birth !</div>
+				    		<div ng-show="no_day" style="color: red; font-size: 11px;">Please choose the day of your birth !</div>
+				    		<div>
+					    		<div style="z-index:1, border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="col-lg-12 text-center alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="signup_error">
+								
+									There was an error signing up<br>
+									Please try again...
+								</div>
+							</div>
+							
+				    		<div>
+					    		<div style="z-index:1, border:2px solid green; border-radius: 5px; opacity: 1.0; font-size: 15px; color: green;" class="col-lg-12 text-center alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="signup_successful">
+								
+									Successfully Signed up...<br>
+									Try logging in...
+
+								</div>
+							</div>
+							<div>
+					    		<div style="z-index:1, border:2px solid #5EBA7D; border-radius: 5px; opacity: 1.0; font-size: 15px; color: #5EBA7D;" class="col-lg-12 text-center alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="email_already_exists">
+								
+									Email Already exists...<br>
+									Try another email...
+
+								</div>
+							</div>
+				    		
 				    		<div class="text-justify signUpNotice" style="font-size:0.85em;line-height: 1.7; height: auto; width: auto;">
 				    			By signing up, I agree to Airbnb <a class="terms-text">Terms of Service</a>, <a class="terms-text">Non-discrimination Policy</a>, <a class="terms-text">Payments Terms of Service</a>, <a class="terms-text">Privacy Policy</a>, <a class="terms-text">Guest Refund Policy</a>, and <a class="terms-text">Host Guarantee Terms.</a>
 				    		</div>
@@ -382,13 +420,13 @@
 		<div id="signin" class="modal container fade signin-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 		  
 		  <div class="modal-dialog container modal-md" role="document" style="border-radius:0px;">
-		  	<div class="row" style="margin-top:20px;">
+		  	<div class="row" style="margin-top:0px;">
 		    	<div class="col-lg-1 col-sm-0">
 		    		
 		    	</div>
 		    	<div class="col-lg-10 col-sm-12" style="border-radius: 3px; background-color:white; padding: 30px 30px 30px 30px; width: 450px;height:533px;">
 		    		
-		    		<div ng-show="true">
+		    		<div>
 			    		<div>
 			    			<a href="/auth/facebook?user_agent={{deviceDetector}}" style="text-decoration:none;">
 							<div class="facebookSignUpButton on-hover">
@@ -418,6 +456,9 @@
 								<div></div>
 							</div>
 			    		</div>
+
+
+
 			    		<div>
 				    		<div class="row">
 					    		<div class="inner-addon right-addon" id="signUpInputProps" style="padding:10px;border-color: #aaa;color: #484848; height:64px; font-size:16px;padding-left:0px">
@@ -431,11 +472,20 @@
 							      <input type="password" ng-model="password" class="form-control" placeholder="Password" style="margin-top:5px;"/>
 							    </div>
 							</div>
+
+				    		<div style="font-size: 11px; color: red;" class="col-lg-12 text-center" ng-show="invalidLogin">
+									
+								Your log in credentials did not match !!!
+
+							</div>
 							<div class="row text-justify" style="margin-top:10px;">
 								<input type="checkbox" class="logIn-checkbox" value="" style="margin-left:5px;"><span style="margin-left:10px;">Remember Password</span>
+								<input type="checkbox" class="logIn-checkbox" ng-model = "checkIsAdmin" style="margin-left:5px;"><span style="margin-left:10px;">Admin login</span>
 							</div>
+
+							
 				    		<div class="text-center">
-								<div class="signUpWithEmailbutton on-hover button-effect" ng-controller="login" style="width:386px;height:64px;" ng-click="login()">
+								<div class="signUpWithEmailbutton on-hover button-effect" style="width:386px;height:64px;" ng-click="login()">
 									<span class="text-center" style="font-size:16px;color: white;">
 									<span>Log in</span>
 								</div>
