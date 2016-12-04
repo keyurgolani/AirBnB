@@ -450,14 +450,135 @@
 										<div class="row address-box price-guest-box" ng-show="data.is_bid == 1">
 											<input type="text" class="form-control price-guest-text"  ng-model="bid_amount" style="width:100%;" placeholder="Minimum Bid"/>
 										</div>
-										<div class="row" ng-show="data.is_bid == 1">
+										<div class="row" ng-show="data.is_bid == 1" data-toggle="modal" data-target=".Payment-modal-md">
 											<button class="btn btn-primary book-button"  ng-click="requestBooking()">Request to Book</button>
 										</div>
-										<div class="row" ng-hide="data.is_bid == 1">
+										<div class="row" ng-hide="data.is_bid == 1" data-toggle="modal" data-target=".Payment-modal-md">
 											<button class="btn btn-primary book-button"  ng-click="instantBooking()">Instant Book</button>
 										</div>
 										<div class="row text-center">
 											<span class="charged-text ">You won't be charged yet</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="add_payment_model" class="modal container fade Payment-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+		  					<div class="container modal-md" role="document" style="margin-top: 80px;margin-left: 90px;">
+		  						<div class="row item-body">
+									<div class="row item-head">Payment Methods<button data-dismiss="modal" class="remove-icon pull-right"><i class="fa fa-remove"></i></button></div>
+									<div class="row item-content">
+										<div class="row">
+											<div class="col-md-4 added-card-box" ng-repeat="card in data[1]">
+												<div class="row">
+													<div class="added-card-text">{{card.card_number}}</div>
+													<div class="added-card-text">{{card.exp}}</div>
+												</div>
+												<div class="row" style="margin-top: 40px;">
+													<div class="col-md-9">
+														<span class="added-card-text">Default Card</span><i class="fa fa-question-circle question-icon"></i>
+													</div>
+													<div class="col-md-3">
+														<img src="../images/cards/mastercard.jpg" class="added-card-image">
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4 second-box" data-toggle="modal" data-target=".addPayment-modal-md">
+												<div class="row text-center">
+													<i class="material-icons add-icon" style="color:white;">add</i>
+												</div>
+												<div class="row text-center">
+													<span class="add-text" style="color:white;">Add Payment Method</span>
+												</div>
+											</div>
+											<div class="col-md-4"></div>
+										</div>
+										<div id="payment_model" class="modal container fade addPayment-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+				  							<div class="modal-dialog container modal-md" role="document">
+										  		<div class="row payment-box">
+										  			<div class="row item-head border">Add New Payment Method</div>
+										  			<div class="row payment-body">
+										  				<div class="row bottom-space">
+										  					<img src="../images/cards/visa.png" class="card-images">
+										  					<img src="../images/cards/mastercard.jpg" class="card-images">
+										  					<img src="../images/cards/amex.jpg" class="card-images">
+										  					<img src="../images/cards/discover.png" class="card-images">
+										  				</div>
+										  				<div class="row bottom-space">
+										  					<label class="credit-card-text">Card number *</label>
+										  					<input type="text" ng-model="cc_no" ui-mask="9999 9999 9999 9999" class="credit-card-box">
+										  				</div>
+										  				<div class="row">
+										  					<div class="col-md-3">
+										  						<label class="credit-card-text">Expires on *</label>
+										  					</div>
+										  					<div class="col-md-3"></div>
+										  					<div class="col-md-6">
+										  						<label class="credit-card-text">Security code *</label>
+										  					</div>
+										  				</div>
+										  				<div class="row bottom-space">
+										  					<div class="col-md-3">
+										  						<select ng-model="cc_month" ng-options="x for x in get_month" class="expiry-box">
+										  						 	
+																</select>
+										  					</div>
+										  					<div class="col-md-3">
+										  						<select ng-model="cc_year" ng-options="x for x in get_year" class="expiry-box">
+										  						 	
+																</select>
+										  					</div>
+										  					<div class="col-md-6">
+										  						<input type="text" ng-model="security_code" class="medium-box">
+										  					</div>
+										  				</div>
+										  				<div class="row">
+										  					<div class="col-md-6">
+										  						<label class="credit-card-text">First name</label>
+										  					</div>
+										  					<div class="col-md-6">
+										  						<label class="credit-card-text">Last name</label>
+										  					</div>
+										  				</div>
+										  				<div class="row bottom-space">
+										  					<div class="col-md-6">
+										  						<input type="text" ng-model="first_name" class="medium-box">
+										  					</div>
+										  					<div class="col-md-6">
+										  						<input type="text" ng-model="last_name" class="medium-box">
+										  					</div>
+										  				</div>
+										  				<div class="row">
+										  					<div class="col-md-6">
+										  						<label class="credit-card-text">Postal code</label>
+										  					</div>
+										  					<div class="col-md-6">
+										  						<label class="credit-card-text">Country</label>
+										  					</div>
+										  				</div>
+										  				<div class="row bottom-space">
+										  					<div class="col-md-6">
+										  						<input type="text" ng-model="postal" class="medium-box">
+										  					</div>
+										  					<div class="col-md-6">
+										  						<select class="medium-box">
+										  						 	<option>United States</option>
+																</select>
+										  					</div>
+										  				</div>
+										  			</div>
+										  			<div class="row payment-footer">
+									  					<div class="col-md-6"></div>
+									  					<div class="col-md-6">
+									  						<button id="cancel" class="btn btn-primary cancel-button">Cancel</button>
+									  						<button ng-click="add_card()" class="btn btn-primary add-card-button">Add Card</button>
+									  					</div>
+									  				</div>
+										  		</div>
+										  	</div>
+										</div>
+										<div class="row remember-text">
+											<span style="color:white;">Remember: Airbnb will never ask you to wire money. <a href="" class="learn-more" style="color:white;">Learn more.</a></span>
 										</div>
 									</div>
 								</div>
@@ -485,7 +606,15 @@
 					return 'customDates';
 				}
 			}).val('');
-		});	
+		});
+	$("#cancel").click(function() {
+			    $("#payment_model").modal('hide');
+			    $("#add_payment_model").modal('show');
+			});
+	$("#sign-up").click(function() {
+	    $("#signup").modal('hide');
+	    $("#signin").modal('show');
+	});	
 	</script>
 	</main>
 	<footer><% include ./footer %></footer>
