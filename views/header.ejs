@@ -425,7 +425,7 @@
 		    	</div>
 		    	<div class="col-lg-10 col-sm-12" style="border-radius: 3px; background-color:white; padding: 30px 30px 30px 30px; width: 450px;height:533px;">
 		    		
-		    		<div ng-show="true">
+		    		<div>
 			    		<div>
 			    			<a href="/auth/facebook?user_agent={{deviceDetector}}" style="text-decoration:none;">
 							<div class="facebookSignUpButton on-hover">
@@ -455,6 +455,9 @@
 								<div></div>
 							</div>
 			    		</div>
+
+
+
 			    		<div>
 				    		<div class="row">
 					    		<div class="inner-addon right-addon" id="signUpInputProps" style="padding:10px;border-color: #aaa;color: #484848; height:64px; font-size:16px;padding-left:0px">
@@ -468,11 +471,19 @@
 							      <input type="password" ng-model="password" class="form-control" placeholder="Password" style="margin-top:5px;"/>
 							    </div>
 							</div>
+
+				    		<div style="font-size: 11px; color: red;" class="col-lg-12 text-center" ng-show="invalidLogin">
+									
+								Your log in credentials did not match !!!
+
+							</div>
 							<div class="row text-justify" style="margin-top:10px;">
 								<input type="checkbox" class="logIn-checkbox" value="" style="margin-left:5px;"><span style="margin-left:10px;">Remember Password</span>
 							</div>
+
+							
 				    		<div class="text-center">
-								<div class="signUpWithEmailbutton on-hover button-effect" ng-controller="login" style="width:386px;height:64px;" ng-click="login()">
+								<div class="signUpWithEmailbutton on-hover button-effect" style="width:386px;height:64px;" ng-click="login()">
 									<span class="text-center" style="font-size:16px;color: white;">
 									<span>Log in</span>
 								</div>

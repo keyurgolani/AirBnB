@@ -26,7 +26,11 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	.controller('login', function($scope, $http, Random, deviceDetector,$rootScope) {
 		$scope.global = $rootScope;
 		$scope.deviceDetector = deviceDetector;
+
+		$scope.invalidLogin = false;
+
 		$scope.login = function() {
+		
 			$http({
 				method : "POST",
 				url : '/login',
@@ -36,12 +40,35 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"user_agent" : deviceDetector
 				}
 			}).then((results) => {
-				$rootScope.fetchLoggedInUser(function() {
-				window.location.assign('/');
-			});			
+				console.log('results', results);
+
+				// console.log('results.data.statusCode', results.data.statusCode);
+				// console.log('results.data.statusCode === 200', results.data.statusCode === 200);
+				if(results.data.statusCode === 200){
+				
+					$scope.invalidLogin = false;
+					$rootScope.fetchLoggedInUser(function() {
+						window.location.assign('/');
+					});
+
+				}
+
+				if(results.data.statusCode !== 200){
+
+					$scope.invalidLogin = true;
+					console.log("<><><><><><><><><><><><><><><><>");
+					console.log('$scope.invalidLogin', $scope.invalidLogin);
+
+				}
+
+
 			}, (error) => {
+
+				$scope.invalidLogin = true;
 				console.log("Error", error);
+			
 			});
+		
 		};
 
 

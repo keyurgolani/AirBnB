@@ -300,7 +300,7 @@ router.post('/register', function(req, res, next) {
 			});
 		} else {
 			if (results && results.length > 0) {
-				console.log("<><><><><><><><><><><><><><><><><><><>");
+
 				res.send({
 					'statusCode' : 409
 				});
@@ -1147,6 +1147,7 @@ router.post('/login', function(req, res, next) {
 								'statusCode' : 500
 							});
 						} else {
+							console.log("<><><><><><><><><><><><><>");
 							userObject.photo = results[0];
 							userObject.video = results[1];
 							req.session.loggedInUser = userObject;
@@ -1916,7 +1917,9 @@ router.post('/getLoggedInUser', (req, res, next) => {
 router.post('/logout', (req, res, next) => {
 	req.session.destroy();
 	window.location.assign("/");
-	res.send();
+	res.send({
+		'statusCode' : 200
+	});
 
 });
 
