@@ -49,7 +49,9 @@
 					<span class="h3 que_1">What kind of place do you have?</span>
 				</div>
 				<div class="row" style="display:flex;">
-					<div><div style="border:0px solid red;"><select class="selectpicker dropdown-box listing box-size" ng-model="room_type" ng-options="room.room_type for room in room_types"></select></div></div>
+
+					<div><select class="dropdown-box listing box-size" ng-model="room_type" ng-options="room.room_type for room in room_types"></select></div>
+
 					<div class="address-box increment-main-box">
 
 				    	<div class="count-main-text"><input type="text" class="form-control count-main-text" placeholder="Guests" ng-model="guests"/></div>
@@ -72,7 +74,7 @@
 				</div>
 
 				<div class="row que_1">
-					<input type="text" class="form-control search-bar listing" placeholder="e.g. San Fransisco" ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="city" details="details" options="options">
+					<input type="text" class="form-control search-bar listing" placeholder="e.g. San Fransisco" ng-autocomplete="address" details="details" options="options">
 				</div>
 
 				<div class="row">
@@ -92,7 +94,7 @@
 					<span class="h3 que_2">What type of property is this?</span>
 				</div>
 				<div class="row">
-					<select class="selectpicker dropdown-box listing property-box curve-border" ng-model="property_type" ng-options="property.property_type for property in property_types"></select>
+					<select class=" dropdown-box listing property-box curve-border" ng-model="property_type" ng-options="property.property_type for property in property_types"></select>
 				</div>
 				<div class="row">
 					<div style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="property_type_val">

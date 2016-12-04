@@ -28,8 +28,8 @@
 					<span class="h3 que_1">What kind of place do you have?</span>
 				</div>
 				<div class="row" style="display:flex;">
+					<div><select class="dropdown-box listing box-size" ng-model="room_type" ng-options="room.room_type for room in room_types"></select></div>
 
-					<div><select class="selectpicker dropdown-box listing box-size" ng-model="room_type" ng-options="room.room_type for room in room_types"></select></div>
 					<div class="address-box increment-main-box">
 				    	<div class="count-main-text"><input type="text" class="form-control count-main-text" placeholder="Guests" ng-model="guests"/></div>
 						<span ng-click="guests = guests - 1" class="count-main-button btn button-radius">-</span>
@@ -255,7 +255,7 @@
 					</div>
 					<div class="col-md-2">
 					    <div class="radio pull-right">
-					     	<input type="radio" ng-model="is_fixed_price" value="true" name="optradio">
+					     	<input type="radio" ng-model="is_bid" value="1" name="optradio">
 					    </div>
 					</div>
 				</div>
@@ -272,7 +272,7 @@
 					</div>
 					<div class="col-md-2">
 					    <div class="radio pull-right">
-					     	<input type="radio" ng-model="is_bid" value="false" name="optradio">
+					     	<input type="radio" ng-model="is_bid" value="0" name="optradio">
 					    </div>
 					</div>
 				</div>

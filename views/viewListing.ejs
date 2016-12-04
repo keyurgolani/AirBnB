@@ -13,11 +13,11 @@
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-12">
-		                <div ng-repeat="photo in data.photos">
-		                	<div class="row">
-		                		<div style="background-image: url(data:{{photo.photos.filetype}};base64,{{photo.photos.base64}});" class="cover-image">
-		                	</div>
-		                </div>
+		                <div class="row">
+	                		<div style="background-image: url(data:{{currentPhoto.photos.filetype}};base64,{{currentPhoto.photos.base64}});" class="cover-image">
+	                	</div>
+	                	<span class="chevronLabelLeft glyphicon glyphicon-chevron-left" ng-click="previousPhoto()"></span>
+                    	<span class="chevronLabelRight glyphicon glyphicon-chevron-right" ng-click="nextPhoto()"></span>
 		            </div>
 				</div>
 			</div>
@@ -34,21 +34,17 @@
 									<span class="title-text">{{data.title}}</span>
 								</div>
 								<div class="row">
-									<span class="title-location-text">San Francisco, CA, United States</span>
+									<span class="title-location-text">{{data.city}},{{data.state}}, United States</span>
 								</div>
 								<div class="row">
-									<i class="fa fa-star small-star"></i>
-									<i class="fa fa-star small-star"></i>
-									<i class="fa fa-star small-star"></i>
-									<i class="fa fa-star-half-full small-star"></i>
-									<i class="fa fa-star-o small-star"></i>
+									<div star-rating ng-model="data.avg_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
 									<span>&nbsp</span>
-									<span class="title-location-text">309 reviews</span>
+									<span class="title-location-text">{{data.ratings.length}} {{data.ratings.length === 1 ? "Review" : "Reviews"}}</span>
 								</div>
 							</div>
 							<div class="col-md-4 text-center">
-								<div class="photo-round"><a href=""><img src="../images/SFO/b.jpg"></a></div>
-								<div class="title-location-text" style="margin-top: 10px;">Kalgi</div>
+								<img class="photo-round" data-ng-src="data:{{data.profilePic[0].photo.filetype}};base64,{{data.profilePic[0].photo.base64}}"></div>
+								<div class="title-location-text" style="margin-top: 10px;">{{data.f_name}}</div>
 							</div>
 						</div>
 						<div class="seperator"></div>
@@ -59,7 +55,7 @@
 							</div>
 							<div class="col-md-3 text-center icons">
 								<div><i class="fa fa-users" aria-hidden="true"></i></div>
-								<div class="title-location-text"><span>1 Guest</span></div>
+								<div class="title-location-text"><span>{{data.accommodations}} Guest</span></div>
 							</div>
 							<div class="col-md-3 text-center icons">
 								<div><span class="glyphicon glyphicon-bed"></span></div>
@@ -398,49 +394,29 @@
 						</div>
 						<div class="seperator"></div>
 						<div class="row" style="margin-bottom:40px;">
-							<span class="about-text">309 Reviews</span>
+							<span class="about-text">{{data.ratings.length}} {{data.ratings.length === 1 ? "Review" : "Reviews"}}</span>
 							<span>&nbsp</span>
-							<i class="fa fa-star big-star"></i>
-							<i class="fa fa-star big-star"></i>
-							<i class="fa fa-star big-star"></i>
-							<i class="fa fa-star-half-full big-star"></i>
-							<i class="fa fa-star-o big-star"></i>
+							<div star-rating ng-model="data.avg_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
 							<span>&nbsp</span>
 						</div>
 						<div class="review-seperator"></div>
-						<div class="row text-margin-bottom">
+						<div class="row text-margin-bottom" ng-repeat = "rating in data.ratings">
 							<div class="col-md-2">
 								<div class="photo-round"><a href=""><img src="../images/SFO/b.jpg"></a></div>
 							</div>
 							<div class="col-md-10">
 								<div class="row">
-									<div class="left-column-text" style="margin-top:10px;">Keyur</div>
+									<div class="left-column-text" style="margin-top:10px;">{{data.users[$index].f_name}} {{data.users[$index].l_name}}</div>
 								</div>
 								<div class="row">
-									<div class="review-subtitle-text">November 2016</div>
+									<div class="review-subtitle-text">{{rating.host_rating_timestamp}}</div>
 								</div>
 							</div>
-						</div>
 						<div class="row">
-							<span class="description-text">Kalgi's place is perfectly located for exploring San Francisco. Brenda and Matt made be feel most welcome.</span>
+							<span class="description-text">{{rating.host_review}}</span>
+						</div>
 						</div>
 						<div class="seperator"></div>
-						<div class="row text-margin-bottom">
-							<div class="col-md-2">
-								<div class="photo-round"><a href=""><img src="../images/SFO/b.jpg"></a></div>
-							</div>
-							<div class="col-md-10">
-								<div class="row">
-									<div class="left-column-text" style="margin-top:10px;">Keyur</div>
-								</div>
-								<div class="row">
-									<div class="review-subtitle-text">November 2016</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<span class="description-text">Kalgi's place is perfectly located for exploring San Francisco. Brenda and Matt made be feel most welcome.</span>
-						</div>
 					</div>
 					<div class="col-md-5">
 						<div class="row book_it_container">
