@@ -33,10 +33,9 @@ var mySQL = require(properties.get('paths.daoPath'));
 var routes = require('./routes/index');
 
 var session = require('express-session');
-var mongoSessionConnectURL = "mongodb://localhost:27017/airbnb";
+var mongoSessionConnectURL = properties.get('paths.mongoDBHosting');
 
 var mongoStore             = require("connect-mongo")(session);
-var mongo                  = require("./routes/mongo");
 
 var app = express();
 
