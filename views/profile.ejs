@@ -2,6 +2,18 @@
 <html lang="en">
 	<head>
 		<% include ./head %>
+
+		<script>
+		  function isNumber(evt) {
+		      evt = (evt) ? evt : window.event;
+		      var charCode = (evt.which) ? evt.which : evt.keyCode;
+		      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		          return false;
+		      }
+		      return true;
+		  }                      
+		</script>
+
 	</head>
 
 
@@ -45,17 +57,18 @@
 								<div class="row profile-bottom-space">
 
 									<div class="col-md-3">
-										<span class="profile-left-text">First Name</span>
+										<span class="profile-left-text">First Name *</span>
 									</div>
 									<div class="col-md-9">
 										<input ng-show="isSameUser" type="text" class="profile-large-box" ng-model="data[0][0].f_name">
 										<label ng-hide="isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].f_name}}</label>
+
 									</div>
 								</div>
 
 								<div class="row profile-bottom-space">
 									<div class="col-md-3">
-										<span class="profile-left-text">Last Name</span>
+										<span class="profile-left-text">Last Name *</span>
 									</div>
 									<div class="col-md-9">
 										<input ng-show="isSameUser" type="text" class="profile-large-box" ng-model="data[0][0].l_name">
@@ -110,6 +123,7 @@
 										<span class="profile-left-text" ng-hide="isSameUser">From</span>
 									</div>
 									<div class="col-md-9">
+
 										<input ng-show="isSameUser" type="text" class="profile-large-box" placeholder="" ng-click="selectCity" ng-autocomplete="address" ng-model="st_address" details="details" options="options">
 										<label ng-hide="isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].city}} {{data[0][0].state}}</label>
 									</div>
@@ -149,7 +163,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row item-body" ng-show="active_tab === 'media_tab'">cancel 
+						<div class="row item-body" ng-show="active_tab === 'media_tab'">
 							<div class="row item-head">Profile Photo</div>
 							<div class="row item-content" style="padding:20px;">
 								<div class="row" ng-show="isSameUser">
@@ -290,7 +304,8 @@
 								  				</div>
 								  				<div class="row bottom-space">
 								  					<label class="credit-card-text">Card number *</label>
-								  					<input type="text" ng-model="cc_no" ui-mask="9999 9999 9999 9999" class="credit-card-box">
+								  					<input type="text" ng-model="cc_no" ui-mask="9999 9999 9999 9999" onkeypress="return isNumber(event)"  minlength="13" maxlength="16" class="credit-card-box">
+								  					<div style="color: red; font-size: 11px;" ng-show="no_cc_no">Credit Card number can not be empty !</div>
 								  				</div>
 								  				<div class="row">
 								  					<div class="col-md-3">
@@ -306,31 +321,38 @@
 								  						<select ng-model="cc_month" ng-options="x for x in get_month" class="expiry-box">
 								  						 	
 														</select>
+														<div style="color: red; font-size: 11px;" ng-show="no_cc_month">Please select an expiry month for your card !</div>
 								  					</div>
 								  					<div class="col-md-3">
 								  						<select ng-model="cc_year" ng-options="x for x in get_year" class="expiry-box">
 								  						 	
 														</select>
+														<div style="color: red; font-size: 11px;" ng-show="no_cc_year">Please select an expiry year for your card !</div>
 								  					</div>
 								  					<div class="col-md-6">
-								  						<input type="text" ng-model="security_code" class="medium-box">
+								  						<input type="text" ng-model="security_code" onkeypress="return isNumber(event)"  minlength="3" maxlength="4" class="medium-box">
 								  					</div>
+								  					<div style="color: red; font-size: 11px;" ng-show="no_security_code">Please enter a security code on back of your card !</div>
 								  				</div>
 								  				<div class="row">
 								  					<div class="col-md-6">
-								  						<label class="credit-card-text">First name</label>
+								  						<label class="credit-card-text">First name *</label>
 								  					</div>
+
 								  					<div class="col-md-6">
-								  						<label class="credit-card-text">Last name</label>
+								  						<label class="credit-card-text">Last name *</label>
 								  					</div>
 								  				</div>
 								  				<div class="row bottom-space">
 								  					<div class="col-md-6">
 								  						<input type="text" ng-model="first_name" class="medium-box">
 								  					</div>
+								  					<div style="color: red; font-size: 11px;" ng-show="no_first_name">Please enter first name as it appears on your card !</div>
 								  					<div class="col-md-6">
 								  						<input type="text" ng-model="last_name" class="medium-box">
 								  					</div>
+								  					<div style="color: red; font-size: 11px;" ng-show="no_last_name">Please enter last name as it appears on your card !</div>
+
 								  				</div>
 								  				<div class="row">
 								  					<div class="col-md-6">
@@ -343,6 +365,8 @@
 								  				<div class="row bottom-space">
 								  					<div class="col-md-6">
 								  						<input type="text" ng-model="postal" class="medium-box">
+									  					<div style="color: red; font-size: 11px;" ng-show="no_postal">Please enter your postal code !</div>
+
 								  					</div>
 								  					<div class="col-md-6">
 								  						<select class="medium-box">
@@ -355,7 +379,7 @@
 							  					<div class="col-md-6"></div>
 							  					<div class="col-md-6">
 							  						<button class="btn btn-primary cancel-button" data-dismiss="modal">Cancel</button>
-							  						<button ng-click="add_card()" class="btn btn-primary add-card-button">Add Card</button>
+							  						<button ng-click="add_card();" class="btn btn-primary add-card-button">Add Card</button>
 							  					</div>
 							  				</div>
 								  		</div>

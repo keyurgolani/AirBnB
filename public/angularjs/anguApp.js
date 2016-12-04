@@ -360,42 +360,157 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 
+
 		$scope.add_card = function() {
 
-			var newCard = {
-				"cc_no" : $scope.cc_no,
-				"cc_month" : $scope.cc_month,
-				"cc_year" : $scope.cc_year,
-				"first_name" : $scope.first_name,
-				"last_name" : $scope.last_name,
-				"security" : $scope.security_code,
-				"postal" : $scope.postal,
-				"country" : "United States"
-			}
-			$http({
-				method : "POST",
-				url : "/addCard",
-				data : newCard
-			}).then((result) => {
 
-				$scope.data[1].push({
-					"card_id" : result.card_id,
-					"card_number" : Validation.maskCard($scope.cc_no),
-					"exp_month" : $scope.cc_month,
-					"exp_year" : $scope.cc_year,
-					"first_name" : $scope.first_name,
+			$scope.no_first_name    = false;
+			$scope.no_last_name     = false;
+			$scope.no_cc_no         = false;
+			$scope.no_cc_month      = false;
+			$scope.no_cc_year       = false;
+			$scope.no_security_code = false;
+			$scope.no_first_name    = false;
+			$scope.no_last_name     = false;
+			$scope.no_postal        = false;
+			
+			$scope.card_success     = false;
+
+
+			if($scope.cc_no === undefined || $scope.cc_no === null || $scope.cc_no === ""){
+
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = false;
+				$scope.no_cc_no         = true;
+				console.log('$scope.no_cc_no', $scope.no_cc_no);
+				$scope.no_cc_month      = false;
+				$scope.no_cc_year       = false;
+				$scope.no_security_code = false;
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = false;
+				$scope.no_postal        = false;
+
+			}else if($scope.cc_month === undefined || $scope.cc_month === null || $scope.cc_month === ""){
+
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = false;
+				$scope.no_cc_no         = false;
+				$scope.no_cc_month      = true;
+				console.log('$scope.no_cc_month', $scope.no_cc_month);
+				$scope.no_cc_year       = false;
+				$scope.no_security_code = false;
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = false;
+				$scope.no_postal        = false;
+
+			}else if($scope.cc_year === undefined || $scope.cc_year === null || $scope.cc_year === ""){
+
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = false;
+				$scope.no_cc_no         = false;
+				$scope.no_cc_month      = false;
+				$scope.no_cc_year       = true;
+				console.log('$scope.no_cc_year', $scope.no_cc_year);
+				$scope.no_security_code = false;
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = false;
+				$scope.no_postal        = false;
+
+			}else if($scope.security_code === undefined || $scope.security_code === null || $scope.security_code === ""){
+
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = false;
+				$scope.no_cc_no         = false;
+				$scope.no_cc_month      = false;
+				$scope.no_cc_year       = false;
+				$scope.no_security_code = true;
+				console.log('$scope.no_security_code', $scope.no_security_code);
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = false;
+				$scope.no_postal        = false;
+
+			}else if($scope.first_name === undefined || $scope.first_name === null || $scope.first_name === ""){
+
+				$scope.no_first_name    = true;
+				console.log('$scope.no_first_name', $scope.no_first_name);
+				$scope.no_last_name     = false;
+				$scope.no_cc_no         = false;
+				$scope.no_cc_month      = false;
+				$scope.no_cc_year       = false;
+				$scope.no_security_code = false;
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = false;
+				$scope.no_postal        = false;
+
+			}else if($scope.last_name === undefined || $scope.last_name === null || $scope.last_name === ""){
+
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = true;
+				console.log('$scope.no_last_name', $scope.no_last_name);
+				$scope.no_cc_no         = false;
+				$scope.no_cc_month      = false;
+				$scope.no_cc_year       = false;
+				$scope.no_security_code = false;
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = false;
+				$scope.no_postal        = false;
+
+			}else if($scope.postal === undefined || $scope.postal === null || $scope.postal === ""){
+
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = false;
+				$scope.no_cc_no         = false;
+				$scope.no_cc_month      = false;
+				$scope.no_cc_year       = false;
+				$scope.no_security_code = false;
+				$scope.no_first_name    = false;
+				$scope.no_last_name     = false;
+				$scope.no_postal        = true;
+				console.log('$scope.no_postal', $scope.no_postal);
+
+			}else{
+
+				
+
+				var newCard = {
+					"cc_no"     : $scope.cc_no,
+					"cc_month"  : $scope.cc_month,
+					"cc_year"   : $scope.cc_year,
+					"first_name": $scope.first_name,
 					"last_name" : $scope.last_name,
-					"cvv" : $scope.security_code,
-					"postal_code" : $scope.postal,
-					"country" : "United States"
-				});
-				console.log($scope.data[1]);
+					"security"  : $scope.security_code,
+					"postal"    : $scope.postal,
+					"country"   : "United States"
+				}
+				$http({
+					method : "POST",
+					url : "/addCard",
+					data : newCard
+				}).then((result) => {
 
-				$("#payment_model").modal('toggle');
-			// $scope.data = result.data.room_types;
-			}, (error) => {
-				// $scope.room_types = [];
-			})
+					$scope.data[1].push({
+						"card_id" : result.card_id,
+						"card_number" : Validation.maskCard($scope.cc_no),
+						"exp_month" : $scope.cc_month,
+						"exp_year" : $scope.cc_year,
+						"first_name" : $scope.first_name,
+						"last_name" : $scope.last_name,
+						"cvv" : $scope.security_code,
+						"postal_code" : $scope.postal,
+						"country" : "United States"
+					});
+					// console.log($scope.data[1]);
+
+					$("#payment_model").modal('toggle');
+					$scope.card_success = true;
+
+				// $scope.data = result.data.room_types;
+				}, (error) => {
+					// $scope.room_types = [];
+				})
+	
+			}
+
 		}
 
 		$scope.details = '';
@@ -413,28 +528,39 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 		$scope.updateProfile = () => {
 
-			$http({
-				method : "POST",
-				url : "/updateProfile",
-				data : {
-					"f_name" : $scope.data[0][0].f_name,
-					"l_name" : $scope.data[0][0].l_name,
-					"gender" : $scope.data[0][0].gender,
-					"birth_month" : MonthNumber.getMonthFromString($scope.birth_month),
-					"birth_date" : $scope.birth_date,
-					"birth_year" : $scope.birth_year,
-					"email" : $scope.data[0][0].email,
-					"phone" : $scope.data[0][0].phone,
-					"city" : $scope.city,
-					"state" : $scope.state,
-					"zip" : $scope.zip,
-					"description" : $scope.data[0][0].description
-				}
-			}).then((result) => {
-				alert('Success');
-			}, (error) => {
-				alert('Error');
-			})
+			console.log('$scope.data[0][0].f_name', $scope.data[0][0].f_name);
+			console.log('$scope.data[0][0].l_name', $scope.data[0][0].l_name);
+			console.log('$scope.data[0][0].gender', $scope.data[0][0].gender);
+			console.log('MonthNumber.getMonthFromString($scope.birth_month)', MonthNumber.getMonthFromString($scope.birth_month));
+			console.log('$scope.birth_date', $scope.birth_date);
+			console.log('$scope.data[0][0].email', $scope.data[0][0].email);
+
+			
+				$http({
+					method : "POST",
+					url : "/updateProfile",
+					data : {
+						"f_name"     : $scope.data[0][0].f_name,
+						"l_name"     : $scope.data[0][0].l_name,
+						"gender"     : $scope.data[0][0].gender,
+						"birth_month": MonthNumber.getMonthFromString($scope.birth_month),
+						"birth_date" : $scope.birth_date,
+						"birth_year" : $scope.birth_year,
+						"email"      : $scope.data[0][0].email,
+						"phone"      : $scope.data[0][0].phone,
+						"city"       : $scope.city,
+						"state"      : $scope.state,
+						"zip"        : $scope.zip,
+						"description": $scope.data[0][0].description
+					}
+				}).then((result) => {
+					// alert('Success');
+					
+
+				}, (error) => {
+					alert('Error');
+				})
+
 		}
 
 		$scope.updatePass = function() {
