@@ -274,18 +274,21 @@ router.post('/addProperty', (req, res, next) => {
 
 router.post('/register', function(req, res, next) {
 	var first_name = req.body.firstname;
-	var last_name = req.body.lastname;
-	var email = req.body.email;
-	var secret = req.body.password;
-	var month = req.body.month;
-	var day = req.body.day;
-	var year = req.body.year;
+	var last_name  = req.body.lastname;
+	var email      = req.body.email;
+	var secret     = req.body.password;
+	var month      = req.body.month;
+	var day        = req.body.day;
+	var year       = req.body.year;
 
 	if (req.body.password === null || req.body.password === undefined) {
 		res.send({
 			'statusCode' : 400
 		});
 	}
+
+
+	
 
 	var salt = bcrypt.genSaltSync(10);
 	mysql.fetchData('user_id, email', 'account_details', {
@@ -297,6 +300,7 @@ router.post('/register', function(req, res, next) {
 			});
 		} else {
 			if (results && results.length > 0) {
+				console.log("<><><><><><><><><><><><><><><><><><><>");
 				res.send({
 					'statusCode' : 409
 				});

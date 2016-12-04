@@ -1096,6 +1096,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 	})
 	.controller('signUpController', function($scope, $http, Random, deviceDetector) {
+		
 		$scope.emailSignUp = false;
 		$scope.beforeSignUp = true;
 
@@ -1106,26 +1107,165 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 		$scope.deviceDetector = deviceDetector;
 
+
 		$scope.signUp = function() {
-			//sending new user data to node
-			$http({
-				url : '/register',
-				method : 'POST',
-				data : {
-					'email' : $scope.email,
-					'firstname' : $scope.f_name,
-					'lastname' : $scope.l_name,
-					'password' : $scope.password,
-					'month' : $scope.month,
-					'day' : $scope.day,
-					'year' : $scope.year,
-					'user_agent' : deviceDetector
-				}
-			}).then(function mySuccess(response) {
-				console.log("Sign Up Done !!");
-			}, function myError(response) {
-				console.log("Could not register !!");
-			});
+			
+			$scope.signup_successful    = false;
+			$scope.signup_error         = false;
+			$scope.no_email             = false;
+			$scope.no_f_name            = false;
+			$scope.no_l_name            = false;
+			$scope.no_password          = false;
+			$scope.no_month             = false;
+			$scope.no_day               = false;
+			$scope.no_year              = false;
+			$scope.email_already_exists = false;
+
+			if($scope.f_name === "" || $scope.f_name === undefined || $scope.f_name === null){
+
+				$scope.signup_successful = false;
+				$scope.signup_error      = false;
+				$scope.no_email          = false;
+				$scope.no_f_name         = true;
+				$scope.no_l_name         = false;
+				$scope.no_password       = false;
+				$scope.no_month             = false;
+				$scope.no_day            = false;
+				$scope.no_year           = false;
+				$scope.email_already_exists = false;
+
+				
+			}else if($scope.l_name === "" || $scope.l_name === undefined || $scope.l_name === null){
+
+				$scope.signup_successful = false;
+				$scope.signup_error      = false;
+				$scope.no_email          = false;
+				$scope.no_f_name         = false;
+				$scope.no_l_name         = true;
+				$scope.no_password       = false;
+				$scope.no_month             = false;
+				$scope.no_day            = false;
+				$scope.no_year           = false;
+				$scope.email_already_exists = false;
+
+				
+			}else if($scope.email === "" || $scope.email === undefined || $scope.email === null){
+
+				$scope.signup_successful = false;
+				$scope.signup_error      = false;
+				$scope.no_email          = true;
+				$scope.no_f_name         = false;
+				$scope.no_l_name         = false;
+				$scope.no_password       = false;
+				$scope.no_month             = false;
+				$scope.no_day            = false;
+				$scope.no_year           = false;
+				$scope.email_already_exists = false;
+
+
+			}else if($scope.password === "" || $scope.password === undefined || $scope.password === null){
+
+				$scope.signup_successful = false;
+				$scope.signup_error      = false;
+				$scope.no_email          = false;
+				$scope.no_f_name         = false;
+				$scope.no_l_name         = false;
+				$scope.no_password       = true;
+				$scope.no_month             = false;
+				$scope.no_day            = false;
+				$scope.no_year           = false;
+				$scope.email_already_exists = false;
+
+				
+			}else if($scope.month === "" || $scope.month === undefined || $scope.month === null){
+
+				$scope.signup_successful = false;
+				$scope.signup_error      = false;
+				$scope.no_email          = false;
+				$scope.no_f_name         = false;
+				$scope.no_l_name         = false;
+				$scope.no_password       = false;
+				$scope.no_month             = true;
+				$scope.no_day            = false;
+				$scope.no_year           = false;
+				$scope.email_already_exists = false;
+
+				
+			}else if($scope.day === "" || $scope.day === undefined || $scope.day === null){
+
+				$scope.signup_successful = false;
+				$scope.signup_error      = false;
+				$scope.no_email          = false;
+				$scope.no_f_name         = false;
+				$scope.no_l_name         = false;
+				$scope.no_password       = false;
+				$scope.no_month             = false;
+				$scope.no_day            = true;
+				$scope.no_year           = false;
+				$scope.email_already_exists = false;
+
+				
+			}else if($scope.year === "" || $scope.year === undefined || $scope.year === null){
+
+				$scope.signup_successful = false;
+				$scope.signup_error      = false;
+				$scope.no_email          = false;
+				$scope.no_f_name         = false;
+				$scope.no_l_name         = false;
+				$scope.no_password       = false;
+				$scope.no_month             = false;
+				$scope.no_day            = false;
+				$scope.no_year           = true;
+				$scope.email_already_exists = false;
+				
+
+			}else{
+				
+				
+					//sending new user data to node
+					$http({
+						url : '/register',
+						method : 'POST',
+						data : {
+							'email'     : $scope.email,
+							'firstname' : $scope.f_name,
+							'lastname'  : $scope.l_name,
+							'password'  : $scope.password,
+							'month'     : $scope.month,
+							'day'       : $scope.day,
+							'year'      : $scope.year,
+							'user_agent': deviceDetector
+						}
+					}).then(function mySuccess(response) {
+						console.log('response', response);
+						
+						if(response.data.statusCode === 409){
+							console.log("Could not sign up...!!!");
+							console.log("User already exists.");
+							$scope.signup_successful = false;
+							$scope.signup_error = false;
+							$scope.email_already_exists = true;
+						}else{
+	
+							console.log("Sign Up Done !!");
+							$scope.signup_successful = true;
+							$scope.email_already_exists = false;
+							$scope.signup_error = false;
+							
+						}
+
+
+					}, function myError(response) {
+						console.log('response', response);
+
+						console.log("Could not register !!");
+						$scope.signup_successful = false;
+						$scope.signup_error = true;
+
+					});
+
+			}
+
 		};
 
 
