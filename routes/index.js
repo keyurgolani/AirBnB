@@ -899,7 +899,7 @@ router.get('/viewListing', function(req, res, next) {
 				
 				async.parallel([
 				function(callback) {
-					mysql.executeQuery('select trip_details.user_id as traveller_id, host_review, host_rating, host_rating_timestamp, f_name, l_name from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join account_details on trip_details.user_id = account_details.user_id where listings.listing_id = ?', [listing_id], function(error, ratings) {
+					mysql.executeQuery('select trip_details.user_id as traveller_id, trip_details.trip_id as trip_id, host_review, host_rating, host_rating_timestamp, f_name, l_name from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join account_details on trip_details.user_id = account_details.user_id where listings.listing_id = ?', [listing_id], function(error, ratings) {
 						if(error) {
 							res.send({
 								'statusCode' : 500
@@ -910,20 +910,22 @@ router.get('/viewListing', function(req, res, next) {
 								results[0].ratings = ratings;
 								callback(null, null);
 							}
-							ratings.forEach(function(item, index, array) {
-								console.log(item.traveller_id);
+							for(var i = 0; i < ratings.length; i++) {
 								req.db.get('user_photos').find({
-									'user_id' : item.traveller_id
+									'user_id' : ratings[i].traveller_id
 								}).then((docs) => {
-									itemsProcessed++;
-									ratings[index].profilePic = docs;
-									console.log(itemsProcessed, array.length);
-									if(itemsProcessed === array.length) {
-										results[0].ratings = ratings;
-										callback(null, null);
+									ratings[i].profilePic = docs;
+								});
+								req.db.get('host_review_photos').find({
+									'trip_id' : ratings[i].trip_id
+								}).then((docs) => {
+									if(docs && docs.length > 0) {
+										ratings[i].review_photos = docs[0].photos;
 									}
 								});
-							});
+							}
+							results[0].ratings = ratings
+							callback();
 						}
 					});
 				}, function(callback) {

@@ -1786,7 +1786,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 
 	.controller('searchListingController', function($scope, $http, $location, Random, $interval, NgMap, $window) {
-
+		
 		$scope.init = function(retrievedData) {
 			$scope.data = JSON.parse(retrievedData);
 			
@@ -1800,9 +1800,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.guest = $location.search().guest
 			}
 			
-			$scope.entire_home = false;
-			$scope.private_room = false;
-			$scope.shared_room = false;
+			$scope.entire_home = true;
+			$scope.private_room = true;
+			$scope.shared_room = true;
 			$scope.min_price = 0;
 			$scope.max_price = 100;
 			$scope.instant_book = false;
@@ -1842,6 +1842,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		}
 		
 		$scope.updateFilters = (when, guests, entire_home, private_room, shared_room, min_price, max_price, instant_book) => {
+			
 			$scope.filteredResults = $scope.data.results.filter(function(elem, index, array) {
 				var whenValid = true;
 				var guestsValid = true;
@@ -1887,6 +1888,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				}
 				return whenValid && guestsValid && room_type_valid && price_range_valid && instant_book_valid;
 			});
+			
 		};
 		
 		$scope.$watchCollection('[daterange, guest, entire_home, private_room, shared_room, min_price, max_price, range, instant_book, data.results]', function() {
