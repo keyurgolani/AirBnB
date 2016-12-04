@@ -36,13 +36,13 @@
 									<span class="title-location-text">{{data.city}},{{data.state}}, United States</span>
 								</div>
 								<div class="row">
-									<div star-rating ng-model="data.avg_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
+									<div star-rating ng-model="data.avg_rating[0].average_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
 									<span>&nbsp</span>
 									<span class="title-location-text">{{data.ratings.length}} {{data.ratings.length === 1 ? "Review" : "Reviews"}}</span>
 								</div>
 							</div>
 							<div class="col-md-4 text-center">
-								<img class="photo-round" data-ng-src="data:{{data.profilePic[0].photo.filetype}};base64,{{data.profilePic[0].photo.base64}}">
+								<img class="photo-round" data-ng-src="data:{{data.owner_photo[0].photo.filetype}};base64,{{data.owner_photo[0].photo.base64}}">
 								<div class="title-location-text" style="margin-top: 10px;">{{data.f_name}}</div>
 							</div>
 						</div>
@@ -395,25 +395,29 @@
 						<div class="row" style="margin-bottom:40px;">
 							<span class="about-text">{{data.ratings.length}} {{data.ratings.length === 1 ? "Review" : "Reviews"}}</span>
 							<span>&nbsp</span>
-							<div star-rating ng-model="data.avg_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
+							<div star-rating ng-model="data.avg_rating[0].average_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
 							<span>&nbsp</span>
 						</div>
 						<div class="review-seperator"></div>
+						<div class="row text-margin-bottom" ng-show="data.ratings.length === 0">
+							No Reviews yet!
+						</div>
 						<div class="row text-margin-bottom" ng-repeat = "rating in data.ratings">
 							<div class="col-md-2">
-								<div class="photo-round"><a href=""><img src="../images/SFO/b.jpg"></a></div>
+								<div class="photo-round"><a href=""><img data-ng-src="data:{{rating.profilePic[0].photo.filetype}};base64,{{rating.profilePic[0].photo.base64}}" height="70px" width="70px"></a></div>
 							</div>
 							<div class="col-md-10">
 								<div class="row">
-									<div class="left-column-text" style="margin-top:10px;">{{data.users[$index].f_name}} {{data.users[$index].l_name}}</div>
+									<div class="left-column-text" style="margin-top:10px;">{{rating.f_name}} {{rating.l_name}}</div>
 								</div>
 								<div class="row">
-									<div class="review-subtitle-text">{{rating.host_rating_timestamp}}</div>
+									<div class="review-subtitle-text">{{rating.host_rating_timestamp | date:'MM-dd-yyyy'}}</div>
 								</div>
+								<div star-rating ng-model="rating.host_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
 							</div>
-						<div class="row">
-							<span class="description-text">{{rating.host_review}}</span>
-						</div>
+							<div class="row">
+								<span class="description-text">{{rating.host_review}}</span>
+							</div>
 						</div>
 						<div class="seperator"></div>
 					</div>
