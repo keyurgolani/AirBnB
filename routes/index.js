@@ -13,7 +13,7 @@ var barcode = require('barcode');
 
 var NodeGeocoder = require('node-geocoder');
 var GeoPoint = require('geopoint');
-//var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt');
 
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -897,7 +897,8 @@ router.get('/viewListing', function(req, res, next) {
 				results[0].start_date = require('fecha').format(new Date(results[0].start_date), 'MM/DD/YYYY');
 				results[0].end_date = require('fecha').format(new Date(results[0].end_date), 'MM/DD/YYYY');
 				
-				async.parallel([function(callback) {
+				async.parallel([
+				function(callback) {
 					mysql.executeQuery('select trip_details.user_id as traveller_id, host_review, host_rating, host_rating_timestamp, f_name, l_name from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join account_details on trip_details.user_id = account_details.user_id where listings.listing_id = ?', [listing_id], function(error, ratings) {
 						if(error) {
 							res.send({
@@ -905,15 +906,21 @@ router.get('/viewListing', function(req, res, next) {
 							});
 						} else {
 							var itemsProcessed = 0;
+							if(ratings.length === 0) {
+								results[0].ratings = ratings;
+								callback(null, null);
+							}
 							ratings.forEach(function(item, index, array) {
+								console.log(item.traveller_id);
 								req.db.get('user_photos').find({
 									'user_id' : item.traveller_id
 								}).then((docs) => {
 									itemsProcessed++;
 									ratings[index].profilePic = docs;
+									console.log(itemsProcessed, array.length);
 									if(itemsProcessed === array.length) {
 										results[0].ratings = ratings;
-										callback();
+										callback(null, null);
 									}
 								});
 							});
@@ -927,23 +934,23 @@ router.get('/viewListing', function(req, res, next) {
 							});
 						} else {
 							results[0].avg_rating = average_rating;
-							callback();
+							callback(null, null);
 						}
 					});
 				}, function(callback) {
 					req.db.get('property_photos').find({
 						'property_id' : Number(results[0].property_id)
-					}).then((docs) => {
+					}).then(function(docs) {
 						results[0].photos = docs;
-						callback();
-					})
+						callback(null, null);
+					});
 				}, function(callback) {
 					req.db.get('user_photos').find({
 						'user_id' : results[0].owner_id
-					}).then((docs) => {
+					}).then(function(docs) {
 						results[0].owner_photo = docs;
-						callback();
-					})
+						callback(null, null);
+					});
 				}], function(error, finalResults) {
 					res.render('viewListing', {
 						data : JSON.stringify(results[0])
@@ -1316,7 +1323,7 @@ router.get('/searchListing', function(req, res, next) {
 							'property_id' : Number(item.property_id)
 						}).then((photos) => {
 							results[index].photos = photos;
-							callback();
+							callback(null, null);
 						});
 					}, function(callback) {
 						req.db.get('user_photos').find({
@@ -1324,7 +1331,7 @@ router.get('/searchListing', function(req, res, next) {
 						}).then((profile_photo) => {
 							console.log(profile_photo);
 							results[index].profile_photo = profile_photo;
-							callback();
+							callback(null, null);
 						});
 					}, function(callback) {
 						mysql.executeQuery('select count(host_rating) as number_of_ratings, avg(host_rating) as host_rating from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id where owner_id = ?', [ item.owner_id ], (error, hosting_rating_details) => {
@@ -1332,7 +1339,7 @@ router.get('/searchListing', function(req, res, next) {
 								throw error;
 							} else {
 								results[index].rating = hosting_rating_details
-								callback();
+								callback(null, null);
 							}
 						});
 					} ], function(error, finalResults) {
