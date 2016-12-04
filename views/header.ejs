@@ -47,7 +47,6 @@
 	    left: -6px;
 	}
 </style>
-
 <div >
 	<div>
 		<nav class="navbar navbar-fixed-top" style="border-radius:0px; box-shadow: 1px 3px 1px 0 rgba(0, 0, 0, 0.05);" ng-controller="navBarController">
@@ -118,13 +117,11 @@
 	 						<div  class="col-lg-12 ul_eight ul_Nine dropdown">
 	 							<a style="text-decoration:none;" href="#" class="ul_Nine" ng-show="global.loggedInUser" data-toggle="dropdown" class="dropdown-toggle">
 		 							<img ng-show="global.loggedInUser.photo" style="border-radius:50%; margin-top:-8px; border: 2px solid grey;" data-ng-src="data:{{global.loggedInUser.photo.filetype}};base64,{{global.loggedInUser.photo.base64}}" width="35" height="35">
-		 							<div class="profile-photo glyphicon glyphicon-user no-profile" ng-hide="global.loggedInUser.photo" style="height: 35px; width: 35px; font-size: 20px; padding: 5px;"></div>
+		 							<div class="profile-photo glyphicon glyphicon-user no-profile" ng-hide="global.loggedInUser.photo" style="height: 35px; width: 35px; font-size: 20px; padding: 5px;margin-bottom: 13px"></div>
 		 						</a>
-								<ul class="dropdown-menu" id="menu1">
-									<li><a ng-href="/profile?owner={{global.loggedInUser.user_id}}">Edit Profile</a></li>
-									<li><a href="#">Something else here</a></li>
-									<li class="divider"></li>
-									<li ng-click="logout();"><a href="#">Log Out</a></li>
+								<ul class="dropdown-menu" id="menu1" style="padding:0px;margin-top: -5px;">
+									<li><a ng-href="/profile?owner={{global.loggedInUser.user_id}}" style="font-size: 14px;">Edit Profile</a></li>
+									<li ng-click="logout();"><a href="#" style="font-size: 14px;">Log Out</a></li>
 								</ul>
 	 						</div>
 		 				</li>
@@ -135,12 +132,11 @@
 	</div>
 </div>
 
-
 <!-- SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP SIGNUP  -->
 	<div ng-controller="signUpController">
 
 		<!-- BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP -->
-		<div class="modal container fade signup-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+		<div id="signup" class="modal container fade signup-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 		  
 		  <div class="modal-dialog container modal-md" role="document" style="border-radius:0px;">
 		  	<div class="row" style="margin-top:20px;">
@@ -151,18 +147,21 @@
 		    		
 		    		<div ng-show="beforeSignUp">
 			    		<div>
+							<a href="/auth/facebook?user_agent={{deviceDetector}}" style="text-decoration:none;">
 							<div class="facebookSignUpButton on-hover" style="height:64px;width:386px;padding: 20px 0px 20px 20px;">
 								<i class="fa fa-facebook" style="color:white; font-size:18px;"></i>
-								<a href="/auth/facebook?user_agent={{deviceDetector}}" style="text-decoration:none;"><span class="text-center" style="color:white; font-weight:normal; font-size:16px; margin: 50px 95px 50px 80px">Sign up with Facebook</span></a>
-
+								<span class="text-center" style="color:white; font-weight:normal; font-size:16px; margin: 50px 95px 50px 80px">Sign up with Facebook</span>
 							</div>
+							</a>
 		    			</div>
 
-			    		<div>	
-							<div class="googleSignUpButton on-hover">
-								<i class="fa fa-google" style="font-size:18px;"></i>
-								<a href="/auth/google?user_agent={{deviceDetector}}" style="text-decoration:none;"><span class="text-center" style="font-size:16px; margin-left:90px;color: #484848;">Sign up with Google</span></a>
+			    		<div>
+			    			<a href="/auth/google?user_agent={{deviceDetector}}" style="text-decoration:none;">	
+							<div class="googleSignUpButton on-hover" style="padding: 20px 0px 20px 16px;">
+								<img src="images/google.svg" style="height:20px;width:20px;">
+								<span class="text-center" style="font-size:16px; margin-left:90px;color: #484848;">Sign up with Google</span>
 							</div>
+							</a>
 			    		</div>
 
 			    		<div class="row" style="margin-top:10px;">	
@@ -177,11 +176,13 @@
 							</div>
 			    		</div>
 			    		
-			    		<div>	
+			    		<div>
+			    			<a href="" style="text-decoration:none;">	
 							<div class="signUpWithEmailbutton on-hover button-effect" ng-click="signUpWithEmail();">
 								<i class="fa fa-envelope-o" style="font-size:18px; color: white;"></i>
-								<a href="" style="text-decoration:none;"><span class="text-center" style="font-size:16px; margin-left:90px; color: white;">Sign up with Email</span></a>
+								<span class="text-center" style="font-size:16px; margin-left:90px; color: white;">Sign up with Email</span>
 							</div>
+							</a>
 			    		</div>
 			    		<div class="text-justify signUpNotice" style="font-size:0.85em;line-height: 1.7;">
 			    			By signing up, I agree to Airbnb’s <span class="learn-more">Terms of Service</span>, <span class="learn-more">Nondiscrimination Policy</span>, <span class="learn-more">Payments Terms of Service</span>, <span class="learn-more">Privacy Policy</span>, <span class="learn-more">Guest Refund Policy</span>, and <span class="learn-more">Host Guarantee Terms</span>.
@@ -196,9 +197,8 @@
 							<div class="col-lg-9 col-sm-12 col-xs-12 text-left" style="margin-top:0px; padding:5px; color:#484848;font-size:16px;font-weight:500;">
 								Already have an Airbnb account?
 							</div>
-							<div class="col-lg-3 col-sm-12 col-xs-12 text-right btn btn-default" style="margin-top:0px; color:#ff5a5f; border: 1px solid #ff5a5f;height:36px;width:82.63px;float:right;" data-target=".signin-modal-md">
-								Log in
-							</div>
+
+							<button id="sign-up" class="col-lg-3 col-sm-12 col-xs-12 text-right btn btn-default" style="margin-top:0px; color:#ff5a5f; border: 1px solid #ff5a5f;height:36px;width:82.63px;float:right;">Log in</button>
 			    		</div>
 			    	</div>
 					<!-- onclickusersignup onclickusersignup onclickusersignup onclickusersignup onclickusersignup onclickusersignup -->
@@ -206,7 +206,7 @@
 					<div ng-show="emailSignUp" class="col-lg-12" style="">
 						
 						<div class="text-center" style="margin-top:0px; font-size:14px;">
-							Sign up with <a href="/auth/facebook?user_agent={{deviceDetector}}" class="on-hover" style="color: #008489;text-decoration:none">facebook</a> or<a href="/auth/google?user_agent={{deviceDetector}}" class="on-hover" style="color: #008489;text-decoration:none">Google</a>
+							Sign up with <a href="/auth/facebook?user_agent={{deviceDetector}}" class="on-hover" style="color: #008489;text-decoration:none;">facebook</a> or <a href="/auth/google?user_agent={{deviceDetector}}" class="on-hover" style="color: #008489;text-decoration:none;">Google</a>
 						</div>
 
 						<div class="row">
@@ -379,7 +379,7 @@
 	<!-- <div ng-controller="signUpController"> -->
 		<div ng-controller="login">
 		<!-- BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP BEFORE SIGNUP -->
-		<div class="modal container fade signin-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+		<div id="signin" class="modal container fade signin-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 		  
 		  <div class="modal-dialog container modal-md" role="document" style="border-radius:0px;">
 		  	<div class="row" style="margin-top:20px;">
@@ -390,18 +390,21 @@
 		    		
 		    		<div ng-show="true">
 			    		<div>
-
+			    			<a href="/auth/facebook?user_agent={{deviceDetector}}" style="text-decoration:none;">
 							<div class="facebookSignUpButton on-hover">
 								<i class="fa fa-facebook" style="color:white; font-size:18px;"></i>
-								<a href="/auth/facebook?user_agent={{deviceDetector}}" style="text-decoration:none;"><span class="text-center" style="color:white; font-size:16px; margin: 50px 95px 50px 85px">Log In with facebook</span></a>
+								<span class="text-center" style="color:white; font-size:16px; margin: 50px 95px 50px 85px">Log In with facebook</span>
 							</div>
+							</a>
 			    		</div>
 
 			    		<div>	
+							<a href="/auth/google?user_agent={{deviceDetector}}" style="text-decoration:none;">	
 							<div class="googleSignUpButton on-hover" style="border-color: #aaa;color: #484848;">
 								<i class="fa fa-google" style="font-size:16px;"></i>
 								<a href="/auth/google?user_agent={{deviceDetector}}" style="text-decoration:none;"><span class="text-center" style="font-size:16px;color: #484848; margin-left:90px;">Log In with Google</span></a>
 							</div>
+							</a>
 			    		</div>
 
 			    		<div class="row" style="margin-top:10px;">	
@@ -448,9 +451,7 @@
 							<div class="col-lg-9 col-sm-12 col-xs-12 text-left" style="margin-top:0px; padding:5px; font-weight:14cm;">
 							<a href="" style="font-size:16px;color: #008489;">Don't have an account?</a>
 							</div>
-							<div class="col-lg-3 col-sm-12 col-xs-12 text-right btn btn-default" style="width:92px;height:36px;margin-top:0px; color:#ff5a5f; border: 1px solid #ff5a5f;">
-								Sign Up
-							</div>
+							<button id="login" class="col-lg-3 col-sm-12 col-xs-12 text-right btn btn-default" style="width:92px;height:36px;margin-top:0px; color:#ff5a5f; border: 1px solid #ff5a5f;">Sign Up</button>
 			    		</div>
 			    	</div>
 		    	</div>
@@ -460,6 +461,16 @@
 		   	</div>
 		  </div>
 		</div>
+		<script>
+			$("#login").click(function() {
+			    $("#signin").modal('hide');
+			    $("#signup").modal('show');
+			});
+			$("#sign-up").click(function() {
+			    $("#signup").modal('hide');
+			    $("#signin").modal('show');
+			});
+		</script>
 		<!-- /BEFORE SIGNUP /BEFORE SIGNUP /BEFORE SIGNUP /BEFORE SIGNUP /BEFORE SIGNUP /BEFORE SIGNUP /BEFORE SIGNUP /BEFORE SIGNUP -->	
 
 
