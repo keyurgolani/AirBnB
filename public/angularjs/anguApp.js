@@ -517,9 +517,21 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					method : "POST",
 					url : "/addCard",
 					data : newCard
-				}).then((result) => {
-
+				}).then(function(result) {
+					console.log(result);
 					if(result.data.statusCode === 200){
+						console.log(result.data);
+						console.log({
+							"card_id" : result.card_id,
+							"card_number" : Validation.maskCard($scope.cc_no),
+							"exp_month" : $scope.cc_month,
+							"exp_year" : $scope.cc_year,
+							"first_name" : $scope.first_name,
+							"last_name" : $scope.last_name,
+							"security" : $scope.security_code,
+							"postal" : $scope.postal,
+							"country" : "United States"
+						});
 						$scope.data[1].push({
 							"card_id" : result.card_id,
 							"card_number" : Validation.maskCard($scope.cc_no),
@@ -539,7 +551,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 						alert(result.data.message);
 					}
 
-				}, (error) => {
+				}, function(error) {
 					// $scope.room_types = [];
 				})
 
@@ -803,7 +815,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					}
 				}).then((results) => {
 					if (results.data.statusCode === 200) {
-						$rootScope.fetchLoggedInUser();
+						$rootScope.fetchLoggedInUser(function() {
+							
+						});
 					}
 				}, (error) => {
 					console.log("Error", error);
@@ -822,8 +836,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					}
 				}).then((results) => {
 					if (results.data.statusCode === 200) {
-						$rootScope.fetchLoggedInUser();
-						console.log("Results", results);
+						$rootScope.fetchLoggedInUser(function() {
+							
+						});
 					}
 				}, (error) => {
 					console.log("Error", error);
@@ -1517,7 +1532,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			});
 		}
 
-		$rootScope.fetchLoggedInUser();
+		$rootScope.fetchLoggedInUser(function() {
+			
+		});
 
 		$scope.logout = function() {
 			$http({
@@ -1547,9 +1564,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 						alert('you are yet not approved as a host!');
 						
 					}
-					/*$rootScope.fetchLoggedInUser(function() {
-					window.location.assign('/');
-				});	*/				
 				}, function(error) {
 
 					console.log("some error");

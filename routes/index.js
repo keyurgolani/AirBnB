@@ -753,7 +753,7 @@ router.post('/addCard', (req, res, next) => {
 						'statusCode' : 500
 					});
 				} else {
-					if (results && results.length > 0) {
+					if (results && results.affectedRows > 0) {
 						res.send({
 							'statusCode' : 200,
 							"card_id" : results.insertId
