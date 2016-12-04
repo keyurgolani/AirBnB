@@ -33,7 +33,7 @@
 									<span class="title-text">{{data.title}}</span>
 								</div>
 								<div class="row">
-									<span class="title-location-text">San Francisco, CA, United States</span>
+									<span class="title-location-text">{{data.city}},{{data.state}}, United States</span>
 								</div>
 								<div class="row">
 									<i class="fa fa-star small-star"></i>
@@ -47,7 +47,7 @@
 							</div>
 							<div class="col-md-4 text-center">
 								<div class="photo-round"><a href=""><img src="../images/SFO/b.jpg"></a></div>
-								<div class="title-location-text" style="margin-top: 10px;">Kalgi</div>
+								<div class="title-location-text" style="margin-top: 10px;">{{data.f_name}}</div>
 							</div>
 						</div>
 						<div class="seperator"></div>
@@ -58,7 +58,7 @@
 							</div>
 							<div class="col-md-3 text-center icons">
 								<div><i class="fa fa-users" aria-hidden="true"></i></div>
-								<div class="title-location-text"><span>1 Guest</span></div>
+								<div class="title-location-text"><span>{{data.accommodations}} Guest</span></div>
 							</div>
 							<div class="col-md-3 text-center icons">
 								<div><span class="glyphicon glyphicon-bed"></span></div>
