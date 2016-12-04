@@ -184,7 +184,7 @@
 
                         </span>
 
-                        <span class="glyphicon glyphicon-flash" style="color:#FFB400;" ng-show="l.is_bid"></span>
+                        <span class="glyphicon glyphicon-flash" style="color:#FFB400;" ng-hide="l.is_bid === 1"></span>
                       </div>
                       <div>
                           <img class="rightLabel" src="images/user_one.jpeg" width="65" height="65" alt="here">
@@ -237,7 +237,7 @@
                 <custom-marker position="[{{l.latitude}}, {{l.longitude}}]" animation="Animation.BOUNCE" >
                   <div class="cm">
                     
-                    <b style="color:white;">${{l.daily_price}}</b> <span class="glyphicon glyphicon-flash" style="color:yellow;" ng-show="l.is_bid"></span>
+                    <b style="color:white;">${{l.daily_price}}</b> <span class="glyphicon glyphicon-flash" style="color:yellow;" ng-hide="l.is_bid === 1"></span>
                   </div>
                 </custom-marker>
               </div>
