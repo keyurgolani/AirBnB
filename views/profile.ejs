@@ -149,7 +149,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row item-body" ng-show="active_tab === 'media_tab'">cancel 
+						<div class="row item-body" ng-show="active_tab === 'media_tab'">
 							<div class="row item-head">Profile Photo</div>
 							<div class="row item-content" style="padding:20px;">
 								<div class="row" ng-show="isSameUser">
@@ -280,7 +280,7 @@
 								<div id="payment_model" class="modal container fade addPayment-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 		  							<div class="modal-dialog container modal-md" role="document">
 								  		<div class="row payment-box">
-								  			<div class="row item-head border">Add New Payment Method</div>
+								  			<div class="row item-head border">Add New Payment Method<button data-dismiss="modal" class="remove-icon pull-right"><i class="fa fa-remove"></i></button></div>
 								  			<div class="row payment-body">
 								  				<div class="row bottom-space">
 								  					<img src="../images/cards/visa.png" class="card-images">
@@ -345,7 +345,7 @@
 								  						<input type="text" ng-model="postal" class="medium-box">
 								  					</div>
 								  					<div class="col-md-6">
-								  						<select class="medium-box">
+								  						<select class="country-box">
 								  						 	<option>United States</option>
 														</select>
 								  					</div>

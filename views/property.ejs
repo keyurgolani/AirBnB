@@ -39,7 +39,7 @@
 					<span class="h3 que_1">What kind of place do you have?</span>
 				</div>
 				<div class="row" style="display:flex;">
-					<div><select class="dropdown-box listing box-size" ng-model="room_type" ng-options="room.room_type for room in room_types"></select></div>
+					<div><select class="dropdown-box listing box-size" placeholder="Room type" ng-model="room_type" ng-options="room.room_type for room in room_types"></select></div>
 					<div class="address-box increment-main-box">
 				    	<div class="count-main-text"><input type="text" class="form-control count-main-text" placeholder="Guests" ng-model="item.item_count"/></div>
 						<span ng-click="item.item_count = item.item_count - 1" class="count-main-button btn button-radius">-</span>
@@ -62,11 +62,11 @@
 		<div class="row" ng-show="page === 2">
 			<div class="col-md-2"></div>
 			<div class="col-md-4">
-				<div class="row" style="margin-top: 30px;">
-					<span class="h3 que_2">What type of property is this?</span>
+				<div class="row" style="margin-top: 30px;margin-bottom:20px;">
+					<span class="h3 que_1">What type of property is this?</span>
 				</div>
 				<div class="row">
-					<select class=" dropdown-box listing property-box curve-border" ng-model="property_type" ng-options="property.property_type for property in property_types"></select>
+					<select class="listing property-box curve-border" ng-model="property_type" ng-options="property.property_type for property in property_types"></select>
 				</div>
 				<div class="row" style="margin-top: 30px;">
 					<div class="col-md-5 pull-left">

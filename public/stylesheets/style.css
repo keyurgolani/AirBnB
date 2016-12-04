@@ -585,11 +585,13 @@ body {
 	}
 	.imgHolder .leftLabel {
 		position: absolute;
-		left: 5px;
-		top: 170px;
-		border: 0px solid green;
-		background-color: rgba(0, 0, 0, 0.7);
-		padding: 10px;
+		left: -15px;
+	    top: 220px;
+	    border: 0px solid green;
+	    /* background-color: rgba(0, 0, 0, 0.7); */
+	    padding: 10px;
+	    background-color: rgba(45,45,45,0.9);
+	    font-weight: bold;
 	}
 	.imgHolder .leftLabel .textProp {
 		color: white;
@@ -641,21 +643,24 @@ main {
 }
 
 .box-size {
+	height: 34px !important;
+	width: 186.5px !important;
+	border: 0;
+    outline: 1px solid #aaa;
+    background-color: white;
+    margin-right: 5px;
+	margin-top: 16px;
+	margin-left: 2px;
+}
+
+.box-size:focus {
 	height: 38px !important;
 	width: 186.5px !important;
-}
-
-.dropdown-box {
-	margin-right: 5px;
-	margin-top: 15px;
-}
-
-.dropdown-box>.dropdown-toggle {
-	border-radius: 2px;
-	font-size: 16px;
-	border: 1px solid #aaa;
-	background-color: #fff;
-	color: #484848;
+	border: 0;
+    outline: 1px solid #aaa;
+    background-color: white;
+    margin-top: 14px;
+    margin-left: 0px;
 }
 
 .search-bar {
@@ -876,10 +881,6 @@ input[type='radio'] {
 }
 
 .property-box {
-	width: 100% !important;
-}
-
-.property-box>.dropdown-toggle {
 	font-size: 18px;
 	font-weight: normal;
 	color: #383838;
@@ -889,6 +890,9 @@ input[type='radio'] {
 	margin: 0 0 0 0;
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
+	border: 0;
+    outline: 1px solid #aaa;
+    background-color: white;
 }
 
 .address-box {
@@ -1857,11 +1861,13 @@ input[type='checkbox'] {
 
 .expiry-box {
 	width: 101.25px;
-	height: 38px;
+	height: 35px;
 	border-radius: 2px !important;
-	border: 1px solid #aaaaaa;
 	padding-left: 10px;
 	background-color: #fff;
+	border: 0;
+    outline: 1px solid #aaa;
+    margin-top:2px;
 }
 
 .medium-box {
@@ -1871,6 +1877,17 @@ input[type='checkbox'] {
 	border: 1px solid #aaaaaa;
 	padding-left: 10px;
 	background-color: #fff;
+}
+
+.country-box {
+	border: 0;
+    outline: 1px solid #aaa;
+    width: 227.5px;
+	height: 36px;
+	border-radius: 2px;
+	padding-left: 10px;
+	background-color: #fff;
+	margin-top: 1px;
 }
 
 .payment-footer {
@@ -2007,40 +2024,50 @@ input[type='checkbox'] {
 
 .gender-box {
 	width: 101.25px;
-	height: 36px;
+	height: 34px;
 	border-radius: 2px !important;
-	border: 1px solid #aaaaaa;
 	padding-left: 10px;
 	background-color: #fff;
 	margin-left: 20px;
+	border: 0;
+    outline: 1px solid #aaa;
+}
+
+.gender-box:focus, .month-box:focus, .date-box:focus, .year-focus {
+	height: 40px!important;
 }
 
 .month-box {
 	width: 110px;
-	height: 36px;
+	height: 34px;
 	border-radius: 2px !important;
-	border: 1px solid #aaaaaa;
 	padding-left: 10px;
 	background-color: #fff;
 	margin-left: 20px;
+	border: 0;
+    outline: 1px solid #aaa;
 }
 
 .date-box {
 	width: 58px;
-	height: 38px;
+	height: 34px;
 	border-radius: 2px !important;
-	border: 1px solid #aaaaaa;
 	padding-left: 10px;
 	background-color: #fff;
+	border: 0;
+    outline: 1px solid #aaa;
+    margin-left: 5px;
 }
 
 .year-box {
+	margin-left: 5px;
 	width: 73px;
-	height: 38px;
+	height: 34px;
 	border-radius: 2px !important;
-	border: 1px solid #aaaaaa;
 	padding-left: 10px;
 	background-color: #fff;
+	border: 0;
+    outline: 1px solid #aaa;
 }
 
 .profile-describe-box {
@@ -2533,7 +2560,7 @@ label.star:before {
 	overflow: hidden;
 	-o-text-overflow: ellipsis;
 	text-overflow: ellipsis;
-	height: 36px;
+	height: 35px;
 	width: 119.5px;
 	font-size: 22px;
 }
@@ -2728,7 +2755,7 @@ input[type=range]:focus::-ms-fill-upper, input[type=range]:active::-ms-fill-uppe
 
 .chevronLabelLeft {
 	position: absolute;
-	left: 5%;
+	left:0px;
 	top: 40%;
 	border: 1px solid white;
 	border-radius: 50%;
