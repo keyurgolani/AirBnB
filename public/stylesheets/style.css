@@ -1236,7 +1236,6 @@ input[type='checkbox'] {
 	display: inline-block;
 	vertical-align: bottom;
 	overflow: hidden;
-	background-color: #bbb;
 	border-radius: 50%;
 	border: 2px solid #fff;
 	height: 75px;
@@ -2765,4 +2764,11 @@ input[type=range]:focus::-ms-fill-upper, input[type=range]:active::-ms-fill-uppe
 	box-shadow: 5px 5px 3px #888888;
 	font-size: 220%;
 	cursor: pointer;
+}
+
+.remove-icon {
+	border: 0px;
+    background-color: #edefed;
+    margin-right: 10px;
+    font-size: 20px!important;
 }
