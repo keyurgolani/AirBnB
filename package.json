@@ -54,6 +54,7 @@
     "ng-range-slider": "^0.2.0",
     "ngmap": "^1.17.8",
     "node-geocoder": "^3.15.1",
+    "node-grok": "^2.0.3",
     "node-uuid": "^1.4.7",
     "nodemon": "^1.11.0",
     "nvd3": "^1.8.4",

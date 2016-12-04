@@ -2402,6 +2402,13 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	.controller('adminPageController', function($scope, $http) {
 
 
+		$scope.init = function(receivedData){
+
+			$scope.data = JSON.parse(receivedData);
+			console.log('$scope.data', $scope.data);
+
+		};
+
 		$scope.topTen = false;
 		$scope.cityWise = false;
 
