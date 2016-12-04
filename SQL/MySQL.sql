@@ -145,8 +145,8 @@ CREATE TABLE `ratings` (
   `host_review` VARCHAR(255) NULL,
   `traveller_rating` INT(1) NULL,
   `traveller_review` VARCHAR(255) NULL,
-  `host_rating_timestamp` TIMESTAMP(6) NOT NULL,
-  `traveller_rating_timestamp` TIMESTAMP(6) NOT NULL,
+  `host_rating_timestamp` TIMESTAMP(6) NULL,
+  `traveller_rating_timestamp` TIMESTAMP(6) NULL,
   PRIMARY KEY (`rating_id`)
 );
 
