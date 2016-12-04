@@ -154,7 +154,7 @@ DROP TABLE IF EXISTS `bill_details`;
 CREATE TABLE `bill_details` (
   `bill_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `trip_id` INT(10) ZEROFILL NOT NULL,
-  `receipt_id` NVARCHAR(10) ZEROFILL NOT NULL,
+  `receipt_id` NVARCHAR(10) NOT NULL,
   `cc_id` INT(10) ZEROFILL NOT NULL,
   PRIMARY KEY (`bill_id`)
 );
