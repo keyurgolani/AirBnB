@@ -40,8 +40,8 @@ var mongoStore             = require("connect-mongo")(session);
 var app = express();
 
 
-// var mongoSessionConnectURL = "mongodb://localhost:27017/LoginApp_MongoDB";
-// var mongoStore = require("connect-mongo")(session);
+ var mongoSessionConnectURL = "mongodb://localhost:27017/LoginApp_MongoDB";
+ var mongoStore = require("connect-mongo")(session);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
