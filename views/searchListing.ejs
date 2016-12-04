@@ -172,13 +172,12 @@
 
 
             <div class="row-fluid" style="padding-bottom:60px; margin-top:20px; margin-bottom:40px;position">
-              
-                <div class="col-lg-6" style="padding-left:0px; margin-bottom:20px;" ng-repeat="l in filteredResults">
+                <div class="col-lg-6" style="padding-left:20px; margin-bottom:20px;" ng-repeat="l in filteredResults">
                     <div class="imgHolder" style="margin-left:15px;">
                       	<div class="row">
 	                		<img class="images" data-ng-src="data:{{l.photos[l.currentPhoto].photos.filetype}};base64,{{l.photos[l.currentPhoto].photos.base64}}" height="300px" width="100%" alt="No Property Image">
-	                		<span class="chevronLabelLeft glyphicon glyphicon-chevron-left" ng-click="previousPhoto($index, l.currentPhoto)"></span>
-                    		<span class="chevronLabelRight glyphicon glyphicon-chevron-right" ng-click="nextPhoto($index, l.currentPhoto)"></span>
+	                		<span ng-show="l.photos" class="chevronLabelLeft glyphicon glyphicon-chevron-left" ng-click="previousPhoto($index, l.currentPhoto)"></span>
+                    		<span ng-show="l.photos" class="chevronLabelRight glyphicon glyphicon-chevron-right" ng-click="nextPhoto($index, l.currentPhoto)"></span>
 	                	</div>
                       <div class="leftLabel">
                         <span class="textProp">
