@@ -40,7 +40,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					}
 				}).then((results) => {
 					if (results.data.statusCode === 200) {
-						window.location.assign('/admin_fTYcN2a');
+						window.location.assign('/adminDashboard');
 					} else {
 						window.location.assign('/');
 					}
@@ -1287,11 +1287,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.sale_type = false;
 				$scope.successfulListing = false;
 			} else {
-
-
-
-
-
+				
+				console.log($scope.is_bid);
+				
 				$http({
 					method : "POST",
 					url : "/addListing",

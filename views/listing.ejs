@@ -255,7 +255,7 @@
 					</div>
 					<div class="col-md-2">
 					    <div class="radio pull-right">
-					     	<input type="radio" ng-model="is_bid" value="1" name="optradio">
+					     	<input type="radio" ng-model="is_bid" ng-value="1" name="optradio">
 					    </div>
 					</div>
 				</div>
@@ -272,12 +272,12 @@
 					</div>
 					<div class="col-md-2">
 					    <div class="radio pull-right">
-					     	<input type="radio" ng-model="is_bid" value="0" name="optradio">
+					     	<input type="radio" ng-model="is_bid" ng-value="0" name="optradio">
 					    </div>
 					</div>
 				</div>
 				<div class="seperator"></div>
-				<div class="row" ng-show="is_bid == 'true'">
+				<div class="row" ng-show="is_bid === 1">
 					<div class="col-md-4" style="width:100%;">
 						<div class="row que_1" style="margin-bottom:20px;">
 							<span class="h3 que_1">Smart pricing</span>
@@ -290,7 +290,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row" ng-hide="is_bid == 'true'">
+				<div class="row" ng-hide="is_bid === 1">
 					<div class="col-md-4" style="width:100%;">
 						<div class="row que_1" style="margin-bottom:20px;">
 							<span class="h3 que_1">Base price</span>

@@ -43,174 +43,162 @@ router.get('/sample', (req, res, next) => {
 });
 
 router.post('/addListing', (req, res, next) => {
-	//	if(req.session.loggedInUser) {
-	//		var owner_id = req.session.loggedInUser.user_id;
 
 	// Listings Table Fields
 
 	if(req.session.loggedInUser){
-	var property_id = req.body.property_id;
-	var room_type_id = req.body.room_type.room_type_id;
-	var title = req.body.title;
-	var is_bid = req.body.is_bid;
-	var start_date = req.body.start_date;
-	var end_date = req.body.end_date;
-	var daily_price = req.body.daily_price;
-	var bedrooms = req.body.bedrooms;
-	var accommodations = req.body.accommodations;
-	var active = 1; //A listing is active by default at the time of adding new listing
-
-	// Listing Details Table Fields
-	var description = req.body.description;
-	var bathrooms = req.body.bathrooms;
-	var beds = req.body.beds;
-	var checkin = req.body.checkin;
-	var checkout = req.body.checkout;
-
-	var userId = req.session.user.userId;
-
-	mysql.insertData('listings', {
-		'property_id' : property_id,
-		'room_type_id' : room_type_id,
-		'title' : title,
-		'is_bid' : is_bid,
-		'start_date' : start_date,
-		'end_date' : end_date,
-		'daily_price' : daily_price,
-		'bedrooms' : bedrooms,
-		'accommodations' : accommodations,
-		'active' : active
-	}, (error, listing_insert_result) => {
-		if (error) {
-			res.send({
-				'statusCode' : 500
-			});
-		} else {
-			if (listing_insert_result.affectedRows === 1) {
-				mysql.insertData('listing_details', {
-					'listing_id' : listing_insert_result.insertId,
-					'description' : description,
-					'bathrooms' : bathrooms,
-					'beds' : beds,
-					'checkin' : checkin,
-					'checkout' : checkout
-				}, (error, listing_details_insert_result) => {
-					if (error) {
-						res.send({
-							'statusCode' : 500
-						});
-					} else {
-						if (listing_details_insert_result.affectedRows === 1) {
-							console.log("End Date Here", end_date);
-							end_date = new Date(end_date);
-							console.log('end_date', end_date);
-							var current_date = new Date();
-							console.log('current_date', current_date);
-
-							var time = end_date.getTime() - current_date.getTime();
-							console.log('time', time);
-
-							//automate task to inactivate the listing after end date!
-							setTimeout(function() {
-
-								mysql.updateData('listings', {
-									'active' : 0
-								}, {
-									'listing_id' : listing_insert_result.insertId
-								}, function(error, result) {
-									if (error) {
-										console.log("error in update of listing!");
-
-									} else {
-										if (result.affectedRows === 1) {
-											console.log("success in update of listing!")
-										} else {
-											console.log("error in update of listing!");
-										}
-									}
-								});
-
-							}, time);
-
-
-							//this is to setup automatic task for the bid winner
-							if (is_bid) {
-								console.log('is_bid', is_bid);
-
-								setTimeout(function() {
-									var query = "select * from bid_details WHERE listing_id = ? AND bid_amount = (SELECT MAX(bid_amount) FROM bid_details WHERE listing_id = ?)";
-									var parameters = [ listing_insert_result.insertId, listing_insert_result.insertId ];
-
-									mysql.executeQuery(query, parameters, function(error, winner) {
-										if (error) {
-											console.log('error', error);
-										} else {
-											if (winner && winner.length > 0) {
-
-												console.log("highest bidder is selected");
-
-												//update trip_details and bid_details
-
-												mysql.insertData('trip_details', {
-													'listing_id' : listing_insert_result.insertId,
-													'checkin' : start_date,
-													'checkout' : end_date,
-													'deposit' : 100,
-													'no_of_guests' : winner[0].no_of_guests,
-													'user_id' : userId,
-													'active' : 1,
-													'trip_amount' : winner[0].bid_amount
-												}, (error, trip) => {
-
-													if (error) {
-														console.log(error);
-													} else {
-														var receipt_id = utility.generateReceiptNo(10);												
-														
-														//generate bill
-														mysql.insertData('bill_details', {
-															'trip_id' : trip.insertId,
-															'receipt_id' : receipt_id,
-															'cc_id' : winner[0].cc_id
-														}, (error, results) => {
-															console.log('error, results', error, results);
-															if (error) {
-																console.log(error);
-															} else {
-																console.log("highest bidder is selected and got the property to stay.");
-															}
-														})
-													}
-												})
-											} else {
-												console.log("No bidder is awarded for the selected property");											
-											}
-										}
-									})
-
-								}, properties.get('project.bidTimeOut'));
-							}
-
-
-							res.send({
-								'statusCode' : 200
-							});
-
-							// res.redirect('/');
-						} else {
-							res.send({
-								'statusCode' : 500
-							});
-						}
-					}
-				});
-			} else {
+		var user_id = req.session.loggedInUser.user_id;
+		var property_id = req.body.property_id;
+		var room_type_id = req.body.room_type.room_type_id;
+		var title = req.body.title;
+		var is_bid = req.body.is_bid;
+		var start_date = req.body.start_date;
+		var end_date = req.body.end_date;
+		var daily_price = req.body.daily_price;
+		var bedrooms = req.body.bedrooms;
+		var accommodations = req.body.accommodations;
+		var active = 1; //A listing is active by default at the time of adding new listing
+	
+		// Listing Details Table Fields
+		var description = req.body.description;
+		var bathrooms = req.body.bathrooms;
+		var beds = req.body.beds;
+		var checkin = req.body.checkin;
+		var checkout = req.body.checkout;
+		
+		mysql.insertData('listings', {
+			'property_id' : property_id,
+			'room_type_id' : room_type_id,
+			'title' : title,
+			'is_bid' : is_bid,
+			'start_date' : start_date,
+			'end_date' : end_date,
+			'daily_price' : daily_price,
+			'bedrooms' : bedrooms,
+			'accommodations' : accommodations,
+			'active' : active
+		}, (error, listing_insert_result) => {
+			if (error) {
 				res.send({
 					'statusCode' : 500
 				});
+			} else {
+				if (listing_insert_result.affectedRows === 1) {
+					mysql.insertData('listing_details', {
+						'listing_id' : listing_insert_result.insertId,
+						'description' : description,
+						'bathrooms' : bathrooms,
+						'beds' : beds,
+						'checkin' : checkin,
+						'checkout' : checkout
+					}, (error, listing_details_insert_result) => {
+						if (error) {
+							res.send({
+								'statusCode' : 500
+							});
+						} else {
+							if (listing_details_insert_result.affectedRows === 1) {
+	
+								//automate task to inactivate the listing after end date!
+								setTimeout(function() {
+	
+									mysql.updateData('listings', {
+										'active' : 0
+									}, {
+										'listing_id' : listing_insert_result.insertId
+									}, function(error, result) {
+										if (error) {
+											console.log("error in update of listing!");
+	
+										} else {
+											if (result.affectedRows === 1) {
+												console.log("success in update of listing!")
+											} else {
+												console.log("error in update of listing!");
+											}
+										}
+									});
+	
+								}, 345600000);
+	
+	
+								//this is to setup automatic task for the bid winner
+								if (is_bid === 1) {
+	
+									setTimeout(function() {
+										var query = "select * from bid_details WHERE listing_id = ? AND bid_amount = (SELECT MAX(bid_amount) FROM bid_details WHERE listing_id = ?)";
+										var parameters = [ listing_insert_result.insertId, listing_insert_result.insertId ];
+	
+										mysql.executeQuery(query, parameters, function(error, winner) {
+											if (error) {
+												console.log('error', error);
+											} else {
+												if (winner && winner.length > 0) {
+	
+													console.log("highest bidder is selected");
+	
+													//update trip_details and bid_details
+	
+													mysql.insertData('trip_details', {
+														'listing_id' : listing_insert_result.insertId,
+														'checkin' : start_date,
+														'checkout' : end_date,
+														'deposit' : 100,
+														'no_of_guests' : winner[0].no_of_guests,
+														'user_id' : userId,
+														'active' : 1,
+														'trip_amount' : winner[0].bid_amount
+													}, (error, trip) => {
+	
+														if (error) {
+															console.log(error);
+														} else {
+															var receipt_id = utility.generateReceiptNo(10);												
+															
+															//generate bill
+															mysql.insertData('bill_details', {
+																'trip_id' : trip.insertId,
+																'receipt_id' : receipt_id,
+																'cc_id' : winner[0].cc_id
+															}, (error, results) => {
+																console.log('error, results', error, results);
+																if (error) {
+																	console.log(error);
+																} else {
+																	console.log("highest bidder is selected and got the property to stay.");
+																}
+															})
+														}
+													})
+												} else {
+													console.log("No bidder is awarded for the selected property");											
+												}
+											}
+										})
+	
+									}, properties.get('project.bidTimeOut'));
+								}
+	
+	
+								res.send({
+									'statusCode' : 200
+								});
+	
+								// res.redirect('/');
+							} else {
+								res.send({
+									'statusCode' : 500
+								});
+							}
+						}
+					});
+				} else {
+					res.send({
+						'statusCode' : 500
+					});
+				}
 			}
-		}
-	});
+		});
 
 	} else {
 		res.redirect('/');
