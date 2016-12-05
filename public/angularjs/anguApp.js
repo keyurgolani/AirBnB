@@ -602,7 +602,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 							"new_pass" : $scope.new_pass
 						}
 					}).then((result) => {
-						//alert("Success");
+						if (results.data.statusCode === 200) {
+							console.log("Success");
+						}
 					}, (error) => {
 						console.log("Error", error);
 					})

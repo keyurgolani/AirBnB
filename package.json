@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "test": "./node_modules/.bin/mocha --reporter spec ./test/register.js ./test/login.js ./test/updateRating.js ./test/updatePropertyStatus.js ./test/approveHost.js"
   },
   "dependencies": {
     "angular": "^1.5.8",
