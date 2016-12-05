@@ -10,12 +10,18 @@
 	<header><% include ./header %></header>
 	<!-- Main -->
 	<main ng-controller="addListing">
-		<div class="row" ng-show="page === 1">
-			<div style="border:2px solid green; border-radius: 5px; opacity: 1.0; font-size: 15px; color: green;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="successfulListing">
-					
-				Property Successfully listed...<br>
-
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4" style="margin-top:-40px;">
+				<div ng-show="successfulListing" style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert">
+						
+					Property Successfully listed...<br>
+	
+				</div>
 			</div>
+			<div class="col-md-4"></div>
+		</div>
+		<div class="row" ng-show="page === 1">
 			<div class="col-md-1"></div>
 			<div class="col-md-4">
 				<div class="row">
@@ -36,10 +42,10 @@
 						<span ng-click="guests = guests + 1" class="count-main-button btn button-radius" style="border-right:none;">+</span>
 					</div>
 				</div>
-				<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_room_type">
+				<div class="" style="color:red; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_room_type">
 					Please select your type of accomodation !
 				</div>
-				<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_guests">
+				<div class="" style="color:red;margin-left: 150px; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_guests">
 					Please enter the number of guests !
 				</div>
 				<div class="row que_1">
@@ -96,7 +102,7 @@
 							<span ng-click="number_of_bedrooms = number_of_bedrooms + 1" class="count-button btn button-radius" style="border-right:none;">+</span>
 						</div>
 					</div>
-					<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_number_of_bedrooms">
+					<div class="" style="color:red; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_number_of_bedrooms">
 						Please enter the number of bedrooms !
 					</div>
 				</div>
@@ -109,7 +115,7 @@
 						<span ng-click="number_of_beds = number_of_beds - 1" class="count-button btn button-radius">-</span>
 						<span ng-click="number_of_beds = number_of_beds + 1" class="count-button btn button-radius" style="border-right:none;">+</span>
 					</div>
-					<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_number_of_beds">
+					<div class="" style="color:red; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_number_of_beds">
 						Please enter the number of beds !
 					</div>
 				</div>
@@ -121,7 +127,7 @@
 					<div ng-click="number_of_guests = number_of_guests - 1" class="count-button btn button-radius">-</div>
 					<div ng-click="number_of_guests = number_of_guests + 1" class="count-button btn button-radius" style="border-right:none;">+</div>
 				</div>
-				<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_number_of_guests">
+				<div class="" style="color:red; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_number_of_guests">
 					Please enter the number of guests !
 				</div>
 				<div class="row que_1" style="margin-top: 30px; margin-bottom: 20px;">
@@ -135,7 +141,7 @@
 							<span ng-click="number_of_bathrooms = number_of_bathrooms + 1" class="count-button btn button-radius" style="border-right:none;">+</span>
 						</div>
 					</div>
-					<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_number_of_bathrooms">
+					<div class="" style="color:red; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_number_of_bathrooms">
 						Please enter the number of bathrooms !
 					</div>
 				</div>
@@ -195,7 +201,7 @@
 					<div class="col-md-12">
 						<input type="text" class="form-control address-box curve-border" placeholder="Listing title" ng-model="title">
 					</div>
-					<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_title">
+					<div class="" style="color:red; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_title">
 						Please give this listing a title !
 					</div>
 				</div>
@@ -206,7 +212,7 @@
 					<div class="col-md-12">
 						<textarea rows="4" cols="50" class="form-control address-box curve-border" placeholder="Describe your place..." ng-model="description"></textarea>
 					</div>
-					<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_description">
+					<div class="" style="color:red; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_description">
 						Please give a brief description about this listing !
 					</div>
 				</div>
@@ -217,7 +223,7 @@
 					<span class="search-box-text">When</span>
 					<input type="text" class="form-control date-picker search-bar-placeholder" ng-model="dates" placeholder="Check In	→ Check Out" name="daterange" value="">
 				</div>
-				<div class="" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_dates">
+				<div class="" style="color:red; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_dates">
 					Don't forget to enter the date of availability of this listing!
 				</div>
 				<div class="row" style="margin-top: 30px;">
@@ -238,6 +244,12 @@
 			<div class="col-md-4">
 				<div class="row que_1">
 					<span class="h3 que_1">How do you want to set your price?</span>
+				</div>
+				<div style="border:2px solid red;margin-top:20px;margin-bottom:30px; border-radius: 5px; opacity: 1.0; font-size: 14px; color: red;" class="alert alert-warning alert-dismissable close col-lg-12 text-center" data-dismiss="alert" ng-show="no_price">
+				
+					Please select whether you want guests to auction for it<br>
+					or directly allow them to book, and also the base price for it.
+
 				</div>
 				<div class="seperator"></div>
 				<div class="row que_1">
@@ -302,12 +314,6 @@
 					  		</div>
 						</div>
 					</div>
-				</div>
-				<div style="border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="alert alert-warning alert-dismissable close col-lg-12 text-center" data-dismiss="alert" ng-show="no_price">
-				
-					Please select whether you want guests to auction for it<br>
-					or directly allow them to book, and also the base price for it.
-
 				</div>
 				<div class="row" style="margin-top: 30px;margin-bottom: 50px;">
 					<div class="col-md-5 pull-left">

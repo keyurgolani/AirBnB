@@ -1347,7 +1347,7 @@ input[type='checkbox'] {
 
 .price-bottom {
 	border: 1px solid #dce0e0;
-	height: 376px;
+	height: auto;
 	width: 315px;
 }
 
@@ -2853,4 +2853,21 @@ input[type=range]:focus::-ms-fill-upper, input[type=range]:active::-ms-fill-uppe
     background-color: #edefed;
     margin-right: 10px;
     font-size: 20px!important;
+}
+
+.admin-list.panel {
+	border-radius: 0px!important;
+}
+
+.admin-head-list {
+	font-size:16px;
+	font-weight:bold;
+	padding-left:10px;
+	color: white;
+}
+
+.admin-head-list:hover, .admin-head-list:active, .admin-head-list:focus, .admin-head-list:visited {
+	cursor: pointer;
+	text-decoration: underline;
+	color: white;
 }
