@@ -55,10 +55,10 @@
 							<div class="row">
 								<div class="col-md-4"></div>
 								<div class="col-md-4">
-									<div style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert">	
+									<div style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="profile_updated" ng-click="profile_updated = false">	
 										Profile updated successfully !!<br>
 									</div>
-									<div style="border: 2px solid red;border-radius: 5px;opacity: 1;font-size: 20px;color: red;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert">	
+									<div style="border: 2px solid red;border-radius: 5px;opacity: 1;font-size: 20px;color: red;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="all_fields" ng-click="all_fields = false">	
 										Check your fields again !!<br>
 									</div>
 								</div>
@@ -289,8 +289,11 @@
 							<div class="row">
 								<div class="col-md-4"></div>
 								<div class="col-md-4">
-									<div style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert">	
+									<div style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="account_deactivated" ng-click="account_deactivated = false">	
 										Your account has been deactivated!!<br>
+									</div>
+									<div style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="redirection" ng-click="redirection = false">	
+										Successful deactivation. Redirecting you to homepage.<br>
 									</div>
 								</div>
 								<div class="col-md-4"></div>
@@ -443,10 +446,10 @@
 							<div class="row">
 								<div class="col-md-4"></div>
 								<div class="col-md-4">
-									<div style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert">	
+									<div style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="success_update" ng-click="success_update = false">	
 										Your password has been changed!!<br>
 									</div>
-									<div style="border: 2px solid red;border-radius: 5px;opacity: 1;font-size: 20px;color: red;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert">	
+									<div style="border: 2px solid red;border-radius: 5px;opacity: 1;font-size: 20px;color: red;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="invalidLogin" ng-click="invalidLogin = false">	
 										Your password did not match!!<br>
 									</div>
 								</div>
@@ -702,7 +705,7 @@
 									</div>
 								</div>
 						</div>
-						<div class="row item-body" ng-show="active_tab === 'host_tab'">
+						<div class="row item-body" ng-hide="active_tab !== 'host_tab'">
 							<div class="row item-head">Dashboard</div>
 
 							<div class="row item-content">
