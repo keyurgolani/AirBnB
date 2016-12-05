@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector', 'ui.utils.masks', 'daterangepicker' ])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector', 'ui.utils.masks', 'daterangepicker', 'GoogleMapsNative' ])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
@@ -177,11 +177,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 	})
-	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope) => {
-
-
-
-
+	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope, NgMap, $timeout) => {
+		
 		$scope.address = '';
 
 		// console.log('$scope.address', $scope.address);
@@ -196,6 +193,15 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log("No Response");
 			}
 		});
+		
+		$scope.initializeMaps = function() {
+			$scope.active_tab = 'listings_tab';
+			for(var i = 0; i < $scope.data[4].length; i++) {
+				NgMap.getMap($scope.data[4][i].listing_id).then(function(map) {
+					$timeout(function() {google.maps.event.trigger(map, 'resize')}, 1000)
+				});
+			}
+		}
 
 
 		$scope.init = function(profileDetails) {
@@ -231,6 +237,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.birth_year = $scope.years[0];
 				$scope.birth_date = $scope.dates[0];
 			}
+			
 		}
 
 		$scope.deactivateUserAccount = function() {
@@ -1693,7 +1700,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 			$scope.range = {
 				from : $scope.min_price,
-				to : $scope.max_price
+				to : Number($scope.max_price + 10)
 			};
 
 			$scope.nextPhoto = function(index, currentPhoto) {

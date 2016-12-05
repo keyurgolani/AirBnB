@@ -530,8 +530,6 @@ router.post('/approveHost', (req, res, next) => {
 
 router.post('/fetchRoomTypes', (req, res, next) => {
 
-	// >>>>>>>>
-	// req.session.loggedInUser
 	mysql.fetchData('room_type_id, room_type', 'room_types', null, (error, results) => {
 		if (error) {
 			res.send({
@@ -1061,78 +1059,83 @@ router.get('/viewListing', function(req, res, next) {
 });
 
 router.post('/placeBidOnListing', function(req, res, next) {
-	var listing_id = req.body.listing_id;
-	var checkin = req.body.checkin;
-	var checkout = req.body.checkout;
-	var bid_amount = req.body.bid_amount;
-	var no_of_guests = req.body.guests;
-	console.log('no_of_guests', no_of_guests);
-	var accommodations = req.body.accommodations;
-	console.log('accommodations', accommodations);
-	var base_price = req.body.daily_price;
-	console.log('base_price', base_price);
-	var cc_id = req.body.cc_id;
-	//TODO Get user Id from session
-	//var userId = req.session.user.userId;
-	var userId = 1;
+	if(req.session && req.session.loggedInUser) {
+		var listing_id = req.body.listing_id;
+		var checkin = req.body.checkin;
+		var checkout = req.body.checkout;
+		var bid_amount = req.body.bid_amount;
+		var no_of_guests = req.body.guests;
+		console.log('no_of_guests', no_of_guests);
+		var accommodations = req.body.accommodations;
+		console.log('accommodations', accommodations);
+		var base_price = req.body.daily_price;
+		console.log('base_price', base_price);
+		var cc_id = req.body.cc_id;
+		//TODO Get user Id from session
+		var userId = req.session.user.userId;
 
-	//do bidding log
+		//do bidding log
 
-	logger.bidLogger(listing_id, userId, bid_amount);
+		logger.bidLogger(listing_id, userId, bid_amount);
 
-	if (bid_amount > base_price && no_of_guests <= accommodations) {
+		if (bid_amount > base_price && no_of_guests <= accommodations) {
 
-		console.log("valid bid!");
+			console.log("valid bid!");
 
-		//update the daily_price as bid_amount in listings
-		mysql.updateData('listings', {
-			'daily_price' : bid_amount
-		}, {
-			'listing_id' : listing_id
-		}, function(error, results) {
-			console.log('error, results', error, results);
-			if (error) {
-				res.send({
-					'statusCode' : 500
-				});
-			} else {
+			//update the daily_price as bid_amount in listings
+			mysql.updateData('listings', {
+				'daily_price' : bid_amount
+			}, {
+				'listing_id' : listing_id
+			}, function(error, results) {
+				console.log('error, results', error, results);
+				if (error) {
+					res.send({
+						'statusCode' : 500
+					});
+				} else {
 
-				//insert the bid details in bid_details table
-				mysql.insertData('bid_details', {
-					'listing_id' : listing_id,
-					'checkin' : checkin,
-					'checkout' : checkout,
-					'bid_amount' : bid_amount,
-					'bidder_id' : userId,
-					'no_of_guests' : no_of_guests,
-					'cc_id':cc_id
-				}, (error, results) => {
-					console.log('error, results', error, results);
-					if (error) {
-						res.send({
-							'statusCode' : 500
-						});
-					} else {
-						res.send({
-							'statusCode' : 200,
-							'updated_base_price' : bid_amount
-						});
-					}
-				})
-			}
-		})
+					//insert the bid details in bid_details table
+					mysql.insertData('bid_details', {
+						'listing_id' : listing_id,
+						'checkin' : checkin,
+						'checkout' : checkout,
+						'bid_amount' : bid_amount,
+						'bidder_id' : userId,
+						'no_of_guests' : no_of_guests,
+						'cc_id':cc_id
+					}, (error, results) => {
+						console.log('error, results', error, results);
+						if (error) {
+							res.send({
+								'statusCode' : 500
+							});
+						} else {
+							res.send({
+								'statusCode' : 200,
+								'updated_base_price' : bid_amount
+							});
+						}
+					})
+				}
+			})
 
-	} else {
-
-		if (bid_amount < base_price) {
-			console.log("entered bid amount is less than the listing amount");
-		}
-		if (no_of_guests > accommodations) {
-			console.log("entered no. of guests are more than the listing specified!");
 		} else {
-			console.log("you have entered bid price less than the listing price and also no. of guests are more than specified listing");
-		}
 
+			if (bid_amount < base_price) {
+				console.log("entered bid amount is less than the listing amount");
+			}
+			if (no_of_guests > accommodations) {
+				console.log("entered no. of guests are more than the listing specified!");
+			} else {
+				console.log("you have entered bid price less than the listing price and also no. of guests are more than specified listing");
+			}
+
+			res.send({
+				'statusCode' : 500
+			});
+		}
+	} else {
 		res.send({
 			'statusCode' : 500
 		});
@@ -1610,19 +1613,25 @@ router.get('/profile', function(req, res, next) {
 				if (error) {
 					throw error;
 				} else {
-					property_details.forEach(function(item, index, array) {
-						req.db.get('property_photos').find({
-							'property_id' : item.property_id
-						}).then((photos) => {
-							property_details[index].photos = photos;
+					if(property_details && property_details.length > 0) {
+						property_details.forEach(function(item, index, array) {
+							req.db.get('property_photos').findOne({
+								'property_id' : Number(item.property_id)
+							}).then((photos) => {
+								property_details[index].photos = photos;
+								if(index === array.length - 1) {
+									callback(null, property_details);
+								}
+							});
 						});
-					});
-					callback(null, property_details);
+					} else {
+						callback(null, property_details);
+					}
 				}
 			});
 		},
 		function(callback) {
-			mysql.executeQuery('select listing_id, listings.property_id, title, is_bid, start_date, end_date, daily_price, listings.active as listing_active, property_details.active as property_active, room_type from listings inner join property_details on listings.property_id = property_details.property_id inner join room_types on listings.room_type_id = room_types.room_type_id where property_details.owner_id = ?', [ req.query.owner ], (error, listing_details) => {
+			mysql.executeQuery('select listing_id, listings.property_id, title, longitude, latitude, is_bid, start_date, end_date, daily_price, listings.active as listing_active, property_details.active as property_active, room_type from listings inner join property_details on listings.property_id = property_details.property_id inner join room_types on listings.room_type_id = room_types.room_type_id where property_details.owner_id = ?', [ req.query.owner ], (error, listing_details) => {
 				if (error) {
 					throw error;
 				} else {
@@ -1631,7 +1640,7 @@ router.get('/profile', function(req, res, next) {
 			});
 		},
 		function(callback) {
-			mysql.executeQuery('select trip_details.trip_id, title, st_address, city, state, zip, longitude, latitude, checkin, checkout, trip_amount, host_rating, host_review, receipt_id from trip_details inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id left join ratings on ratings.trip_id = trip_details.trip_id left join bill_details on bill_details.trip_id = trip_details.trip_id where user_id = ?', [ req.query.owner ], (error, trip_details) => {
+			mysql.executeQuery('select listings.listing_id, trip_details.trip_id, title, st_address, city, state, zip, longitude, latitude, checkin, checkout, trip_amount, host_rating, host_review, receipt_id from trip_details inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id left join ratings on ratings.trip_id = trip_details.trip_id left join bill_details on bill_details.trip_id = trip_details.trip_id where user_id = ?', [ req.query.owner ], (error, trip_details) => {
 				if (error) {
 					throw error;
 				} else {
@@ -1654,7 +1663,7 @@ router.get('/profile', function(req, res, next) {
 			});
 		},
 		function(callback) {
-			mysql.executeQuery('select trip_details.trip_id, f_name, l_name, st_address, city, state, zip, checkin, checkout, no_of_guests, traveller_rating, traveller_review from account_details inner join property_details on account_details.user_id = property_details.owner_id inner join listings on listings.property_id = property_details.property_id inner join trip_details on listings.listing_id = trip_details.listing_id left join ratings on ratings.trip_id = trip_details.trip_id where account_details.user_id = ?', [ req.query.owner ], (error, hosting_details) => {
+			mysql.executeQuery('select listings.listing_id, trip_details.trip_id, f_name, l_name, st_address, city, trip_amount, longitude, latitude, state, zip, checkin, checkout, no_of_guests, traveller_rating, traveller_review from account_details inner join property_details on account_details.user_id = property_details.owner_id inner join listings on listings.property_id = property_details.property_id inner join trip_details on listings.listing_id = trip_details.listing_id left join ratings on ratings.trip_id = trip_details.trip_id where account_details.user_id = ?', [ req.query.owner ], (error, hosting_details) => {
 				if (error) {
 					throw error;
 				} else {
