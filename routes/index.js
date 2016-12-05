@@ -990,23 +990,24 @@ router.get('/viewListing', function(req, res, next) {
 							if(ratings.length === 0) {
 								results[0].ratings = ratings;
 								callback(null, null);
+							} else {
+								for(var i = 0; i < ratings.length; i++) {
+									req.db.get('user_photos').find({
+										'user_id' : ratings[i].traveller_id
+									}).then((docs) => {
+										ratings[i].profilePic = docs;
+									});
+									req.db.get('host_review_photos').find({
+										'trip_id' : ratings[i].trip_id
+									}).then((docs) => {
+										if(docs && docs.length > 0) {
+											ratings[i].review_photos = docs[0].photos;
+										}
+									});
+								}
+								results[0].ratings = ratings
+								callback();
 							}
-							for(var i = 0; i < ratings.length; i++) {
-								req.db.get('user_photos').find({
-									'user_id' : ratings[i].traveller_id
-								}).then((docs) => {
-									ratings[i].profilePic = docs;
-								});
-								req.db.get('host_review_photos').find({
-									'trip_id' : ratings[i].trip_id
-								}).then((docs) => {
-									if(docs && docs.length > 0) {
-										ratings[i].review_photos = docs[0].photos;
-									}
-								});
-							}
-							results[0].ratings = ratings
-							callback();
 						}
 					});
 				}, function(callback) {
@@ -1035,7 +1036,7 @@ router.get('/viewListing', function(req, res, next) {
 						callback(null, null);
 					});
 				}, function(callback) {
-					mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = 0000000013', (error, card_details) => {
+					mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = ?', [req.session.loggedInUser.user_id] , (error, card_details) => {
 						if (error) {
 							throw error;
 						} else {
@@ -1535,9 +1536,6 @@ router.get('/searchListing', function(req, res, next) {
 		});
 	}else{
 		
-		// console.log("<><><><><><><><>><><>><><");
-		// console.log('daterange', daterange);
-
 		//TODO
 		 if(req.session && req.session.loggedInUser) {
 			 var user_id = req.session.loggedInUser.user_id;
