@@ -2646,6 +2646,63 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			};
 
 	})
+	.controller('hostController', function($scope, $http, Random) {
+		
+
+		$scope.barOptions = {
+			chart : {
+				type : 'historicalBarChart',
+				height : 300,
+				margin : {
+					top : 20,
+					right : 20,
+					bottom : 65,
+					left : 50
+				},
+				x : function(d) {
+					return d[0];
+				},
+				y : function(d) {
+					return d[1] / 100000;
+				},
+				showValues : true,
+				valueFormat : function(d) {
+					return d3.format(',.1f')(d);
+				},
+				duration : 100,
+				xAxis : {
+					axisLabel : 'Time',
+					tickFormat : function(d) {
+						return d3.time.format('%x')(new Date(d))
+
+					},
+					rotateLabels : 30,
+					showMaxMin : false
+				},
+				yAxis : {
+					axisLabel : '',
+					axisLabelDistance : -10,
+					tickFormat : function(d) {
+						return d3.format(',.1f')(d);
+					}
+				},
+				tooltip : {
+					keyFormatter : function(d) {
+						return d3.time.format('%x')(new Date(d));
+					}
+				},
+				zoom : {
+					enabled : true,
+					scaleExtent : [ 1, 10 ],
+					useFixedDomain : false,
+					useNiceScale : false,
+					horizontalOff : false,
+					verticalOff : true,
+					unzoomEventType : 'dblclick.zoom'
+				}
+			}
+		}
+	})
 	.controller('TopTenMonthBarController', function($scope, $http, Random) {
 		
 
@@ -2872,20 +2929,68 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 
 	})
-	.controller('TopTenMonthPieController', function($scope) {
-		
-		$scope.arr = [];
-	
-		for(var k = 0 ; k < $scope.$parent.chartData[2].length; k++) {
-			$scope.arr.push({ "key" : $scope.$parent.chartData[2][k].owner_id , "y" : $scope.$parent.chartData[2][k].revenue});
-		}		
-	
+	.controller('hostController', function($scope, $http, Random) {
 		
 
-		$scope.options = {
+		$scope.barOptions = {
+			chart : {
+				type : 'historicalBarChart',
+				height : 300,
+				margin : {
+					top : 20,
+					right : 20,
+					bottom : 65,
+					left : 50
+				},
+				x : function(d) {
+					return d[0];
+				},
+				y : function(d) {
+					return d[1] / 100000;
+				},
+				showValues : true,
+				valueFormat : function(d) {
+					return d3.format(',.1f')(d);
+				},
+				duration : 100,
+				xAxis : {
+					axisLabel : 'Time',
+					tickFormat : function(d) {
+						return d3.time.format('%x')(new Date(d))
+
+					},
+					rotateLabels : 30,
+					showMaxMin : false
+				},
+				yAxis : {
+					axisLabel : '',
+					axisLabelDistance : -10,
+					tickFormat : function(d) {
+						return d3.format(',.1f')(d);
+					}
+				},
+				tooltip : {
+					keyFormatter : function(d) {
+						return d3.time.format('%x')(new Date(d));
+					}
+				},
+				zoom : {
+					enabled : true,
+					scaleExtent : [ 1, 10 ],
+					useFixedDomain : false,
+					useNiceScale : false,
+					horizontalOff : false,
+					verticalOff : true,
+					unzoomEventType : 'dblclick.zoom'
+				}
+			}
+		};
+
+
+		$scope.pieOptions = {
 			chart : {
 				type : 'pieChart',
-				height : 300,
+				height : 350,
 				width : 350,
 				x : function(d) {
 					return d.key;
@@ -2908,7 +3013,283 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 		};
 
-		$scope.data = $scope.arr;
+		$scope.cppPieData = [
+			{
+				key : "Listings",
+				y : 50000000
+			},
+			{
+				key : "Search Listings",
+				y : 42500000
+			},
+			{
+				key : "Home Page",
+				y : 30000000
+			},
+			{
+				key : "User Profile",
+				y : 80000000
+			},
+			{
+				key : "Host Analytics",
+				y : 9800000
+			},
+			{
+				key : "Property Page",
+				y : 2500000
+			},
+			{
+				key : "User Account",
+				y : 23600000
+			},
+			{
+				key : "Security",
+				y : 9800000
+			},
+			{
+				key : "Trips",
+				y : 9800000
+			},
+			{
+				key : "Search Bar",
+				y : 36900000
+			}
+		];
+
+
+
+		$scope.cppBarData = [{
+						    "key" : "Quantity" ,
+						    "bar": true,
+						    "values" :  
+						    	[ [ 1451952000, 70000000] , [ 1454716800, 31000000] , [ 1458086400, 97600000] , [ 1460073600, 22100000] , [ 1464566400, 7620000] , [1465759851, 3900000] , [ 1468351851, 11100000] , [ 1471030251, 32200000] , [ 1473708651, 90000000] , [ 1476300651, 65100000] ]
+						}];
+
+
+		$scope.pcPieData = [
+			{
+				key : "Alameda",
+				y : 70000000
+			},
+			{
+				key : "4th Street",
+				y : 31000000
+			},
+			{
+				key : "El Dorado",
+				y : 97600000
+			},
+			{
+				key : "Villa",
+				y : 22100000
+			},
+			{
+				key : "Fernando",
+				y : 76200000
+			},
+			{
+				key : "Morisson",
+				y : 3900000
+			},
+			{
+				key : "Paseo",
+				y : 11100000
+			},
+			{
+				key : "Cahill",
+				y : 32200000
+			},
+			{
+				key : "South",
+				y : 9800000
+			},
+			{
+				key : "Legacy",
+				y : 65100000
+			}
+		];
+
+
+
+		$scope.pcBarData = [{
+						    "key" : "Quantity" ,
+						    "bar": true,
+						    "values" :  
+						    	[ [ 1451952000, 50000000] , [ 1454716800, 42500000] , [ 1458086400, 30000000] , [ 1460073600, 80000000] , [ 1464566400, 9800000] , [1465759851, 2500000] , [ 1468351851, 23600000] , [ 1471030251, 9800000] , [ 1473708651, 90000000] , [ 1476300651, 36900000] ]
+						}];
+
+
+		$scope.lsPieData = [
+			
+			{
+				key : "Villa",
+				y : 80000000
+			},
+			{
+				key : "Morisson",
+				y : 2500000
+			},
+			{
+				key : "South",
+				y : 9800000
+			},
+			{
+				key : "Legacy",
+				y : 36900000
+			}
+		];
+
+
+
+		$scope.lsBarData = [{
+						    "key" : "Quantity" ,
+						    "bar": true,
+						    "values" :  
+						    	[ [ 1460073600, 80000000] , [1465759851, 2500000] , [ 1471030251, 9800000]  , [ 1476300651, 36900000] ]
+		}];
+
+
+
+
+
+		$scope.prPieData = [
+			{
+				key : "Alameda",
+				y : 1100000
+			},
+			{
+				key : "4th Street",
+				y : 3300000
+			},
+			{
+				key : "El Dorado",
+				y : 100000
+			},
+			{
+				key : "Villa",
+				y : 2700000
+			},
+			{
+				key : "Fernando",
+				y : 180000
+			},
+			{
+				key : "Morisson",
+				y : 760000
+			},
+			{
+				key : "Paseo",
+				y : 20000
+			},
+			{
+				key : "Cahill",
+				y : 360000
+			},
+			{
+				key : "South",
+				y : 560000
+			},
+			{
+				key : "Legacy",
+				y : 8100000
+			}
+		];
+
+
+
+		$scope.prBarData = [{
+						    "key" : "Quantity" ,
+						    "bar": true,
+						    "values" :  
+						    	[ [ 1451952000, 1100000] , [ 1454716800, 3300000] , [ 1458086400, 100000] , [ 1460073600, 2700000] , [ 1464566400, 180000] , [1465759851, 760000] , [ 1468351851, 20000] , [ 1471030251, 56000] , [ 1473708651, 90000000] , [ 1476300651, 8100000] ]
+		}];
+
+
+
+		$scope.ugPieData = [
+			{
+				key : "San Francisco",
+				y : 2500000
+			},
+			{
+				key : "San Jose",
+				y : 3300000
+			},
+			{
+				key : "Milpitas",
+				y : 2300000
+			},
+			{
+				key : "Los Angeles",
+				y : 80000000
+			},
+			{
+				key : "Dallas",
+				y : 2100000
+			}
+		];
+
+
+
+		$scope.ugBarData = [{
+						    "key" : "Quantity" ,
+						    "bar": true,
+						    "values" :  
+						    	[ [ 1451952000, 2500000] , [ 1454716800, 3300000] , [ 1458086400, 2300000] , [ 1460073600, 80000000] , [ 1464566400, 2100000] ]
+		}];
+
+
+		$scope.biPieData = [
+			{
+				key : "Alameda",
+				y : 2200000
+			},
+			{
+				key : "4th Street",
+				y : 36210000
+			},
+			{
+				key : "El Dorado",
+				y : 27300000
+			},
+			{
+				key : "Villa",
+				y : 12300000
+			},
+			{
+				key : "Fernando",
+				y : 67100000
+			},
+			{
+				key : "Morisson",
+				y : 4002000
+			},
+			{
+				key : "Paseo",
+				y : 2760000
+			},
+			{
+				key : "Cahill",
+				y : 3210000
+			},
+			{
+				key : "South",
+				y : 72100000
+			},
+			{
+				key : "Legacy",
+				y : 44400000
+			}
+		];
+
+
+
+		$scope.biBarData = [{
+						    "key" : "Quantity" ,
+						    "bar": true,
+						    "values" :  
+						    	[ [ 1451952000, 2200000] , [ 1454716800, 36210000] , [ 1458086400, 27300000] , [ 1460073600, 12300000] , [ 1464566400, 72100000] , [1465759851, 4002000] , [ 1468351851, 2760000] , [ 1471030251, 32100000] , [ 1473708651, 90000000] , [ 1476300651, 44400000] ]
+		}];
 
 
 	})
