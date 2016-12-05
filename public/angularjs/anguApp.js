@@ -180,6 +180,22 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope, NgMap, $timeout) => {
 		
 		$scope.address = '';
+		
+		$scope.showPropertyPage = function() {
+			$http({
+				method : "POST",
+				url : '/check_host'
+			}).then((results) => {
+				if (results.data.statusCode === 500) {
+					window.location.assign('/');
+				}
+				else if (results.data.statusCode === 200) {
+					window.location.assign('/property');
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
 
 		// console.log('$scope.address', $scope.address);
 		$scope.options = {
@@ -1002,7 +1018,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					if (result.data.statusCode === 200) {
 						$scope.propertySuccessfullyAdded = true;
 						$scope.page = 1;
-						window.location.assign('/');
+//						window.location.assign('/');
 					}
 				}, (error) => {
 
@@ -1536,16 +1552,16 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log(error);
 			});
 		};
-
 		$scope.host = () => {
 			if ($scope.loggedInUser) {
-
+				$scope.not_signed_in = false;
 				$http({
 					url : '/check_host',
 					method : "POST"
 				}).then(function(result) {
 						
 					if (result.data.statusCode === 200) {
+						$scope.not_yet_host = false;
 						window.location.assign('/property');
 					}else{
 						$scope.not_yet_host = true;
