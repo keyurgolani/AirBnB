@@ -106,7 +106,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 
 	})
-	.controller('viewListing', function($scope, $http, $window, Random, Date) {
+	.controller('viewListing', function($scope, $http, $window, Random, Date,$rootScope) {
 		$scope.init = function(retrievedData) {
 			$scope.data = JSON.parse(retrievedData);
 
@@ -156,7 +156,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 
-		$scope.instantBooking = function() {
+		/*$scope.instantBooking = function() {
 			$http({
 				method : "POST",
 				url : '/instantBook',
@@ -175,8 +175,89 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}, (error) => {
 				console.log("Error", error);
 			})
+		}*/
+
+		$scope.addcard = function() {
+
+			$rootScope.fetchLoggedInUser(function() {
+				window.location.assign('/profile?owner='+$rootScope.loggedInUser.user_id);
+			});	
+			window.location.assign('/profile');
 		}
-	})
+
+		$scope.checkform = function() {
+
+			if($scope.chkInOutDate === null || $scope.chkInOutDate === undefined || $scope.noOfGuests === undefined || $scope.noOfGuests <=0 ){
+
+				alert("Please correct your fields!");
+			}
+		}
+
+		$scope.instantBooking = function(x) {
+
+
+			
+  			console.log(x);
+
+  			if($scope.data.is_bid === 1){
+ 
+ 				$http({
+ 						method : "POST",
+ 						url : '/placeBidOnListing',
+ 						data : {
+ 							"checkin" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[0].trim()),
+ 							"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()),
+ 							"bid_amount" : $scope.bid_amount,
+ 							"listing_id" : $scope.data.listing_id,
+ 							"userId" : 1,
+ 							"guests" : $scope.noOfGuests,
+ 							"daily_price" : $scope.data.daily_price,
+ 							"accommodations" : $scope.data.accommodations,
+ 							"cc_id" : x
+ 						}
+ 					}).then((results) => {
+ 						if (results.data.statusCode === 200) {
+ 							$scope.data.daily_price = results.data.updated_base_price;
+ 						}
+ 					}, (error) => {
+ 						console.log("Error", error);
+ 					})
+ 			}else{
+ 					$http({
+ 						method : "POST",
+ 						url : '/instantBook',
+ 						data : {
+ 							"checkin" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[0].trim()),
+ 							"checkout" : Date.formatToSQLWorthy($scope.chkInOutDate.split("-")[1].trim()),
+ 							"listing_id" : $scope.data.listing_id,
+ 							"userId" : 1,
+ 							"guests" : $scope.noOfGuests,
+ 							"trip_amount" : $scope.data.daily_price,
+ 							"cc_id" : x
+ 						}
+ 					}).then((results) => {
+ 					    
+ 						if (results.data.statusCode === 200) {
+ 							console.log("Results", results);
+ 						}else if(results.data.statusCode === 500){
+
+ 							alert("dates are invalid!");
+ 						}
+ 					}, (error) => {
+ 						console.log("Error", error);
+ 					})
+ 			}
+  	}
+
+})
+
+	
+
+
+
+
+
+
 	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope, NgMap, $timeout) => {
 		
 		$scope.address = '';

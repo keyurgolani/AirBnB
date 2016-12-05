@@ -1232,9 +1232,7 @@ router.post('/instantBook', function(req, res, next) {
 							})
 						}
 					})
-				} else {
-
-					//inform user to book for another date!!
+				} else {					
 					res.send({
 						'statusCode' : 500
 					});
