@@ -220,7 +220,22 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$rootScope.fetchLoggedInUser(function() {
 				$scope.isSameUser = ($rootScope.loggedInUser.user_id === $scope.data[0][0].user_id);
 			});
-			$scope.active_tab = 'profile_tab';
+
+
+			$scope.getanalytics = function() {
+				$scope.active_tab = 'profile_tab';
+				$http({
+					method : "POST",
+					url : '/hostAnalytics'
+				}).then((results) => {
+					console.log(results);		
+					}, (error) => {
+					console.log(error);
+				})		
+			}
+			
+
+			
 			$scope.genders = [ 'Male', 'Female', 'Other' ];
 			$scope.months = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
 			$scope.dates = [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31' ];
@@ -2402,7 +2417,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('adminPageController', function($scope, $http) {
 
-
+		
+		
 		$scope.topTen = false;
 		$scope.cityWise = false;
 

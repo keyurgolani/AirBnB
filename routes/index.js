@@ -21,6 +21,9 @@ var LocalStrategy = require("passport-local").Strategy;
 var grok          = require('node-grok');
 var lineReader    = require('line-reader');
 
+var LineReader = require('node-line-reader').LineReader;
+fs = require('fs');
+
 // require('./config/passport')(passport); // pass passport for configuration
 
 
@@ -67,11 +70,8 @@ router.post('/addListing', (req, res, next) => {
 	var checkin = req.body.checkin;
 	var checkout = req.body.checkout;
 
-
-
-	//TODO Get user Id from session
-	//var userId = req.session.user.userId;
-	var userId = 1;
+	var userId = req.session.loggedInUser.user_id;
+	
 
 	mysql.insertData('listings', {
 		'property_id' : property_id,
@@ -1101,9 +1101,7 @@ router.post('/placeBidOnListing', function(req, res, next) {
 	var base_price = req.body.daily_price;
 	console.log('base_price', base_price);
 	var cc_id = req.body.cc_id;
-	//TODO Get user Id from session
-	//var userId = req.session.user.userId;
-	var userId = 1;
+	var userId = req.session.user.userId;
 
 	//do bidding log
 
@@ -2326,6 +2324,9 @@ router.post('/uploadProfilePhoto', (req, res, next) => {
 	});
 });
 
+
+
+
 router.post('/uploadProfileVideo', (req, res, next) => {
 	var profile_video_collection = req.db.get('user_videos');
 	profile_video_collection.findOne({
@@ -2356,6 +2357,193 @@ router.post('/uploadProfileVideo', (req, res, next) => {
 
 	});
 });
+
+
+router.post('/hostAnalytics', (req, res, next) => {
+
+
+	async.parallel([
+			function(callback) {
+				fs.readFile('logs/bidLog.log', 'utf8', function (err,data) {
+				 if (err) {
+				   return console.log(err);
+				 }
+				
+				const regex = /"@timestamp":"([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z)","@fields":{"listing_id":"([0-9]{10})","user_id,":([0-9]{10}),"bid_amount":"(\d+)"/g;
+
+				var m;
+
+				var bid_trace = [];
+
+					while ((m = regex.exec(data)) !== null) {
+					    // This is necessary to avoid infinite loops with zero-width matches
+					    if (m.index === regex.lastIndex) {
+					        regex.lastIndex++;
+					    }
+					    
+					    // The result can be accessed through the `m`-variable.
+
+					     for (var i = 1; i <= m.length -1 ; i++) {
+
+					     		if(i%5 == 0){
+					     			i++;
+					     		}else{
+								var obj = m[i];
+								bid_trace.push(obj);
+								}
+							}
+					    /*m.forEach((match, groupIndex) => {
+					        // console.log(`Found match, group ${groupIndex}: ${match}`);
+
+					        var obj = {groupIndex : match};
+					        bid_trace.push(obj);
+					    });*/
+					}
+					// console.log(bid_trace);			
+					callback(null, bid_trace);
+				})
+				},
+				function(callback) {
+				// this is for area analytics
+
+					fs.readFile('logs/areaLog.log', 'utf8', function (err,area) {
+						 if (err) {
+						   return console.log(err);
+						 }
+						const regex = /"address":"([a-zA-Z,\s\-]*)"/g;
+
+						var m;
+
+						var area_trace = [];
+
+						while ((m = regex.exec(area)) !== null) {
+						    // This is necessary to avoid infinite loops with zero-width matches
+						    if (m.index === regex.lastIndex) {
+						        regex.lastIndex++;
+						    }
+						   
+						    for (var i = 1; i <= m.length -1 ; i +=2) {
+								 var obj =  m[i].split(",");
+								 area_trace.push(obj[0]);
+							}
+
+							//now let's get click counts city wise
+
+							var area_count = [];
+
+							var copy = area_trace.slice(0);
+
+							for (var i = 0; i < area_trace.length; i++) {
+									
+									var count = 0;
+								for (var j = 0; j < copy.length; j++) {
+									if(area_trace[i] == copy[j]){
+										count++;
+										delete copy[j];
+									}
+								}
+							
+
+							if(count > 0){
+								var a = {};
+								a.value = area_trace[i];
+								a.count = count;
+								area_count.push(a);
+							}
+
+						}
+													    
+						    // The result can be accessed through the `m`-variable.
+						    /*m.forEach((match, groupIndex) => {
+						        console.log(`Found match, group ${groupIndex}: ${match}`);
+
+						        var obj = {groupIndex : match};
+						        area_trace.push(obj);
+						    });*/
+						}
+
+						
+
+					// console.log('area_trace', area_trace);
+					callback(null,area_count);
+					})
+
+				},
+
+				function(callback) {
+
+						//this is for page per click
+
+						fs.readFile('logs/pageClickLog.log', 'utf8', function (err,clicks) {
+							 if (err) {
+							   return console.log(err);
+							 }
+								const regex = /"listing_id":"([0-9]{10})"/g;
+
+								var m;
+
+								var clicks_trace = [];
+								var clicks_count = [];
+
+								while ((m = regex.exec(clicks)) !== null) {
+								    // This is necessary to avoid infinite loops with zero-width matches
+								    if (m.index === regex.lastIndex) {
+								        regex.lastIndex++;
+								    }
+								    
+								    // The result can be accessed through the `m`-variable.
+								 	
+								 	
+								 	for (var i = 0; i <= m.length -1 ; i +=2) {
+								 		var obj = m[i].match(/\d+/);
+								 		// hold.push(obj);
+								        clicks_trace.push(parseInt(obj));
+								 	}
+							    
+								}
+
+								var copy = clicks_trace;
+								var clicks_count = [];
+
+								for (var i = 0; i < clicks_trace.length; i++) {
+										
+										var count = 0;
+									for (var j = 0; j < copy.length; j++) {
+										if(clicks_trace[i] == copy[j]){
+											count++;
+											delete copy[j];
+										}
+									}
+
+									if (count > 0) {
+										var a={};
+										a.value = clicks_trace[i];
+										a.count = count;
+										clicks_count.push(a);
+									}
+								}
+								 	
+									callback(null,clicks_count);
+						})					
+						// console.log('clicks_trace', clicks_trace);
+						}				
+			], function(error, results) {
+				if (error) {
+					res.send({
+						'statusCode' : 500
+					});
+				} else {
+						
+						console.log(results);
+
+						// data : JSON.stringify(results);
+						res.send({
+							'obj' : results
+						})
+					}
+			});
+});
+
 
 
 router.post('/fetchTopTenProperties', (req, res, next) => {
