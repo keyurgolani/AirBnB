@@ -205,7 +205,7 @@
 			</div>
 			
 			<div class="col-lg-5" style="border-radius:0px; padding:0px;">
-				<ng-map zoom="11" center="[{{data.centerLatLng.center_lat}}, {{data.centerLatLng.center_lng}}]" style="height:90%; width:550px; position:fixed; margin:0px;">
+				<ng-map zoom="{{zoomLevel}}" center="[{{data.centerLatLng.center_lat}}, {{data.centerLatLng.center_lng}}]" style="height:90%; width:550px; position:fixed; margin:0px;">
 					<div ng-repeat="l in filteredResults">
 						<custom-marker position="[{{l.latitude}}, {{l.longitude}}]" animation="Animation.BOUNCE" >
 							<div class="cm">
