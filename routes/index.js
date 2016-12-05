@@ -2398,7 +2398,7 @@ router.post('/fetchTopTenProperties', (req, res, next) => {
 	var patterns = grok.loadDefaultSync();
 	var pattern = patterns.createPattern(p);
 
-	lineReader.eachLine('./public/analytics/admin/log.txt', function(line, isLast, cb) {
+	lineReader.eachLine('./public/logs/pageClickLog.log', function(line, isLast, cb) {
 	   console.log(pattern.parseSync(line));
 	   if (isLast) {
 	      console.log('All done!');
@@ -2406,5 +2406,41 @@ router.post('/fetchTopTenProperties', (req, res, next) => {
 	});
 
 });
+
+
+router.post('/fetchpropertyClick', (req, res, next) => {
+	
+
+	var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
+	var patterns = grok.loadDefaultSync();
+	var pattern = patterns.createPattern(p);
+
+	lineReader.eachLine('./public/logs/pageClickLog.log', function(line, isLast, cb) {
+	   console.log(pattern.parseSync(line));
+	   if (isLast) {
+	      console.log('All done!');
+	   }
+	});
+
+});
+
+
+router.post('/fetchpropertyClick', (req, res, next) => {
+	
+
+	var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
+	var patterns = grok.loadDefaultSync();
+	var pattern = patterns.createPattern(p);
+
+	lineReader.eachLine('./public/logs/pageClickLog.log', function(line, isLast, cb) {
+	   console.log(pattern.parseSync(line));
+	   if (isLast) {
+	      console.log('All done!');
+	   }
+	});
+
+});
+
+
 
 module.exports = router;
