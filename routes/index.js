@@ -1035,7 +1035,7 @@ router.get('/viewListing', function(req, res, next) {
 						callback(null, null);
 					});
 				}, function(callback) {
-					mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = 0000000013', (error, card_details) => {
+					mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = ?', [req.session.loggedInUser.user_id], (error, card_details) => {
 						if (error) {
 							throw error;
 						} else {
@@ -1059,6 +1059,8 @@ router.get('/viewListing', function(req, res, next) {
 });
 
 router.post('/placeBidOnListing', function(req, res, next) {
+
+	console.log("place bid");
 	if(req.session && req.session.loggedInUser) {
 		var listing_id = req.body.listing_id;
 		var checkin = req.body.checkin;
@@ -1072,7 +1074,7 @@ router.post('/placeBidOnListing', function(req, res, next) {
 		console.log('base_price', base_price);
 		var cc_id = req.body.cc_id;
 		//TODO Get user Id from session
-		var userId = req.session.user.userId;
+		var userId = req.session.loggedInUser.user_id;
 
 		//do bidding log
 
