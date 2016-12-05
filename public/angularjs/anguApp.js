@@ -177,8 +177,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 	})
-	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope) => {
-
+	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope, NgMap, $timeout) => {
+		
 		$scope.address = '';
 		
 		$scope.showPropertyPage = function() {
@@ -209,6 +209,15 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log("No Response");
 			}
 		});
+		
+		$scope.initializeMaps = function() {
+			$scope.active_tab = 'listings_tab';
+			for(var i = 0; i < $scope.data[4].length; i++) {
+				NgMap.getMap($scope.data[4][i].listing_id).then(function(map) {
+					$timeout(function() {google.maps.event.trigger(map, 'resize')}, 1000)
+				});
+			}
+		}
 
 
 		$scope.init = function(profileDetails) {
@@ -244,6 +253,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.birth_year = $scope.years[0];
 				$scope.birth_date = $scope.dates[0];
 			}
+			
 		}
 
 		$scope.deactivateUserAccount = function() {
@@ -1689,8 +1699,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.entire_home = true;
 			$scope.private_room = true;
 			$scope.shared_room = true;
-			$scope.min_price = 0;
-			$scope.max_price = 100;
+			$scope.min_price = $scope.data.results[0].daily_price;
+			$scope.max_price = $scope.data.results[0].daily_price;
 			$scope.instant_book = false;
 
 			for (var i = 0; i < $scope.data.results.length; i++) {
@@ -1698,10 +1708,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				if ($scope.data.results[i].daily_price >= $scope.max_price) {
 					$scope.max_price = $scope.data.results[i].daily_price;
 				}
-				if ($scope.data.results[i].daily_price <= $scope.max_price) {
+				if ($scope.data.results[i].daily_price <= $scope.min_price) {
 					$scope.min_price = $scope.data.results[i].daily_price;
 				}
-
 			}
 
 			$scope.range = {
@@ -1710,18 +1719,18 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			};
 
 			$scope.nextPhoto = function(index, currentPhoto) {
-				if (currentPhoto === $scope.data.results[index].photos.length - 1) {
-					$scope.data.results[index].currentPhoto = 0;
+				if (currentPhoto === $scope.filteredResults[index].photos.length - 1) {
+					$scope.filteredResults[index].currentPhoto = 0;
 				} else {
-					$scope.data.results[index].currentPhoto = $scope.data.results[index].currentPhoto + 1;
+					$scope.filteredResults[index].currentPhoto = $scope.filteredResults[index].currentPhoto + 1;
 				}
 			}
 
 			$scope.previousPhoto = function(index, currentPhoto) {
 				if (currentPhoto === 0) {
-					$scope.data.results[index].currentPhoto = $scope.data.results[index].photos.length - 1;
+					$scope.filteredResults[index].currentPhoto = $scope.filteredResults[index].photos.length - 1;
 				} else {
-					$scope.data.results[index].currentPhoto = $scope.data.results[index].currentPhoto - 1;
+					$scope.filteredResults[index].currentPhoto = $scope.filteredResults[index].currentPhoto - 1;
 				}
 			}
 

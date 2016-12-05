@@ -35,8 +35,8 @@
 							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'security_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'security_tab'" id="account">Security</a></li>
 							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'properties_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'properties_tab'" id="trips">Your Properties</a></li>
 							<li><a href="" aria-selected"true" ng-hide="isSameUser" class="subnav-item" ng-class="{'properties_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'properties_tab'" id="trips">{{data[0][0].f_name}}'s Properties</a></li>
-							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'listings_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'listings_tab'" id="trips">Your Listings</a></li>
-							<li><a href="" aria-selected"true" ng-hide="isSameUser" class="subnav-item" ng-class="{'listings_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'listings_tab'" id="trips">{{data[0][0].f_name}}'s Listings</a></li>
+							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'listings_tab':'subnav-item-border'}[active_tab]" ng-click="initializeMaps()" id="trips">Your Listings</a></li>
+							<li><a href="" aria-selected"true" ng-hide="isSameUser" class="subnav-item" ng-class="{'listings_tab':'subnav-item-border'}[active_tab]" ng-click="initializeMaps()" id="trips">{{data[0][0].f_name}}'s Listings</a></li>
 							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'trips_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'trips_tab'" id="trips">Your Trips</a></li>
 							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'hostings_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'hostings_tab'" id="trips">Your Hostings</a></li>
 							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'host_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'host_tab'" id="host">Host</a></li>
@@ -539,7 +539,8 @@
 								<div class="row no-listing" ng-show="data[3] === null || data[3].length === 0">You don't have any properties!</div>
 								<div class="row listing-activated-body well" ng-repeat="property in data[3]">
 									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+										<img class="listing-image" src="images/city/paris.jpg" alt="No Property Photo" ng-hide="property.photos">
+										<img class="listing-image" data-ng-src="data:{{property.photos.photos.filetype}};base64,{{property.photos.photos.base64}}" alt="No Property Photo" ng-show="property.photos">
 									</div>
 									<div class="col-md-1"></div>
 									<div class="col-md-8 listing-details">
@@ -576,7 +577,13 @@
 								<div class="row no-listing" ng-show="data[4] === null || data[4].length === 0">You don't have any listings!</div>
 								<div class="row listing-activated-body well" ng-repeat="listing in data[4]">
 									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+										<ng-map id="{{listing.listing_id}}" zoom="14" center="[{{listing.latitude + 0.0050}}, {{listing.longitude - 0.00500}}]" disableDefaultUI="true" style="height:200px; width:100%; margin:0px;">
+											<custom-marker position="[{{listing.latitude}}, {{listing.longitude}}]" animation="Animation.BOUNCE" >
+													<div class="cm">
+														<b style="color:white;">${{listing.daily_price}}</b> <span class="glyphicon glyphicon-flash" style="color:yellow;" ng-hide="listing.is_bid === 1"></span>
+													</div>
+											</custom-marker>
+										</ng-map>
 									</div>
 									<div class="col-md-1"></div>
 									<div class="col-md-8 listing-details">
@@ -612,7 +619,13 @@
 								<div class="row no-listing">You don't have any trips!</div>
 								<div class="row listing-activated-body well" ng-repeat="trip in data[5]">
 									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+										<ng-map id="{{trip.listing_id}}" zoom="14" center="[{{trip.latitude + 0.0050}}, {{trip.longitude - 0.00500}}]" disableDefaultUI="true" style="height:200px; width:100%; margin:0px;">
+											<custom-marker position="[{{trip.latitude}}, {{trip.longitude}}]" animation="Animation.BOUNCE" >
+													<div class="cm">
+														<b style="color:white;">${{trip.trip_amount}}</b>
+													</div>
+											</custom-marker>
+										</ng-map>
 									</div>
 									<div class="col-md-1"></div>
 									<div class="col-md-8 listing-details">
@@ -663,7 +676,13 @@
 								<div class="row item-content" ng-repeat="hosting in data[6]">
 									<div class="row listing-activated-body well">
 										<div class="col-md-3">
-											<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+											<ng-map id="{{hosting.listing_id}}" zoom="14" center="[{{hosting.latitude + 0.0050}}, {{hosting.longitude - 0.00500}}]" disableDefaultUI="true" style="height:200px; width:100%; margin:0px;">
+												<custom-marker position="[{{hosting.latitude}}, {{hosting.longitude}}]" animation="Animation.BOUNCE" >
+														<div class="cm">
+															<b style="color:white;">${{hosting.trip_amount}}</b>
+														</div>
+												</custom-marker>
+											</ng-map>
 										</div>
 										<div class="col-md-1"></div>
 										<div class="col-md-8 listing-details">

@@ -12,6 +12,7 @@
     "angular-base64-upload": "^0.1.19",
     "angular-carousel": "^1.0.2",
     "angular-daterangepicker": "^0.2.3-alpha1",
+    "angular-google-maps-native": "^2.0.0",
     "angular-input-masks": "^2.5.0",
     "angular-messages": "^1.5.9",
     "angular-touch": "^1.5.9",
