@@ -990,23 +990,24 @@ router.get('/viewListing', function(req, res, next) {
 							if(ratings.length === 0) {
 								results[0].ratings = ratings;
 								callback(null, null);
+							} else {
+								for(var i = 0; i < ratings.length; i++) {
+									req.db.get('user_photos').find({
+										'user_id' : ratings[i].traveller_id
+									}).then((docs) => {
+										ratings[i].profilePic = docs;
+									});
+									req.db.get('host_review_photos').find({
+										'trip_id' : ratings[i].trip_id
+									}).then((docs) => {
+										if(docs && docs.length > 0) {
+											ratings[i].review_photos = docs[0].photos;
+										}
+									});
+								}
+								results[0].ratings = ratings
+								callback();
 							}
-							for(var i = 0; i < ratings.length; i++) {
-								req.db.get('user_photos').find({
-									'user_id' : ratings[i].traveller_id
-								}).then((docs) => {
-									ratings[i].profilePic = docs;
-								});
-								req.db.get('host_review_photos').find({
-									'trip_id' : ratings[i].trip_id
-								}).then((docs) => {
-									if(docs && docs.length > 0) {
-										ratings[i].review_photos = docs[0].photos;
-									}
-								});
-							}
-							results[0].ratings = ratings
-							callback();
 						}
 					});
 				}, function(callback) {
@@ -1537,9 +1538,6 @@ router.get('/searchListing', function(req, res, next) {
 		});
 	}else{
 		
-		// console.log("<><><><><><><><>><><>><><");
-		// console.log('daterange', daterange);
-
 		//TODO
 		 if(req.session && req.session.loggedInUser) {
 			 var user_id = req.session.loggedInUser.user_id;
@@ -2470,7 +2468,7 @@ router.post('/fetchTopTenProperties', (req, res, next) => {
 	var patterns = grok.loadDefaultSync();
 	var pattern = patterns.createPattern(p);
 
-	lineReader.eachLine('./public/analytics/admin/log.txt', function(line, isLast, cb) {
+	lineReader.eachLine('./public/logs/pageClickLog.log', function(line, isLast, cb) {
 	   console.log(pattern.parseSync(line));
 	   if (isLast) {
 	      console.log('All done!');
@@ -2478,5 +2476,111 @@ router.post('/fetchTopTenProperties', (req, res, next) => {
 	});
 
 });
+
+
+router.post('/fetchpropertyClickStats', (req, res, next) => {
+	
+
+	var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
+	var patterns = grok.loadDefaultSync();
+	var pattern = patterns.createPattern(p);
+
+	lineReader.eachLine('./public/logs/pageClickLog.log', function(line, isLast, cb) {
+	   console.log(pattern.parseSync(line));
+	   if (isLast) {
+	      console.log('All done!');
+	   }
+	});
+
+});
+
+
+router.post('/fetchClicksPerPageStats', (req, res, next) => {
+	
+
+	var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
+	var patterns = grok.loadDefaultSync();
+	var pattern = patterns.createPattern(p);
+
+	lineReader.eachLine('./public/logs/pageClickLog.log', function(line, isLast, cb) {
+	   console.log(pattern.parseSync(line));
+	   if (isLast) {
+	      console.log('All done!');
+	   }
+	});
+
+});
+
+
+
+
+router.post('/fetchLeastSeenAreasStats', (req, res, next) => {
+	
+
+	var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
+	var patterns = grok.loadDefaultSync();
+	var pattern = patterns.createPattern(p);
+
+	lineReader.eachLine('./public/logs/dataAccessLogs.log', function(line, isLast, cb) {
+	   console.log(pattern.parseSync(line));
+	   if (isLast) {
+	      console.log('All done!');
+	   }
+	});
+
+});
+
+
+router.post('/fetchPropertyReviewStats', (req, res, next) => {
+	
+
+	var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
+	var patterns = grok.loadDefaultSync();
+	var pattern = patterns.createPattern(p);
+
+	lineReader.eachLine('./public/logs/dataAccessLogs.log', function(line, isLast, cb) {
+	   console.log(pattern.parseSync(line));
+	   if (isLast) {
+	      console.log('All done!');
+	   }
+	});
+
+});
+
+
+router.post('/fetchUserGroupStats', (req, res, next) => {
+	
+
+	var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
+	var patterns = grok.loadDefaultSync();
+	var pattern = patterns.createPattern(p);
+
+	lineReader.eachLine('./public/logs/dataAccessLogs.log', function(line, isLast, cb) {
+	   console.log(pattern.parseSync(line));
+	   if (isLast) {
+	      console.log('All done!');
+	   }
+	});
+
+});
+
+
+router.post('/fetchBidStats', (req, res, next) => {
+	
+
+	var p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
+	var patterns = grok.loadDefaultSync();
+	var pattern = patterns.createPattern(p);
+
+	lineReader.eachLine('./public/logs/dataAccessLogs.log', function(line, isLast, cb) {
+	   console.log(pattern.parseSync(line));
+	   if (isLast) {
+	      console.log('All done!');
+	   }
+	});
+
+});
+
+
 
 module.exports = router;
