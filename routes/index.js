@@ -1455,18 +1455,98 @@ router.get('/searchListing', function(req, res, next) {
 	var daterange = req.query.daterange;
 
 	if(address === null || address === undefined || address === ""){
+		var longitude_lower = -180;
+		var longitude_upper = 180;
+		var latitude_lower  = -85;
+		var latitude_upper  = 85;
+		
+		var query = "select * from property_details,listings INNER JOIN room_types ON listings.room_type_id = room_types.room_type_id WHERE property_details.property_id = listings.property_id AND property_details.longitude<=? AND longitude >= ? AND latitude<= ? AND latitude>=? AND listings.active != 0 AND property_details.active != 0";
+		var parameters = [ longitude_upper, longitude_lower, latitude_upper, latitude_lower ];
+		
 
+		var centerLatLng = {
+			center_lat : 40,
+			center_lng : -100,
+		};
+
+		mysql.executeQuery(query, parameters, function(error, results) {
+
+			if(results.length === 0) {
+				res.render('searchListing', {
+					data : JSON.stringify({
+						centerLatLng : centerLatLng
+					})
+				});
+			} else {
+
+				results.forEach(function(item, index, array) {
+					async.parallel([ function(callback) {
+						req.db.get('property_photos').find({
+							'property_id' : Number(item.property_id)
+						}).then((photos) => {
+							results[index].photos = photos;
+							callback(null, null);
+						});
+					}, function(callback) {
+						req.db.get('user_photos').find({
+							'user_id' : item.owner_id
+						}).then((profile_photo) => {
+							console.log(profile_photo);
+							results[index].profile_photo = profile_photo;
+							callback(null, null);
+						});
+					}, function(callback) {
+						mysql.executeQuery('select count(host_rating) as number_of_ratings, avg(host_rating) as host_rating from ratings right join trip_details on ratings.trip_id = trip_details.trip_id inner join listings on listings.listing_id = trip_details.listing_id inner join property_details on listings.property_id = property_details.property_id where owner_id = ?', [ item.owner_id ], (error, hosting_rating_details) => {
+							if (error) {
+								throw error;
+							} else {
+								results[index].rating = hosting_rating_details
+								callback(null, null);
+							}
+						});
+					} ], function(error, finalResults) {
+						if(index === array.length - 1) {
+							if (error) {
+								res.render('searchListing', {
+									data : JSON.stringify({
+										centerLatLng : centerLatLng
+									})
+								});
+							} else {
+								if (results && results.length > 0) {
+									res.render('searchListing', {
+										data : JSON.stringify({
+											results : results,
+											centerLatLng : centerLatLng,
+											guest : guest,
+											daterange : daterange
+										})
+									});
+								} else {
+									res.render('searchListing', {
+										data : JSON.stringify({
+											centerLatLng : centerLatLng
+										})
+									});
+								}
+							}
+						}
+					});
+				});
+			}
+		});
 	}else{
 		
 		// console.log("<><><><><><><><>><><>><><");
 		// console.log('daterange', daterange);
 
 		//TODO
-		// var user_id = req.session.loggedInUser.user_id;
-		var user_id = 1;
+		 if(req.session && req.session.loggedInUser) {
+			 var user_id = req.session.loggedInUser.user_id;
+			 //area seen logging
+			 logger.areaLogger(address, user_id);
+		 }
 
-		//area seen logging
-		logger.areaLogger(address, user_id);
 
 		var options = {
 			provider : 'google',

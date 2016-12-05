@@ -301,7 +301,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.active_tab = 'listings_tab';
 			for(var i = 0; i < $scope.data[4].length; i++) {
 				NgMap.getMap($scope.data[4][i].listing_id).then(function(map) {
-					$timeout(function() {google.maps.event.trigger(map, 'resize')}, 1000)
+					$timeout(function() {google.maps.event.trigger(map, 'resize')}, 10)
 				});
 			}
 		}
@@ -1774,6 +1774,12 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.data = JSON.parse(retrievedData);
 
 			$window.document.title = 'Listings for ' + $location.search().where;
+			
+			if($location.search().where === undefined || $location.search().where === null || $location.search().where.trim() === '') {
+				$scope.zoomLevel = 4;
+			} else {
+				$scope.zoomLevel = 11;
+			}
 
 			if ($location.search().daterange) {
 				$scope.daterange = $location.search().daterange;
