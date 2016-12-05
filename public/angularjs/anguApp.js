@@ -1542,16 +1542,16 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log(error);
 			});
 		};
-
 		$scope.host = () => {
 			if ($scope.loggedInUser) {
-
+				$scope.not_signed_in = false;
 				$http({
 					url : '/check_host',
 					method : "POST"
 				}).then(function(result) {
 						
 					if (result.data.statusCode === 200) {
+						$scope.not_yet_host = false;
 						window.location.assign('/property');
 					}else{
 						$scope.not_yet_host = true;

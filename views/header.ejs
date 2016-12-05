@@ -48,8 +48,8 @@
 	}
 </style>
 <div >
-	<div>
-		<nav class="navbar navbar-fixed-top" style="border-radius:0px; box-shadow: 1px 3px 1px 0 rgba(0, 0, 0, 0.05);" ng-controller="navBarController">
+	<div ng-controller="navBarController">
+		<nav class="navbar navbar-fixed-top" style="border-radius:0px; box-shadow: 1px 3px 1px 0 rgba(0, 0, 0, 0.05);">
 		<!--<nav class="navbar navbar-fixed-top" role="main" style="border-radius:0px;">-->
 			<div class="container-fluid">
 				<div class="navbar-header">
@@ -130,7 +130,15 @@
 		 			</ul>
 		 		</div>
 		 	</div>
-		 </nav>
+		  </nav>
+		  <div class="col-md-4 col-md-offset-3">
+		 	<div ng-show = "not_signed_in" style="width: 350px;height: 60px;border:2px solid red;text-align:center; border-radius: 5px; opacity: 1.0; font-size: 18px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="not_signed_in" ng-click="not_signed_in = false">
+						Please login first !!
+			</div>
+			<div ng-show = "not_yet_host" style="width: 370px;height: 60px;border:2px solid red;text-align:center; border-radius: 5px; opacity: 1.0; font-size: 18px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="not_yet_host" ng-click="not_yet_host = false">
+						Approval is pending with admin !!
+			</div>
+		 </div>
 	</div>
 </div>
 
