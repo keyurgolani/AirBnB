@@ -2679,8 +2679,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		
 		$scope.arr = [];
 	
-		for(var k = 0 ; k < $scope.$parent.chartData[0].length; k++) {
-			$scope.arr.push({ "key" : $scope.$parent.chartData[0][k].property_id , "y" : $scope.$parent.chartData[0][k].revenue});
+		if($scope.$parent.chartData && $scope.$parent.chartData.length > 0) {
+			for(var k = 0 ; k < $scope.$parent.chartData[0].length; k++) {
+				$scope.arr.push({ "key" : $scope.$parent.chartData[0][k].property_id , "y" : $scope.$parent.chartData[0][k].revenue});
+			}
 		}		
 	
 		
