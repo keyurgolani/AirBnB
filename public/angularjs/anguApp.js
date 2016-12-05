@@ -190,12 +190,18 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			if($scope.chkInOutDate === null || $scope.chkInOutDate === undefined || $scope.noOfGuests === undefined || $scope.noOfGuests <=0 ){
 
 				alert("Please correct your fields!");
+				$("#add_payment_model").modal('toggle');
+			}
+
+			if($scope.bid_amount <= $scope.data.daily_price ){
+
+				alert("invalid bid");
+				$("#add_payment_model").modal('toggle');
+
 			}
 		}
 
 		$scope.instantBooking = function(x) {
-
-
 			
   			console.log(x);
 
