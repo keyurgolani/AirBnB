@@ -179,10 +179,23 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 	})
 	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope) => {
 
-
-
-
 		$scope.address = '';
+		
+		$scope.showPropertyPage = function() {
+			$http({
+				method : "POST",
+				url : '/check_host'
+			}).then((results) => {
+				if (results.data.statusCode === 500) {
+					window.location.assign('/');
+				}
+				else if (results.data.statusCode === 200) {
+					window.location.assign('/property');
+				}
+			}, (error) => {
+				console.log("Error", error);
+			})
+		}
 
 		// console.log('$scope.address', $scope.address);
 		$scope.options = {
