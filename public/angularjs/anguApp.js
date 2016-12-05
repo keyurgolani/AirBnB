@@ -2821,7 +2821,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 
 	})
-	.controller('TopTenMonthPieController', function($scope) {
+	.controller('hostController', function($scope) {
 		
 		$scope.arr = [];
 	
