@@ -667,32 +667,17 @@
 										</div>
 										<div class="panel-body text-center">
 
-											<div class="dropdown">
-											  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Page to check clicks per page
-											  <span class="caret"></span></button>
-											  <ul class="dropdown-menu">
-											    <li><a href="#" style="font-size: 12px;">HTML</a></li>
-											    <li><a href="#" style="font-size: 12px;">CSS</a></li>
-											    <li><a href="#" style="font-size: 12px;">JavaScript</a></li>
-											  </ul>
-											</div>
-
-											<div class="btn btn-default" ng-click="showBarcpp();">
-												BAR
-											</div>
-											<div class="btn btn-default" ng-click="showPiecpp();">
-												PIE
-											</div>
 											
-											<div class="row" ng-controller="adminPieController">
+											
+											<div class="row" ng-controller="hostController">
 								
-												<nvd3 options="options" data="hostData" ng-show="piecpp"></nvd3>
+												<nvd3 options="pieOptions" data="cppPieData" ng-show="true"></nvd3>
 
 											</div>
 
-											<div class="row" ng-controller="adminBarController">
+											<div class="row" ng-controller="hostController">
 								
-												<nvd3 options="hostOptions" data="hostData" ng-show="barcpp"></nvd3>
+												<nvd3 options="barOptions" data="cppBarData" ng-show="true"></nvd3>
 
 											</div>
 										
@@ -712,22 +697,16 @@
 										</div>
 										<div class="panel-body text-center">
 
-											<div class="btn btn-default" ng-click="showBarpc();">
-												BAR
-											</div>
-											<div class="btn btn-default" ng-click="showPiepc();">
-												PIE
-											</div>
 											
-											<div class="row" ng-controller="adminPieController">
+											<div class="row" ng-controller="hostController">
 								
-												<nvd3 options="options" data="hostData" ng-show="piepc"></nvd3>
+												<nvd3 options="pieOptions" data="pcPieData" ng-show="true"></nvd3>
 
 											</div>
 
-											<div class="row" ng-controller="adminBarController">
+											<div class="row" ng-controller="hostController">
 								
-												<nvd3 options="hostOptions" data="hostData" ng-show="barpc"></nvd3>
+												<nvd3 options="barOptions" data="pcBarData" ng-show="true"></nvd3>
 
 											</div>
 										
@@ -746,22 +725,17 @@
 										</div>
 										<div class="panel-body text-center">
 
-											<div class="btn btn-default" ng-click="showBarlsa();">
-												BAR
-											</div>
-											<div class="btn btn-default" ng-click="showPielsa();">
-												PIE
-											</div>
 											
-											<div class="row" ng-controller="adminPieController">
+											
+											<div class="row" ng-controller="hostController">
 								
-												<nvd3 options="options" data="hostData" ng-show="pielsa"></nvd3>
+												<nvd3 options="pieOptions" data="lsPieData" ng-show="true"></nvd3>
 
 											</div>
 
-											<div class="row" ng-controller="adminBarController">
+											<div class="row" ng-controller="hostController">
 								
-												<nvd3 options="hostOptions" data="hostData" ng-show="barlsa"></nvd3>
+												<nvd3 options="barOptions" data="lsBarData" ng-show="true"></nvd3>
 
 											</div>
 										
@@ -781,22 +755,17 @@
 										</div>
 										<div class="panel-body text-center">
 
-											<div class="btn btn-default" ng-click="showBarpr();">
-												BAR
-											</div>
-											<div class="btn btn-default" ng-click="showPiepr();">
-												PIE
-											</div>
 											
-											<div class="row" ng-controller="adminPieController">
+											
+											<div class="row" ng-controller="hostController">
 								
-												<nvd3 options="options" data="hostData" ng-show="piepr"></nvd3>
+												<nvd3 options="pieOptions" data="prPieData" ng-show="true"></nvd3>
 
 											</div>
 
-											<div class="row" ng-controller="adminBarController">
+											<div class="row" ng-controller="hostController">
 								
-												<nvd3 options="hostOptions" data="hostData" ng-show="barpr"></nvd3>
+												<nvd3 options="barOptions" data="prBarData" ng-show="true"></nvd3>
 
 											</div>
 										
@@ -815,22 +784,16 @@
 										</div>
 										<div class="panel-body text-center">
 
-											<div class="btn btn-default" ng-click="showBarug();">
-												BAR
-											</div>
-											<div class="btn btn-default" ng-click="showPieug();">
-												PIE
-											</div>
 											
-											<div class="row" ng-controller="adminPieController">
+											<div class="row" ng-controller="hostController">
 								
-												<nvd3 options="options" data="hostData" ng-show="pieug"></nvd3>
+												<nvd3 options="pieOptions" data="ugPieData" ng-show="true"></nvd3>
 
 											</div>
 
-											<div class="row" ng-controller="adminBarController">
+											<div class="row" ng-controller="hostController">
 								
-												<nvd3 options="hostOptions" data="hostData" ng-show="barug"></nvd3>
+												<nvd3 options="barOptions" data="ugBarData" ng-show="true"></nvd3>
 
 											</div>
 										
@@ -848,23 +811,16 @@
 											<span style="font-size:16px; font-color: #2A3F54;">Bids Information</span>
 										</div>
 										<div class="panel-body text-center">
-
-											<div class="btn btn-default" ng-click="showBarbi();">
-												BAR
-											</div>
-											<div class="btn btn-default" ng-click="showPiebi();">
-												PIE
-											</div>
 											
-											<div class="row" ng-controller="adminPieController">
+											<div class="row" ng-controller="hostController">
 								
-												<nvd3 options="options" data="hostData" ng-show="piebi"></nvd3>
+												<nvd3 options="pieOptions" data="biPieData" ng-show="true"></nvd3>
 
 											</div>
 
-											<div class="row" ng-controller="adminBarController">
+											<div class="row" ng-controller="hostController">
 								
-												<nvd3 options="hostOptions" data="hostData" ng-show="barbi"></nvd3>
+												<nvd3 options="barOptions" data="biBarData" ng-show="true"></nvd3>
 
 											</div>
 										
