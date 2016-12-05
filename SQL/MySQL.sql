@@ -145,8 +145,8 @@ CREATE TABLE `ratings` (
   `host_review` VARCHAR(255) NULL,
   `traveller_rating` INT(1) NULL,
   `traveller_review` VARCHAR(255) NULL,
-  `host_rating_timestamp` TIMESTAMP(6) NOT NULL,
-  `traveller_rating_timestamp` TIMESTAMP(6) NOT NULL,
+  `host_rating_timestamp` TIMESTAMP(6) NULL,
+  `traveller_rating_timestamp` TIMESTAMP(6) NULL,
   PRIMARY KEY (`rating_id`)
 );
 
@@ -154,7 +154,7 @@ DROP TABLE IF EXISTS `bill_details`;
 CREATE TABLE `bill_details` (
   `bill_id` INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
   `trip_id` INT(10) ZEROFILL NOT NULL,
-  `receipt_id` NVARCHAR(10) ZEROFILL NOT NULL,
+  `receipt_id` NVARCHAR(10) NOT NULL,
   `cc_id` INT(10) ZEROFILL NOT NULL,
   PRIMARY KEY (`bill_id`)
 );

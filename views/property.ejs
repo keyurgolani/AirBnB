@@ -26,19 +26,21 @@
 	<header><% include ./header %></header>
 	<!-- Main -->
 	<main ng-controller="addProperty">
-		<div class="row" ng-show="page === 1">
-		<div style="border:2px solid green; border-radius: 5px; opacity: 1.0; font-size: 15px; color: green;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="propertySuccessfullyAdded">
-				
-			Property Successfully added...<br>
-			Want to add another?
-
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4" style="margin-top:-40px;">
+				<div ng-show="propertySuccessfullyAdded" style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 80px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert">
+						
+					Property Successfully added...<br>
+					Want to add another?
+	
+				</div>
+			</div>
+			<div class="col-md-4"></div>
 		</div>
+		<div class="row" ng-show="page === 1">
 			<div class="col-md-1"></div>
 			<div class="col-md-4">
-
-
-
-
 				<div class="row">
 					<span class="h2 heading">Hi! Let's get you ready to become a host.</span>
 				</div>
@@ -51,24 +53,16 @@
 				<div class="row" style="display:flex;">
 					<div><select class="dropdown-box listing box-size" placeholder="Room type" ng-model="room_type" ng-options="room.room_type for room in room_types"></select></div>
 					<div class="address-box increment-main-box">
-
 				    	<div class="count-main-text"><input type="text" class="form-control count-main-text" placeholder="Guests" ng-model="guests"/></div>
 						<span ng-click="guests = guests - 1" class="count-main-button">-</span>
 						<span ng-click="guests = guests + 1" class="count-main-button" style="border-right:none;">+</span>
 					</div><br/>
 				</div>
-				<div class="col-lg-5" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="noroom_type">
+				<div class="" style="color:red; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="noroom_type">
 					Please select your type of accomodation !
 				</div>
-				<div class="col-lg-1" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="noroom_type">
-					
-
-				</div>
-				<div class="col-lg-5" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="noGuests">
-					
-				</div>
-				<div class="col-lg-5" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="noGuests">
-					Please select number of guests !
+				<div class="" style="color:red;margin-left: 150px; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="noGuests">
+					Please enter the number of guests !
 				</div>
 
 				<div class="row que_1">
@@ -95,7 +89,7 @@
 					<select class="listing property-box curve-border" ng-model="property_type" ng-options="property.property_type for property in property_types"></select>
 				</div>
 				<div class="row">
-					<div style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="property_type_val">
+					<div style="color:red; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="property_type_val">
 						Please select your type of property !
 					</div>
 				</div>
@@ -115,41 +109,37 @@
 		<div class="row" ng-show="page === 3">
 			<div class="col-md-2"></div>
 			<div class="col-md-4">
+				<div class="row">
+					<div class="col-md-12" style="margin-top:-40px;">
+						<div style="width: 450px;height: 60px;border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 14px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_city">
+							
+							Please select a recognizable place.<br>
+							Places having a zip code are acceptable.
+	
+						</div>
+	
+						<div style="width: 450px;height: 60px;border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 14px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_apt">
+							
+							Please enter your property number<br>
+							on the street...
+	
+						</div>
+						<div style="width: 450px;height: 60px;border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_state">
+							
+							Please select a recognizable place.<br>
+							Places within a state / province are acceptable.
+	
+						</div>
+					</div>
+				</div>
 				<div class="row que_1" style="margin-bottom:20px;">
 					<span class="h3 que_1">Where's your place located?</span>
 				</div>
 				<div class="row">
-					
-					<div style="border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_city">
-						
-						Please select a recognizable place.<br>
-						Places having a zip code are acceptable.
-
-					</div>
-
-					<div style="border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_apt">
-						
-						Please enter your property number<br>
-						on the street...
-
-					</div>
-					<div style="border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_apt">
-						
-						Please enter your property number<br>
-						on the street...
-
-					</div>
-					<div style="border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_state">
-						
-						Please select a recognizable place.<br>
-						Places within a state / province are acceptable.
-
-					</div>
-					
 					<div class="form-group">
 				    	<label for="st.address" class="labels">Street Address</label>
 				    	<input type="text" class="form-control address-box curve-border" id="st.address" placeholder="e.g. 123 Main St." ng-enter="selectCity" ng-click="selectCity" ng-autocomplete="addressDetails" details="details" options="options">
-				    	<div class="col-lg-5" style="color:red; font-size: 11px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_street_address">
+				    	<div class="col-lg-5" style="color:red; font-size: 14px; border-top:0px solid red; padding:5px; margin-top:5px; border-radius:0px;" ng-show="no_street_address">
 							Please enter your Street Address !
 						</div>
 						  	</div>
@@ -172,13 +162,7 @@
 				    	<input type="text" class="form-control address-box curve-border" id="zipcode" ng-model="zip" placeholder="e.g. 94103">
 					</div>
 
-					<div style="border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_city">
-						
-						Please select a recognizable place.<br>
-						Places having a zip code are acceptable.
-
-					</div>
-					<div style="border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_state">
+					<div style="border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 14px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_state">
 						
 						Please select a recognizable place.<br>
 						Places within a state / province are acceptable.
@@ -242,17 +226,21 @@
 		<div class="row" ng-show="page === 5">
 			<div class="col-md-2"></div>
 			<div class="col-md-4">
+				<div class="row">
+					<div class="col-md-12" style="margin-top:-40px;">
+						<div style="border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_house_rules">
+						
+							Please specify atleast one house rule that the guests have to keep in mind.
+	
+						</div>
+					</div>
+				</div>
 				<div class="row que_1"style="margin-top: 20px" >
 					<span class="h3 que_1">Set house rules for your guests</span>
 				</div>
 				<div class="row" style="margin-top: 15px">
 					<div class="col-md-12">
 						<textarea rows="4" cols="50" class="form-control address-box curve-border" ng-model="house_rules" placeholder="House Rules..."></textarea>
-					</div>
-					<div style="border:2px solid red; border-radius: 5px; opacity: 1.0; font-size: 15px; color: red;" class="alert alert-warning alert-dismissable close" data-dismiss="alert" ng-show="no_house_rules">
-						
-						Please create atleast one house rule that the guests have to keep in mind.
-
 					</div>
 				</div>
 				<div class="row" style="margin-top: 30px;">

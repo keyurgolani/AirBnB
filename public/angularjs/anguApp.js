@@ -1,4 +1,4 @@
-var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector', 'ui.utils.masks', 'daterangepicker' ])
+var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete', 'ngMessages', 'ngRangeSlider', 'ngMap', 'nvd3', 'naif.base64', 'ng.deviceDetector', 'ui.utils.masks', 'daterangepicker', 'GoogleMapsNative' ])
 	.config([ '$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode({
 			enabled : true,
@@ -40,7 +40,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					}
 				}).then((results) => {
 					if (results.data.statusCode === 200) {
-						window.location.assign('/admin_fTYcN2a');
+						window.location.assign('/adminDashboard');
 					} else {
 						window.location.assign('/');
 					}
@@ -106,7 +106,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 		};
 
 	})
-	.controller('viewListing', function($scope, $http, $window, Random, Date,$rootScope) {
+	.controller('viewListing', function($scope, $http, $window, Random, Date) {
 		$scope.init = function(retrievedData) {
 			$scope.data = JSON.parse(retrievedData);
 
@@ -130,17 +130,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 			$scope.currentIndex = 1;
 			$scope.currentPhoto = $scope.data.photos[$scope.currentIndex - 1];
-
 		}
 		$window.document.title = data.title + ' | House Rentals in ' + data.city;
-
-		$scope.addcard = function() {
-
-			$rootScope.fetchLoggedInUser(function() {
-				window.location.assign('/profile?owner='+$rootScope.loggedInUser.user_id);
-			});	
-			window.location.assign('/profile');
-		}
 
 		$scope.requestBooking = function() {
 			$http({
@@ -165,10 +156,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 
-		
-
-		$scope.instantBooking = function(x) {
-			console.log(x);
+		$scope.instantBooking = function() {
 			$http({
 				method : "POST",
 				url : '/instantBook',
@@ -178,8 +166,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"listing_id" : $scope.data.listing_id,
 					"userId" : 1,
 					"guests" : $scope.noOfGuests,
-					"trip_amount" : $scope.data.daily_price,
-					"cc_id" : x
+					"trip_amount" : $scope.data.daily_price
 				}
 			}).then((results) => {
 				if (results.data.statusCode === 200) {
@@ -190,11 +177,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			})
 		}
 	})
-	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope) => {
-
-
-
-
+	.controller('profile', ($scope, $http, $window, MonthNumber, $location, Validation, $rootScope, NgMap, $timeout) => {
+		
 		$scope.address = '';
 
 		// console.log('$scope.address', $scope.address);
@@ -209,6 +193,15 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log("No Response");
 			}
 		});
+		
+		$scope.initializeMaps = function() {
+			$scope.active_tab = 'listings_tab';
+			for(var i = 0; i < $scope.data[4].length; i++) {
+				NgMap.getMap($scope.data[4][i].listing_id).then(function(map) {
+					$timeout(function() {google.maps.event.trigger(map, 'resize')}, 1000)
+				});
+			}
+		}
 
 
 		$scope.init = function(profileDetails) {
@@ -244,6 +237,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.birth_year = $scope.years[0];
 				$scope.birth_date = $scope.dates[0];
 			}
+			
 		}
 
 		$scope.deactivateUserAccount = function() {
@@ -252,19 +246,19 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				url : '/deactivateUserAccount'
 			}).then((results) => {
 				if (results.data.statusCode === 200) {
-					alert("Your account has been deactivated!!");
+					$scope.account_deactivated = true;
 					$http({
 						method : "POST",
 						url : "/logout"
 					}).then((result) => {
-						alert("Logged out after account deactivation!!");
+						$scope.redirecting = true;
 						window.location.assign('/');
 					}, (error) => {
 						console.log("Error", error);
 					})
 				}
 				if (results.data.statusCode === 401) {
-					alert("Please login first!");
+					window.location.assign('/');
 				}
 			}, (error) => {
 				console.log("Error", error);
@@ -278,7 +272,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				// statement
 
 				if ($scope.new_pass != $scope.confirm_pass) {
-					alert("Password mismatch!");
+					$scope.invalidLogin = true;
 				} else {
 
 					$http({
@@ -289,13 +283,13 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 							"new_pass" : $scope.new_pass
 						}
 					}).then((result) => {
-						alert("Success");
+						$scope.success_update = true;
 					}, (error) => {
 						console.log("Error", error);
 					})
 				}
 			} else {
-				alert("please enter in all fields!");
+				$scope.all_fields = true;
 			}
 		}
 
@@ -502,6 +496,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 			} else {
 
+
+
 				var newCard = {
 					"cc_no" : $scope.cc_no,
 					"cc_month" : $scope.cc_month,
@@ -516,9 +512,11 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					method : "POST",
 					url : "/addCard",
 					data : newCard
-				}).then((result) => {
 
+				}).then(function(result) {
+					console.log(result);
 					if(result.data.statusCode === 200){
+						
 						$scope.data[1].push({
 							"card_id" : result.card_id,
 							"card_number" : Validation.maskCard($scope.cc_no),
@@ -531,14 +529,12 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 							"country" : "United States"
 						});
 
-						$("#payment_model").modal('toggle');
-						$scope.card_success = true;
-					} else if (result.data.statusCode === 409) {
-
-						alert(result.data.message);
+					$("#payment_model").modal('toggle');
+					$scope.card_success = true;
 					}
 
-				}, (error) => {
+				}, function(error) {
+
 					// $scope.room_types = [];
 				})
 
@@ -553,9 +549,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				console.log($scope.details);
 				var length = $scope.details.address_components.length;
 				$scope.streetAddress = $scope.details.address_components[0].long_name + " " + $scope.details.address_components[1].long_name;
-				$scope.city = $scope.details.address_components[3].long_name;
-				$scope.state = $scope.details.address_components[5].long_name;
-				$scope.zip = $scope.details.address_components[7].long_name;
+				$scope.city = $scope.details.address_components[0].long_name;
+				$scope.state = $scope.details.address_components[2].long_name;
 			}
 		});
 
@@ -583,15 +578,14 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					"phone" : $scope.data[0][0].phone,
 					"city" : $scope.city,
 					"state" : $scope.state,
-					"zip" : $scope.zip,
 					"description" : $scope.data[0][0].description
 				}
 			}).then((result) => {
-				// alert('Success');
+				$scope.profile_updated = true;
 
 
 			}, (error) => {
-				alert('Error');
+				$scope.all_fields = true;
 			})
 
 		}
@@ -602,7 +596,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				// statement
 
 				if ($scope.new_pass != $scope.confirm_pass) {
-					alert("Password mismatch!");
+					$scope.invalidLogin = true;
 				} else {
 
 					$http({
@@ -613,13 +607,15 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 							"new_pass" : $scope.new_pass
 						}
 					}).then((result) => {
-						alert("Success");
+						if (results.data.statusCode === 200) {
+							console.log("Success");
+						}
 					}, (error) => {
 						console.log("Error", error);
 					})
 				}
 			} else {
-				alert("please enter in all fields!");
+				$scope.all_fields = true;
 			}
 		};
 
@@ -802,7 +798,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					}
 				}).then((results) => {
 					if (results.data.statusCode === 200) {
-						$rootScope.fetchLoggedInUser();
+						$rootScope.fetchLoggedInUser(function() {
+							
+						});
 					}
 				}, (error) => {
 					console.log("Error", error);
@@ -821,8 +819,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					}
 				}).then((results) => {
 					if (results.data.statusCode === 200) {
-						$rootScope.fetchLoggedInUser();
-						console.log("Results", results);
+						$rootScope.fetchLoggedInUser(function() {
+							
+						});
 					}
 				}, (error) => {
 					console.log("Error", error);
@@ -830,9 +829,15 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 		}
 	})
-	.controller('addProperty', ($scope, $http, $window,$rootScope) => {
-		
-		$scope.global = $rootScope;
+	.controller('addProperty', ($scope, $http, $window) => {
+
+		$scope.room_type = "";
+
+		$scope.$watch('room_type', function() {
+
+			console.log('$scope.room_type', $scope.room_type.room_type);
+
+		});
 
 		$scope.photos = [];
 		$scope.page = 1;
@@ -1271,11 +1276,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				$scope.sale_type = false;
 				$scope.successfulListing = false;
 			} else {
-
-
-
-
-
+				
+				console.log($scope.is_bid);
+				
 				$http({
 					method : "POST",
 					url : "/addListing",
@@ -1283,7 +1286,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 						'property_id' : $location.search().property,
 						'room_type' : $scope.room_type,
 						'title' : $scope.title,
-						'is_bid' : Boolean($scope.is_bid),
+						'is_bid' : $scope.is_bid,
 						'start_date' : Date.formatToSQLWorthy($scope.dates.split("-")[0].trim()),
 						'end_date' : Date.formatToSQLWorthy($scope.dates.split("-")[1].trim()),
 						'daily_price' : $scope.price,
@@ -1516,7 +1519,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			});
 		}
 
-		$rootScope.fetchLoggedInUser();
+		$rootScope.fetchLoggedInUser(function() {
+			
+		});
 
 		$scope.logout = function() {
 			$http({
@@ -1543,20 +1548,18 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					if (result.data.statusCode === 200) {
 						window.location.assign('/property');
 					}else{
-						alert('you are yet not approved as a host!');
+						$scope.not_yet_host = true;
 						
 					}
-					/*$rootScope.fetchLoggedInUser(function() {
-					window.location.assign('/');
-				});	*/				
 				}, function(error) {
 
 					console.log("some error");
 					
 				});
 				
+
 			} else {
-				alert("please signin first!");
+				$scope.not_signed_in = true;
 			}
 		}
 
@@ -1659,233 +1662,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			});
 
 	})
-	.controller('adminPieController', function($scope, $http, Random) {
-		// console.log("from admin pie controller");
 
-		$scope.options = {
-			chart : {
-				type : 'pieChart',
-				height : 300,
-				width : 350,
-				x : function(d) {
-					return d.key;
-				},
-				y : function(d) {
-					return d.y;
-				},
-				showLabels : true,
-				duration : 500,
-				labelThreshold : 0.01,
-				labelSunbeamLayout : true,
-				legend : {
-					margin : {
-						top : 5,
-						right : 35,
-						bottom : 5,
-						left : 0
-					}
-				}
-			}
-		};
-
-		$scope.data = [
-					            {
-					                "key": "One",
-					                "y": 5
-					            },
-					            {
-					                "key": "Two",
-					                "y": 2
-					            },
-					            {
-					                "key": "Three",
-					                "y": 9
-					            },
-					            {
-					                "key": "Four",
-					                "y": 7
-					            },
-					            {
-					                "key": "Five",
-					                "y": 4
-					            },
-					            {
-					                "key": "Six",
-					                "y": 3
-					            },
-					            {
-					                "key": "Seven",
-					                "y": 0.5
-					            },
-					            {
-					                "key": "Eight",
-					                "y": 3
-					            },
-					            {
-					                "key": "Nine",
-					                "y": 6
-					            },
-					            {
-					                "key": "Ten",
-					                "y": 12
-					            }
-					];
-
-
-		// //file to fetch admin analytical data from
-		// $http.get('../analytics/admin/dataPie.json')
-		// 	.then(function(res) {
-		// 		$scope.data = res.data;
-		// 	});
-
-		//file to fetch host analytical data from
-		$http.get('../analytics/admin/dataPie.json')
-			.then(function(res) {
-				$scope.hostData = res.data;
-			});
-
-	})
-	.controller('adminBarController', function($scope, $http, Random) {
-		// console.log("from admin bar controller");
-		// new Date(d)
-		// console.log('new Date(d)', new Date(1136005200000));
-
-
-		$scope.options = {
-			chart : {
-				type : 'historicalBarChart',
-				height : 300,
-				margin : {
-					top : 20,
-					right : 20,
-					bottom : 65,
-					left : 50
-				},
-				x : function(d) {
-					return d[0];
-				},
-				y : function(d) {
-					return d[1] / 100000;
-				},
-				showValues : true,
-				valueFormat : function(d) {
-					return d3.format(',.1f')(d);
-				},
-				duration : 100,
-				xAxis : {
-					axisLabel : 'X Axis',
-					tickFormat : function(d) {
-						return d3.time.format('%x')(new Date(d))
-
-					},
-					rotateLabels : 30,
-					showMaxMin : false
-				},
-				yAxis : {
-					axisLabel : 'Y Axis',
-					axisLabelDistance : -10,
-					tickFormat : function(d) {
-						return d3.format(',.1f')(d);
-					}
-				},
-				tooltip : {
-					keyFormatter : function(d) {
-						return d3.time.format('%x')(new Date(d));
-					}
-				},
-				zoom : {
-					enabled : true,
-					scaleExtent : [ 1, 10 ],
-					useFixedDomain : false,
-					useNiceScale : false,
-					horizontalOff : false,
-					verticalOff : true,
-					unzoomEventType : 'dblclick.zoom'
-				}
-			}
-		};
-		$scope.hostOptions = {
-			chart : {
-				type : 'historicalBarChart',
-				height : 300,
-				width : 375,
-				margin : {
-					top : 20,
-					right : 20,
-					bottom : 65,
-					left : 50
-				},
-				x : function(d) {
-					return d[0];
-				},
-				y : function(d) {
-					return d[1] / 100000;
-				},
-				showValues : true,
-				valueFormat : function(d) {
-					return d3.format(',.1f')(d);
-				},
-				duration : 100,
-				xAxis : {
-					axisLabel : 'X Axis',
-					tickFormat : function(d) {
-						return d3.time.format('%x')(new Date(d))
-
-					},
-					rotateLabels : 30,
-					showMaxMin : false
-				},
-				yAxis : {
-					axisLabel : 'Y Axis',
-					axisLabelDistance : -10,
-					tickFormat : function(d) {
-						return d3.format(',.1f')(d);
-					}
-				},
-				tooltip : {
-					keyFormatter : function(d) {
-						return d3.time.format('%x')(new Date(d));
-					}
-				},
-				zoom : {
-					enabled : true,
-					scaleExtent : [ 1, 10 ],
-					useFixedDomain : false,
-					useNiceScale : false,
-					horizontalOff : false,
-					verticalOff : true,
-					unzoomEventType : 'dblclick.zoom'
-				}
-			}
-		};
-
-		//file to fetch admin analytical data from
-		// $http.get('../analytics/admin/barData.json')
-		// 	.then(function(res) {
-		// 		$scope.data = res.data;
-		// 	});
-
-		$scope.data = [{
-						    "key" : "Quantity" ,
-						    "bar": true,
-						    "values" : [ 
-						    	[ 1136005200000 , 1271000.0] , [ 1138683600000 , 1271000.0] , [ 1141102800000 , 1271000.0] , [ 1143781200000 , 0] , [ 1146369600000 , 0] , [ 1149048000000 , 1271000.0] , [ 1151640000000 , 0] , [ 1154318400000 , 0] , [ 1156996800000 , 0] , [ 1159588800000 , 3899486.0] , [ 1162270800000 , 1139486.0] , [ 1164862800000 , 3899486.0] , [ 1167541200000 , 3564700.0] , [ 1170219600000 , 3564700.0] , [ 1172638800000 , 3564700.0] , [ 1175313600000 , 2648493.0] , [ 1177905600000 , 2648493.0] , [ 1180584000000 , 2648493.0] , [ 1183176000000 , 2522993.0] , [ 1185854400000 , 2522993.0] , [ 1188532800000 , 2522993.0] , [ 1191124800000 , 2906501.0] , [ 1193803200000 , 2906501.0] , [ 1196398800000 , 2906501.0] , [ 1199077200000 , 2206761.0] , [ 1201755600000 , 2206761.0] , [ 1204261200000 , 2206761.0] , [ 1206936000000 , 2287726.0] , [ 1209528000000 , 2287726.0] , [ 1212206400000 , 2287726.0] , [ 1214798400000 , 2732646.0] , [ 1217476800000 , 2732646.0] , [ 1220155200000 , 2732646.0] , [ 1222747200000 , 2599196.0] , [ 1225425600000 , 2599196.0] , [ 1228021200000 , 2599196.0] , [ 1230699600000 , 1924387.0] , [ 1233378000000 , 1924387.0] , [ 1235797200000 , 1924387.0] , [ 1238472000000 , 1756311.0] , [ 1241064000000 , 1756311.0] , [ 1243742400000 , 1756311.0] , [ 1246334400000 , 1743470.0] , [ 1249012800000 , 1743470.0] , [ 1251691200000 , 1743470.0] , [ 1254283200000 , 1519010.0] , [ 1256961600000 , 1519010.0] , [ 1259557200000 , 1519010.0] , [ 1262235600000 , 1591444.0] , [ 1264914000000 , 1591444.0] , [ 1267333200000 , 1591444.0] , [ 1270008000000 , 1543784.0] , [ 1272600000000 , 1543784.0] , [ 1275278400000 , 1543784.0] , [ 1277870400000 , 1309915.0] , [ 1280548800000 , 1309915.0] , [ 1283227200000 , 1309915.0] , [ 1285819200000 , 1331875.0] , [ 1288497600000 , 1331875.0] , [ 1291093200000 , 1331875.0] , [ 1293771600000 , 1331875.0] , [ 1296450000000 , 1154695.0] , [ 1298869200000 , 1154695.0] , [ 1301544000000 , 1194025.0] , [ 1304136000000 , 1194025.0] , [ 1306814400000 , 1194025.0] , [ 1309406400000 , 1194025.0] , [ 1312084800000 , 1194025.0] , [ 1314763200000 , 1244525.0] , [ 1317355200000 , 475000.0] , [ 1320033600000 , 475000.0] , [ 1322629200000 , 475000.0] , [ 1325307600000 , 690033.0] , [ 1327986000000 , 690033.0] , [ 1330491600000 , 690033.0] , [ 1333166400000 , 514733.0] , [ 1335758400000 , 514733.0]]
-						}];
-
-		//file to fetch host analytical data from
-		// $http.get('../analytics/admin/barData.json')
-		// 	.then(function(res) {
-		// 		$scope.hostData = res.data;
-		// 	});
-
-		$scope.data = [{
-						    "key" : "Quantity" ,
-						    "bar": true,
-						    "values" : [ 
-						    	[ 1136005200000 , 1271000.0] , [ 1138683600000 , 1271000.0] , [ 1141102800000 , 1271000.0] , [ 1143781200000 , 0] , [ 1146369600000 , 0] , [ 1149048000000 , 1271000.0] , [ 1151640000000 , 0] , [ 1154318400000 , 0] , [ 1156996800000 , 0] , [ 1159588800000 , 3899486.0] , [ 1162270800000 , 1139486.0] , [ 1164862800000 , 3899486.0] , [ 1167541200000 , 3564700.0] , [ 1170219600000 , 3564700.0] , [ 1172638800000 , 3564700.0] , [ 1175313600000 , 2648493.0] , [ 1177905600000 , 2648493.0] , [ 1180584000000 , 2648493.0] , [ 1183176000000 , 2522993.0] , [ 1185854400000 , 2522993.0] , [ 1188532800000 , 2522993.0] , [ 1191124800000 , 2906501.0] , [ 1193803200000 , 2906501.0] , [ 1196398800000 , 2906501.0] , [ 1199077200000 , 2206761.0] , [ 1201755600000 , 2206761.0] , [ 1204261200000 , 2206761.0] , [ 1206936000000 , 2287726.0] , [ 1209528000000 , 2287726.0] , [ 1212206400000 , 2287726.0] , [ 1214798400000 , 2732646.0] , [ 1217476800000 , 2732646.0] , [ 1220155200000 , 2732646.0] , [ 1222747200000 , 2599196.0] , [ 1225425600000 , 2599196.0] , [ 1228021200000 , 2599196.0] , [ 1230699600000 , 1924387.0] , [ 1233378000000 , 1924387.0] , [ 1235797200000 , 1924387.0] , [ 1238472000000 , 1756311.0] , [ 1241064000000 , 1756311.0] , [ 1243742400000 , 1756311.0] , [ 1246334400000 , 1743470.0] , [ 1249012800000 , 1743470.0] , [ 1251691200000 , 1743470.0] , [ 1254283200000 , 1519010.0] , [ 1256961600000 , 1519010.0] , [ 1259557200000 , 1519010.0] , [ 1262235600000 , 1591444.0] , [ 1264914000000 , 1591444.0] , [ 1267333200000 , 1591444.0] , [ 1270008000000 , 1543784.0] , [ 1272600000000 , 1543784.0] , [ 1275278400000 , 1543784.0] , [ 1277870400000 , 1309915.0] , [ 1280548800000 , 1309915.0] , [ 1283227200000 , 1309915.0] , [ 1285819200000 , 1331875.0] , [ 1288497600000 , 1331875.0] , [ 1291093200000 , 1331875.0] , [ 1293771600000 , 1331875.0] , [ 1296450000000 , 1154695.0] , [ 1298869200000 , 1154695.0] , [ 1301544000000 , 1194025.0] , [ 1304136000000 , 1194025.0] , [ 1306814400000 , 1194025.0] , [ 1309406400000 , 1194025.0] , [ 1312084800000 , 1194025.0] , [ 1314763200000 , 1244525.0] , [ 1317355200000 , 475000.0] , [ 1320033600000 , 475000.0] , [ 1322629200000 , 475000.0] , [ 1325307600000 , 690033.0] , [ 1327986000000 , 690033.0] , [ 1330491600000 , 690033.0] , [ 1333166400000 , 514733.0] , [ 1335758400000 , 514733.0]]
-						}];
-
-	})
+	
 
 	.controller('searchListingController', function($scope, $http, $location, Random, $interval, NgMap, $window) {
 
@@ -1920,11 +1698,9 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 			}
 
-			$scope.max_price = $scope.max_price + 1;
-			
 			$scope.range = {
 				from : $scope.min_price,
-				to : $scope.max_price
+				to : Number($scope.max_price + 10)
 			};
 
 			$scope.nextPhoto = function(index, currentPhoto) {
@@ -2407,6 +2183,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			$scope.data = JSON.parse(receivedData);
 			console.log('$scope.data', $scope.data);
 
+
 		};
 
 		$scope.topTen = false;
@@ -2459,10 +2236,6 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				}
 			}).then(function mySuccess(result) {
 				if (result.data.statusCode === 200) {
-					//            		alert("approved");
-					//            		$scope.users = result.data.users;
-					//            		$scope.approved = true;
-
 					$http({
 						url : "/getPendingHostApprovals",
 						method : "POST"
@@ -2484,12 +2257,285 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				method : "POST",
 				url : "/logout",
 			}).then((result) => {
-				alert("Admin Logged out!!");
+				//alert("Admin Logged out!!");
 				window.location.assign('/');
 			}, (error) => {
 				console.log("Error", error);
 			})
 		}
+
+	})
+
+	.controller('adminBarController', function($scope, $http, Random) {
+		
+
+		$scope.init = function(retrievedData) {
+		
+			$scope.obj = JSON.parse(retrievedData);
+			
+		
+			$scope.options = {
+				chart : {
+					type : 'historicalBarChart',
+					height : 300,
+					margin : {
+						top : 20,
+						right : 20,
+						bottom : 65,
+						left : 50
+					},
+					x : function(d) {
+						return d[0];
+					},
+					y : function(d) {
+						return d[1] / 100000;
+					},
+					showValues : true,
+					valueFormat : function(d) {
+						return d3.format(',.1f')(d);
+					},
+					duration : 100,
+					xAxis : {
+						axisLabel : 'X Axis',
+						tickFormat : function(d) {
+							return d3.time.format('%x')(new Date(d))
+
+						},
+						rotateLabels : 30,
+						showMaxMin : false
+					},
+					yAxis : {
+						axisLabel : 'Y Axis',
+						axisLabelDistance : -10,
+						tickFormat : function(d) {
+							return d3.format(',.1f')(d);
+						}
+					},
+					tooltip : {
+						keyFormatter : function(d) {
+							return d3.time.format('%x')(new Date(d));
+						}
+					},
+					zoom : {
+						enabled : true,
+						scaleExtent : [ 1, 10 ],
+						useFixedDomain : false,
+						useNiceScale : false,
+						horizontalOff : false,
+						verticalOff : true,
+						unzoomEventType : 'dblclick.zoom'
+					}
+				}
+			};
+			$scope.hostOptions = {
+				chart : {
+					type : 'historicalBarChart',
+					height : 300,
+					width : 375,
+					margin : {
+						top : 20,
+						right : 20,
+						bottom : 65,
+						left : 50
+					},
+					x : function(d) {
+						return d[0];
+					},
+					y : function(d) {
+						return d[1] / 100000;
+					},
+					showValues : true,
+					valueFormat : function(d) {
+						return d3.format(',.1f')(d);
+					},
+					duration : 100,
+					xAxis : {
+						axisLabel : 'TIME',
+						tickFormat : function(d) {
+							return d3.time.format('%x')(new Date(d))
+
+						},
+						rotateLabels : 30,
+						showMaxMin : false
+					},
+					yAxis : {
+						axisLabel : 'REVENUE',
+						axisLabelDistance : -10,
+						tickFormat : function(d) {
+							return d3.format(',.1f')(d);
+						}
+					},
+					tooltip : {
+						keyFormatter : function(d) {
+							return d3.time.format('%x')(new Date(d));
+						}
+					},
+					zoom : {
+						enabled : true,
+						scaleExtent : [ 1, 10 ],
+						useFixedDomain : false,
+						useNiceScale : false,
+						horizontalOff : false,
+						verticalOff : true,
+						unzoomEventType : 'dblclick.zoom'
+					}
+				}
+			};
+
+
+			$scope.arr = [];
+			
+			for(var k = 0 ; k < $scope.obj[0].length; k++){
+				$scope.arr.push([new Date($scope.obj[0][k].checkin).getTime() , ($scope.obj[0][k].revenue) * 100000]);
+			}		
+			
+
+			$scope.data = [{
+							    "key" : "Quantity" ,
+							    "bar": true,
+							    "values" : $scope.arr
+							}];
+
+
+			};
+
+	})
+	.controller('cityWiseBarController', function($scope, $http, Random) {
+		
+
+		$scope.init = function(retrievedData) {
+		
+			$scope.obj = JSON.parse(retrievedData);
+			console.log('$scope.obj', $scope.obj);
+			
+		
+			$scope.options = {
+				chart : {
+					type : 'historicalBarChart',
+					height : 300,
+					margin : {
+						top : 20,
+						right : 20,
+						bottom : 65,
+						left : 50
+					},
+					x : function(d) {
+						return d[0];
+					},
+					y : function(d) {
+						return d[1] / 100000;
+					},
+					showValues : true,
+					valueFormat : function(d) {
+						return d3.format(',.1f')(d);
+					},
+					duration : 100,
+					xAxis : {
+						axisLabel : '1 Year Time',
+						tickFormat : function(d) {
+							return d3.time.format('%x')(new Date(d))
+
+						},
+						rotateLabels : 30,
+						showMaxMin : false
+					},
+					yAxis : {
+						axisLabel : 'City Revenue',
+						axisLabelDistance : -10,
+						tickFormat : function(d) {
+							return d3.format(',.1f')(d);
+						}
+					},
+					tooltip : {
+						keyFormatter : function(d) {
+							return d3.time.format('%x')(new Date(d));
+						}
+					},
+					zoom : {
+						enabled : true,
+						scaleExtent : [ 1, 10 ],
+						useFixedDomain : false,
+						useNiceScale : false,
+						horizontalOff : false,
+						verticalOff : true,
+						unzoomEventType : 'dblclick.zoom'
+					}
+				}
+			};
+
+			$scope.hostOptions = {
+				chart : {
+					type : 'historicalBarChart',
+					height : 300,
+					width : 375,
+					margin : {
+						top : 20,
+						right : 20,
+						bottom : 65,
+						left : 50
+					},
+					x : function(d) {
+						return d[0];
+
+					},
+					y : function(d) {
+						return d[1] / 100000;
+					},
+					showValues : true,
+					valueFormat : function(d) {
+						return d3.format(',.1f')(d);
+					},
+					duration : 100,
+					xAxis : {
+						axisLabel : 'TIME',
+						tickFormat : function(d) {
+							return d3.time.format('%x')(new Date(d))
+
+						},
+						rotateLabels : 30,
+						showMaxMin : false
+					},
+					yAxis : {
+						axisLabel : 'REVENUE',
+						axisLabelDistance : -10,
+						tickFormat : function(d) {
+							return d3.format(',.1f')(d);
+						}
+					},
+					tooltip : {
+						keyFormatter : function(d) {
+							return d3.time.format('%x')(new Date(d));
+						}	
+					},
+					zoom : {
+						enabled : true,
+						scaleExtent : [ 1, 10 ],
+						useFixedDomain : false,
+						useNiceScale : false,
+						horizontalOff : false,
+						verticalOff : true,
+						unzoomEventType : 'dblclick.zoom'
+					}
+				}
+			};
+
+
+			$scope.arr = [];
+			
+			
+			for(var k = 0 ; k < $scope.obj[1].length; k++){
+				$scope.arr.push([new Date($scope.obj[1][k].checkin).getTime() , ($scope.obj[1][k].revenue) * 100000]);
+			}		
+			
+
+			$scope.data = [{
+							    "key" : "Quantity" ,
+							    "bar": true,
+							    "values" : $scope.arr
+							}];
+
+
+			};
 
 	})
 	.controller('hostController', function($scope, $http, Random) {
@@ -2547,13 +2593,168 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 					unzoomEventType : 'dblclick.zoom'
 				}
 			}
+		}
+	})
+	.controller('TopTenMonthBarController', function($scope, $http, Random) {
+		
+
+		$scope.init = function(retrievedData) {
+		
+			$scope.obj = JSON.parse(retrievedData);
+			console.log('$scope.obj', $scope.obj);
+			
+		
+			$scope.options = {
+				chart : {
+					type : 'historicalBarChart',
+					height : 300,
+					margin : {
+						top : 20,
+						right : 20,
+						bottom : 65,
+						left : 50
+					},
+					x : function(d) {
+						return d[0];
+					},
+					y : function(d) {
+						return d[1] / 100000;
+					},
+					showValues : true,
+					valueFormat : function(d) {
+						return d3.format(',.1f')(d);
+					},
+					duration : 100,
+					xAxis : {
+						axisLabel : '30 Days Time -> Thickness indicates the longest continuous sale',
+						tickFormat : function(d) {
+							return d3.time.format('%x')(new Date(d))
+
+						},
+						rotateLabels : 30,
+						showMaxMin : false
+					},
+					yAxis : {
+						axisLabel : 'Host Revenue',
+						axisLabelDistance : -10,
+						tickFormat : function(d) {
+							return d3.format(',.1f')(d);
+						}
+					},
+					tooltip : {
+						keyFormatter : function(d) {
+							return d3.time.format('%x')(new Date(d));
+						}
+					},
+					zoom : {
+						enabled : true,
+						scaleExtent : [ 1, 10 ],
+						useFixedDomain : false,
+						useNiceScale : false,
+						horizontalOff : false,
+						verticalOff : true,
+						unzoomEventType : 'dblclick.zoom'
+					}
+				}
+			};
+
+			$scope.hostOptions = {
+				chart : {
+					type : 'historicalBarChart',
+					height : 300,
+					width : 375,
+					margin : {
+						top : 20,
+						right : 20,
+						bottom : 65,
+						left : 50
+					},
+					x : function(d) {
+						return d[0];
+
+					},
+					y : function(d) {
+						return d[1] / 100000;
+					},
+					showValues : true,
+					valueFormat : function(d) {
+						return d3.format(',.1f')(d);
+					},
+					duration : 100,
+					xAxis : {
+						axisLabel : 'TIME',
+						tickFormat : function(d) {
+							return d3.time.format('%x')(new Date(d))
+
+						},
+						rotateLabels : 30,
+						showMaxMin : false
+					},
+					yAxis : {
+						axisLabel : 'REVENUE',
+						axisLabelDistance : -10,
+						tickFormat : function(d) {
+							return d3.format(',.1f')(d);
+						}
+					},
+					tooltip : {
+						keyFormatter : function(d) {
+							return d3.time.format('%x')(new Date(d));
+						}	
+					},
+					zoom : {
+						enabled : true,
+						scaleExtent : [ 1, 10 ],
+						useFixedDomain : false,
+						useNiceScale : false,
+						horizontalOff : false,
+						verticalOff : true,
+						unzoomEventType : 'dblclick.zoom'
+					}
+				}
+			};
+
+
+			$scope.arr = [];
+			
+			
+			for(var k = 0 ; k < $scope.obj[2].length; k++){
+				$scope.arr.push([new Date($scope.obj[2][k].checkin).getTime() , ($scope.obj[2][k].revenue) * 100000]);
+			}		
+			
+
+			$scope.data = [{
+							    "key" : "Quantity" ,
+							    "bar": true,
+							    "values" : $scope.arr
+							}];
+
+
+			};
+
+	})
+	.controller('parentController', function($scope) {
+		$scope.init = function(retrievedData) {
+			$scope.chartData = JSON.parse(retrievedData);
+			console.log('$scope.chartData', $scope.chartData);
 		};
+	})
+	.controller('adminPieController', function($scope) {
+		
+		$scope.arr = [];
+	
+		if($scope.$parent.chartData && $scope.$parent.chartData.length > 0) {
+			for(var k = 0 ; k < $scope.$parent.chartData[0].length; k++) {
+				$scope.arr.push({ "key" : $scope.$parent.chartData[0][k].property_id , "y" : $scope.$parent.chartData[0][k].revenue});
+			}
+		}		
+	
+		
 
-
-		$scope.pieOptions = {
+		$scope.options = {
 			chart : {
 				type : 'pieChart',
-				height : 350,
+				height : 300,
 				width : 350,
 				x : function(d) {
 					return d.key;
@@ -2576,283 +2777,365 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			}
 		};
 
+		$scope.data = $scope.arr;
+
+
+	})
+	.controller('cityWisePieController', function($scope) {
+		
+		$scope.arr = [];
+	
+		for(var k = 0 ; k < $scope.$parent.chartData[1].length; k++) {
+			$scope.arr.push({ "key" : $scope.$parent.chartData[1][k].city , "y" : $scope.$parent.chartData[1][k].revenue});
+		}		
+	
+		
+
+		$scope.options = {
+			chart : {
+				type : 'pieChart',
+				height : 300,
+				width : 350,
+				x : function(d) {
+					return d.key;
+				},
+				y : function(d) {
+					return d.y;
+				},
+				showLabels : true,
+				duration : 500,
+				labelThreshold : 0.01,
+				labelSunbeamLayout : true,
+				legend : {
+					margin : {
+						top : 5,
+						right : 35,
+						bottom : 5,
+						left : 0
+					}
+				}
+			}
+		};
+
+		$scope.data = $scope.arr;
+
+
+	})
+	.controller('TopTenMonthPieController', function($scope) {
+		
+		$scope.arr = [];
+	
+		for(var k = 0 ; k < $scope.$parent.chartData[2].length; k++) {
+			$scope.arr.push({ "key" : $scope.$parent.chartData[2][k].owner_id , "y" : $scope.$parent.chartData[2][k].revenue});
+		}		
+	
+		
+
+		$scope.options = {
+			chart : {
+				type : 'pieChart',
+				height : 300,
+				width : 350,
+				x : function(d) {
+					return d.key;
+				},
+				y : function(d) {
+					return d.y;
+				},
+				showLabels : true,
+				duration : 500,
+				labelThreshold : 0.01,
+				labelSunbeamLayout : true,
+				legend : {
+					margin : {
+						top : 5,
+						right : 35,
+						bottom : 5,
+						left : 0
+					}
+				}
+			}
+		};
+
+		$scope.data = $scope.arr;
+		
 		$scope.cppPieData = [
-			{
-				key : "Listings",
-				y : 50000000
-			},
-			{
-				key : "Search Listings",
-				y : 42500000
-			},
-			{
-				key : "Home Page",
-				y : 30000000
-			},
-			{
-				key : "User Profile",
-				y : 80000000
-			},
-			{
-				key : "Host Analytics",
-				y : 9800000
-			},
-			{
-				key : "Property Page",
-				y : 2500000
-			},
-			{
-				key : "User Account",
-				y : 23600000
-			},
-			{
-				key : "Security",
-				y : 9800000
-			},
-			{
-				key : "Trips",
-				y : 9800000
-			},
-			{
-				key : "Search Bar",
-				y : 36900000
-			}
-		];
+		         			{
+		         				key : "Listings",
+		         				y : 50000000
+		         			},
+		         			{
+		         				key : "Search Listings",
+		         				y : 42500000
+		         			},
+		         			{
+		         				key : "Home Page",
+		         				y : 30000000
+		         			},
+		         			{
+		         				key : "User Profile",
+		         				y : 80000000
+		         			},
+		         			{
+		         				key : "Host Analytics",
+		         				y : 9800000
+		         			},
+		         			{
+		         				key : "Property Page",
+		         				y : 2500000
+		         			},
+		         			{
+		         				key : "User Account",
+		         				y : 23600000
+		         			},
+		         			{
+		         				key : "Security",
+		         				y : 9800000
+		         			},
+		         			{
+		         				key : "Trips",
+		         				y : 9800000
+		         			},
+		         			{
+		         				key : "Search Bar",
+		         				y : 36900000
+		         			}
+		         		];
 
 
 
-		$scope.cppBarData = [{
-						    "key" : "Quantity" ,
-						    "bar": true,
-						    "values" :  
-						    	[ [ 1451952000, 70000000] , [ 1454716800, 31000000] , [ 1458086400, 97600000] , [ 1460073600, 22100000] , [ 1464566400, 7620000] , [1465759851, 3900000] , [ 1468351851, 11100000] , [ 1471030251, 32200000] , [ 1473708651, 90000000] , [ 1476300651, 65100000] ]
-						}];
+		         		$scope.cppBarData = [{
+		         						    "key" : "Quantity" ,
+		         						    "bar": true,
+		         						    "values" :  
+		         						    	[ [ 1451952000, 70000000] , [ 1454716800, 31000000] , [ 1458086400, 97600000] , [ 1460073600, 22100000] , [ 1464566400, 7620000] , [1465759851, 3900000] , [ 1468351851, 11100000] , [ 1471030251, 32200000] , [ 1473708651, 90000000] , [ 1476300651, 65100000] ]
+		         						}];
 
 
-		$scope.pcPieData = [
-			{
-				key : "Alameda",
-				y : 70000000
-			},
-			{
-				key : "4th Street",
-				y : 31000000
-			},
-			{
-				key : "El Dorado",
-				y : 97600000
-			},
-			{
-				key : "Villa",
-				y : 22100000
-			},
-			{
-				key : "Fernando",
-				y : 76200000
-			},
-			{
-				key : "Morisson",
-				y : 3900000
-			},
-			{
-				key : "Paseo",
-				y : 11100000
-			},
-			{
-				key : "Cahill",
-				y : 32200000
-			},
-			{
-				key : "South",
-				y : 9800000
-			},
-			{
-				key : "Legacy",
-				y : 65100000
-			}
-		];
-
-
-
-		$scope.pcBarData = [{
-						    "key" : "Quantity" ,
-						    "bar": true,
-						    "values" :  
-						    	[ [ 1451952000, 50000000] , [ 1454716800, 42500000] , [ 1458086400, 30000000] , [ 1460073600, 80000000] , [ 1464566400, 9800000] , [1465759851, 2500000] , [ 1468351851, 23600000] , [ 1471030251, 9800000] , [ 1473708651, 90000000] , [ 1476300651, 36900000] ]
-						}];
-
-
-		$scope.lsPieData = [
-			
-			{
-				key : "Villa",
-				y : 80000000
-			},
-			{
-				key : "Morisson",
-				y : 2500000
-			},
-			{
-				key : "South",
-				y : 9800000
-			},
-			{
-				key : "Legacy",
-				y : 36900000
-			}
-		];
+		         		$scope.pcPieData = [
+		         			{
+		         				key : "Alameda",
+		         				y : 70000000
+		         			},
+		         			{
+		         				key : "4th Street",
+		         				y : 31000000
+		         			},
+		         			{
+		         				key : "El Dorado",
+		         				y : 97600000
+		         			},
+		         			{
+		         				key : "Villa",
+		         				y : 22100000
+		         			},
+		         			{
+		         				key : "Fernando",
+		         				y : 76200000
+		         			},
+		         			{
+		         				key : "Morisson",
+		         				y : 3900000
+		         			},
+		         			{
+		         				key : "Paseo",
+		         				y : 11100000
+		         			},
+		         			{
+		         				key : "Cahill",
+		         				y : 32200000
+		         			},
+		         			{
+		         				key : "South",
+		         				y : 9800000
+		         			},
+		         			{
+		         				key : "Legacy",
+		         				y : 65100000
+		         			}
+		         		];
 
 
 
-		$scope.lsBarData = [{
-						    "key" : "Quantity" ,
-						    "bar": true,
-						    "values" :  
-						    	[ [ 1460073600, 80000000] , [1465759851, 2500000] , [ 1471030251, 9800000]  , [ 1476300651, 36900000] ]
-		}];
+		         		$scope.pcBarData = [{
+		         						    "key" : "Quantity" ,
+		         						    "bar": true,
+		         						    "values" :  
+		         						    	[ [ 1451952000, 50000000] , [ 1454716800, 42500000] , [ 1458086400, 30000000] , [ 1460073600, 80000000] , [ 1464566400, 9800000] , [1465759851, 2500000] , [ 1468351851, 23600000] , [ 1471030251, 9800000] , [ 1473708651, 90000000] , [ 1476300651, 36900000] ]
+		         						}];
+
+
+		         		$scope.lsPieData = [
+		         			
+		         			{
+		         				key : "Villa",
+		         				y : 80000000
+		         			},
+		         			{
+		         				key : "Morisson",
+		         				y : 2500000
+		         			},
+		         			{
+		         				key : "South",
+		         				y : 9800000
+		         			},
+		         			{
+		         				key : "Legacy",
+		         				y : 36900000
+		         			}
+		         		];
+
+
+
+		         		$scope.lsBarData = [{
+		         						    "key" : "Quantity" ,
+		         						    "bar": true,
+		         						    "values" :  
+		         						    	[ [ 1460073600, 80000000] , [1465759851, 2500000] , [ 1471030251, 9800000]  , [ 1476300651, 36900000] ]
+		         		}];
 
 
 
 
 
-		$scope.prPieData = [
-			{
-				key : "Alameda",
-				y : 1100000
-			},
-			{
-				key : "4th Street",
-				y : 3300000
-			},
-			{
-				key : "El Dorado",
-				y : 100000
-			},
-			{
-				key : "Villa",
-				y : 2700000
-			},
-			{
-				key : "Fernando",
-				y : 180000
-			},
-			{
-				key : "Morisson",
-				y : 760000
-			},
-			{
-				key : "Paseo",
-				y : 20000
-			},
-			{
-				key : "Cahill",
-				y : 360000
-			},
-			{
-				key : "South",
-				y : 560000
-			},
-			{
-				key : "Legacy",
-				y : 8100000
-			}
-		];
+		         		$scope.prPieData = [
+		         			{
+		         				key : "Alameda",
+		         				y : 1100000
+		         			},
+		         			{
+		         				key : "4th Street",
+		         				y : 3300000
+		         			},
+		         			{
+		         				key : "El Dorado",
+		         				y : 100000
+		         			},
+		         			{
+		         				key : "Villa",
+		         				y : 2700000
+		         			},
+		         			{
+		         				key : "Fernando",
+		         				y : 180000
+		         			},
+		         			{
+		         				key : "Morisson",
+		         				y : 760000
+		         			},
+		         			{
+		         				key : "Paseo",
+		         				y : 20000
+		         			},
+		         			{
+		         				key : "Cahill",
+		         				y : 360000
+		         			},
+		         			{
+		         				key : "South",
+		         				y : 560000
+		         			},
+		         			{
+		         				key : "Legacy",
+		         				y : 8100000
+		         			}
+		         		];
 
 
 
-		$scope.prBarData = [{
-						    "key" : "Quantity" ,
-						    "bar": true,
-						    "values" :  
-						    	[ [ 1451952000, 1100000] , [ 1454716800, 3300000] , [ 1458086400, 100000] , [ 1460073600, 2700000] , [ 1464566400, 180000] , [1465759851, 760000] , [ 1468351851, 20000] , [ 1471030251, 56000] , [ 1473708651, 90000000] , [ 1476300651, 8100000] ]
-		}];
+		         		$scope.prBarData = [{
+		         						    "key" : "Quantity" ,
+		         						    "bar": true,
+		         						    "values" :  
+		         						    	[ [ 1451952000, 1100000] , [ 1454716800, 3300000] , [ 1458086400, 100000] , [ 1460073600, 2700000] , [ 1464566400, 180000] , [1465759851, 760000] , [ 1468351851, 20000] , [ 1471030251, 56000] , [ 1473708651, 90000000] , [ 1476300651, 8100000] ]
+		         		}];
 
 
 
-		$scope.ugPieData = [
-			{
-				key : "San Francisco",
-				y : 2500000
-			},
-			{
-				key : "San Jose",
-				y : 3300000
-			},
-			{
-				key : "Milpitas",
-				y : 2300000
-			},
-			{
-				key : "Los Angeles",
-				y : 80000000
-			},
-			{
-				key : "Dallas",
-				y : 2100000
-			}
-		];
+		         		$scope.ugPieData = [
+		         			{
+		         				key : "San Francisco",
+		         				y : 2500000
+		         			},
+		         			{
+		         				key : "San Jose",
+		         				y : 3300000
+		         			},
+		         			{
+		         				key : "Milpitas",
+		         				y : 2300000
+		         			},
+		         			{
+		         				key : "Los Angeles",
+		         				y : 80000000
+		         			},
+		         			{
+		         				key : "Dallas",
+		         				y : 2100000
+		         			}
+		         		];
 
 
 
-		$scope.ugBarData = [{
-						    "key" : "Quantity" ,
-						    "bar": true,
-						    "values" :  
-						    	[ [ 1451952000, 2500000] , [ 1454716800, 3300000] , [ 1458086400, 2300000] , [ 1460073600, 80000000] , [ 1464566400, 2100000] ]
-		}];
+		         		$scope.ugBarData = [{
+		         						    "key" : "Quantity" ,
+		         						    "bar": true,
+		         						    "values" :  
+		         						    	[ [ 1451952000, 2500000] , [ 1454716800, 3300000] , [ 1458086400, 2300000] , [ 1460073600, 80000000] , [ 1464566400, 2100000] ]
+		         		}];
 
 
-		$scope.biPieData = [
-			{
-				key : "Alameda",
-				y : 2200000
-			},
-			{
-				key : "4th Street",
-				y : 36210000
-			},
-			{
-				key : "El Dorado",
-				y : 27300000
-			},
-			{
-				key : "Villa",
-				y : 12300000
-			},
-			{
-				key : "Fernando",
-				y : 67100000
-			},
-			{
-				key : "Morisson",
-				y : 4002000
-			},
-			{
-				key : "Paseo",
-				y : 2760000
-			},
-			{
-				key : "Cahill",
-				y : 3210000
-			},
-			{
-				key : "South",
-				y : 72100000
-			},
-			{
-				key : "Legacy",
-				y : 44400000
-			}
-		];
+		         		$scope.biPieData = [
+		         			{
+		         				key : "Alameda",
+		         				y : 2200000
+		         			},
+		         			{
+		         				key : "4th Street",
+		         				y : 36210000
+		         			},
+		         			{
+		         				key : "El Dorado",
+		         				y : 27300000
+		         			},
+		         			{
+		         				key : "Villa",
+		         				y : 12300000
+		         			},
+		         			{
+		         				key : "Fernando",
+		         				y : 67100000
+		         			},
+		         			{
+		         				key : "Morisson",
+		         				y : 4002000
+		         			},
+		         			{
+		         				key : "Paseo",
+		         				y : 2760000
+		         			},
+		         			{
+		         				key : "Cahill",
+		         				y : 3210000
+		         			},
+		         			{
+		         				key : "South",
+		         				y : 72100000
+		         			},
+		         			{
+		         				key : "Legacy",
+		         				y : 44400000
+		         			}
+		         		];
 
 
 
-		$scope.biBarData = [{
-						    "key" : "Quantity" ,
-						    "bar": true,
-						    "values" :  
-						    	[ [ 1451952000, 2200000] , [ 1454716800, 36210000] , [ 1458086400, 27300000] , [ 1460073600, 12300000] , [ 1464566400, 72100000] , [1465759851, 4002000] , [ 1468351851, 2760000] , [ 1471030251, 32100000] , [ 1473708651, 90000000] , [ 1476300651, 44400000] ]
-		}];
+		         		$scope.biBarData = [{
+		         						    "key" : "Quantity" ,
+		         						    "bar": true,
+		         						    "values" :  
+		         						    	[ [ 1451952000, 2200000] , [ 1454716800, 36210000] , [ 1458086400, 27300000] , [ 1460073600, 12300000] , [ 1464566400, 72100000] , [1465759851, 4002000] , [ 1468351851, 2760000] , [ 1471030251, 32100000] , [ 1473708651, 90000000] , [ 1476300651, 44400000] ]
+		         		}];
 
 
 	})

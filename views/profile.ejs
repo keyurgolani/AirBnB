@@ -35,8 +35,8 @@
 							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'security_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'security_tab'" id="account">Security</a></li>
 							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'properties_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'properties_tab'" id="trips">Your Properties</a></li>
 							<li><a href="" aria-selected"true" ng-hide="isSameUser" class="subnav-item" ng-class="{'properties_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'properties_tab'" id="trips">{{data[0][0].f_name}}'s Properties</a></li>
-							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'listings_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'listings_tab'" id="trips">Your Listings</a></li>
-							<li><a href="" aria-selected"true" ng-hide="isSameUser" class="subnav-item" ng-class="{'listings_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'listings_tab'" id="trips">{{data[0][0].f_name}}'s Listings</a></li>
+							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'listings_tab':'subnav-item-border'}[active_tab]" ng-click="initializeMaps()" id="trips">Your Listings</a></li>
+							<li><a href="" aria-selected"true" ng-hide="isSameUser" class="subnav-item" ng-class="{'listings_tab':'subnav-item-border'}[active_tab]" ng-click="initializeMaps()" id="trips">{{data[0][0].f_name}}'s Listings</a></li>
 							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'trips_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'trips_tab'" id="trips">Your Trips</a></li>
 							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'hostings_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'hostings_tab'" id="trips">Your Hostings</a></li>
 							<li><a href="" aria-selected"true" ng-show="isSameUser" class="subnav-item" ng-class="{'host_tab':'subnav-item-border'}[active_tab]" ng-click="active_tab = 'host_tab'" id="host">Host</a></li>
@@ -51,123 +51,137 @@
 				<div class="row">
 					<div class="col-md-1"></div>
 					<div class="col-md-10 profile-body">
-						<div class="row item-body" ng-show="active_tab === 'profile_tab'">
-							<div class="row item-head">Profile Details</div>
-							<div class="row item-content" style="padding:20px;">
-								<div class="row profile-bottom-space">
-
-									<div class="col-md-3">
-										<span class="profile-left-text">First Name *</span>
+						<div class="row" ng-show="active_tab === 'profile_tab'">
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-4">
+									<div style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="profile_updated" ng-click="profile_updated = false">	
+										Profile updated successfully !!<br>
 									</div>
-									<div class="col-md-9">
-										<input ng-show="isSameUser" type="text" class="profile-large-box" ng-model="data[0][0].f_name">
-										<label ng-hide="isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].f_name}}</label>
-
+									<div style="border: 2px solid red;border-radius: 5px;opacity: 1;font-size: 20px;color: red;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="all_fields" ng-click="all_fields = false">	
+										Check your fields again !!<br>
 									</div>
 								</div>
-
-								<div class="row profile-bottom-space">
-									<div class="col-md-3">
-										<span class="profile-left-text">Last Name *</span>
+								<div class="col-md-4"></div>
+							</div>
+							<div class="row item-body">
+								<div class="row item-head">Profile Details</div>
+									<div class="row item-content" style="padding:20px;">
+									<div class="row profile-bottom-space">
+	
+										<div class="col-md-3">
+											<span class="profile-left-text">First Name *</span>
+										</div>
+										<div class="col-md-9">
+											<input ng-show="isSameUser" type="text" class="profile-large-box" ng-model="data[0][0].f_name">
+											<label ng-hide="isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].f_name}}</label>
+	
+										</div>
 									</div>
-									<div class="col-md-9">
-										<input ng-show="isSameUser" type="text" class="profile-large-box" ng-model="data[0][0].l_name">
-										<label ng-hide="isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].l_name}}</label>
-										<div class="profile-info">This is only shared once you have a confirmed booking with another Airbnb user.</div>
+	
+									<div class="row profile-bottom-space">
+										<div class="col-md-3">
+											<span class="profile-left-text">Last Name *</span>
+										</div>
+										<div class="col-md-9">
+											<input ng-show="isSameUser" type="text" class="profile-large-box" ng-model="data[0][0].l_name">
+											<label ng-hide="isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].l_name}}</label>
+											<div class="profile-info">This is only shared once you have a confirmed booking with another Airbnb user.</div>
+										</div>
 									</div>
-								</div>
-								<div class="row profile-bottom-space">
-									<div class="col-md-3">
-										<span class="profile-left-text" ng-show="isSameUser">I Am</span>
-										<span class="profile-left-text" ng-hide="isSameUser">Gender</span>
+									<div class="row profile-bottom-space">
+										<div class="col-md-3">
+											<span class="profile-left-text" ng-show="isSameUser">I Am</span>
+											<span class="profile-left-text" ng-hide="isSameUser">Gender</span>
+										</div>
+										<div class="col-md-9">
+											<select class="gender-box" ng-if="isSameUser" ng-options="gender for gender in genders" ng-model="data[0][0].gender" ></select>
+											<label ng-if="!isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].gender !== null ? data[0][0].gender : 'Unknown'}}</label>
+											<div class="profile-info">We use this data for analysis and never share it with other users.</div>
+										</div>
 									</div>
-									<div class="col-md-9">
-										<select class="gender-box" ng-if="isSameUser" ng-options="gender for gender in genders" ng-model="data[0][0].gender" ></select>
-										<label ng-if="!isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].gender !== null ? data[0][0].gender : 'Unknown'}}</label>
-										<div class="profile-info">We use this data for analysis and never share it with other users.</div>
+									<div class="row profile-bottom-space" ng-show="isSameUser">
+										<div class="col-md-3">
+											<span class="profile-left-text">Birth Date</span>
+										</div>
+										<div class="col-md-9">
+											<select class="month-box" ng-options="month for month in months" data-ng-model="birth_month"></select>
+											<select class="date-box" ng-options="date for date in dates" data-ng-model="birth_date"></select>
+											<select class="year-box" ng-options="year for year in years" data-ng-model="birth_year"></select>
+											<div class="profile-info">The magical day you were dropped from the sky by a stork. We use this data for analysis and never share it with other users.</div>
+	
+										</div>
 									</div>
-								</div>
-								<div class="row profile-bottom-space" ng-show="isSameUser">
-									<div class="col-md-3">
-										<span class="profile-left-text">Birth Date</span>
+									<div class="row profile-bottom-space" ng-show="isSameUser">
+										<div class="col-md-3">
+											<span class="profile-left-text">Email Address</span>
+										</div>
+										<div class="col-md-9">
+											<input type="text" class="profile-large-box" ng-model="data[0][0].email">
+											<div class="profile-info">We won't share your private email address with other Airbnb users. <a href="" class="learn-more">Learn more.</a></div>
+										</div>
 									</div>
-									<div class="col-md-9">
-										<select class="month-box" ng-options="month for month in months" data-ng-model="birth_month"></select>
-										<select class="date-box" ng-options="date for date in dates" data-ng-model="birth_date"></select>
-										<select class="year-box" ng-options="year for year in years" data-ng-model="birth_year"></select>
-										<div class="profile-info">The magical day you were dropped from the sky by a stork. We use this data for analysis and never share it with other users.</div>
-
+									<div class="row profile-bottom-space" ng-show="isSameUser">
+										<div class="col-md-3">
+											<span class="profile-left-text">Phone Number</span>
+										</div>
+										<div class="col-md-9">
+											<input type="text" class="profile-large-box" ng-model="data[0][0].phone" ui-us-phone-number>
+											<div class="profile-info">This is only shared once you have a confirmed booking with another Airbnb user. This is how we can all get in touch.</div>
+										</div>
 									</div>
-								</div>
-								<div class="row profile-bottom-space" ng-show="isSameUser">
-									<div class="col-md-3">
-										<span class="profile-left-text">Email Address</span>
+									<div class="row profile-bottom-space" ng-show="isSameUser">
+										<div class="col-md-3">
+											<span class="profile-left-text">Address</span>
+										</div>
+										<div class="col-md-9">
+											<label readonly class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].city}}, {{data[0][0].state}}</label>
+										</div>
 									</div>
-									<div class="col-md-9">
-										<input type="text" class="profile-large-box" ng-model="data[0][0].email">
-										<div class="profile-info">We won't share your private email address with other Airbnb users. <a href="" class="learn-more">Learn more.</a></div>
+									<div class="row profile-bottom-space">
+										<div class="col-md-3">
+											<span class="profile-left-text" ng-show="isSameUser">New Address</span>
+											<span class="profile-left-text" ng-hide="isSameUser">From</span>
+										</div>
+										<div class="col-md-9">
+	
+											<input ng-show="isSameUser" type="text" class="profile-large-box" placeholder="" ng-click="selectCity" ng-autocomplete="address" ng-model="st_address" details="details" options="options">
+											<label ng-hide="isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].city}} {{data[0][0].state}}</label>
+										</div>
 									</div>
-								</div>
-								<div class="row profile-bottom-space" ng-show="isSameUser">
-									<div class="col-md-3">
-										<span class="profile-left-text">Phone Number</span>
+									<div class="row profile-bottom-space">
+										<div class="col-md-3">
+											<span class="profile-left-text" ng-show="isSameUser">Describe Yourself</span>
+											<span class="profile-left-text" ng-hide="isSameUser">Description</span>
+										</div>
+										<div class="col-md-9">
+											<textarea rows="6" cols="50" ng-show="isSameUser" class="profile-describe-box" ng-model="data[0][0].description"></textarea>
+											<label ng-hide="isSameUser" class="profile-describe-box" style="line-height: 36px; font-weight: normal">{{data[0][0].description !== null ? data[0][0].description : 'No description provided by the user yet!'}}</label>
+											<div class="profile-info" ng-show="isSameUser">Airbnb is built on relationships. Help other people get to know you.</div>
+											<div class="profile-info" ng-show="isSameUser">Tell them about the things you like: What are 5 things you can't live without? Share your favorite travel destinations, books, movies, shows, music, food.</div>
+											<div class="profile-info" ng-show="isSameUser">Tell them what it's like to have you as a guest or host: What's your style of traveling? Of Airbnb hosting?</div>
+											<div class="profile-info" ng-show="isSameUser">Tell them about you: Do you have a life motto?</div>
+										</div>
 									</div>
-									<div class="col-md-9">
-										<input type="text" class="profile-large-box" ng-model="data[0][0].phone" ui-us-phone-number>
-										<div class="profile-info">This is only shared once you have a confirmed booking with another Airbnb user. This is how we can all get in touch.</div>
+									<div class="row profile-bottom-space" ng-hide="isSameUser">
+										<div class="col-md-3">
+											<span class="profile-left-text">Average Host Ratings</span>
+										</div>
+										<div class="col-md-9">
+											<div star-rating ng-model="data[9][0].host_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
+										</div>
 									</div>
-								</div>
-								<div class="row profile-bottom-space" ng-show="isSameUser">
-									<div class="col-md-3">
-										<span class="profile-left-text">Address</span>
+									<div class="row profile-bottom-space" ng-hide="isSameUser">
+										<div class="col-md-3">
+											<span class="profile-left-text">Average Travelling Ratings</span>
+										</div>
+										<div class="col-md-9">
+											<div star-rating ng-model="data[10][0].traveller_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
+										</div>
 									</div>
-									<div class="col-md-9">
-										<label readonly class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].city}}, {{data[0][0].state}}</label>
+									<div class="row" ng-show="isSameUser">
+										<button class="btn btn-primary save-button" ng-click="updateProfile()">Save</button>
 									</div>
-								</div>
-								<div class="row profile-bottom-space">
-									<div class="col-md-3">
-										<span class="profile-left-text" ng-show="isSameUser">New Address</span>
-										<span class="profile-left-text" ng-hide="isSameUser">From</span>
-									</div>
-									<div class="col-md-9">
-
-										<input ng-show="isSameUser" type="text" class="profile-large-box" placeholder="" ng-click="selectCity" ng-autocomplete="address" ng-model="st_address" details="details" options="options">
-										<label ng-hide="isSameUser" class="profile-large-box" style="line-height: 36px; font-weight: normal">{{data[0][0].city}} {{data[0][0].state}}</label>
-									</div>
-								</div>
-								<div class="row profile-bottom-space">
-									<div class="col-md-3">
-										<span class="profile-left-text" ng-show="isSameUser">Describe Yourself</span>
-										<span class="profile-left-text" ng-hide="isSameUser">Description</span>
-									</div>
-									<div class="col-md-9">
-										<textarea rows="6" cols="50" ng-show="isSameUser" class="profile-describe-box" ng-model="data[0][0].description"></textarea>
-										<label ng-hide="isSameUser" class="profile-describe-box" style="line-height: 36px; font-weight: normal">{{data[0][0].description !== null ? data[0][0].description : 'No description provided by the user yet!'}}</label>
-										<div class="profile-info" ng-show="isSameUser">Airbnb is built on relationships. Help other people get to know you.</div>
-										<div class="profile-info" ng-show="isSameUser">Tell them about the things you like: What are 5 things you can't live without? Share your favorite travel destinations, books, movies, shows, music, food.</div>
-										<div class="profile-info" ng-show="isSameUser">Tell them what it's like to have you as a guest or host: What's your style of traveling? Of Airbnb hosting?</div>
-										<div class="profile-info" ng-show="isSameUser">Tell them about you: Do you have a life motto?</div>
-									</div>
-								</div>
-								<div class="row profile-bottom-space" ng-hide="isSameUser">
-									<div class="col-md-3">
-										<span class="profile-left-text">Average Host Ratings</span>
-									</div>
-									<div class="col-md-9">
-										<div star-rating ng-model="data[9][0].host_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
-									</div>
-								</div>
-								<div class="row profile-bottom-space" ng-hide="isSameUser">
-									<div class="col-md-3">
-										<span class="profile-left-text">Average Travelling Ratings</span>
-									</div>
-									<div class="col-md-9">
-										<div star-rating ng-model="data[10][0].traveller_rating" max="5" readonly="true" class="profile-large-box" style="border: none"></div>
-									</div>
-								</div>
-								<div class="row" ng-show="isSameUser">
-									<button class="btn btn-primary save-button" ng-click="updateProfile()">Save</button>
 								</div>
 							</div>
 						</div>
@@ -271,130 +285,154 @@
 			  					</div>
 							</div>
 						</div>
-						<div class="row item-body" ng-show="active_tab === 'account_tab'">
-							<div class="row item-head">Payment Methods</div>
-							<div class="row item-content">
-								<div class="row">
-									<div class="col-md-4 added-card-box" ng-repeat="card in data[1]">
-										<div class="row">
-											<div class="added-card-text">{{card.card_number}}</div>
-											<div class="added-card-text">{{card.exp}}</div>
-										</div>
-										<div class="row" style="margin-top: 40px;">
-											<div class="col-md-9">
-												<span class="added-card-text">Default Card</span><i class="fa fa-question-circle question-icon"></i>
-											</div>
-											<div class="col-md-3">
-												<img src="../images/cards/mastercard.jpg" class="added-card-image">
-											</div>
-										</div>
+						<div class="row" ng-show="active_tab === 'account_tab'">
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-4">
+									<div style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="account_deactivated" ng-click="account_deactivated = false">	
+										Your account has been deactivated!!<br>
 									</div>
-									<div class="col-md-4 second-box" data-toggle="modal" data-target=".addPayment-modal-md">
-										<div class="row text-center">
-											<i class="material-icons add-icon">add</i>
-										</div>
-										<div class="row text-center">
-											<span class="add-text">Add Payment Method</span>
-										</div>
+									<div style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="redirection" ng-click="redirection = false">	
+										Successful deactivation. Redirecting you to homepage.<br>
 									</div>
-									<div class="col-md-4"></div>
 								</div>
-								<div id="payment_model" class="modal container fade addPayment-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-		  							<div class="modal-dialog container modal-md" role="document">
-								  		<div class="row payment-box">
-								  			<div class="row item-head border">Add New Payment Method<button data-dismiss="modal" class="remove-icon pull-right"><i class="fa fa-remove"></i></button></div>
-								  			<div class="row payment-body">
-								  				<div class="row bottom-space">
-								  					<img src="../images/cards/visa.png" class="card-images">
-								  					<img src="../images/cards/mastercard.jpg" class="card-images">
-								  					<img src="../images/cards/amex.jpg" class="card-images">
-								  					<img src="../images/cards/discover.png" class="card-images">
+								<div class="col-md-4"></div>
+							</div>
+							<div class="row item-body">
+								<div class="row item-head">Payment Methods</div>
+								<div class="row item-content">
+									<div class="row">
+										<div class="col-md-4 added-card-box" ng-repeat="card in data[1]">
+											<div class="row">
+												<div class="added-card-text">{{card.card_number}}</div>
+												<div class="added-card-text">{{card.exp}}</div>
+											</div>
+											<div class="row" style="margin-top: 40px;">
+												<div class="col-md-9">
+													<span class="added-card-text">Default Card</span><i class="fa fa-question-circle question-icon"></i>
+												</div>
+												<div class="col-md-3">
+													<img src="../images/cards/mastercard.jpg" class="added-card-image">
+												</div>
+											</div>
+										</div>
+										<div class="col-md-4 second-box" data-toggle="modal" data-target=".addPayment-modal-md">
+											<div class="row text-center">
+												<i class="material-icons add-icon">add</i>
+											</div>
+											<div class="row text-center">
+												<span class="add-text">Add Payment Method</span>
+											</div>
+										</div>
+										<div class="col-md-4"></div>
+									</div>
+									<div id="payment_model" class="modal container fade addPayment-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+			  							<div class="modal-dialog container modal-md" role="document">
+									  		<div class="row payment-box">
+									  			<div class="row item-head border">Add New Payment Method<button data-dismiss="modal" class="remove-icon pull-right"><i class="fa fa-remove"></i></button></div>
+									  			<div class="row payment-body">
+									  				<div class="row bottom-space">
+									  					<img src="../images/cards/visa.png" class="card-images">
+									  					<img src="../images/cards/mastercard.jpg" class="card-images">
+									  					<img src="../images/cards/amex.jpg" class="card-images">
+									  					<img src="../images/cards/discover.png" class="card-images">
+									  				</div>
+									  				<div class="row bottom-space">
+									  					<label class="credit-card-text">Card number *</label>
+									  					<input type="text" ng-model="cc_no" ui-mask="9999 9999 9999 9999" onkeypress="return isNumber(event)"  minlength="13" maxlength="16" class="credit-card-box">
+									  					<div style="color: red; font-size: 14px;" ng-show="no_cc_no">Credit Card number can not be empty !</div>
+									  				</div>
+									  				<div class="row">
+									  					<div class="col-md-3">
+									  						<label class="credit-card-text">Expires on *</label>
+									  					</div>
+									  					<div class="col-md-3"></div>
+									  					<div class="col-md-6">
+									  						<label class="credit-card-text">Security code *</label>
+									  					</div>
+									  				</div>
+									  				<div class="row bottom-space">
+									  					<div class="col-md-3">
+									  						<select ng-model="cc_month" ng-options="x for x in get_month" class="expiry-box">
+									  						 	
+															</select>
+									  					</div>
+									  					<div class="col-md-3">
+									  						<select ng-model="cc_year" ng-options="x for x in get_year" class="expiry-box">
+									  						 	
+															</select>
+									  					</div>
+									  					<div class="col-md-6">
+									  						<input type="text" ng-model="security_code" onkeypress="return isNumber(event)"  minlength="3" maxlength="4" class="medium-box">
+									  					</div>
+									  					<div class="row">
+									  						<div class="col-md-12">
+									  							<div style="color: red; font-size: 14px;" ng-show="no_cc_month">Please select an expiry month for your card !</div>
+									  							<div style="color: red; font-size: 14px;" ng-show="no_cc_year">Please select an expiry year for your card !</div>
+									  							<div style="color: red; font-size: 14px;" ng-show="no_security_code">Please enter a security code on back of your card !</div>
+									  						</div>
+									  					</div>
+									  				</div>
+									  				<div class="row">
+									  					<div class="col-md-6">
+									  						<label class="credit-card-text">First name *</label>
+									  					</div>
+	
+									  					<div class="col-md-6">
+									  						<label class="credit-card-text">Last name *</label>
+									  					</div>
+									  				</div>
+									  				<div class="row bottom-space">
+									  					<div class="col-md-6">
+									  						<input type="text" ng-model="first_name" class="medium-box">
+									  					</div>
+									  					<div class="col-md-6">
+									  						<input type="text" ng-model="last_name" class="medium-box">
+									  					</div>
+														<div class="row">
+									  						<div class="col-md-12">
+									  							<div style="color: red; font-size: 14px;" ng-show="no_first_name">Please enter first name as it appears on your card !</div>
+									  							<div style="color: red; font-size: 14px;" ng-show="no_last_name">Please enter last name as it appears on your card !</div>
+									  						</div>
+									  					</div>
+									  				</div>
+									  				<div class="row">
+									  					<div class="col-md-6">
+									  						<label class="credit-card-text">Postal code</label>
+									  					</div>
+									  					<div class="col-md-6">
+									  						<label class="credit-card-text">Country</label>
+									  					</div>
+									  				</div>
+									  				<div class="row bottom-space">
+									  					<div class="col-md-6">
+									  						<input type="text" ng-model="postal" class="medium-box">
+									  					</div>
+									  					<div class="col-md-6">
+									  						<select class="country-box">
+									  						 	<option>United States</option>
+															</select>
+									  					</div>
+									  					<div class="row">
+									  						<div class="col-md-12">
+									  							<div style="color: red; font-size: 14px;" ng-show="no_postal">Please enter your postal code !</div>
+									  						</div>
+									  					</div>
+									  				</div>
+									  			</div>
+									  			<div class="row payment-footer">
+								  					<div class="col-md-6"></div>
+								  					<div class="col-md-6">
+								  						<button class="btn btn-primary cancel-button" data-dismiss="modal">Cancel</button>
+								  						<button ng-click="add_card();" class="btn btn-primary add-card-button">Add Card</button>
+								  					</div>
 								  				</div>
-								  				<div class="row bottom-space">
-								  					<label class="credit-card-text">Card number *</label>
-								  					<input type="text" ng-model="cc_no" ui-mask="9999 9999 9999 9999" onkeypress="return isNumber(event)"  minlength="13" maxlength="16" class="credit-card-box">
-								  					<div style="color: red; font-size: 11px;" ng-show="no_cc_no">Credit Card number can not be empty !</div>
-								  				</div>
-								  				<div class="row">
-								  					<div class="col-md-3">
-								  						<label class="credit-card-text">Expires on *</label>
-								  					</div>
-								  					<div class="col-md-3"></div>
-								  					<div class="col-md-6">
-								  						<label class="credit-card-text">Security code *</label>
-								  					</div>
-								  				</div>
-								  				<div class="row bottom-space">
-								  					<div class="col-md-3">
-								  						<select ng-model="cc_month" ng-options="x for x in get_month" class="expiry-box">
-								  						 	
-														</select>
-														<div style="color: red; font-size: 11px;" ng-show="no_cc_month">Please select an expiry month for your card !</div>
-								  					</div>
-								  					<div class="col-md-3">
-								  						<select ng-model="cc_year" ng-options="x for x in get_year" class="expiry-box">
-								  						 	
-														</select>
-														<div style="color: red; font-size: 11px;" ng-show="no_cc_year">Please select an expiry year for your card !</div>
-								  					</div>
-								  					<div class="col-md-6">
-								  						<input type="text" ng-model="security_code" onkeypress="return isNumber(event)"  minlength="3" maxlength="4" class="medium-box">
-								  					</div>
-								  					<div style="color: red; font-size: 11px;" ng-show="no_security_code">Please enter a security code on back of your card !</div>
-								  				</div>
-								  				<div class="row">
-								  					<div class="col-md-6">
-								  						<label class="credit-card-text">First name *</label>
-								  					</div>
-
-								  					<div class="col-md-6">
-								  						<label class="credit-card-text">Last name *</label>
-								  					</div>
-								  				</div>
-								  				<div class="row bottom-space">
-								  					<div class="col-md-6">
-								  						<input type="text" ng-model="first_name" class="medium-box">
-								  					</div>
-								  					<div style="color: red; font-size: 11px;" ng-show="no_first_name">Please enter first name as it appears on your card !</div>
-								  					<div class="col-md-6">
-								  						<input type="text" ng-model="last_name" class="medium-box">
-								  					</div>
-								  					<div style="color: red; font-size: 11px;" ng-show="no_last_name">Please enter last name as it appears on your card !</div>
-
-								  				</div>
-								  				<div class="row">
-								  					<div class="col-md-6">
-								  						<label class="credit-card-text">Postal code</label>
-								  					</div>
-								  					<div class="col-md-6">
-								  						<label class="credit-card-text">Country</label>
-								  					</div>
-								  				</div>
-								  				<div class="row bottom-space">
-								  					<div class="col-md-6">
-								  						<input type="text" ng-model="postal" class="medium-box">
-									  					<div style="color: red; font-size: 11px;" ng-show="no_postal">Please enter your postal code !</div>
-
-								  					</div>
-								  					<div class="col-md-6">
-								  						<select class="country-box">
-								  						 	<option>United States</option>
-														</select>
-								  					</div>
-								  				</div>
-								  			</div>
-								  			<div class="row payment-footer">
-							  					<div class="col-md-6"></div>
-							  					<div class="col-md-6">
-							  						<button class="btn btn-primary cancel-button" data-dismiss="modal">Cancel</button>
-							  						<button ng-click="add_card();" class="btn btn-primary add-card-button">Add Card</button>
-							  					</div>
-							  				</div>
-								  		</div>
-								  	</div>
-								</div>
-								<div class="row remember-text">
-									<span>Remember: Airbnb will never ask you to wire money. <a href="" class="learn-more">Learn more.</a></span>
+									  		</div>
+									  	</div>
+									</div>
+									<div class="row remember-text">
+										<span>Remember: Airbnb will never ask you to wire money. <a href="" class="learn-more">Learn more.</a></span>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -404,39 +442,53 @@
 								<button class="btn btn-primary password-button" ng-click="deactivateUserAccount()">Cancel my account</button>
 							</div>
 						</div>
-						<div class="row item-body" ng-show="active_tab === 'security_tab'">
-							<div class="row item-head">Change Your Password</div>
-							<div class="row item-content" style="padding:20px;">
-								<div class="row profile-bottom-space">
-									<div class="col-md-3">
-										<span class="profile-left-text">Old Password</span>
+						<div class="row" ng-show="active_tab === 'security_tab'">
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-4">
+									<div style="border: 2px solid green;border-radius: 5px;opacity: 1;font-size: 20px;color: green;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="success_update" ng-click="success_update = false">	
+										Your password has been changed!!<br>
 									</div>
-									<div class="col-md-9">
-										<input ng-model="old_pass" type="password" ng-model="" class="password-box">
-									</div>
-								</div>
-								<div class="row profile-bottom-space">
-									<div class="col-md-3">
-										<span class="profile-left-text">New Password</span>
-									</div>
-									<div class="col-md-9">
-										<input ng-model="new_pass" type="password" class="password-box">
+									<div style="border: 2px solid red;border-radius: 5px;opacity: 1;font-size: 20px;color: red;width: 450px;height: 60px;" class="alert alert-warning alert-dismissable close col-lg-6 text-center" data-dismiss="alert" ng-show="invalidLogin" ng-click="invalidLogin = false">	
+										Your password did not match!!<br>
 									</div>
 								</div>
+								<div class="col-md-4"></div>
+							</div>
+							<div class="row item-body">
+								<div class="row item-head">Change Your Password</div>
+								<div class="row item-content" style="padding:20px;">
 								<div class="row profile-bottom-space">
-									<div class="col-md-3">
-										<span class="profile-left-text">Confirm Password</span>
+										<div class="col-md-3">
+											<span class="profile-left-text">Old Password</span>
+										</div>
+										<div class="col-md-9">
+											<input ng-model="old_pass" type="password" ng-model="" class="password-box">
+										</div>
 									</div>
-									<div class="col-md-9">
-										<input ng-model="confirm_pass" type="password" class="password-box">
+									<div class="row profile-bottom-space">
+										<div class="col-md-3">
+											<span class="profile-left-text">New Password</span>
+										</div>
+										<div class="col-md-9">
+											<input ng-model="new_pass" type="password" class="password-box">
+										</div>
 									</div>
+									<div class="row profile-bottom-space">
+										<div class="col-md-3">
+											<span class="profile-left-text">Confirm Password</span>
+										</div>
+										<div class="col-md-9">
+											<input ng-model="confirm_pass" type="password" class="password-box">
+										</div>
+									</div>
+									<div class="row password-footer">
+				  						<div class="col-md-6"></div>
+				  						<div class="col-md-6">
+				  							<button ng-click="updatePass()" class="btn btn-primary password-button">Update Password</button>
+				  						</div>
+				  					</div>
 								</div>
-								<div class="row password-footer">
-			  						<div class="col-md-6"></div>
-			  						<div class="col-md-6">
-			  							<button ng-click="updatePass()" class="btn btn-primary password-button">Update Password</button>
-			  						</div>
-			  					</div>
 							</div>
 						</div>
 						<div class="row item-body" ng-show="active_tab === 'security_tab'">
@@ -487,7 +539,8 @@
 								<div class="row no-listing" ng-show="data[3] === null || data[3].length === 0">You don't have any properties!</div>
 								<div class="row listing-activated-body well" ng-repeat="property in data[3]">
 									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+										<img class="listing-image" src="images/city/paris.jpg" alt="No Property Photo" ng-hide="property.photos">
+										<img class="listing-image" data-ng-src="data:{{property.photos.photos.filetype}};base64,{{property.photos.photos.base64}}" alt="No Property Photo" ng-show="property.photos">
 									</div>
 									<div class="col-md-1"></div>
 									<div class="col-md-8 listing-details">
@@ -524,7 +577,13 @@
 								<div class="row no-listing" ng-show="data[4] === null || data[4].length === 0">You don't have any listings!</div>
 								<div class="row listing-activated-body well" ng-repeat="listing in data[4]">
 									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+										<ng-map id="{{listing.listing_id}}" zoom="14" center="[{{listing.latitude + 0.0050}}, {{listing.longitude - 0.00500}}]" disableDefaultUI="true" style="height:200px; width:100%; margin:0px;">
+											<custom-marker position="[{{listing.latitude}}, {{listing.longitude}}]" animation="Animation.BOUNCE" >
+													<div class="cm">
+														<b style="color:white;">${{listing.daily_price}}</b> <span class="glyphicon glyphicon-flash" style="color:yellow;" ng-hide="listing.is_bid === 1"></span>
+													</div>
+											</custom-marker>
+										</ng-map>
 									</div>
 									<div class="col-md-1"></div>
 									<div class="col-md-8 listing-details">
@@ -560,7 +619,13 @@
 								<div class="row no-listing">You don't have any trips!</div>
 								<div class="row listing-activated-body well" ng-repeat="trip in data[5]">
 									<div class="col-md-3">
-										<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+										<ng-map id="{{trip.listing_id}}" zoom="14" center="[{{trip.latitude + 0.0050}}, {{trip.longitude - 0.00500}}]" disableDefaultUI="true" style="height:200px; width:100%; margin:0px;">
+											<custom-marker position="[{{trip.latitude}}, {{trip.longitude}}]" animation="Animation.BOUNCE" >
+													<div class="cm">
+														<b style="color:white;">${{trip.trip_amount}}</b>
+													</div>
+											</custom-marker>
+										</ng-map>
 									</div>
 									<div class="col-md-1"></div>
 									<div class="col-md-8 listing-details">
@@ -582,11 +647,11 @@
 											<div class="col-md-6"><a href="/getBill?receipt={{trip.receipt_id}}"><button class="btn btn-primary deactivate-button" style="margin-top: -5px;">View bill</button></a></div>
 										</div>
 										<div class="row location-text" style="margin-top:15px;">Review host</div>
-										<div class="row">
-											<div class="col-md-12">
-					  							<button class="pull-right btn btn-primary submit-button">Upload Images</button>
-					  							<input type="file" ng-model="trip.review_photos" class="upload" name="photos" base-sixty-four-input multiple accept="image/*" minsize="500" required minnum="1">
-					  						</div>
+										<div class="row" style="margin-top:15px;">
+					  						<div class="btn btn-primary review-photo-button" style="margin-top: 0px;">
+												<span style="font-weight:bold;">Upload images</span>
+												<input type="file" ng-model="trip.review_photos" class="review-photo" name="photos" base-sixty-four-input multiple accept="image/*" minsize="500" required minnum="1">
+											</div>
 										</div>
 										<div class="row" ng-hide="trip.review_photos.length === 0">
 									      	<div ng-repeat="photo in trip.review_photos" class="col-md-4" style="padding: 10px;">
@@ -611,7 +676,13 @@
 								<div class="row item-content" ng-repeat="hosting in data[6]">
 									<div class="row listing-activated-body well">
 										<div class="col-md-3">
-											<img class="listing-image" src="images/city/paris.jpg" alt="Paris">
+											<ng-map id="{{hosting.listing_id}}" zoom="14" center="[{{hosting.latitude + 0.0050}}, {{hosting.longitude - 0.00500}}]" disableDefaultUI="true" style="height:200px; width:100%; margin:0px;">
+												<custom-marker position="[{{hosting.latitude}}, {{hosting.longitude}}]" animation="Animation.BOUNCE" >
+														<div class="cm">
+															<b style="color:white;">${{hosting.trip_amount}}</b>
+														</div>
+												</custom-marker>
+											</ng-map>
 										</div>
 										<div class="col-md-1"></div>
 										<div class="col-md-8 listing-details">
@@ -630,11 +701,11 @@
 											<div class="row location-text" style="margin-top:15px;">Rate traveler</div>
 											<div star-rating ng-model="hosting.traveller_rating" max="5" on-rating-select="updateTravellerRating(hosting.trip_id, rating)"></div>
 											<div class="row location-text" style="margin-top:15px;">Review traveler</div>
-											<div class="row">
-												<div class="col-md-12">
-						  							<button class="pull-right btn btn-primary submit-button">Upload Images</button>
-						  							<input type="file" ng-model="hosting.review_photos" class="upload" name="photos" base-sixty-four-input multiple accept="image/*" minsize="500" required minnum="1">
-						  						</div>
+											<div class="row" style="margin-top:15px;">
+					  							<div class="btn btn-primary review-photo-button" style="margin-top: 0px;">
+													<span style="font-weight:bold;">Upload images</span>
+													<input type="file" class="review-photo" ng-model="hosting.review_photos" name="photos" base-sixty-four-input multiple accept="image/*" minsize="500" required minnum="1">
+												</div>
 											</div>
 											<div class="row" ng-hide="hosting.review_photos.length === 0">
 										      	<div ng-repeat="photo in hosting.review_photos[0].photo" class="col-md-4" style="padding: 10px;">
@@ -653,7 +724,7 @@
 									</div>
 								</div>
 						</div>
-						<div class="row item-body" ng-show="active_tab === 'host_tab'">
+						<div class="row item-body" ng-hide="active_tab !== 'host_tab'">
 							<div class="row item-head">Dashboard</div>
 
 							<div class="row item-content">

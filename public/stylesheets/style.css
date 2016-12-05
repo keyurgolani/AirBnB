@@ -585,8 +585,8 @@ body {
 	}
 	.imgHolder .leftLabel {
 		position: absolute;
-		left: -15px;
-	    top: 220px;
+		left: -5px;
+	    top: 200px;
 	    border: 0px solid green;
 	    /* background-color: rgba(0, 0, 0, 0.7); */
 	    padding: 10px;
@@ -601,7 +601,7 @@ body {
 		position: absolute;
 		right: 5%;
 		top: 85%;
-		border: 2px solid black;
+		border: 2px solid white;
 		border-radius: 50%;
 		padding: 0px;
 	}
@@ -1347,7 +1347,7 @@ input[type='checkbox'] {
 
 .price-bottom {
 	border: 1px solid #dce0e0;
-	height: 376px;
+	height: auto;
 	width: 315px;
 }
 
@@ -2528,6 +2528,42 @@ label.star:before {
 	border-top-right-radius: 0px;
 }
 
+.review-photo-button {
+	position: relative;
+	overflow: hidden;
+	height: 64px;
+	width: 545px;
+	border-color: #ff5a5f;
+	background-color: #ff5a5f;
+	color: #fff;
+	font-size: 18px;
+	padding: 20px 36px;
+	line-height: 1;
+	cursor: pointer;
+	margin-top:50px;
+}
+
+.review-photo-button input.review-photo {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	height: 64px;
+	width: 545px;
+}
+
+.review-photo-button:hover, .review-photo-button:active,
+	.review-photo-button:focus, .review-photo-button:active:focus {
+	border-color: #ff7e82;
+	background-color: #ff7e82;
+	color: #fff;
+	cursor: pointer;
+}
+
 .submit-button {
 	height: 63px;
 	width: 100px;
@@ -2817,4 +2853,21 @@ input[type=range]:focus::-ms-fill-upper, input[type=range]:active::-ms-fill-uppe
     background-color: #edefed;
     margin-right: 10px;
     font-size: 20px!important;
+}
+
+.admin-list.panel {
+	border-radius: 0px!important;
+}
+
+.admin-head-list {
+	font-size:16px;
+	font-weight:bold;
+	padding-left:10px;
+	color: white;
+}
+
+.admin-head-list:hover, .admin-head-list:active, .admin-head-list:focus, .admin-head-list:visited {
+	cursor: pointer;
+	text-decoration: underline;
+	color: white;
 }
