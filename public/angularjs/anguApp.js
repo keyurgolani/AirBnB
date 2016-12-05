@@ -541,10 +541,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 			if ($scope.details !== undefined && typeof $scope.details != 'string') {
 				console.log($scope.details);
 				var length = $scope.details.address_components.length;
-				$scope.streetAddress = $scope.details.address_components[0].long_name + " " + $scope.details.address_components[1].long_name;
-				$scope.city = $scope.details.address_components[3].long_name;
-				$scope.state = $scope.details.address_components[5].long_name;
-				$scope.zip = $scope.details.address_components[7].long_name;
+//				$scope.streetAddress = $scope.details.address_components[0].long_name + " " + $scope.details.address_components[1].long_name;
+				$scope.city = $scope.details.address_components[0].long_name;
+				$scope.state = $scope.details.address_components[2].long_name;
+				$scope.zip = $scope.details.address_components[3].long_name;
 			}
 		});
 
