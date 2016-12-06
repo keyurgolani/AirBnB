@@ -194,10 +194,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 		$scope.addcard = function() {
 
-			$rootScope.fetchLoggedInUser(function() {
-				window.location.assign('/profile?owner='+$rootScope.loggedInUser.user_id);
-			});	
-			window.location.assign('/profile');
+//			$rootScope.fetchLoggedInUser(function() {
+//				window.location.assign('/profile?owner='+$scope.global.loggedInUser.user_id);
+//			});	
+//			window.location.assign('/profile');
 		}
 
 		$scope.checkform = function() {

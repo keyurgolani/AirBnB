@@ -1036,14 +1036,16 @@ router.get('/viewListing', function(req, res, next) {
 						callback(null, null);
 					});
 				}, function(callback) {
-					mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = ?', [req.session.loggedInUser.user_id], (error, card_details) => {
-						if (error) {
-							throw error;
-						} else {
-							results[0].card = card_details;
-							callback(null, null);
-						}
-					});
+					if(req.session && req.session.loggedInUser) {
+						mysql.executeQuery('select card_id, card_number, exp_month,exp_year,cvv,first_name,last_name,postal_code,country from card_details where user_id = ?', [req.session.loggedInUser.user_id], (error, card_details) => {
+							if (error) {
+								throw error;
+							} else {
+								results[0].card = card_details;
+								callback(null, null);
+							}
+						});
+					}
 				}], function(error, finalResults) {
 					res.render('viewListing', {
 						data : JSON.stringify(results[0])
