@@ -107,9 +107,22 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 
 	})
 	.controller('viewListing', function($scope, $http, $window, Random, Date,$rootScope) {
-		$scope.init = function(retrievedData) {
-			$scope.data = JSON.parse(retrievedData);
 
+		$scope.bookSuccess = false;
+		$scope.bidsuccess = false;
+
+		$scope.global = $rootScope;
+
+
+		// console.log('$scope.loggedInUser', $scope.loggedInUser);
+
+		$scope.global.fetchLoggedInUser(function() {
+				// console.log(global.loggedInUser.user_id);
+			});	
+
+		// console.log('scope.global', $scope.global);
+				$scope.init = function(retrievedData) {
+			$scope.data = JSON.parse(retrievedData);
 			$scope.nextPhoto = function() {
 				if ($scope.currentIndex === $scope.data.photos.length) {
 					$scope.currentIndex = 1;
@@ -118,6 +131,8 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
 				}
 				$scope.currentPhoto = $scope.data.photos[$scope.currentIndex - 1];
 			};
+
+			console.log("owber" , $scope.data.owner_id);
 
 			$scope.previousPhoto = function() {
 				if ($scope.currentIndex === 1) {
@@ -224,6 +239,7 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
  					}).then((results) => {
  						if (results.data.statusCode === 200) {
  							$scope.data.daily_price = results.data.updated_base_price;
+ 							$scope.bidsuccess = true;
  						}
  					}, (error) => {
  						console.log("Error", error);
@@ -245,6 +261,10 @@ var airBnB = angular.module('airBnB', [ 'ngAnimate', 'focus-if', 'ngAutocomplete
  					    
  						if (results.data.statusCode === 200) {
  							console.log("Results", results);
+
+ 							$scope.bookSuccess = true;
+
+
  						}else if(results.data.statusCode === 500){
 
  							alert("dates are invalid!");
